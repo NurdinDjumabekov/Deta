@@ -1,0 +1,178 @@
+.ipAddresPage {
+  padding: 10px 0px;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+
+  ///// переиспользую снизу 2 раза
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    button {
+      width: 25px;
+      height: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 80%;
+        height: 80%;
+      }
+    }
+
+    .edit {
+      background: rgb(30, 31, 35);
+      border-radius: 5px;
+      img {
+        width: 60%;
+        height: 60%;
+      }
+    }
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    background: rgb(30, 31, 35);
+    height: 50px;
+    top: 0;
+    gap: 10px;
+    position: fixed;
+    left: 60px;
+    min-width: 100%;
+    padding: 0 0 0 20px;
+  }
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    gap: 5px 0px;
+    padding: 42px 0 0 0;
+    min-height: 98vh;
+
+    .every {
+      width: 17%;
+      box-sizing: border-box;
+      min-height: 92vh;
+      border-right: 1px solid #808080;
+      padding: 10px;
+
+      .titlesAction {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        h5 {
+          font-size: 14px;
+          font-weight: 600;
+        }
+      }
+
+      &__inner {
+        .titleInner {
+          background: rgb(30, 31, 35);
+          padding: 8px;
+          border-radius: 5px;
+          margin: 5px 0 0 0;
+          .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            h6 {
+              font-size: 14px;
+              color: #a074c4;
+            }
+
+            p {
+              font-size: 12px;
+              color: #64a9d7;
+            }
+          }
+
+          .host {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgb(40, 206, 40);
+          }
+        }
+
+        .listIp {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .ip__every {
+            display: flex;
+            align-items: center;
+
+            b {
+              font-size: 14px;
+              display: block;
+              margin: 0 10px 0 0;
+              font-weight: 500;
+            }
+
+            .ip {
+              font-size: 14px;
+              display: block;
+              margin: 0 10px;
+              font-weight: 400;
+            }
+
+            span {
+              font-size: 14px;
+              display: block;
+            }
+
+            i {
+              font-size: 14px;
+              display: block;
+              margin: 0 10px 0 0;
+              font-weight: 400;
+              font-style: normal;
+            }
+
+            p {
+              font-size: 14px;
+              color: rgb(28, 194, 28);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    min-width: 5px;
+    max-width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    min-width: 5px;
+    max-width: 5px;
+    &:hover {
+      background-color: #050505;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    cursor: pointer;
+    max-height: 50px;
+    min-height: 50px;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #050505;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ffffff4e;
+    }
+  }
+}

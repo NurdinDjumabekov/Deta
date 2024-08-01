@@ -1,0 +1,29 @@
+.mainSearch {
+  width: 300px;
+  position: relative;
+  height: 30px;
+  margin: 0 0 0 30px;
+
+  input {
+    width: 100%;
+    padding: 0px 10px 0pc 40px;
+    height: 30px;
+    background: rgb(30, 31, 35);
+    border: 1px solid #ffffff83;
+    border-radius: 5px;
+
+    &:focus {
+      border: 1px solid #ffffffbc;
+      outline: none;
+    }
+  }
+
+  img {
+    position: absolute;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

@@ -1,0 +1,111 @@
+.сontainerMain {
+  display: flex;
+  margin: 10px 0 0 0;
+
+  .numIndex {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: green;
+    padding: 2px 5px;
+    border-radius: 3px;
+    height: 20px;
+
+    img {
+      width: 14px;
+      height: 14px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .edit {
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+    background: rgb(30, 31, 35);
+    padding: 0px 3px;
+    border-radius: 5px;
+
+    img {
+      width: 80%;
+      height: 80%;
+    }
+  }
+
+  .hostName {
+    color: #c3602c;
+    font-size: 12px;
+    margin-right: 3px;
+  }
+
+  .mainInfo {
+    width: 38%;
+
+    > div {
+      display: flex;
+    }
+
+    p {
+      font-size: 12px;
+      color: #3e86c8;
+    }
+
+    span {
+      font-size: 10px;
+      display: block;
+      margin: 5px 0 0 0;
+      max-width: 400px;
+    }
+  }
+
+  .GB {
+    display: flex;
+    align-items: center;
+
+    .memory {
+      display: flex;
+      align-items: center;
+
+      > button {
+        width: 23px;
+        height: 23px;
+        margin: 0 5px;
+        padding: 3px;
+        border-radius: 5px;
+        background: rgb(30, 31, 35);
+      }
+
+      .memoryBlock {
+        width: 170px;
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+      margin: 0 5px 0 10px;
+
+      &__inner {
+        display: flex;
+        gap: 10px;
+
+        button {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      p {
+        font-size: 12px;
+        width: 100px;
+        text-align: center;
+      }
+    }
+  }
+}

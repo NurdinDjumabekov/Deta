@@ -1,0 +1,101 @@
+.microticPage {
+  width: 100%;
+  padding: 10px 10px 10px 10px;
+  display: flex;
+  gap: 40px;
+  height: 100vh;
+  overflow-y: scroll;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #292d32;
+      padding: 0 5px;
+
+      .every {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        .colors {
+          width: 40px;
+          height: 25px;
+          border: 2px solid #fff;
+          border-radius: 5px;
+
+          p {
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+          }
+        }
+
+        button {
+          width: 25px;
+          height: 25px;
+          background: rgb(30, 31, 35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 5px;
+
+          img {
+            width: 55%;
+            height: 55%;
+          }
+        }
+
+        .texts {
+          display: flex;
+          flex-direction: column;
+          gap: 3px;
+
+          p {
+            color: #64a9d7;
+            font-size: 12px;
+          }
+
+          span {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    min-width: 5px;
+    max-width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    min-width: 5px;
+    max-width: 5px;
+    &:hover {
+      background-color: #050505;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    cursor: pointer;
+    max-height: 50px;
+    min-height: 50px;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #050505;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ffffff4e;
+    }
+  }
+}

@@ -1,0 +1,82 @@
+.hostsMain {
+  border-radius: 5px;
+  padding: 5px;
+  width: 196px;
+  background: rgb(30, 31, 35);
+  height: auto;
+
+  h4 {
+    font-size: 12px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    padding: 4px 0px;
+
+    p {
+      font-size: 14px;
+
+      b {
+        color: #e1e16f;
+        font-size: 11px;
+      }
+    }
+
+    button {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  .vmbrBlock {
+    div {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+
+      img {
+        width: 12px;
+        height: 12px;
+      }
+
+      p {
+        color: #66b4ff;
+        font-size: 11px;
+        line-height: 18px;
+        width: 41px;
+      }
+
+      span {
+        display: block;
+        margin-left: 5px;
+        line-height: 18px;
+        color: #66b4ff;
+        font-size: 11px;
+      }
+    }
+  }
+
+  .ip_host {
+    font-size: 15px;
+    margin: 5px 0px 10px;
+    text-decoration: underline;
+  }
+
+  .comment {
+    font-size: 12px;
+  }
+}
+
+.lineError {
+  background: linear-gradient(
+    45deg,
+    #ff00008a 25%,
+    #514848 0,
+    #514848 50%,
+    #ff00008a 0,
+    #ff00008a 75%,
+    #514848 0
+  );
+  background-size: 30px 30px;
+}

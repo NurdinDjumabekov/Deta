@@ -1,0 +1,63 @@
+.statusContainers {
+  width: 300px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  > div {
+    width: 33%;
+    border-left: 2px solid rgb(30, 31, 35);
+    height: 100vh;
+
+    p {
+      padding: 3px 0 5px;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 5px 0px;
+
+      img {
+        width: 25px;
+        height: 25px;
+      }
+
+      span {
+        font-size: 14px;
+        color: #3e86c8;
+      }
+    }
+
+    .list {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 5px;
+      margin: 5px 0 0 0;
+
+      span {
+        font-size: 13px;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .clear {
+      background: red;
+    }
+    .active {
+      background: green;
+    }
+    .disActive {
+      background: #3e86c8;
+    }
+  }
+}

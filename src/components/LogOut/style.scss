@@ -1,0 +1,32 @@
+.logout {
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  button {
+    width: 35px;
+    height: 35px;
+    background: transparent;
+
+    p {
+      display: none;
+      color: #393636;
+      font-size: 14px;
+      font-weight: 600;
+      position: absolute;
+      left: 55px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:hover {
+      p {
+        display: inline-block;
+      }
+    }
+  }
+}

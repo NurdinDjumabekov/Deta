@@ -1,0 +1,20 @@
+.memoryBlock {
+  .cpu,
+  .GB {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 0 5px 0;
+
+    img {
+      height: 15px;
+      width: 18px;
+    }
+
+    div {
+      height: 15px;
+      width: 100%;
+      background: green;
+    }
+  }
+}

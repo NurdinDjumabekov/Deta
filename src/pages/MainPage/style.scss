@@ -1,0 +1,124 @@
+.mainPage {
+  width: 100%;
+
+  .providers {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    border-bottom: 1px solid #6e6b6b;
+
+    &__inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      > div {
+        display: flex;
+        align-items: center;
+        background: rgb(30, 31, 35);
+        padding: 3px 8px;
+        gap: 5px;
+
+        p {
+          font-size: 16px;
+        }
+
+        .round {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: green;
+        }
+
+        span {
+          display: block;
+          font-size: 12px;
+          margin: 0 0 0 8px;
+        }
+      }
+    }
+  }
+
+  .hostAndContainer {
+    display: flex;
+    min-width: 100%;
+
+    .hosts {
+      width: 48%;
+      height: 96vh;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 8px;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        min-width: 5px;
+        max-width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+        min-width: 5px;
+        max-width: 5px;
+        &:hover {
+          background-color: #050505;
+        }
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        cursor: pointer;
+        max-height: 50px;
+        min-height: 50px;
+      }
+
+      &:hover {
+        &::-webkit-scrollbar-track {
+          background-color: #050505;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #ffffff4e;
+        }
+      }
+    }
+
+    .containers {
+      width: 47%;
+      height: 96vh;
+      padding: 10px 60px 10px 10px;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        min-width: 5px;
+        max-width: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+        min-width: 5px;
+        max-width: 5px;
+        &:hover {
+          background-color: #050505;
+        }
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        cursor: pointer;
+        max-height: 50px;
+        min-height: 50px;
+      }
+
+      &:hover {
+        &::-webkit-scrollbar-track {
+          background-color: #050505;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #ffffff4e;
+        }
+      }
+    }
+  }
+}

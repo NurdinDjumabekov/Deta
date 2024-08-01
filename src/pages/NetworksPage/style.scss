@@ -1,0 +1,87 @@
+.networksPage {
+  padding: 10px;
+  width: 100%;
+  height: 98vh;
+  overflow-y: scroll;
+
+  .listNetworks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 2px;
+    margin: 10px 0 0 0;
+
+    .every {
+      width: 9%;
+      box-sizing: border-box;
+
+      .title {
+        display: flex;
+        padding: 5px 15px;
+        background: #4982ea;
+        justify-content: space-between;
+        gap: 10px;
+        border-left: 1px solid #050505;
+        border-right: 1px solid #050505;
+
+        h6 {
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr); /* Всегда 8 колонок */
+        gap: 0px; /* Используйте `gap` для промежутков между элементами */
+      }
+
+      .grid-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white; /* Цвет текста по умолчанию */
+        box-sizing: border-box; /* Учитывайте отступы и границы в расчет ширины и высоты */
+        border-left: 1px solid #050505;
+        border-top: 1px solid #050505;
+      }
+
+      .grid-item p {
+        margin: 0;
+        font-size: 8px;
+        color: #050505;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &::-webkit-scrollbar {
+    min-width: 5px;
+    max-width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    min-width: 5px;
+    max-width: 5px;
+    &:hover {
+      background-color: #050505;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    cursor: pointer;
+    max-height: 50px;
+    min-height: 50px;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #050505;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ffffff4e;
+    }
+  }
+}

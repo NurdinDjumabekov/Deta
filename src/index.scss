@@ -1,0 +1,76 @@
+$backgroundColor: #292d32;
+$colorWhite: #fff;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
+}
+
+body {
+  background: $backgroundColor;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.noneData {
+  display: none;
+}
+
+.viewData {
+  display: block;
+}
+
+.addBtn {
+  background: rgb(60, 227, 60);
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.btnBlink {
+  background-color: rgb(47, 218, 47); /* Зеленый фон */
+  color: white; /* Белый текст */
+  border: none; /* Без границы */
+  border-radius: 50%; /* Скругление углов */
+  cursor: pointer; /* Указатель мыши изменяется на "руку" */
+  transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+  width: 10px;
+  min-width: 10px;
+  height: 10px;
+  min-height: 10px;
+  animation: animation 1s infinite;
+}
+
+@keyframes animation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
