@@ -11,7 +11,6 @@ export const pages = [
   { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
-  { id: 6, name: "Пользователи", path: "/users", img: usersIcon },
 ];
 
 export const hosts = [
@@ -3272,18 +3271,18 @@ export const listPrivoiders = [
         hostTwo: "77.235.22.48 - 77.235.22.63",
         list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
       },
-      // {
-      //   nameBlock: "Блок 2 Мегалайн",
-      //   host: "77.235.22.48",
-      //   hostTwo: "77.235.22.48 - 77.235.22.63",
-      //   list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
-      // },
-      // {
-      //   nameBlock: "Блок 1",
-      //   host: "77.235.22.48",
-      //   hostTwo: "77.235.22.48 - 77.235.22.63",
-      //   list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
-      // },
+      {
+        nameBlock: "Блок 2 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 1",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
     ],
   },
   {
@@ -3294,6 +3293,121 @@ export const listPrivoiders = [
         host: "77.235.22.48",
         hostTwo: "77.235.22.48 - 77.235.22.63",
         list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 2 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 1",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+    ],
+  },
+  {
+    privoider: "Акнет",
+    listInnerProv: [
+      {
+        nameBlock: "Блок 3 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 2 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 1",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+    ],
+  },
+  {
+    privoider: "Мегалайн",
+    listInnerProv: [
+      {
+        nameBlock: "Блок 3 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 2 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 1",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+    ],
+  },
+  {
+    privoider: "Акнет",
+    listInnerProv: [
+      {
+        nameBlock: "Блок 3 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 2 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 1",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+    ],
+  },
+  {
+    privoider: "Мегалайн",
+    listInnerProv: [
+      {
+        nameBlock: "Блок 3 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 2 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp],
+      },
+      {
+        nameBlock: "Блок 1",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp],
+      },
+    ],
+  },
+  {
+    privoider: "Мегалайн",
+    listInnerProv: [
+      {
+        nameBlock: "Блок 3 Мегалайн",
+        host: "77.235.22.48",
+        hostTwo: "77.235.22.48 - 77.235.22.63",
+        list: [objIp, objIp, objIp, objIp, objIp, objIp, objIp, objIp],
       },
       {
         nameBlock: "Блок 2 Мегалайн",

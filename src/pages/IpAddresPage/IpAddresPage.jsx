@@ -9,6 +9,7 @@ import { listPrivoiders, list_haProxy } from "../../helpers/LocalData";
 ////// imgs
 import addicon from "../../assets/icons/add.svg";
 import editIcon from "../../assets/icons/edit.svg";
+import monitor from "../../assets/icons/display.svg";
 
 const IpAddresPage = () => {
   return (
@@ -51,15 +52,21 @@ const IpAddresPage = () => {
                 <div className="listIp">
                   {i?.list?.map((i, index) => (
                     <div className="ip__every">
-                      <b>{index + 1}</b>
-                      <div className="btnBlink"></div>
-                      <b className="ip">{i?.ip}</b>
-                      <span>{i?.ping} мс</span>
-                      <i>{i?.comment}</i>
-                      <p>
-                        <img src="" alt="" />
-                        {i?.num}
-                      </p>
+                      <div className="ip__every__inner">
+                        <div className="index">
+                          <b>{index + 1}</b>
+                          <div className="btnBlink"></div>
+                        </div>
+                        <div className="moreInfo">
+                          <p>{i?.ip}</p>
+                          <span>{i?.ping} мс</span>
+                          <div className="nums">
+                            <img src={monitor} alt="[]" />
+                            <p>{i?.num}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="comment">{i?.comment}</p>
                     </div>
                   ))}
                 </div>
