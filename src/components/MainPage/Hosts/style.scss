@@ -4,18 +4,23 @@
   width: 196px;
   background: rgb(30, 31, 35);
   height: auto;
+  cursor: pointer;
+  border: 1px solid transparent;
 
   h4 {
     font-size: 12px;
+    font-weight: 500;
   }
 
   .actions {
     display: flex;
     align-items: center;
-    padding: 4px 0px;
+    padding: 4px 0px 0px;
+    gap: 8px;
 
     p {
       font-size: 14px;
+      font-weight: 500;
 
       b {
         color: #e1e16f;
@@ -24,8 +29,31 @@
     }
 
     button {
-      width: 13px;
-      height: 13px;
+      min-width: 15px;
+      width: 18px;
+      height: 20px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      &:hover {
+        .moreInfo {
+          display: block;
+          left: 25px;
+        }
+      }
+    }
+
+    .del,
+    .edit {
+      background: #292d32;
+
+      > img {
+        width: 90%;
+        height: 90%;
+      }
     }
   }
 
@@ -33,11 +61,11 @@
     div {
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 2px;
 
       img {
-        width: 12px;
-        height: 12px;
+        width: 15px;
+        height: 15px;
       }
 
       p {
@@ -45,6 +73,7 @@
         font-size: 11px;
         line-height: 18px;
         width: 41px;
+        font-weight: 500;
       }
 
       span {
@@ -53,18 +82,38 @@
         line-height: 18px;
         color: #66b4ff;
         font-size: 11px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }
 
   .ip_host {
-    font-size: 15px;
-    margin: 5px 0px 10px;
+    font-size: 13px;
+    margin: 2px 0px 5px;
     text-decoration: underline;
   }
 
   .comment {
-    font-size: 12px;
+    font-size: 11px;
+  }
+}
+
+.activeHost {
+  border: 1px solid #fff;
+  position: relative;
+
+  &::after {
+    content: "";
+    border-radius: 0 3px 0 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    border: 15px solid transparent;
+    border-top: 15px solid #fff;
+    border-right: 15px solid #fff;
   }
 }
 

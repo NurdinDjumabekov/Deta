@@ -66,6 +66,19 @@ img {
   animation: animation 1s infinite;
 }
 
+.moreInfo {
+  position: absolute;
+  top: 0;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px solid #fff;
+  display: none;
+  font-size: 11px;
+  z-index: 2;
+  background: #292d32;
+}
+
 @keyframes animation {
   from {
     opacity: 0;

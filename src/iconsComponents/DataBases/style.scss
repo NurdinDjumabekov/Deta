@@ -1,0 +1,31 @@
+.blockMemory {
+  position: relative;
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  height: 23px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  span {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    background: #292d32;
+    padding: 3px 5px;
+    border-radius: 3px;
+    border: 1px solid #fff;
+    font-size: 14px;
+  }
+
+  &:hover {
+    span {
+      display: block;
+    }
+  }
+}

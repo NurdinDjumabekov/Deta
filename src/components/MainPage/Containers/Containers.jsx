@@ -25,7 +25,6 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 const Containers = ({ item }) => {
   const { id, host_name, container_name, description } = item;
   const { key, del } = item;
-  console.log(item);
 
   return (
     <div className="сontainerMain">

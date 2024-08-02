@@ -45,47 +45,57 @@
     min-width: 100%;
 
     .hosts {
-      width: 48%;
       height: 96vh;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      width: 52%;
       padding: 8px;
-      overflow-y: scroll;
 
-      &::-webkit-scrollbar {
-        min-width: 5px;
-        max-width: 5px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background-color: transparent;
-        min-width: 5px;
-        max-width: 5px;
-        &:hover {
-          background-color: #050505;
+      &__inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        overflow-y: scroll;
+        height: 60%;
+        &::-webkit-scrollbar {
+          min-width: 5px;
+          max-width: 5px;
         }
-      }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: transparent;
-        cursor: pointer;
-        max-height: 50px;
-        min-height: 50px;
-      }
-
-      &:hover {
         &::-webkit-scrollbar-track {
-          background-color: #050505;
+          background-color: transparent;
+          min-width: 5px;
+          max-width: 5px;
+          &:hover {
+            background-color: #050505;
+          }
         }
+
         &::-webkit-scrollbar-thumb {
-          background-color: #ffffff4e;
+          background-color: transparent;
+          cursor: pointer;
+          max-height: 50px;
+          min-height: 50px;
         }
+
+        &:hover {
+          &::-webkit-scrollbar-track {
+            background-color: #050505;
+          }
+          &::-webkit-scrollbar-thumb {
+            background-color: #ffffff4e;
+          }
+        }
+      }
+
+      &__more_info {
+        height: 38%;
+        width: 100%;
+        background: rgb(30, 31, 35);
+        margin: 10px 0 0 0;
       }
     }
 
     .containers {
-      width: 47%;
+      width: 43%;
       height: 96vh;
       padding: 10px 60px 10px 10px;
       overflow-y: scroll;
@@ -121,4 +131,27 @@
       }
     }
   }
+
+  .activeHost {
+    .hosts__inner {
+      height: 100% !important;
+    }
+
+    .hosts__more_info {
+      display: none;
+    }
+  }
 }
+
+
+// <XAxis
+// dataKey="time"
+// angle={130} // Поворот текста меток на 110 градусов
+// textAnchor="start" // Выравнивание текста
+// height={120} // Увеличьте высоту оси X для размещения текста
+// tick={{ fontSize: 10, fontWeight: "600" }} // Настройка размера шрифта меток
+// />
+// <YAxis yAxisId="left" orientation="left" stroke="#ff0077" />
+// <YAxis yAxisId="right" orientation="right" stroke="#00bfff" />
+// <Tooltip />
+// <Legend />

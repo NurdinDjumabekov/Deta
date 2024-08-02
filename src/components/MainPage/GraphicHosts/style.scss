@@ -1,0 +1,16 @@
+.graphicHosts {
+  height: 100%;
+  width: 100%;
+  padding: 20px 0 0 0;
+  position: relative;
+
+  tspan {
+    font-size: 13px;
+  }
+
+  .recharts-default-legend {
+    position: absolute;
+    bottom: -60px;
+    left: 40px;
+  }
+}

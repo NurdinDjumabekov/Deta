@@ -5,6 +5,25 @@ import container from "../../assets/icons/menu/box.svg";
 import servers from "../../assets/icons/menu/database.svg";
 import users from "../../assets/icons/menu/users.svg";
 
+const listGr = [
+  { name: "Тестовая группa", decs: "описание1" },
+  { name: "ЛИС стационар", decs: "описание1" },
+  { name: "ЛИС облако", decs: "описание1" },
+  { name: "Мис", decs: "описание1" },
+  { name: "Доставка", decs: "описание1" },
+  { name: "FIN", decs: "описание1" },
+  { name: "1C", decs: "описание1" },
+];
+
+const listname = [
+  { name: "Иван", decs: "описание1" },
+  { name: "Баатыр", decs: "описание1" },
+  { name: "Роза", decs: "описание1" },
+  { name: "Айжамал", decs: "описание1" },
+  { name: "Эржан", decs: "описание1" },
+  { name: "Бек", decs: "описание1" },
+];
+
 const initialState = {
   menuInner: [
     { id: 1, name: "Контейнеры", img: container, active: false },
@@ -13,15 +32,7 @@ const initialState = {
       name: "Сервисы",
       img: servers,
       active: false,
-      list: [
-        { name: "Тестовая группa", decs: "описание1" },
-        { name: "ЛИС стационар", decs: "описание1" },
-        { name: "ЛИС облако", decs: "описание1" },
-        { name: "Мис", decs: "описание1" },
-        { name: "Доставка", decs: "описание1" },
-        { name: "FIN", decs: "описание1" },
-        { name: "1C", decs: "описание1" },
-      ],
+      list: listGr,
     },
 
     {
@@ -29,16 +40,13 @@ const initialState = {
       name: "Пользователи",
       img: users,
       active: false,
-      list: [
-        { name: "Иван", decs: "описание1" },
-        { name: "Баатыр", decs: "описание1" },
-        { name: "Роза", decs: "описание1" },
-        { name: "Айжамал", decs: "описание1" },
-        { name: "Эржан", decs: "описание1" },
-        { name: "Бек", decs: "описание1" },
-      ],
+      list: listname,
     },
   ],
+
+  ///// активный host на главной странице
+
+  activeHost: 0,
 };
 
 const stateSlice = createSlice({
@@ -55,10 +63,14 @@ const stateSlice = createSlice({
       });
       state.menuInner = newMenu;
     },
+
+    setActiveHost: (state, action) => {
+      state.activeHost = action.payload;
+    },
   },
 });
 
-export const { setMenuInner } = stateSlice.actions;
+export const { setMenuInner, setActiveHost } = stateSlice.actions;
 
 export default stateSlice.reducer;
 

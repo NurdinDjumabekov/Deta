@@ -17,13 +17,11 @@ const MenuInner = () => {
 
   const choice = (id) => dispatch(setMenuInner(id));
 
-  console.log(menuInner);
-
   return (
     <div className="menuInner">
       <div className="menuInner__inner">
-        {menuInner?.map((item) => (
-          <div key={item?.id}>
+        {menuInner?.map((item, index) => (
+          <div key={index}>
             <div
               className={`every ${item?.active ? "active" : ""}`}
               onClick={() => choice(item?.id)}
@@ -40,8 +38,8 @@ const MenuInner = () => {
                 item?.list?.length ? "expanded" : "collapsed"
               }`}
             >
-              {item?.list?.map((subItem) => (
-                <div key={subItem?.id}>
+              {item?.list?.map((subItem, index) => (
+                <div key={index}>
                   <p>{subItem?.name}</p>
                   <span>{subItem?.desc}</span>
                 </div>
