@@ -14,7 +14,7 @@ const HaProxyPage = () => {
   return (
     <div className="haProxy">
       <div className="haProxy__menu">
-        <button className="addBtn">+ Добавить</button>
+        <button className="addBtn">+</button>
         <button className="addBtn save">Сохранить</button>
         <div>
           <p>Всего:</p>

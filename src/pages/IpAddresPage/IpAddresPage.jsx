@@ -15,7 +15,7 @@ const IpAddresPage = () => {
   return (
     <div className="ipAddresPage">
       <div className="ipAddresPage__menu">
-        <button className="addBtn">+ Добавить</button>
+        <button className="addBtn">+</button>
       </div>
 
       <div className="ipAddresPage__inner">

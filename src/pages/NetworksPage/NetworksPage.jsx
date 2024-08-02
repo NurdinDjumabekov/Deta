@@ -7,7 +7,7 @@ import { ipBlocks } from "../../helpers/LocalData";
 const NetworksPage = () => {
   return (
     <div className="networksPage">
-      <button className="addBtn">+ Добавить</button>
+      <button className="addBtn">+</button>
       <div className="listNetworks">
         {ipBlocks?.map((item) => (
           <div className="every">

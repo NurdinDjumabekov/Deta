@@ -33,7 +33,7 @@ const MainPage = () => {
   return (
     <div className="mainPage">
       <div className="providers">
-        <button className="addBtn">+ Добавить</button>
+        <button className="addBtn">+</button>
         <div className="providers__inner">
           {providers?.map((item, index) => (
             <div key={index}>
