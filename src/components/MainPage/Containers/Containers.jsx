@@ -21,34 +21,48 @@ import "./style.scss";
 
 ////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveContainer } from "../../../store/reducers/stateSlice";
 
 const Containers = ({ item }) => {
   const { id, host_name, container_name, description } = item;
-  const { key, del } = item;
+  const { key, del, percent, GB } = item;
+
+  const dispatch = useDispatch();
+
+  const { activeContainer } = useSelector((state) => state.stateSlice);
+
+  const active = activeContainer == id ? "containerActive" : "";
+
+  const clickContainer = () => dispatch(setActiveContainer(id));
 
   return (
-    <div className="сontainerMain">
-      <div className="numIndex">
-        <img src={container} alt="[]" />
-        <p>{id}</p>
-      </div>
-      <button className="edit">
-        <img src={edit} alt="" />
-      </button>
-      <div className="mainInfo">
-        <div>
-          <b className="hostName">[{host_name}] </b>
-          <p className="container_name"> - {container_name}</p>
+    <div className={`containerMain ${active}`} onClick={clickContainer}>
+      <div className="containerMain__inner">
+        <div className="numIndex">
+          <div>
+            <img src={container} alt="[]" />
+            <p>{id}</p>
+          </div>
         </div>
-        <span className="description">{description}</span>
+        <button className="edit">
+          <img src={edit} alt="" />
+        </button>
+        <div className="mainInfo">
+          <div>
+            <b className="hostName">[{host_name}] </b>
+            <p className="container_name"> - {container_name}</p>
+          </div>
+          <span className="description">{description}</span>
+        </div>
       </div>
 
-      <div className="GB">
+      <div className="GB__block">
         <div className="memory">
           <button>
             <img src={skrepka} alt="#" />
           </button>
-          <MemoryComp />
+          <MemoryComp percent={percent} GB={GB} />
         </div>
 
         <div className="actions">
@@ -63,9 +77,6 @@ const Containers = ({ item }) => {
               <img src={keyIncon} alt="" />
             </button>
             <button>
-              <img src={moreInfo} alt="" />
-            </button>
-            <button>
               <img src={playCircle} alt="" />
             </button>
             <button>
@@ -77,13 +88,11 @@ const Containers = ({ item }) => {
             <button>
               <img src={warning} alt="" />
             </button>
-            {del && (
-              <button>
-                <img src={deleteIcon} alt="" />
-              </button>
-            )}
           </div>
-          <p>({key})</p>
+          <div className={`key ${!del ? "actions__key" : ""}`}>
+            <p>({key})</p>
+            {del && <button className="deleteBtn">Удалить</button>}
+          </div>
         </div>
       </div>
     </div>

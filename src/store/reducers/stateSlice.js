@@ -47,6 +47,7 @@ const initialState = {
   ///// активный host на главной странице
 
   activeHost: 0,
+  activeContainer: 0,
 };
 
 const stateSlice = createSlice({
@@ -67,10 +68,15 @@ const stateSlice = createSlice({
     setActiveHost: (state, action) => {
       state.activeHost = action.payload;
     },
+
+    setActiveContainer: (state, action) => {
+      state.activeContainer = action.payload;
+    },
   },
 });
 
-export const { setMenuInner, setActiveHost } = stateSlice.actions;
+export const { setMenuInner, setActiveHost, setActiveContainer } =
+  stateSlice.actions;
 
 export default stateSlice.reducer;
 

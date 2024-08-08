@@ -20,15 +20,20 @@ import Search from "../../components/MainPage/Search/Search";
 import Containers from "../../components/MainPage/Containers/Containers";
 import StatusContainers from "../../components/MainPage/StatusContainers/StatusContainers";
 import GraphicHosts from "../../components/MainPage/GraphicHosts/GraphicHosts";
+import GraphicContainer from "../../components/MainPage/GraphicContainer/GraphicContainer";
 
 const MainPage = () => {
   const dispatch = useDispatch();
 
-  const { activeHost } = useSelector((state) => state.stateSlice);
+  const { activeHost, activeContainer } = useSelector(
+    (state) => state.stateSlice
+  );
 
   useEffect(() => {
     dispatch(getHosts());
   }, []);
+
+  const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 
   return (
     <div className="mainPage">
@@ -47,7 +52,7 @@ const MainPage = () => {
       </div>
 
       <div className="hostAndContainer">
-        <div className={`hosts ${activeHost == 0 ? "activeHost" : ""}`}>
+        <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
           <div className="hosts__inner">
             {hosts?.map((item, index) => (
               <Hosts key={index} item={item} />
@@ -60,10 +65,15 @@ const MainPage = () => {
 
         <MenuInner />
 
-        <div className="containers">
-          {containers?.map((item, index) => (
-            <Containers key={index} item={item} />
-          ))}
+        <div className={`containers ${checkContainer}`}>
+          <div className="containers__inner">
+            {containers?.map((item, index) => (
+              <Containers key={index} item={item} />
+            ))}
+          </div>
+          <div className="containers__more_info">
+            <GraphicContainer />
+          </div>
         </div>
         <StatusContainers />
       </div>

@@ -2429,241 +2429,307 @@ export const providers = [
 export const containers = [
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12978",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
     del: true,
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "1243",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
     del: true,
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "234524",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
     del: true,
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
 
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "189231",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description: "217.29.18.150:5249 (22)",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "1212391",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "123789",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "657112",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description: "217.29.18.150:5249 ",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "113682",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "65331",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "18331",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+    percent: { per: "19%", cpu: "16 cpu" },
+    GB: { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12331",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12331",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "112681",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12361",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12521",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "126881",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
 
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12765",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "17531",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12831",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description: "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12319",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249  (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "155231",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
     del: true,
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "123431",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
-    key: "87d21h40m",
-    id: "1231",
+    key: "87d212h40m",
+    id: "122757",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "853431",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "12631",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
     del: true,
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
   {
     key: "87d21h40m",
-    id: "1231",
+    id: "156223",
     active: true,
     host_name: "host422",
     container_name: " aqua-tj.333.kg-10.10.10.199",
     description:
       "217.29.18.150:5249 (22) 217.29.18.150:9249 (80) MIS.KG Nomex-курьеры 10.20.40.149 212.112.116.236/27 mount 10.20.40.233:/mnt/data01/mis.kg /root/files 10.20.30.202 ",
+
+    percent: { per: "89%", cpu: "98 cpu" },
+    GB: { perOne: "10.4 GiBasdasdsad", perAll: "1080.83 GiB" },
   },
 ];
 
@@ -3358,4 +3424,17 @@ export const generateRandomData = (numEntries) => {
   }
 
   return data;
+};
+
+export const everyNerwork = {
+  avg_ping: 0.262,
+  blocked_date: "2024-05-13T14:41:22.710Z",
+  blocked_status: null,
+  date_system: "2024-08-08T00:03:27.063Z",
+  guid: "3A44B145-11CC-4091-BFA7-B574617DF81C",
+  guid_network: "7222115B-8E91-4C97-892E-6DA50ACA3105",
+  ip_address: "11.12.1.200",
+  ip_number: "200",
+  ip_status: 1,
+  last_checked: 0,
 };

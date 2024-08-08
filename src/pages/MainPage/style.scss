@@ -95,44 +95,57 @@
     }
 
     .containers {
-      width: 43%;
       height: 96vh;
-      padding: 10px 60px 10px 10px;
-      overflow-y: scroll;
+      width: 38%;
+      padding: 8px;
 
-      &::-webkit-scrollbar {
-        min-width: 5px;
-        max-width: 5px;
-      }
+      &__inner {
+        width: 100%;
+        padding: 10px;
+        height: 60%;
+        overflow-y: scroll;
 
-      &::-webkit-scrollbar-track {
-        background-color: transparent;
-        min-width: 5px;
-        max-width: 5px;
-        &:hover {
-          background-color: #050505;
+        &::-webkit-scrollbar {
+          min-width: 5px;
+          max-width: 5px;
         }
-      }
 
-      &::-webkit-scrollbar-thumb {
-        background-color: transparent;
-        cursor: pointer;
-        max-height: 50px;
-        min-height: 50px;
-      }
-
-      &:hover {
         &::-webkit-scrollbar-track {
-          background-color: #050505;
+          background-color: transparent;
+          min-width: 5px;
+          max-width: 5px;
+          &:hover {
+            background-color: #050505;
+          }
         }
+
         &::-webkit-scrollbar-thumb {
-          background-color: #ffffff4e;
+          background-color: transparent;
+          cursor: pointer;
+          max-height: 50px;
+          min-height: 50px;
         }
+
+        &:hover {
+          &::-webkit-scrollbar-track {
+            background-color: #050505;
+          }
+          &::-webkit-scrollbar-thumb {
+            background-color: #ffffff4e;
+          }
+        }
+      }
+
+      &__more_info {
+        width: 100%;
+        background: rgb(30, 31, 35);
+        margin: 10px 0 0 0;
+        height: 38%;
       }
     }
   }
 
-  .activeHost {
+  .activeHosts {
     .hosts__inner {
       height: 100% !important;
     }
@@ -141,17 +154,14 @@
       display: none;
     }
   }
+
+  .activeContainer {
+    .containers__inner {
+      height: 100% !important;
+    }
+
+    .containers__more_info {
+      display: none;
+    }
+  }
 }
-
-
-// <XAxis
-// dataKey="time"
-// angle={130} // Поворот текста меток на 110 градусов
-// textAnchor="start" // Выравнивание текста
-// height={120} // Увеличьте высоту оси X для размещения текста
-// tick={{ fontSize: 10, fontWeight: "600" }} // Настройка размера шрифта меток
-// />
-// <YAxis yAxisId="left" orientation="left" stroke="#ff0077" />
-// <YAxis yAxisId="right" orientation="right" stroke="#00bfff" />
-// <Tooltip />
-// <Legend />

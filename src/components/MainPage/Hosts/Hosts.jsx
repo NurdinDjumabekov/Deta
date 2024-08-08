@@ -16,19 +16,17 @@ import { setActiveHost } from "../../../store/reducers/stateSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Hosts = ({ item }) => {
-  const { array_storages, node_model, node_name, vmbr } = item;
+  const { node_model, node_name, vmbr } = item;
   const { host_ip, node_comment, host_status, id } = item;
   const { percent, GB } = item;
 
-  const { activeHost } = useSelector((state) => state.stateSlice);
-
   const dispatch = useDispatch();
+
+  const { activeHost } = useSelector((state) => state.stateSlice);
 
   const lisVmbr = vmbr?.split(",");
 
-  const clickHost = () => {
-    dispatch(setActiveHost(id));
-  };
+  const clickHost = () => dispatch(setActiveHost(id));
 
   const err = host_status == 5 ? "lineError" : "";
 
@@ -41,6 +39,7 @@ const Hosts = ({ item }) => {
         <p>
           {node_name}(<b>115d3h2m</b>)
         </p>
+
         <button>
           <img src={repeat} alt="x" />
           <span className="moreInfo">Обновить данные хоста</span>
