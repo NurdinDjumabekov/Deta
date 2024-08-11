@@ -1,0 +1,133 @@
+.dnsMain {
+  padding: 5px 0px;
+  width: 100%;
+  display: flex;
+
+  &__add {
+    width: 70%;
+    height: 99vh;
+
+    &__inner {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .listDns {
+        width: 100%;
+        max-height: 100%;
+        // min-height: 68%;
+        overflow-y: scroll;
+
+        li {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+          padding: 0 5px;
+
+          img {
+            width: 15px;
+            height: 17px;
+            margin: 2px 0px;
+          }
+
+          p {
+            font-size: 10px;
+          }
+        }
+
+        .activeDns {
+          background: #bcb9b9;
+        }
+
+        &::-webkit-scrollbar {
+          min-width: 5px;
+          max-width: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background-color: transparent;
+          min-width: 5px;
+          max-width: 5px;
+          &:hover {
+            background-color: #050505;
+          }
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+          cursor: pointer;
+          max-height: 50px;
+          min-height: 50px;
+        }
+
+        &:hover {
+          &::-webkit-scrollbar-track {
+            background-color: #050505;
+          }
+          &::-webkit-scrollbar-thumb {
+            background-color: #ffffff4e;
+          }
+        }
+      }
+
+      .actionDns {
+        width: 100%;
+        background: rgb(30, 31, 35);
+        margin: 10px 0 0 0;
+        height: 350px;
+        padding: 5px;
+        padding: 5px 0 0 0;
+      }
+    }
+
+    .activeDns {
+      border: 1px dashed rgb(90, 88, 88);
+
+      .dnsMain__add__inner {
+        height: 100% !important;
+      }
+
+      .actionDns {
+        display: none;
+      }
+    }
+  }
+
+  &__edit {
+    width: 100%;
+    height: 99vh;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      min-width: 5px;
+      max-width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+      min-width: 5px;
+      max-width: 5px;
+      &:hover {
+        background-color: #050505;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      cursor: pointer;
+      max-height: 50px;
+      min-height: 50px;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        background-color: #050505;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #ffffff4e;
+      }
+    }
+  }
+}

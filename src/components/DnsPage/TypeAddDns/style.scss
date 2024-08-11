@@ -1,0 +1,35 @@
+.addTypeDns {
+  padding: 0px 10px 0 0;
+  height: 100%;
+  border: 1px dashed rgb(90, 88, 88);
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 1px 0 0 0;
+
+    li {
+      border-right: 1px solid #9b9797;
+      padding: 5px 5px;
+      cursor: pointer;
+      //   margin: 0px 0 0 0;
+      font-size: 12px;
+      border-top: 2px solid transparent;
+
+      &:hover {
+        border-top: 2px solid #3333e1;
+        background: #292d32;
+      }
+    }
+
+    .activeMenu {
+      border-top: 2px solid #3333e1;
+      background: #292d32;
+    }
+  }
+
+  .sendData {
+    margin: 10px 0 0 5px;
+  }
+}

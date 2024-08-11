@@ -11,6 +11,7 @@ import MicroticPage from "../pages/MicroticPage/MicroticPage";
 import NetworksPage from "../pages/NetworksPage/NetworksPage";
 import HaProxy from "../pages/HaProxyPage/HaProxyPage";
 import IpAddresPage from "../pages/IpAddresPage/IpAddresPage";
+import DnsPage from "../pages/DnsPage/DnsPage";
 
 //// components
 // import { Preloader } from "../components/Preloader/Preloader";
@@ -33,6 +34,7 @@ const MainRoutes = () => {
           <Route path="/networks" element={<NetworksPage />} />
           <Route path="/ha-proxy" element={<HaProxy />} />
           <Route path="/ip-addres" element={<IpAddresPage />} />
+          <Route path="/dns" element={<DnsPage />} />
         </Route>
         {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>

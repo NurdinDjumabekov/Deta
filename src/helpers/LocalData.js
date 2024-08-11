@@ -11,6 +11,7 @@ export const pages = [
   { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
+  { id: 6, name: "ДНС", path: "/dns", img: ipAddres },
 ];
 
 export const hosts = [
@@ -3438,3 +3439,144 @@ export const everyNerwork = {
   ip_status: 1,
   last_checked: 0,
 };
+
+export const listDns = [
+  {
+    id: 1,
+    name: "ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22 333_0.kg",
+  },
+  { id: 2, name: "ChatGTP-SERVICE-10.160.21.207" },
+  { id: 3, name: "333_2.kg" },
+  {
+    id: 4,
+    name: "ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22 ",
+  },
+  {
+    id: 5,
+    name: "pay-sevise-api-10.160.21.8 ChatGTP-SERVICE-10.160.21.207  333_4.kg",
+  },
+  {
+    id: 6,
+    name: "ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22 ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22  ",
+  },
+  { id: 7, name: "pay-sevise-api-10.160.21.87  pay-sevise-api-10.160.21.87" },
+  {
+    id: 8,
+    name: "GEOLOCATION-10.20.40.22 ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22",
+  },
+  {
+    id: 9,
+    name: " pay-sevise-api-10.160.21.8 ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.227",
+  },
+  {
+    id: 10,
+    name: " pay-sevise-api-10.160.21.87 ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22",
+  },
+  {
+    id: 11,
+    name: "333_10.kg ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22",
+  },
+  { id: 12, name: "GEOLOCATION-10.20.40.22  GEOLOCATION-10.20.40.22 " },
+  { id: 13, name: "333_2.kg" },
+  { id: 14, name: "ChatGTP-SERVICE-10.160.21.207 GEOLOCATION-10.20.40.22 " },
+  {
+    id: 15,
+    name: "pay-sevise-api-10.160.21.87 pay-sevise-api-10.160.21.8 ChatGTP-SERVICE-10.160.21.207 ",
+  },
+  {
+    id: 16,
+    name: "pay-sevise-api-10.160.21.87 pay-sevise-api-10.160.21.8 ChatGTP-SERVICE-10.160.21.207 ",
+  },
+  {
+    id: 17,
+    name: "pay-sevise-api-10.160.21.87 pay-sevise-api-10.160.21.8 ChatGTP-SERVICE-10.160.21.207 ",
+  },
+  {
+    id: 18,
+    name: "pay-sevise-api-10.160.21.87 pay-sevise-api-10.160.21.8 ChatGTP-SERVICE-10.160.21.207 ",
+  },
+  { id: 19, name: "10.160.21.87 pay-sevise-api-10.160.21.8  333_8.kg" },
+  { id: 20, name: "333_8.kg10.160.21.87 pay-sevise-api-10.160.21.8  " },
+  {
+    id: 21,
+    name: "10.160.21.87 pay-sevise-api-10.160.21.8  333_0.kg 10.160.21.87 pay-sevise-api-10.160.21.8 ",
+  },
+  { id: 22, name: "10.160.21.87 pay-sevise-api-10.160.21.8  333_1.kg" },
+  { id: 23, name: "10.160.21.87 pay-sevise-api-10.160.21.8  333_2.kg" },
+  {
+    id: 24,
+    name: "333_3.kg10.160.21.87 pay-sevise-api-10.160.21.8  10.160.21.87 pay-sevise-api-10.160.21.8 ",
+  },
+  { id: 25, name: "333_4.kg" },
+  { id: 26, name: "333_5.kg" },
+  { id: 27, name: "333_6.kg" },
+  { id: 28, name: "333_7.kg" },
+  { id: 29, name: "333_8.kg" },
+  { id: 30, name: "333_8.kg" },
+  { id: 31, name: "333_0.kg" },
+  { id: 32, name: "333_1.kg" },
+  { id: 33, name: "333_2.kg" },
+  { id: 34, name: "333_3.kg" },
+  { id: 35, name: "333_4.kg" },
+  { id: 36, name: "333_5.kg" },
+  { id: 37, name: "333_6.kg" },
+  { id: 38, name: "333_7.kg" },
+  { id: 39, name: "333_8.kg" },
+  { id: 40, name: "333_8.kg" },
+];
+
+export const listSel = [
+  { id: 1, name: "минута" },
+  { id: 2, name: "час" },
+  { id: 3, name: "день" },
+  { id: 4, name: "неделя" },
+];
+
+export const innerDns = [
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+  { name: "333.kg", type: "NS", ttl: 900, data: "ns3.333.kg" },
+];
+
+export const listDnsMenu = [
+  { id: 1, name: "New A-record (Host Address)" },
+  { id: 2, name: "New CNAME-record" },
+  { id: 3, name: "New MX-record" },
+  { id: 4, name: "New NS-record" },
+  { id: 5, name: "TXT-record" },
+  { id: 6, name: "PTR-record" },
+  { id: 7, name: "SPF-record" },
+];

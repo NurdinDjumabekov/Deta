@@ -5,12 +5,16 @@
   position: relative;
 
   tspan {
-    font-size: 13px;
+    font-size: 10px;
   }
 
   .recharts-default-legend {
     position: absolute;
     bottom: -60px;
     left: 40px;
+  }
+
+  .recharts-legend-item-text {
+    font-size: 10px !important;
   }
 }

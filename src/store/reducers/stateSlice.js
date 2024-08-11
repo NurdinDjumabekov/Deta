@@ -27,6 +27,7 @@ const listname = [
 const initialState = {
   menuInner: [
     { id: 1, name: "Контейнеры", img: container, active: false },
+
     {
       id: 2,
       name: "Сервисы",
@@ -48,6 +49,69 @@ const initialState = {
 
   activeHost: 0,
   activeContainer: 0,
+  activeDns: 0,
+
+  dnsList: {
+    one: {
+      name: "",
+      addres: "",
+      record: "",
+      time: 0,
+      comment: "",
+      bool: false,
+    },
+    two: {
+      name2: "",
+      addres2: "",
+      record2: "",
+      time2: 0,
+      comment2: "",
+    },
+    three: {
+      id: 3,
+      name3: "",
+      addres3: "",
+      record3: "",
+      time3: 0,
+      comment3: "",
+      perference3: "",
+    },
+    four: {
+      id: 4,
+      name4: "",
+      addres4: "",
+      record4: "",
+      time4: 0,
+      comment4: "",
+    },
+    five: {
+      id: 5,
+      name5: "",
+      addres5: "",
+      record5: "",
+      time5: 0,
+      comment5: "",
+    },
+    six: {
+      id: 6,
+      name6: "",
+      addres6: "",
+      record6: "",
+      time6: 0,
+      comment6: "",
+    },
+    seven: {
+      id: 7,
+      name7: "",
+      addres7: "",
+      record7: "",
+      time7: 0,
+      comment7: "",
+      bool7: false,
+    },
+  },
+
+  activeDnsMenu: 0,
 };
 
 const stateSlice = createSlice({
@@ -72,17 +136,37 @@ const stateSlice = createSlice({
     setActiveContainer: (state, action) => {
       state.activeContainer = action.payload;
     },
+
+    setActiveDns: (state, action) => {
+      state.activeDns = action.payload;
+    },
+
+    setDnsList: (state, action) => {
+      state.dnsList = action.payload;
+    },
+
+    setDnsEveryKey: (state, action) => {
+      const { obj, everyObj } = action.payload;
+      state.dnsList = {
+        ...state.dnsList,
+        [obj]: { ...state.dnsList[obj], ...everyObj },
+      };
+    },
+
+    setActiveDnsMenu: (state, action) => {
+      state.activeDnsMenu = action.payload;
+    },
   },
 });
 
-export const { setMenuInner, setActiveHost, setActiveContainer } =
-  stateSlice.actions;
+export const {
+  setMenuInner,
+  setActiveHost,
+  setActiveContainer,
+  setActiveDns,
+  setDnsList,
+  setDnsEveryKey,
+  setActiveDnsMenu,
+} = stateSlice.actions;
 
 export default stateSlice.reducer;
-
-// { name: "контейнер1", decs: "описание1" },
-// { name: "контейнер1", decs: "описание1" },
-// { name: "контейнер1", decs: "описание1" },
-// { name: "контейнер1", decs: "описание1" },
-// { name: "контейнер1", decs: "описание1" },
-// { name: "контейнер1", decs: "описание1" },

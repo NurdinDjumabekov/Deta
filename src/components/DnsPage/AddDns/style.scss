@@ -1,0 +1,61 @@
+.addDns {
+  padding: 0px 10px 0 0;
+  animation: modal 0.7s ease-in-out;
+
+  .time {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+  }
+
+  .second {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    justify-content: space-between;
+    // margin: 5px 0 0 0;
+  }
+
+  .bool {
+    display: flex;
+    align-items: center;
+    margin: 5px 0 0 0;
+    gap: 5px;
+    cursor: pointer;
+
+    label {
+      font-size: 10px;
+      line-height: 15px;
+      font-weight: 600;
+      color: #c0c0c0;
+      cursor: pointer;
+      display: block;
+    }
+  }
+
+  .actions {
+    padding: 5px 0px;
+  }
+
+  .addAction {
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin: 5px 0 0 0;
+    background: #08920a;
+  }
+
+  .rigth {
+    justify-content: flex-end;
+  }
+}
+
+@keyframes modal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

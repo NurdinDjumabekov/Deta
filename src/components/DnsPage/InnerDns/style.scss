@@ -1,0 +1,29 @@
+.tableEditDns {
+  color: #c0c0c0;
+  background: #2b2b2b;
+
+  .title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c0c0c0;
+    padding: 0 10px;
+    background: #2b2b2b;
+    width: 20%;
+  }
+
+  .text {
+    background: #2b2b2b;
+    width: 20%;
+    font-size: 11px;
+    padding: 2px 10px;
+    color: #c0c0c0;
+  }
+
+  .nameText {
+    color: orange;
+  }
+
+  .data {
+    color: #66b4ff;
+  }
+}
