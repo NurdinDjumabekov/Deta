@@ -12,6 +12,7 @@ import NetworksPage from "../pages/NetworksPage/NetworksPage";
 import HaProxy from "../pages/HaProxyPage/HaProxyPage";
 import IpAddresPage from "../pages/IpAddresPage/IpAddresPage";
 import DnsPage from "../pages/DnsPage/DnsPage";
+import Test from "../pages/Test/Test";
 
 //// components
 // import { Preloader } from "../components/Preloader/Preloader";
@@ -35,6 +36,7 @@ const MainRoutes = () => {
           <Route path="/ha-proxy" element={<HaProxy />} />
           <Route path="/ip-addres" element={<IpAddresPage />} />
           <Route path="/dns" element={<DnsPage />} />
+          <Route path="/test" element={<Test />} />
         </Route>
         {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>

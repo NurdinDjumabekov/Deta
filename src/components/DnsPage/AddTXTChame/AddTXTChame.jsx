@@ -15,7 +15,7 @@ import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
 /////// style
 import "../AddDns/style.scss";
 
-const AddChame = ({ obj }) => {
+const AddTXTChame = ({ obj }) => {
   const dispatch = useDispatch();
 
   const { dnsList } = useSelector((state) => state.stateSlice);
@@ -29,48 +29,46 @@ const AddChame = ({ obj }) => {
     dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
   };
 
-  console.log(dnsList?.[obj], "dnsList?.[obj]");
-
   return (
     <div className="addDns">
       <div className="second">
         <MyInputs
-          title={"Record name (alias name) : "}
+          title={"Record name (host) : "}
           onChange={onChange}
-          name={"name2"}
-          value={dnsList?.[obj]?.name2}
+          name={"name5"}
+          value={dnsList?.[obj]?.name5}
         />
 
         <MyInputs
-          title={"Alias for domain (FQDN) : "}
+          title={"Text strings : "}
           onChange={onChange}
-          name={"addres2"}
-          value={dnsList?.[obj]?.addres2}
+          name={"addres5"}
+          value={dnsList?.[obj]?.addres5}
         />
       </div>
 
       <div className="time">
         <MyInputs
-          title={"Alias for domain (FQDN) : "}
+          title={"Record TTL : "}
           onChange={onChange}
-          name={"record2"}
-          value={dnsList?.[obj]?.record2}
+          name={"record5"}
+          value={dnsList?.[obj]?.record5}
         />
 
         <Selects
           list={listSel}
           initText={"Выбрать"}
           onChnage={onChangeSelect}
-          nameKey={"time2"}
+          nameKey={"time5"}
         />
       </div>
 
       <div className="second">
         <MyInputs
-          title={"Record comments : "}
+          title={"Record comments :"}
           onChange={onChange}
-          name={"comment2"}
-          value={dnsList?.[obj]?.comment2}
+          name={"comment5"}
+          value={dnsList?.[obj]?.comment5}
         />
       </div>
 
@@ -81,4 +79,4 @@ const AddChame = ({ obj }) => {
   );
 };
 
-export default AddChame;
+export default AddTXTChame;

@@ -111,7 +111,7 @@ const initialState = {
     },
   },
 
-  activeDnsMenu: 0,
+  activeDnsMenu: 1,
 };
 
 const stateSlice = createSlice({

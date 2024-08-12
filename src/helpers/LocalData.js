@@ -4,6 +4,7 @@ import seti from "../assets/icons/menu/wifi.svg";
 import HaProxy from "../assets/icons/menu/HaProxy.svg";
 import ipAddres from "../assets/icons/menu/ipAddres.svg";
 import usersIcon from "../assets/icons/menu/users.svg";
+import dns from "../assets/icons/menu/dns.svg";
 
 export const pages = [
   { id: 1, name: "Главная", path: "/", img: home },
@@ -11,7 +12,7 @@ export const pages = [
   { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
-  { id: 6, name: "ДНС", path: "/dns", img: ipAddres },
+  { id: 6, name: "ДНС", path: "/dns", img: dns },
 ];
 
 export const hosts = [

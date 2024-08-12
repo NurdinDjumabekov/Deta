@@ -76,7 +76,7 @@ const AddDns = ({ obj }) => {
       <div className="second actions">
         <div className="bool">
           <input type="checkbox" id="check" />
-          <label htmlFor="check">Обновить после добавления</label>
+          <label htmlFor="check">Update Reverse Zone</label>
         </div>
         <button className="addAction">Добавить</button>
       </div>

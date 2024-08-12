@@ -15,7 +15,7 @@ import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
 /////// style
 import "../AddDns/style.scss";
 
-const AddChame = ({ obj }) => {
+const AddSPFChame = ({ obj }) => {
   const dispatch = useDispatch();
 
   const { dnsList } = useSelector((state) => state.stateSlice);
@@ -29,56 +29,58 @@ const AddChame = ({ obj }) => {
     dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
   };
 
-  console.log(dnsList?.[obj], "dnsList?.[obj]");
-
   return (
     <div className="addDns">
       <div className="second">
         <MyInputs
-          title={"Record name (alias name) : "}
+          title={"Record name (e-mail domain) : "}
           onChange={onChange}
-          name={"name2"}
-          value={dnsList?.[obj]?.name2}
+          name={"name7"}
+          value={dnsList?.[obj]?.name7}
         />
 
         <MyInputs
-          title={"Alias for domain (FQDN) : "}
+          title={"SPF string : "}
           onChange={onChange}
-          name={"addres2"}
-          value={dnsList?.[obj]?.addres2}
+          name={"addres7"}
+          value={dnsList?.[obj]?.addres7}
         />
       </div>
 
       <div className="time">
         <MyInputs
-          title={"Alias for domain (FQDN) : "}
+          title={"Record TTL : "}
           onChange={onChange}
-          name={"record2"}
-          value={dnsList?.[obj]?.record2}
+          name={"record7"}
+          value={dnsList?.[obj]?.record7}
         />
 
         <Selects
           list={listSel}
           initText={"Выбрать"}
           onChnage={onChangeSelect}
-          nameKey={"time2"}
+          nameKey={"time7"}
         />
       </div>
 
       <div className="second">
         <MyInputs
-          title={"Record comments : "}
+          title={"Record comments :"}
           onChange={onChange}
-          name={"comment2"}
-          value={dnsList?.[obj]?.comment2}
+          name={"comment7"}
+          value={dnsList?.[obj]?.comment7}
         />
       </div>
 
-      <div className="second actions rigth">
+      <div className="second actions">
+        <div className="bool">
+          <input type="checkbox" id="check" />
+          <label htmlFor="check">Synchronize TXT-record</label>
+        </div>
         <button className="addAction">Добавить</button>
       </div>
     </div>
   );
 };
 
-export default AddChame;
+export default AddSPFChame;
