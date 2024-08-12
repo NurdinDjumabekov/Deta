@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
-import { setActiveDns } from "./stateSlice";
+import { clearDnsList, setActiveDns } from "./stateSlice";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -82,14 +82,13 @@ export const updatedNetwork = (listNetwork) => (dispatch) => {
 export const getDnsDomen = createAsyncThunk(
   "getDnsDomen",
   async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/`;
+    const url = `${REACT_APP_API_URL}dns/getDomens`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        console.log(response?.data, "getDnsDomen");
         const firstGuid = response?.data?.[0]?.guid;
-
         dispatch(setActiveDns(firstGuid));
+        dispatch(getDnsSubDomen(firstGuid));
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -100,16 +99,130 @@ export const getDnsDomen = createAsyncThunk(
   }
 );
 
+///// addSubDomen - для добавления sub доменов
+export const addSubDomen = createAsyncThunk(
+  "addSubDomen",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen(data?.domen_guid)); /// это guid домена
+        dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+////////////// domens //////////////
+
+///// deleteDomen - для удаления суб доменов
+export const deleteDomen = createAsyncThunk(
+  "deleteDomen",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { guidDelete, setGuidDelete } = props;
+
+    const url = `${REACT_APP_API_URL}dns/deleteDomen`;
+    const data = { guid: guidDelete };
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setGuidDelete("")); //// закрываю модалку
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// ///// editSubDomen - для редактирования суб доменов
+// export const editSubDomen = createAsyncThunk(
+//   "editSubDomen",
+//   async function (props, { dispatch, rejectWithValue }) {
+//     const { guidEdit, setGuidEdit } = props;
+
+//     const url = `${REACT_APP_API_URL}api/ .... guid=${guidEdit}`;
+//     try {
+//       const response = await axios(url);
+//       if (response.status >= 200 && response.status < 300) {
+//         console.log(response?.data, "editSubDomen");
+//         dispatch(setGuidEdit("")); //// закрываю модалку
+//         return response?.data;
+//       } else {
+//         throw Error(`Error: ${response.status}`);
+//       }
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
+
+////////////// sub domens //////////////
+
 ///// getDnsSubDomen - для получения dns доменов
 export const getDnsSubDomen = createAsyncThunk(
   "getDnsSubDomen",
   async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/ .... guid=${guid}`;
+    const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        console.log(response?.data, "getDnsSubDomen");
         dispatch(setActiveDns(guid));
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// deleteSubDomen - для удаления суб доменов
+export const deleteSubDomen = createAsyncThunk(
+  "deleteSubDomen",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { guidDelete, setGuidDelete, activeDns } = props;
+    /// guidDelete - guid суб домена
+    const url = `${REACT_APP_API_URL}dns/deleteSubDomen`;
+    const data = { guid: guidDelete };
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen(activeDns)); /// это guid домена
+        dispatch(setGuidDelete("")); //// закрываю модалку
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// editSubDomen - для редактирования суб доменов
+export const editSubDomen = createAsyncThunk(
+  "editSubDomen",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { setGuidEdit, objEdit, detObjedit, activeDns } = props;
+
+    const url = `${REACT_APP_API_URL}dns/updateSubDomen`;
+    const data = { ...objEdit, type_record: 1 }; ///  type_record: 1, chech (dhtvtyyj)
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen(activeDns)); /// это guid домена (get list data)
+        dispatch(setGuidEdit("")); //// закрываю модалку
+        detObjedit({}); //// очищаю временный
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -127,6 +240,7 @@ const requestSlice = createSlice({
     setListNetwork: (state, action) => {
       state.listNetwork = action.payload;
     },
+
     setUpdatedNetwork: (state, action) => {
       state.listNetwork = state?.listNetwork?.map((i) => {
         i?.ips?.map((j) => {
@@ -175,6 +289,31 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(getDnsSubDomen.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ////////////////////////////// deleteSubDomen
+    builder.addCase(deleteSubDomen.fulfilled, (state, action) => {
+      // state.preloader = false;
+    });
+    builder.addCase(deleteSubDomen.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+      // alert("Не удалось удалить!");
+    });
+    builder.addCase(deleteSubDomen.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ////////////////////////////// editSubDomen
+    builder.addCase(editSubDomen.fulfilled, (state, action) => {
+      // state.preloader = false;
+    });
+    builder.addCase(editSubDomen.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(editSubDomen.pending, (state, action) => {
       // state.preloader = true;
     });
   },

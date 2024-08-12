@@ -23,18 +23,60 @@
         li {
           display: flex;
           align-items: center;
+          justify-content: space-between;
           gap: 5px;
           cursor: pointer;
-          padding: 0 5px;
+          padding: 0 70px 0 5px;
+          height: 30px;
+          position: relative;
 
-          img {
-            width: 15px;
-            height: 17px;
-            margin: 2px 0px;
+          .content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+
+            img {
+              width: 15px;
+              height: 17px;
+              margin: 2px 0px;
+            }
+
+            p {
+              font-size: 10px;
+            }
           }
 
-          p {
-            font-size: 10px;
+          .actions {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+
+            &__btns {
+              background: #222628;
+              width: 22px;
+              height: 22px;
+              border-radius: 3px;
+              margin: 0 3px;
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+
+              img {
+                width: 75%;
+                height: 77%;
+              }
+            }
+
+            .krest {
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
           }
         }
 

@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import container from "../../assets/icons/menu/box.svg";
 import servers from "../../assets/icons/menu/database.svg";
 import users from "../../assets/icons/menu/users.svg";
+import { dnsListDefault } from "../../helpers/LocalData";
 
 const listGr = [
   { name: "Тестовая группa", decs: "описание1" },
@@ -47,18 +48,19 @@ const initialState = {
 
   ///// активный host на главной странице
 
-  activeHost: 0,
-  activeContainer: 0,
-  activeDns: 0,
+  activeHost: 0, //// активный временный хост
+  activeContainer: 0, //// активный временный контейнер
+  activeDns: "", //// активный временный dns
 
   dnsList: {
     one: {
-      name: "",
-      addres: "",
-      record: "",
-      time: 0,
+      record_name: "",
+      host_ip: "",
+      ttl: "",
+      ttl_type: 1,
       comment: "",
-      bool: false,
+      // bool: false,
+      type_record: 1,
     },
     two: {
       name2: "",
@@ -66,6 +68,7 @@ const initialState = {
       record2: "",
       time2: 0,
       comment2: "",
+      type_record: 2,
     },
     three: {
       id: 3,
@@ -75,6 +78,7 @@ const initialState = {
       time3: 0,
       comment3: "",
       perference3: "",
+      type_record: 3,
     },
     four: {
       id: 4,
@@ -83,6 +87,7 @@ const initialState = {
       record4: "",
       time4: 0,
       comment4: "",
+      type_record: 4,
     },
     five: {
       id: 5,
@@ -91,6 +96,7 @@ const initialState = {
       record5: "",
       time5: 0,
       comment5: "",
+      type_record: 5,
     },
     six: {
       id: 6,
@@ -99,6 +105,7 @@ const initialState = {
       record6: "",
       time6: 0,
       comment6: "",
+      type_record: 6,
     },
     seven: {
       id: 7,
@@ -108,10 +115,22 @@ const initialState = {
       time7: 0,
       comment7: "",
       bool7: false,
+      type_record: 7,
     },
   },
 
   activeDnsMenu: 1,
+  //// активное временное menu для добавления sub доменов
+
+  temporaryDNS: {
+    ///// временный state для хранения временного
+    ///// домена для редактирвоания и удаления
+    dns_sone_guid: "",
+    domen_name: "",
+    guid: "",
+    server_ttl: 0,
+    status: 0,
+  },
 };
 
 const stateSlice = createSlice({
@@ -145,6 +164,10 @@ const stateSlice = createSlice({
       state.dnsList = action.payload;
     },
 
+    clearDnsList: (state, action) => {
+      state.dnsList = dnsListDefault;
+    },
+
     setDnsEveryKey: (state, action) => {
       const { obj, everyObj } = action.payload;
       state.dnsList = {
@@ -156,6 +179,10 @@ const stateSlice = createSlice({
     setActiveDnsMenu: (state, action) => {
       state.activeDnsMenu = action.payload;
     },
+
+    setTemporaryDNS: (state, action) => {
+      state.temporaryDNS = action.payload;
+    },
   },
 });
 
@@ -165,8 +192,10 @@ export const {
   setActiveContainer,
   setActiveDns,
   setDnsList,
+  clearDnsList,
   setDnsEveryKey,
   setActiveDnsMenu,
+  setTemporaryDNS,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

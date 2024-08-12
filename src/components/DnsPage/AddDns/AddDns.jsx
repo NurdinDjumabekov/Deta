@@ -11,6 +11,7 @@ import { listSel } from "../../../helpers/LocalData";
 
 /////// fns
 import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
+import { addSubDomen } from "../../../store/reducers/requestSlice";
 
 /////// style
 import "./style.scss";
@@ -18,16 +19,49 @@ import "./style.scss";
 const AddDns = ({ obj }) => {
   const dispatch = useDispatch();
 
-  const { dnsList } = useSelector((state) => state.stateSlice);
+  const { dnsList, activeDns } = useSelector((state) => state.stateSlice);
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+
+    // Если поле "ttl", проверяем, чтобы вводились только цифры
+    if (name === "ttl") {
+      if (/^\d*$/.test(value)) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else {
+      dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+    }
   };
 
   const onChangeSelect = (nameKey, name, id) => {
-    console.log(nameKey, name, id);
     dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
+  };
+
+  const addInnerSubDomen = () => {
+    if (dnsList?.one?.record_name === "") {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    if (dnsList?.one?.host_ip === 0) {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    if (dnsList?.one?.ttl === "") {
+      alert("Заполните 'Record TTL'");
+      return;
+    }
+
+    if (dnsList?.one?.host_ip === 0) {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    ////// добалвяю dns через запрос
+    const obj = { domen_guid: activeDns, ...dnsList?.one };
+    dispatch(addSubDomen(obj));
   };
 
   return (
@@ -36,15 +70,15 @@ const AddDns = ({ obj }) => {
         <MyInputs
           title={"Record name (host) :"}
           onChange={onChange}
-          name={"name"}
-          value={dnsList?.[obj]?.name}
+          name={"record_name"}
+          value={dnsList?.[obj]?.record_name}
         />
 
         <MyInputs
           title={"Host IP address :"}
           onChange={onChange}
-          name={"addres"}
-          value={dnsList?.[obj]?.addres}
+          name={"host_ip"}
+          value={dnsList?.[obj]?.host_ip}
         />
       </div>
 
@@ -52,15 +86,15 @@ const AddDns = ({ obj }) => {
         <MyInputs
           title={"Record TTL :"}
           onChange={onChange}
-          name={"record"}
-          value={dnsList?.[obj]?.record}
+          name={"ttl"}
+          value={dnsList?.[obj]?.ttl}
         />
 
         <Selects
           list={listSel}
           initText={"Выбрать"}
           onChnage={onChangeSelect}
-          nameKey={"time"}
+          nameKey={"ttl_type"}
         />
       </div>
 
@@ -78,7 +112,9 @@ const AddDns = ({ obj }) => {
           <input type="checkbox" id="check" />
           <label htmlFor="check">Update Reverse Zone</label>
         </div>
-        <button className="addAction">Добавить</button>
+        <button className="addAction" onClick={addInnerSubDomen}>
+          Добавить
+        </button>
       </div>
     </div>
   );
