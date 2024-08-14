@@ -14,6 +14,7 @@ import {
   Paper,
 } from "@mui/material";
 import Modals from "../../../common/Modals/Modals";
+import TypeAddDns from "../TypeAddDns/TypeAddDns";
 
 ////// imgs
 import editIcon from "../../../assets/icons/edit.svg";
@@ -23,14 +24,11 @@ import krestIcon from "../../../assets/icons/krest.svg";
 import "./style.scss";
 
 ////// helpers
-import { listSel } from "../../../helpers/LocalData";
 
 ////// fns
 import { deleteSubDomen } from "../../../store/reducers/requestSlice";
 import { editSubDomen } from "../../../store/reducers/requestSlice";
 import MyInputs from "../../../common/MyInput/MyInputs";
-import Selects from "../../../common/Selects/Selects";
-import TypeAddDns from "../TypeAddDns/TypeAddDns";
 
 const InnerSubDns = () => {
   const dispatch = useDispatch();
@@ -40,7 +38,7 @@ const InnerSubDns = () => {
 
   const [guidEdit, setGuidEdit] = useState(""); // храню временный guid для редактирования
   const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
-  const [objEdit, detObjedit] = useState({
+  const [objEdit, setObjedit] = useState({
     record_name: "",
     host_ip: "",
     ttl: "",
@@ -50,7 +48,7 @@ const InnerSubDns = () => {
 
   const callEditFN = (obj) => {
     setGuidEdit(obj?.guid); //// активный guid для редактирования
-    detObjedit(obj); //// временный обьект для редактирования
+    setObjedit(obj); //// временный обьект для редактирования
   };
   ///// вызов модалки для релактирования данных суб домена
 
@@ -66,7 +64,7 @@ const InnerSubDns = () => {
 
   const editDns = () => {
     ///// редактирование суб домена через запрос
-    dispatch(editSubDomen({ setGuidEdit, detObjedit, objEdit, activeDns }));
+    dispatch(editSubDomen({ setGuidEdit, setObjedit, objEdit, activeDns }));
   };
 
   const onChange = (e) => {
@@ -75,15 +73,11 @@ const InnerSubDns = () => {
     // Если поле "ttl", проверяем, чтобы вводились только цифры
     if (name === "ttl") {
       if (/^\d*$/.test(value)) {
-        detObjedit({ ...objEdit, [name]: value });
+        setObjedit({ ...objEdit, [name]: value });
       }
     } else {
-      detObjedit({ ...objEdit, [name]: value });
+      setObjedit({ ...objEdit, [name]: value });
     }
-  };
-
-  const onChangeSelect = (nameKey, name, id) => {
-    detObjedit({ ...objEdit, [nameKey]: id });
   };
 
   return (
@@ -105,9 +99,10 @@ const InnerSubDns = () => {
                 <TableCell className="title dta" style={{ width: "15%" }}>
                   Data
                 </TableCell>
-                <TableCell className="title action" style={{ width: "10%" }}>
-                  Действия
-                </TableCell>
+                <TableCell
+                  className="title action"
+                  style={{ width: "10%" }}
+                ></TableCell>
                 <TableCell className="title comment" style={{ width: "30%" }}>
                   Комментарий
                 </TableCell>
@@ -209,21 +204,14 @@ const InnerSubDns = () => {
               value={objEdit?.ttl}
             />
 
-            <Selects
-              list={listSel}
-              initText={"Выбрать"}
-              onChnage={onChangeSelect}
-              nameKey={"ttl_type"}
-            />
-          </div>
-
-          <div className="second">
-            <MyInputs
-              title={"Record comments :"}
-              onChange={onChange}
-              name={"comment"}
-              value={objEdit?.comment}
-            />
+            <div className="comments">
+              <MyInputs
+                title={"Record comments :"}
+                onChange={onChange}
+                name={"comment"}
+                value={objEdit?.comment}
+              />
+            </div>
           </div>
 
           <div className="second actions">

@@ -3,6 +3,7 @@ import socketIOClient from "socket.io-client";
 import axios from "axios";
 import { clearDnsList, clearTemporaryDNS, setActiveDns } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
+import { defaultSubDomen } from "../../helpers/LocalData";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -279,7 +280,7 @@ export const deleteSubDomen = createAsyncThunk(
 export const editSubDomen = createAsyncThunk(
   "editSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
-    const { setGuidEdit, objEdit, detObjedit, activeDns } = props;
+    const { setGuidEdit, objEdit, setObjedit, activeDns } = props;
 
     const url = `${REACT_APP_API_URL}dns/updateSubDomen`;
     const data = { ...objEdit, type_record: 1 }; ///  type_record: 1, chech (dhtvtyyj)
@@ -288,7 +289,7 @@ export const editSubDomen = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen(activeDns)); /// это guid домена (get list data)
         dispatch(setGuidEdit("")); //// закрываю модалку
-        detObjedit({}); //// очищаю временный
+        setObjedit(defaultSubDomen); //// очищаю временный
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);

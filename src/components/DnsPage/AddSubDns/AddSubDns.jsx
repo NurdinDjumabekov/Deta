@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../common/MyInput/MyInputs";
-import Selects from "../../../common/Selects/Selects";
 
 /////// helpers
-import { listSel } from "../../../helpers/LocalData";
 
 /////// fns
 import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
@@ -32,10 +30,6 @@ const AddSubDns = ({ obj }) => {
     } else {
       dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
     }
-  };
-
-  const onChangeSelect = (nameKey, name, id) => {
-    dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
   };
 
   const addInnerSubDomen = () => {
@@ -90,21 +84,14 @@ const AddSubDns = ({ obj }) => {
           value={dnsList?.[obj]?.ttl}
         />
 
-        <Selects
-          list={listSel}
-          initText={"Выбрать"}
-          onChnage={onChangeSelect}
-          nameKey={"ttl_type"}
-        />
-      </div>
-
-      <div className="second">
-        <MyInputs
-          title={"Record comments :"}
-          onChange={onChange}
-          name={"comment"}
-          value={dnsList?.[obj]?.comment}
-        />
+        <div className="comment">
+          <MyInputs
+            title={"Record comments :"}
+            onChange={onChange}
+            name={"comment"}
+            value={dnsList?.[obj]?.comment}
+          />
+        </div>
       </div>
 
       <div className="second actions">

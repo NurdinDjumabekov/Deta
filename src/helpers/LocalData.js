@@ -3587,7 +3587,7 @@ export const dnsListDefault = {
     record_name: "",
     host_ip: "",
     ttl: "",
-    ttl_type: 0,
+    ttl_type: 1,
     comment: "",
     // bool: false,
     type_record: 1,
@@ -3647,4 +3647,12 @@ export const dnsListDefault = {
     bool7: false,
     type_record: 7,
   },
+};
+
+export const defaultSubDomen = {
+  record_name: "",
+  host_ip: "",
+  ttl: "",
+  ttl_type: 1,
+  comment: "",
 };
