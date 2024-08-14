@@ -4,106 +4,64 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../common/MyInput/MyInputs";
-import Selects from "../../../common/Selects/Selects";
 
 /////// helpers
-import { listSel } from "../../../helpers/LocalData";
 
 /////// fns
-import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../store/reducers/requestSlice";
+import { setTemporaryDNS } from "../../../store/reducers/stateSlice";
+import { addDomens } from "../../../store/reducers/requestSlice";
 
 /////// style
 import "./style.scss";
 
-const AddDns = ({ obj }) => {
+const AddDns = () => {
   const dispatch = useDispatch();
 
-  const { dnsList, activeDns } = useSelector((state) => state.stateSlice);
+  const { temporaryDNS } = useSelector((state) => state.stateSlice);
 
   const onChange = (e) => {
     const { name, value } = e.target;
 
-    // Если поле "ttl", проверяем, чтобы вводились только цифры
-    if (name === "ttl") {
-      if (/^\d*$/.test(value)) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
-    } else {
-      dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-    }
+    dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
   };
 
-  const onChangeSelect = (nameKey, name, id) => {
-    dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
-  };
-
-  const addInnerSubDomen = () => {
-    if (dnsList?.one?.record_name === "") {
-      alert("Заполните 'Record name (host)'");
+  const addDomen = () => {
+    if (temporaryDNS?.domen_name === "") {
+      alert("Заполните 'Name domen'");
       return;
     }
 
-    if (dnsList?.one?.host_ip === 0) {
-      alert("Заполните 'Record name (host)'");
+    if (temporaryDNS?.comment === "") {
+      alert("Заполните 'comment'");
       return;
     }
 
-    if (dnsList?.one?.ttl === "") {
-      alert("Заполните 'Record TTL'");
-      return;
-    }
-
-    if (dnsList?.one?.host_ip === 0) {
-      alert("Заполните 'Record name (host)'");
-      return;
-    }
-
+    dispatch(addDomens(temporaryDNS));
     ////// добалвяю dns через запрос
-    const obj = { domen_guid: activeDns, ...dnsList?.one };
-    dispatch(addSubDomen(obj));
+  };
+
+  const editDns = () => {
+    ///// редактирование dns через запрос
+    //// на потом
   };
 
   return (
-    <div className="addDns">
+    <div className="addDns addDnsMain">
       <div className="second">
         <MyInputs
-          title={"Record name (host) :"}
+          title={"Name domen :"}
           onChange={onChange}
-          name={"record_name"}
-          value={dnsList?.[obj]?.record_name}
-        />
-
-        <MyInputs
-          title={"Host IP address :"}
-          onChange={onChange}
-          name={"host_ip"}
-          value={dnsList?.[obj]?.host_ip}
-        />
-      </div>
-
-      <div className="time">
-        <MyInputs
-          title={"Record TTL :"}
-          onChange={onChange}
-          name={"ttl"}
-          value={dnsList?.[obj]?.ttl}
-        />
-
-        <Selects
-          list={listSel}
-          initText={"Выбрать"}
-          onChnage={onChangeSelect}
-          nameKey={"ttl_type"}
+          name={"domen_name"}
+          value={temporaryDNS?.domen_name}
         />
       </div>
 
       <div className="second">
         <MyInputs
-          title={"Record comments :"}
+          title={"Comments for domen :"}
           onChange={onChange}
           name={"comment"}
-          value={dnsList?.[obj]?.comment}
+          value={temporaryDNS?.comment}
         />
       </div>
 
@@ -112,9 +70,14 @@ const AddDns = ({ obj }) => {
           <input type="checkbox" id="check" />
           <label htmlFor="check">Update Reverse Zone</label>
         </div>
-        <button className="addAction" onClick={addInnerSubDomen}>
-          Добавить
-        </button>
+        <div>
+          <button className="addAction" onClick={addDomen}>
+            Добавить
+          </button>
+          {/* <button className="editAction" onClick={editDns}>
+            Редактировать
+          </button> */}
+        </div>
       </div>
     </div>
   );

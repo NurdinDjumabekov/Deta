@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 
-////style
+///// style
 import "./style.scss";
 
-////helpers
-import { ipBlocks } from "../../helpers/LocalData";
-
-////fns
+//// fns
 import { getNetworks, updatedNetwork } from "../../store/reducers/requestSlice";
+
+//// helpers
 import { returnColorStatus } from "../../helpers/returnColorStatus";
 
 const NetworksPage = () => {
@@ -25,24 +24,21 @@ const NetworksPage = () => {
     };
   }, [dispatch]);
 
-  // console.log(listNetwork, "listNetwork");
-
   return (
     <div className="networksPage">
       <button className="addBtn">+</button>
       <div className="listNetworks">
-        {listNetwork?.map((item, index) => (
-          <div className="every" key={index}>
+        {listNetwork?.map((item) => (
+          <div className="every" key={item.network_id}>
             <div className="title">
               <h6>{item?.network_name}</h6>
               <p>x</p>
             </div>
             <div className="grid-container">
-              {item?.ips?.map((i, index) => (
+              {item?.ips?.map((i) => (
                 <div
-                  key={index}
+                  key={i.ip_id}
                   className={`grid-item ${returnColorStatus(i)}`}
-                  // style={{ backgroundColor: objColor?.[i?.ip_status]?.color }}
                 >
                   <p>{i?.ip_number}</p>
                 </div>

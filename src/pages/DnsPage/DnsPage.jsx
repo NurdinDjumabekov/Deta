@@ -1,7 +1,6 @@
 ///// hooks
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 ////style
@@ -10,11 +9,9 @@ import "./style.scss";
 //////helpers
 
 ////// fns
-import {
-  deleteDomen,
-  getDnsDomen,
-  getDnsSubDomen,
-} from "../../store/reducers/requestSlice";
+import { deleteDomen, getDnsDomen } from "../../store/reducers/requestSlice";
+import { getDnsSubDomen } from "../../store/reducers/requestSlice";
+import { setTemporaryDNS } from "../../store/reducers/stateSlice";
 
 ////// imgs
 import diagramWhite from "../../assets/icons/diagramWhite.svg";
@@ -22,10 +19,9 @@ import editIcon from "../../assets/icons/edit.svg";
 import krestIcon from "../../assets/icons/krest.svg";
 
 ////// components
-import InnerDns from "../../components/DnsPage/InnerDns/InnerDns";
-import TypeAddDns from "../../components/DnsPage/TypeAddDns/TypeAddDns";
-import { setTemporaryDNS } from "../../store/reducers/stateSlice";
+import InnerSubDns from "../../components/DnsPage/InnerSubDns/InnerSubDns";
 import Modals from "../../common/Modals/Modals";
+import AddDns from "../../components/DnsPage/AddDns/AddDns";
 
 const DnsPage = () => {
   const dispatch = useDispatch();
@@ -35,12 +31,13 @@ const DnsPage = () => {
   const { activeDns } = useSelector((state) => state.stateSlice);
   const { listDnsDomen } = useSelector((state) => state.requestSlice);
 
-  const clickDns = (guid) => dispatch(getDnsSubDomen(guid));
+  const clickDns = ({ domen_name, guid, server_ttl }) => {
+    dispatch(getDnsSubDomen(guid)); //// get суб домены этого dns
 
-  const active = activeDns === "" ? "activeDns" : "";
-
-  const callEditFN = (obj) => dispatch(setTemporaryDNS(obj));
-  ///// вызов модалки для редактирования данных dns (так же подставляю данные dns)
+    const domenInfo = { domen_name, comment: `${domen_name}${server_ttl}` };
+    dispatch(setTemporaryDNS(domenInfo));
+    //// подставляю данные в stat eдля редактирования данных dns (так же подставляю данные dns)
+  };
 
   const callDeleteFn = (guid) => setGuidDelete(guid);
   ///// вызов модалки для удаления данных суб домена
@@ -48,13 +45,11 @@ const DnsPage = () => {
   const delDns = () => dispatch(deleteDomen({ guidDelete, setGuidDelete }));
   ///// удаления dns через запрос
 
-  const editDns = () => {
-    ///// редактирование dns через запрос
-  };
-
   useEffect(() => {
     dispatch(getDnsDomen());
   }, []);
+
+  const active = activeDns === "" ? "activeDns" : "";
 
   return (
     <>
@@ -66,7 +61,7 @@ const DnsPage = () => {
                 <li
                   className={item?.guid === activeDns ? "activeDns" : ""}
                   key={item?.guid}
-                  onClick={() => clickDns(item?.guid)}
+                  onClick={() => clickDns(item)}
                 >
                   <div className="content">
                     <img src={diagramWhite} alt="%" />
@@ -90,14 +85,16 @@ const DnsPage = () => {
               ))}
             </ul>
             <div className="actionDns">
-              <TypeAddDns />
+              <AddDns />
             </div>
           </div>
         </div>
         <div className="dnsMain__edit">
-          <InnerDns />
+          <InnerSubDns />
         </div>
       </div>
+
+      {/* для удаления  */}
       <Modals
         openModal={!!guidDelete}
         setOpenModal={() => setGuidDelete()}
@@ -112,7 +109,6 @@ const DnsPage = () => {
           </button>
         </div>
       </Modals>
-      {/* ///// для редактирования */}
     </>
   );
 };

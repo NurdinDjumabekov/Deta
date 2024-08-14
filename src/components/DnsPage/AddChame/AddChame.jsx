@@ -13,7 +13,7 @@ import { listSel } from "../../../helpers/LocalData";
 import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
 
 /////// style
-import "../AddDns/style.scss";
+import "../AddSubDns/style.scss";
 
 const AddChame = ({ obj }) => {
   const dispatch = useDispatch();

@@ -96,27 +96,23 @@
   }
 
   .blueSheat {
-    animation: animBlue 0.9s infinite;
     background-color: #87a7e1;
   }
 
   .orangeSheat {
-    animation: animOrange 0.9s infinite;
     background-color: orange;
   }
 
   .greySheat {
-    animation: animGrey 0.9s infinite;
     background-color: rgb(239, 231, 231);
   }
 
   .greenSheat {
-    animation: animGreen 0.9s infinite;
     background-color: #8ccb49;
   }
 
   .blueAnimSheat {
-    // animation: animBlue 0.4s infinite;
+    animation: animBlue 0.4s infinite;
     background-color: #87a7e1;
   }
 }
@@ -133,5 +129,35 @@
   }
   100% {
     background-color: #2f5bad;
+  }
+}
+
+@keyframes animGreen {
+  0% {
+    background-color: green;
+  }
+  50% {
+    background-color: #1cc058;
+  }
+  70% {
+    background-color: rgb(94, 220, 126);
+  }
+  100% {
+    background-color: green;
+  }
+}
+
+@keyframes animRed {
+  0% {
+    background-color: red;
+  }
+  50% {
+    background-color: rgb(255, 255, 254);
+  }
+  70% {
+    background-color: red;
+  }
+  100% {
+    background-color: red;
   }
 }

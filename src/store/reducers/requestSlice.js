@@ -1,51 +1,77 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
-import { clearDnsList, setActiveDns } from "./stateSlice";
+import { clearDnsList, clearTemporaryDNS, setActiveDns } from "./stateSlice";
+import { transformListNetwork } from "../../helpers/transformListNetwork";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
+  listHosts: [],
   listNetwork: [],
   listDnsDomen: [],
   listDnsSubDomen: [],
+  listProviders: [],
 };
 
 const url_socket = "http://217.29.26.222:3633";
 
-export const getHosts = createAsyncThunk(
-  "getHosts",
-  async function (props, { rejectWithValue }) {
-    const { dataLogin } = props;
+////////////////////// mainPage //////////////////////////////
 
-    // return new Promise((resolve, reject) => {
-    //   // Отправка данных для логина через WebSocket
-    //   socket.emit("gethosts", dataLogin);
-
-    //   // Установка обработчика для получения ответа
-    //   const handleResponse = (response) => {
-    //     console.log(response); // Вывод ответа в консоль
-    //     resolve(response);
-    //   };
-
-    //   // Установка обработчика для ошибок
-    //   const handleError = (error) => {
-    //     console.error(error.message); // Вывод ошибки в консоль
-    //     rejectWithValue(error.message);
-    //     reject(error.message);
-    //   };
-
-    //   // Подписка на события
-    //   socket.on("gethosts", handleResponse);
-    //   socket.on("error", handleError);
-
-    //   // Удаление обработчиков при завершении
-    //   return () => {
-    //     socket.off("gethosts", handleResponse);
-    //     socket.off("error", handleError);
-    //   };
-    // });
+///// getProviders - для получения провайдеров
+export const getProviders = createAsyncThunk(
+  "getProviders",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}api/network/getProviders`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
 );
+
+export const updatedProvoders = () => (dispatch) => {
+  const socket = socketIOClient(url_socket);
+  socket.on("updateProviders", ({ data }) => {
+    dispatch(setUpdatedProvider(data));
+  });
+  return () => {
+    socket.disconnect();
+  };
+};
+
+///// getHosts - для получения провайдеров
+export const getHosts = createAsyncThunk(
+  "getHosts",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/getHostList`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updatedHosts = () => (dispatch) => {
+  const socket = socketIOClient(url_socket);
+  socket.on("updateProviders", ({ data }) => {
+    // dispatch(setUpdatedProvider(data));
+  });
+  return () => {
+    socket.disconnect();
+  };
+};
 
 ///// getNetworks - для получения сетей
 export const getNetworks = createAsyncThunk(
@@ -65,10 +91,10 @@ export const getNetworks = createAsyncThunk(
   }
 );
 
-export const updatedNetwork = (listNetwork) => (dispatch) => {
+export const updatedNetwork = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("pingStatusUpdate", (data) => {
-    console.log("Получены данные pingStatusUpdate:", data);
+    // console.log("Получены данные pingStatusUpdate:", data);
     dispatch(setUpdatedNetwork(data));
   });
 
@@ -99,16 +125,28 @@ export const getDnsDomen = createAsyncThunk(
   }
 );
 
-///// addSubDomen - для добавления sub доменов
-export const addSubDomen = createAsyncThunk(
-  "addSubDomen",
-  async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
+////////////// domens //////////////
+
+///// addDomens - для добавления доменов
+export const addDomens = createAsyncThunk(
+  "addDomens",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { domen_name } = props;
+
+    const url = `${REACT_APP_API_URL}dns/creareDomen`;
+    const data = { domen_name };
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsSubDomen(data?.domen_guid)); /// это guid домена
-        dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
+        dispatch(getDnsDomen()); //// get все домены
+        dispatch(clearTemporaryDNS());
+        //// очищаю state для временного хранения dns данных
+        const createGuid = response?.data?.guid;
+
+        setTimeout(() => {
+          dispatch(setActiveDns(createGuid));
+          dispatch(getDnsSubDomen(createGuid));
+        }, 500);
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -119,9 +157,7 @@ export const addSubDomen = createAsyncThunk(
   }
 );
 
-////////////// domens //////////////
-
-///// deleteDomen - для удаления суб доменов
+///// deleteDomen - для удаления доменов
 export const deleteDomen = createAsyncThunk(
   "deleteDomen",
   async function (props, { dispatch, rejectWithValue }) {
@@ -132,6 +168,7 @@ export const deleteDomen = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsDomen()); //// get все домены
         dispatch(setGuidDelete("")); //// закрываю модалку
         return response?.data;
       } else {
@@ -143,18 +180,27 @@ export const deleteDomen = createAsyncThunk(
   }
 );
 
-// ///// editSubDomen - для редактирования суб доменов
-// export const editSubDomen = createAsyncThunk(
-//   "editSubDomen",
+// ///// editDomen - для редактирования доменов
+// export const editDomen = createAsyncThunk(
+//   "editDomen",
 //   async function (props, { dispatch, rejectWithValue }) {
-//     const { guidEdit, setGuidEdit } = props;
+//     const {} = props;
 
-//     const url = `${REACT_APP_API_URL}api/ .... guid=${guidEdit}`;
+//     const url = `${REACT_APP_API_URL}`;
+//     const data = { ...objEdit, type_record: 1 }; ///  type_record: 1, chech (dhtvtyyj)
 //     try {
-//       const response = await axios(url);
+//       const response = await axios.post(url, data);
 //       if (response.status >= 200 && response.status < 300) {
-//         console.log(response?.data, "editSubDomen");
-//         dispatch(setGuidEdit("")); //// закрываю модалку
+
+//         dispatch(getDnsDomen()); //// get все домены
+//         dispatch(clearTemporaryDNS());
+//         //// очищаю state для временного хранения dns данных
+//         const createGuid = response?.data?.guid;
+
+//         setTimeout(() => {
+//           dispatch(setActiveDns(createGuid));
+//           dispatch(getDnsSubDomen(createGuid));
+//         }, 500);
 //         return response?.data;
 //       } else {
 //         throw Error(`Error: ${response.status}`);
@@ -176,6 +222,26 @@ export const getDnsSubDomen = createAsyncThunk(
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveDns(guid));
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// addSubDomen - для добавления sub доменов
+export const addSubDomen = createAsyncThunk(
+  "addSubDomen",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen(data?.domen_guid)); /// это guid домена
+        dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -241,19 +307,44 @@ const requestSlice = createSlice({
       state.listNetwork = action.payload;
     },
 
+    setUpdatedProvider: (state, action) => {
+      state.listProviders = action.payload;
+    },
+
     setUpdatedNetwork: (state, action) => {
-      state.listNetwork = state?.listNetwork?.map((i) => {
-        i?.ips?.map((j) => {
-          if (j.guid === action.payload.guid) {
-            return { ...j, ...action.payload };
-          } else {
-            return j;
-          }
-        });
-      });
+      const obj = action.payload;
+      const list = state.listNetwork;
+      state.listNetwork = transformListNetwork(list, obj);
     },
   },
   extraReducers: (builder) => {
+    ///////////////////////////// getProviders
+    builder.addCase(getProviders.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listProviders = action.payload;
+    });
+    builder.addCase(getProviders.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getProviders.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// getHosts
+    builder.addCase(getHosts.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listHosts = action.payload;
+    });
+    builder.addCase(getHosts.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getHosts.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// getNetworks
     builder.addCase(getNetworks.fulfilled, (state, action) => {
       // state.preloader = false;
       state.listNetwork = action.payload;
@@ -319,6 +410,7 @@ const requestSlice = createSlice({
   },
 });
 
-export const { setListNetwork, setUpdatedNetwork } = requestSlice.actions;
+export const { setUpdatedProvider, setListNetwork, setUpdatedNetwork } =
+  requestSlice.actions;
 
 export default requestSlice.reducer;

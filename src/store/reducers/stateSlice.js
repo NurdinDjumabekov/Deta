@@ -28,7 +28,6 @@ const listname = [
 const initialState = {
   menuInner: [
     { id: 1, name: "Контейнеры", img: container, active: false },
-
     {
       id: 2,
       name: "Сервисы",
@@ -36,7 +35,6 @@ const initialState = {
       active: false,
       list: listGr,
     },
-
     {
       id: 3,
       name: "Пользователи",
@@ -123,13 +121,10 @@ const initialState = {
   //// активное временное menu для добавления sub доменов
 
   temporaryDNS: {
-    ///// временный state для хранения временного
-    ///// домена для редактирвоания и удаления
-    dns_sone_guid: "",
+    ///// временный state для хранения временных
+    ///// данных домена для редактирвоания и удаления
     domen_name: "",
-    guid: "",
-    server_ttl: 0,
-    status: 0,
+    comment: "",
   },
 };
 
@@ -183,6 +178,11 @@ const stateSlice = createSlice({
     setTemporaryDNS: (state, action) => {
       state.temporaryDNS = action.payload;
     },
+
+    clearTemporaryDNS: (state, action) => {
+      state.temporaryDNS = { domen_name: "", comment: "" };
+      //// state для временного хранения dns данных
+    },
   },
 });
 
@@ -196,6 +196,7 @@ export const {
   setDnsEveryKey,
   setActiveDnsMenu,
   setTemporaryDNS,
+  clearTemporaryDNS,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

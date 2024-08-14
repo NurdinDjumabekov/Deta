@@ -24,11 +24,20 @@
           font-size: 16px;
         }
 
-        .round {
+        .roundGreen {
           width: 8px;
           height: 8px;
           border-radius: 50%;
+          animation: animGreen 0.4s infinite;
           background: green;
+        }
+
+        .roundRed {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          animation: animRed 0.4s infinite;
+          background: rgb(225, 28, 28);
         }
 
         span {

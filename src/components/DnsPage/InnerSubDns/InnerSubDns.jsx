@@ -1,5 +1,6 @@
 /////// hooks
 import React from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 ////// componnets
@@ -12,6 +13,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import Modals from "../../../common/Modals/Modals";
 
 ////// imgs
 import editIcon from "../../../assets/icons/edit.svg";
@@ -21,17 +23,16 @@ import krestIcon from "../../../assets/icons/krest.svg";
 import "./style.scss";
 
 ////// helpers
-import { innerDns, listSel } from "../../../helpers/LocalData";
-import { useState } from "react";
-import Modals from "../../../common/Modals/Modals";
+import { listSel } from "../../../helpers/LocalData";
 
 ////// fns
 import { deleteSubDomen } from "../../../store/reducers/requestSlice";
 import { editSubDomen } from "../../../store/reducers/requestSlice";
 import MyInputs from "../../../common/MyInput/MyInputs";
 import Selects from "../../../common/Selects/Selects";
+import TypeAddDns from "../TypeAddDns/TypeAddDns";
 
-const InnerDns = () => {
+const InnerSubDns = () => {
   const dispatch = useDispatch();
 
   const { listDnsSubDomen } = useSelector((state) => state.requestSlice);
@@ -61,8 +62,6 @@ const InnerDns = () => {
     dispatch(deleteSubDomen({ guidDelete, setGuidDelete, activeDns }));
   };
 
-  console.log(objEdit, "objEdit");
-
   ////// редактирование
 
   const editDns = () => {
@@ -89,48 +88,80 @@ const InnerDns = () => {
 
   return (
     <>
-      <TableContainer component={Paper} className="tableEditDns">
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell className="title name">Наименования</TableCell>
-              <TableCell className="title type">Типы</TableCell>
-              <TableCell className="title ttl">TTL</TableCell>
-              <TableCell className="title dta">Data</TableCell>
-              <TableCell className="title action">Действия</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listDnsSubDomen?.map((row) => (
-              <TableRow key={row?.guid}>
-                <TableCell className="text nameText" style={{ margin: "10px" }}>
-                  {row?.domen_name}
+      <div className={`blockSubDomen`}>
+        <TableContainer component={Paper} className="tableEditDns">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell className="title name" style={{ width: "15%" }}>
+                  Наименования
                 </TableCell>
-                <TableCell className="text name">{row?.recordType} </TableCell>
-                <TableCell className="text name">{row?.record_ttl}</TableCell>
-                <TableCell className="text data">{row?.record_name}</TableCell>
-                <TableCell className="text actions">
-                  <div className="blockActions">
-                    <button
-                      className="actions__btns"
-                      onClick={() => callEditFN(row)}
-                    >
-                      <img src={editIcon} alt="e" />
-                    </button>
-                    <button
-                      className="actions__btns krest"
-                      onClick={() => callDeleteFn(row?.guid)}
-                    >
-                      <img src={krestIcon} alt="x" />
-                    </button>
-                  </div>
+                <TableCell className="title type" style={{ width: "20%" }}>
+                  Типы
+                </TableCell>
+                <TableCell className="title ttl" style={{ width: "10%" }}>
+                  TTL
+                </TableCell>
+                <TableCell className="title dta" style={{ width: "15%" }}>
+                  Data
+                </TableCell>
+                <TableCell className="title action" style={{ width: "10%" }}>
+                  Действия
+                </TableCell>
+                <TableCell className="title comment" style={{ width: "30%" }}>
+                  Комментарий
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {listDnsSubDomen?.map((row) => (
+                <TableRow key={row?.guid}>
+                  <TableCell
+                    className="text nameText"
+                    style={{ margin: "10px", width: "15%" }}
+                  >
+                    {row?.record_name}
+                  </TableCell>
+                  <TableCell className="text name" style={{ width: "20%" }}>
+                    {row?.recordType}
+                  </TableCell>
+                  <TableCell className="text name" style={{ width: "10%" }}>
+                    {row?.ttl}
+                  </TableCell>
+                  <TableCell className="text data" style={{ width: "15%" }}>
+                    {row?.host_ip}
+                  </TableCell>
+                  <TableCell className="text actions" style={{ width: "10%" }}>
+                    <div className="blockActions">
+                      <button
+                        className="actions__btns"
+                        onClick={() => callEditFN(row)}
+                      >
+                        <img src={editIcon} alt="e" />
+                      </button>
+                      <button
+                        className="actions__btns krest"
+                        onClick={() => callDeleteFn(row?.guid)}
+                      >
+                        <img src={krestIcon} alt="x" />
+                      </button>
+                    </div>
+                  </TableCell>
+                  <TableCell
+                    className="text comment"
+                    style={{ maxWidth: "30%" }}
+                  >
+                    {row?.comment || "...."}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TypeAddDns />
+      </div>
 
+      {/* для удаления  */}
       <Modals
         openModal={!!guidDelete}
         setOpenModal={() => setGuidDelete()}
@@ -145,8 +176,9 @@ const InnerDns = () => {
           </button>
         </div>
       </Modals>
-      {/* ///// для редактирования */}
+      {/* для удаления  */}
 
+      {/* ///// для редактирования */}
       <Modals
         openModal={!!guidEdit}
         setOpenModal={() => setGuidEdit()}
@@ -201,9 +233,9 @@ const InnerDns = () => {
           </div>
         </div>
       </Modals>
-      {/* ///// для удаления редактирования */}
+      {/* ///// для редактирования */}
     </>
   );
 };
 
-export default InnerDns;
+export default InnerSubDns;

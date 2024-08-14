@@ -19,6 +19,12 @@ const Hosts = ({ item }) => {
   const { node_model, node_name, vmbr } = item;
   const { host_ip, node_comment, host_status, id } = item;
   const { percent, GB } = item;
+  //////////////
+  const { host_name, node_uptime_sec, guid } = item;
+  const { array_storages } = item;
+  const { storage_name } = item;
+
+  // console.log(storage_content, "storage_content");
 
   const dispatch = useDispatch();
 
@@ -26,18 +32,18 @@ const Hosts = ({ item }) => {
 
   const lisVmbr = vmbr?.split(",");
 
-  const clickHost = () => dispatch(setActiveHost(id));
+  const clickHost = () => dispatch(setActiveHost(guid));
 
   const err = host_status == 5 ? "lineError" : "";
 
-  const active = activeHost == id ? "activeHost" : "";
+  const active = activeHost == guid ? "activeHost" : "";
 
   return (
     <div className={`hostsMain ${err} ${active}`} onClick={clickHost}>
-      <h4>{node_model || "нету наименования"}</h4>
+      <h4>{node_model}</h4>
       <div className="actions">
         <p>
-          {node_name}(<b>115d3h2m</b>)
+          {host_name}(<b>{node_uptime_sec}</b>)
         </p>
 
         <button>
@@ -55,11 +61,11 @@ const Hosts = ({ item }) => {
       </div>
 
       <div className="vmbrBlock">
-        {lisVmbr?.map((item, index) => (
+        {array_storages?.map((item, index) => (
           <div key={index}>
             <p>vmbr {index}</p>
             <img src={diagram} alt="0" />
-            <span>{item}</span>
+            <span>{item?.storage_name}</span>
           </div>
         ))}
       </div>

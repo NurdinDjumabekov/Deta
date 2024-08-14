@@ -14,7 +14,7 @@ import { setActiveDnsMenu } from "../../../store/reducers/stateSlice";
 
 /////// style
 import "./style.scss";
-import AddDns from "../AddDns/AddDns";
+import AddSubDns from "../AddSubDns/AddSubDns";
 import AddChame from "../AddChame/AddChame";
 import AddMXChame from "../AddMXChame/AddMXChame";
 import AddNSChame from "../AddNSChame/AddNSChame";
@@ -30,7 +30,7 @@ const TypeAddDns = () => {
   const clickMenuDns = (id) => dispatch(setActiveDnsMenu(id));
 
   const objComp = {
-    1: <AddDns obj={"one"} />,
+    1: <AddSubDns obj={"one"} />,
     2: <AddChame obj={"two"} />,
     3: <AddMXChame obj={"three"} />,
     4: <AddNSChame obj={"four"} />,
