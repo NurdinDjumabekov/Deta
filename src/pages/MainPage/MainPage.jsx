@@ -12,7 +12,6 @@ import { updatedProvoders } from "../../store/reducers/requestSlice";
 import "./style.scss";
 
 ///////helpers
-import { containers, hosts } from "../../helpers/LocalData";
 
 ///////components
 import MenuInner from "../../components/Menu/MenuInner/MenuInner";
@@ -26,7 +25,7 @@ import GraphicContainer from "../../components/MainPage/GraphicContainer/Graphic
 const MainPage = () => {
   const dispatch = useDispatch();
 
-  const { listProviders, listHosts } = useSelector(
+  const { listProviders, listHosts, listContainers } = useSelector(
     (state) => state.requestSlice
   );
   const { activeHost, activeContainer } = useSelector(
@@ -47,8 +46,6 @@ const MainPage = () => {
     };
   }, [dispatch]);
 
-  console.log(listHosts, "listHosts");
-
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 
   return (
@@ -63,7 +60,7 @@ const MainPage = () => {
                 className={
                   item?.provider_status == 1 ? "roundGreen" : "roundRed"
                 }
-              ></div>
+              />
               <span>{item?.provider_pingtime}</span>
             </div>
           ))}
@@ -74,8 +71,8 @@ const MainPage = () => {
       <div className="hostAndContainer">
         <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
           <div className="hosts__inner">
-            {listHosts?.map((item, index) => (
-              <Hosts key={index} item={item} />
+            {listHosts?.map((item) => (
+              <Hosts key={item?.guid} item={item} />
             ))}
           </div>
           <div className="hosts__more_info">
@@ -87,7 +84,7 @@ const MainPage = () => {
 
         <div className={`containers ${checkContainer}`}>
           <div className="containers__inner">
-            {containers?.map((item, index) => (
+            {listContainers?.map((item, index) => (
               <Containers key={index} item={item} />
             ))}
           </div>

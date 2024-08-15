@@ -1,13 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
-import { clearDnsList, clearTemporaryDNS, setActiveDns } from "./stateSlice";
+import {
+  clearDnsList,
+  clearTemporaryDNS,
+  clearTemporaryHosts,
+  setActiveDns,
+  setActiveHost,
+} from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen } from "../../helpers/LocalData";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
   listHosts: [],
+
+  ///// containers /////
+  listContainers: [],
+  searchContainer: "",
+
   listNetwork: [],
   listDnsDomen: [],
   listDnsSubDomen: [],
@@ -46,6 +57,8 @@ export const updatedProvoders = () => (dispatch) => {
   };
 };
 
+////////////////////////////////////////////////////////// hosts
+
 ///// getHosts - для получения провайдеров
 export const getHosts = createAsyncThunk(
   "getHosts",
@@ -54,6 +67,10 @@ export const getHosts = createAsyncThunk(
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
+        const first = response?.data?.[0]?.guid;
+        dispatch(setActiveHost(first));
+        dispatch(getContainers(first));
+        /// подставляю первый хост чтобы он был активный
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -64,15 +81,84 @@ export const getHosts = createAsyncThunk(
   }
 );
 
+////// для моментального обновления хоста
 export const updatedHosts = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
-  socket.on("updateProviders", ({ data }) => {
-    // dispatch(setUpdatedProvider(data));
+  socket.on("asdas", ({ data }) => {
+    dispatch(setUpdatedHost(data));
   });
   return () => {
     socket.disconnect();
   };
 };
+
+///// deleteSubDomen - для удаления суб доменов
+export const deleteHost = createAsyncThunk(
+  "deleteSubDomen",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { guidDelete, setGuidDelete, activeDns } = props;
+    /// guidDelete - guid суб домена
+    const url = `${REACT_APP_API_URL}dns/1231231231`;
+    const data = { guid: guidDelete };
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen(activeDns)); /// это guid домена
+        dispatch(setGuidDelete("")); //// закрываю модалку
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// editHost - для редактирования суб доменов
+export const editHost = createAsyncThunk(
+  "editHost",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/editHost`;
+    ///  data - изменяемы данные хоста
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(clearTemporaryHosts()); ///// очищаю временное хранение данных хоста
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+////////////////////////////////////////////////////////// containers
+
+///// getContainers - для получения контейнеров
+export const getContainers = createAsyncThunk(
+  "getContainers",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/getHostContainerList`;
+    const data = { vawe: "1", elemid: guid }; //// guid - хоста
+
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setActiveHost(guid));
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+////////////////////////////////////////////////////////// сети
 
 ///// getNetworks - для получения сетей
 export const getNetworks = createAsyncThunk(
@@ -317,7 +403,20 @@ const requestSlice = createSlice({
       const list = state.listNetwork;
       state.listNetwork = transformListNetwork(list, obj);
     },
+
+    setUpdatedHost: (state, action) => {
+      const obj = action.payload;
+      state.listHosts = state.listHosts?.map((item) =>
+        item?.guid === obj?.guid ? { ...item, ...obj } : item
+      );
+    },
+
+    ///// поиск котейнеров
+    setSearchContainer: (state, action) => {
+      state.searchContainer = action.payload;
+    },
   },
+
   extraReducers: (builder) => {
     ///////////////////////////// getProviders
     builder.addCase(getProviders.fulfilled, (state, action) => {
@@ -342,6 +441,35 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(getHosts.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// editHost
+    builder.addCase(editHost.fulfilled, (state, action) => {
+      // state.preloader = false;
+      const obj = action.payload;
+      state.listHosts = state.listHosts?.map((item) =>
+        item?.guid == obj?.guid ? obj : item
+      );
+    });
+    builder.addCase(editHost.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(editHost.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// getContainers
+    builder.addCase(getContainers.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listContainers = action.payload?.result;
+    });
+    builder.addCase(getContainers.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getContainers.pending, (state, action) => {
       // state.preloader = true;
     });
 
@@ -411,7 +539,12 @@ const requestSlice = createSlice({
   },
 });
 
-export const { setUpdatedProvider, setListNetwork, setUpdatedNetwork } =
-  requestSlice.actions;
+export const {
+  setUpdatedProvider,
+  setListNetwork,
+  setUpdatedNetwork,
+  setUpdatedHost,
+  setSearchContainer,
+} = requestSlice.actions;
 
 export default requestSlice.reducer;

@@ -126,6 +126,13 @@ const initialState = {
     domen_name: "",
     comment: "",
   },
+
+  temporaryHosts: {
+    ///// временный state для хранения временных
+    ///// данных хоста для редактирвоания
+    domen_name: "",
+    comment: "",
+  },
 };
 
 const stateSlice = createSlice({
@@ -183,6 +190,31 @@ const stateSlice = createSlice({
       state.temporaryDNS = { domen_name: "", comment: "" };
       //// state для временного хранения dns данных
     },
+
+    ///////////////////////// temporaryHosts
+    setTemporaryHosts: (state, action) => {
+      state.temporaryHosts = action.payload;
+    },
+
+    clearTemporaryHosts: (state, action) => {
+      state.temporaryHosts = {
+        host_name: "",
+        guid: "",
+        node_model: "",
+        array_storages: [],
+      };
+      //// state для временного хранения данных хоста
+    },
+
+    delVmbr: (state, action) => {
+      const obj = action.payload;
+      state.temporaryHosts.array_storages =
+        state.temporaryHosts.array_storages?.filter(
+          (i) => i?.guid !== obj?.guid
+        );
+      //// state для временного хранения данных хоста,
+      //// удаляю со списка  vmbr
+    },
   },
 });
 
@@ -197,6 +229,9 @@ export const {
   setActiveDnsMenu,
   setTemporaryDNS,
   clearTemporaryDNS,
+  setTemporaryHosts,
+  clearTemporaryHosts,
+  delVmbr,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;
