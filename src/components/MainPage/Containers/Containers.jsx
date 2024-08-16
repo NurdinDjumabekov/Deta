@@ -1,8 +1,10 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 /////// imgs
 import container from "../../../assets/icons//menu/box.svg";
 import edit from "../../../assets/icons/edit.svg";
+import editBlue from "../../../assets/icons/editBlue.svg";
 import skrepka from "../../../assets/icons/skrepka.svg";
 
 ////
@@ -19,22 +21,32 @@ import deleteIcon from "../../../assets/icons/delete.svg";
 ////// styles
 import "./style.scss";
 
+////// fns
+import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
+import { setActiveContainer } from "../../../store/reducers/stateSlice";
+
 ////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
-import { useDispatch, useSelector } from "react-redux";
-import { setActiveContainer } from "../../../store/reducers/stateSlice";
 
 const Containers = ({ item }) => {
   const { id, host_name, container_name, description } = item;
-  const { key, del, percent, GB } = item;
+  const { key, del, percent, GB, guid } = item;
+  /////
+  const { vm_id, vm_name, vm_comment } = item;
+  const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb } = item;
 
   const dispatch = useDispatch();
 
   const { activeContainer } = useSelector((state) => state.stateSlice);
 
-  const active = activeContainer == id ? "containerActive" : "";
+  const clickContainer = () => dispatch(setActiveContainer(guid));
 
-  const clickContainer = () => dispatch(setActiveContainer(id));
+  const openModalEdit = () => {
+    //// открываю модалку для редактирования и подставля. во временный state данные
+    dispatch(setTemporaryContainer({ guid, vm_comment }));
+  };
+
+  const active = activeContainer == guid ? "containerActive" : "";
 
   return (
     <div className={`containerMain ${active}`} onClick={clickContainer}>
@@ -42,18 +54,23 @@ const Containers = ({ item }) => {
         <div className="numIndex">
           <div>
             <img src={container} alt="[]" />
-            <p>{id}</p>
+            <p>{vm_id}</p>
           </div>
         </div>
-        <button className="edit">
-          <img src={edit} alt="" />
-        </button>
+        <div>
+          <button className="edit" onClick={openModalEdit}>
+            <img src={edit} alt="" />
+          </button>
+          <button className="edit">
+            <img src={editBlue} alt="" />
+          </button>
+        </div>
         <div className="mainInfo">
           <div>
             <b className="hostName">[{host_name}] </b>
-            <p className="container_name"> - {container_name}</p>
+            <p className="container_name"> - {vm_name}</p>
           </div>
-          <span className="description">{description}</span>
+          <span className="description">{vm_comment}</span>
         </div>
       </div>
 
@@ -62,7 +79,13 @@ const Containers = ({ item }) => {
           <button>
             <img src={skrepka} alt="#" />
           </button>
-          <MemoryComp percent={percent} GB={GB} />
+          <MemoryComp
+            node_cpu_usage={vm_cpu_usage}
+            node_cpu={vm_cpu}
+            node_ram_usage={vm_ram_usage_mb}
+            node_ram_mb={vm_ram_mb}
+            array_storages={[]}
+          />
         </div>
 
         <div className="actions">

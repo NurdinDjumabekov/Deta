@@ -2,11 +2,14 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 import {
+  clearAddHost,
   clearDnsList,
+  clearTemporaryContainer,
   clearTemporaryDNS,
   clearTemporaryHosts,
   setActiveDns,
   setActiveHost,
+  setGuidHostEdit,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen } from "../../helpers/LocalData";
@@ -81,6 +84,31 @@ export const getHosts = createAsyncThunk(
   }
 );
 
+///// addHostFN - для редактирования суб доменов
+export const addHostFN = createAsyncThunk(
+  "addHostFN",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/createHost`;
+    ///  data - новые добавляемые данные хоста
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        console.log(response?.data, "response?.data");
+        dispatch(clearAddHost()); //// очищаю временные данные для создания хоста
+
+        const guid = response?.data?.[0]; //// guid нового созданного хоста
+        dispatch(setActiveHost(guid)); /// для того чтобы сделать активным созданный хост
+        dispatch(getContainers(guid)); /// для того чтобы взять контейнера созданного хоста
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 ////// для моментального обновления хоста
 export const updatedHosts = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
@@ -125,7 +153,8 @@ export const editHost = createAsyncThunk(
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearTemporaryHosts()); ///// очищаю временное хранение данных хоста
-        return response?.data;
+        dispatch(setGuidHostEdit("")); //// закрываю модалку
+        return response?.data?.[0];
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -148,6 +177,30 @@ export const getContainers = createAsyncThunk(
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost(guid));
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// editContainers - для редактирования контейнеров
+export const editContainers = createAsyncThunk(
+  "editContainers",
+  async function ({ activeHost, data }, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/editContainer`;
+    ///  data - изменяемы данные хоста
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getContainers(activeHost));
+        //// guid активного хоста
+
+        dispatch(clearTemporaryContainer());
+        ///// очищаю временное хранение данных контейнеров
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -441,6 +494,22 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(getHosts.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// addHostFN
+    builder.addCase(addHostFN.fulfilled, (state, action) => {
+      // state.preloader = false;
+      const obj = action.payload;
+      state.listHosts = state.listHosts?.map((item) =>
+        item?.guid == obj?.guid ? obj : item
+      );
+    });
+    builder.addCase(addHostFN.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(addHostFN.pending, (state, action) => {
       // state.preloader = true;
     });
 

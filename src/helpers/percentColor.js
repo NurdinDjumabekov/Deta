@@ -7,7 +7,7 @@ export const percentColor = (percentNum) => {
   let color = "";
   if (num < 60) {
     color = "#4bc277";
-  } else if (num >= 60 && num < 90) {
+  } else if (num >= 60 && num < 80) {
     color = "#f17600";
   } else {
     color = "#e93b3b";

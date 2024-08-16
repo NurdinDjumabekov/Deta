@@ -130,9 +130,28 @@ const initialState = {
   temporaryHosts: {
     ///// временный state для хранения временных
     ///// данных хоста для редактирвоания
-    domen_name: "",
-    comment: "",
+    host_name: "",
+    guid_node: "",
+    node_model: "",
+    listVmbr: [],
   },
+
+  guidHostDel: "", /// храню guid хоста для его удаления (open modal)
+  guidHostEdit: "", /// храню guid хоста для его редактирования (open modal)
+
+  addTempHost: {
+    host_name: "",
+    login: "",
+    password: "",
+    ip_address: "",
+    sort: 1,
+    bool: false,
+  },
+  ///// временные данные для добавления хоста
+
+  temporaryContainer: { vm_comment: "", guid: "", listVmbr: [] },
+  ///// временный state для хранения временных
+  ///// данных контейнеров для редактирвоания
 };
 
 const stateSlice = createSlice({
@@ -191,6 +210,35 @@ const stateSlice = createSlice({
       //// state для временного хранения dns данных
     },
 
+    ////////////////////////////////////////////// hosts
+
+    ////// для удаления по guid хоста
+    setGuidHostDel: (state, action) => {
+      state.guidHostDel = action.payload;
+    },
+
+    ////// для редактирования по guid хоста
+    setGuidHostEdit: (state, action) => {
+      state.guidHostEdit = action.payload;
+    },
+
+    ////// для редактирования по guid хоста
+    setAddHost: (state, action) => {
+      state.addTempHost = { ...state.addTempHost, ...action.payload };
+    },
+
+    ////// очищаю временн0 хранящиеся данные хоста
+    clearAddHost: (state, action) => {
+      state.addTempHost = {
+        host_name: "",
+        login: "",
+        password: "",
+        ip_address: "",
+        sort: 1,
+        bool: false,
+      };
+    },
+
     ///////////////////////// temporaryHosts
     setTemporaryHosts: (state, action) => {
       state.temporaryHosts = action.payload;
@@ -199,19 +247,47 @@ const stateSlice = createSlice({
     clearTemporaryHosts: (state, action) => {
       state.temporaryHosts = {
         host_name: "",
-        guid: "",
+        guid_node: "",
         node_model: "",
-        array_storages: [],
+        listVmbr: [],
       };
       //// state для временного хранения данных хоста
     },
 
+    addVmbr: (state, action) => {
+      const text = action.payload;
+      // Проверяю, если элемент уже существует в списке, чтобы избежать дублирования
+      if (!state.temporaryHosts.listVmbr?.includes(text)) {
+        state.temporaryHosts.listVmbr = [
+          ...state.temporaryHosts.listVmbr,
+          text,
+        ];
+      }
+    },
+
     delVmbr: (state, action) => {
-      const obj = action.payload;
-      state.temporaryHosts.array_storages =
-        state.temporaryHosts.array_storages?.filter(
-          (i) => i?.guid !== obj?.guid
-        );
+      const text = action.payload;
+      state.temporaryHosts.listVmbr = state.temporaryHosts.listVmbr?.filter(
+        (i) => i !== text
+      );
+      //// state для временного хранения данных хоста,
+      //// удаляю со списка  vmbr
+    },
+
+    ////////////////////////////////////////////////// containers
+    setTemporaryContainer: (state, action) => {
+      state.temporaryContainer = action.payload;
+    },
+
+    clearTemporaryContainer: (state, action) => {
+      state.temporaryContainer = { vm_comment: "", guid: "", listVmbr: [] };
+      //// state для временного хранения данных хоста
+    },
+
+    delVmbrContainer: (state, action) => {
+      const text = action.payload;
+      state.temporaryContainer.listVmbr =
+        state.temporaryContainer.listVmbr?.filter((i) => i !== text);
       //// state для временного хранения данных хоста,
       //// удаляю со списка  vmbr
     },
@@ -229,9 +305,17 @@ export const {
   setActiveDnsMenu,
   setTemporaryDNS,
   clearTemporaryDNS,
+  setGuidHostDel,
+  setGuidHostEdit,
+  setAddHost,
+  clearAddHost,
+  addVmbr,
+  delVmbr,
   setTemporaryHosts,
   clearTemporaryHosts,
-  delVmbr,
+  setTemporaryContainer,
+  clearTemporaryContainer,
+  delVmbrContainer,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

@@ -4,14 +4,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// fns
-import { getHosts, getProviders } from "../../store/reducers/requestSlice";
+import {
+  addHostFN,
+  getHosts,
+  getProviders,
+} from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
 
 ///////style
 import "./style.scss";
 
-///////helpers
+///////fns
+import { setAddHost } from "../../store/reducers/stateSlice";
 
 ///////components
 import MenuInner from "../../components/Menu/MenuInner/MenuInner";
@@ -21,6 +26,8 @@ import Containers from "../../components/MainPage/Containers/Containers";
 import StatusContainers from "../../components/MainPage/StatusContainers/StatusContainers";
 import GraphicHosts from "../../components/MainPage/GraphicHosts/GraphicHosts";
 import GraphicContainer from "../../components/MainPage/GraphicContainer/GraphicContainer";
+import ModalsForContainers from "../../components/MainPage/ModalsForContainers/ModalsForContainers";
+import ModalsForHosts from "../../components/MainPage/ModalsForHosts/ModalsForHosts";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -48,10 +55,17 @@ const MainPage = () => {
 
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 
+  console.log(listContainers, "listContainers");
+
+  const addHost = () => dispatch(setAddHost({ bool: true }));
+  //// открываю модалку для добавления хоста
+
   return (
     <div className="mainPage">
       <div className="providers">
-        <button className="addBtn">+</button>
+        <button className="addBtn" onClick={addHost}>
+          +
+        </button>
         <div className="providers__inner">
           {listProviders?.map((item, index) => (
             <div key={index}>
@@ -78,10 +92,10 @@ const MainPage = () => {
           <div className="hosts__more_info">
             <GraphicHosts />
           </div>
+          <ModalsForHosts />
         </div>
 
         <MenuInner />
-
         <div className={`containers ${checkContainer}`}>
           <div className="containers__inner">
             {listContainers?.map((item, index) => (
@@ -91,6 +105,8 @@ const MainPage = () => {
           <div className="containers__more_info">
             <GraphicContainer />
           </div>
+          <ModalsForContainers />
+          {/* ///// модалки контейнеров */}
         </div>
         <StatusContainers />
       </div>

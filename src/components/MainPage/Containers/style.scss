@@ -35,6 +35,7 @@
 
     .edit {
       width: 20px;
+      min-width: 20px;
       height: 20px;
       margin: 0 5px;
       background: rgb(30, 31, 35);
@@ -42,8 +43,8 @@
       border-radius: 5px;
 
       img {
-        width: 80%;
-        height: 80%;
+        width: 100%;
+        height: 100%;
       }
     }
 

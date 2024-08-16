@@ -12,18 +12,26 @@ import hostingIcon from "../../../assets/images/memoryImgs/hosting.png";
 
 ////// helpers
 import { percentColor } from "../../../helpers/percentColor";
-import { tranformTextInNum } from "../../../helpers/tranformTextInNum";
-import { percentNums } from "../../../helpers/percentNums";
 import DataBases from "../../../iconsComponents/DataBases/DataBases";
+import { cutNums } from "../../../helpers/cutNums";
 
-const MemoryComp = ({ percent, GB }) => {
-  ///   const percent = { per: "49%", cpu: "56 cpu" };
-  /// const GB = { perOne: "600.4 GiBasdasdsad", perAll: "1000.83 GiB" };
+const MemoryComp = (props) => {
+  const { node_cpu_usage, node_cpu } = props;
+  const { node_ram_usage, node_ram_mb } = props;
+  const { array_storages } = props;
 
-  const percentGB = percentNums(
-    tranformTextInNum(GB?.perOne),
-    tranformTextInNum(GB?.perAll)
-  );
+  const node_ram_usage_new = cutNums(+node_ram_usage / 1024, 2);
+  const node_ram_mb_new = cutNums(+node_ram_mb / 1024, 2);
+  const all_node_ram = `${node_ram_usage_new}GiB / ${node_ram_mb_new}GiB`;
+
+  const color_ram = (+node_ram_usage * 100) / +cutNums(+node_ram_mb, 2);
+
+  const objImgs = {
+    1: hostingIcon,
+    2: dataBaseIcon,
+    3: backupIcon,
+    4: dataBaseIcon,
+  };
 
   return (
     <div className="memoryBlock">
@@ -33,12 +41,12 @@ const MemoryComp = ({ percent, GB }) => {
           <div
             className="percent"
             style={{
-              width: percent?.per,
-              background: percentColor(percent?.per),
+              width: `${cutNums(+node_cpu_usage * 100)}%`,
+              background: percentColor(`${+node_cpu_usage * 100} %`),
             }}
           ></div>
           <p className="info">
-            {percent?.per} / {percent?.cpu}
+            {cutNums(+node_cpu_usage * 100, 1)} % / {node_cpu} cpu
           </p>
         </div>
       </div>
@@ -48,26 +56,26 @@ const MemoryComp = ({ percent, GB }) => {
           <div
             className="percent"
             style={{
-              width: `${percentGB}%`,
-              background: percentColor(percentGB),
+              width: `${color_ram}%`,
+              background: percentColor(`${color_ram}%`),
             }}
-          ></div>
-          <p className="info">
-            {tranformTextInNum(GB?.perOne)} GiB /{" "}
-            {tranformTextInNum(GB?.perAll)} GiB
-          </p>
+          />
+          <p className="info">{all_node_ram}</p>
         </div>
       </div>
 
-      <div className="comps">
-        <DataBases percent={"21%"} img={dataBaseIcon} more={"local"} />
-        <DataBases percent={"34%"} img={dataBaseIcon} more={"storage2"} />
-        <DataBases percent={"98%"} img={dataBaseIcon} more={"px-huawei"} />
-        <DataBases percent={"56%"} img={backupIcon} more={"local_lvm"} />
-        <DataBases percent={"32%"} img={backupIcon} more={"storage2"} />
-        <DataBases percent={"78%"} img={hostingIcon} more={"pxmb 105-7"} />
-        <DataBases percent={"32%"} img={hostingIcon} more={"pxmb 243-2"} />
-      </div>
+      {array_storages?.length !== 0 && (
+        <div className="comps">
+          {array_storages?.map((item) => (
+            <DataBases
+              percent={`${+item?.storage_used_fraction * 100}%`}
+              img={objImgs?.[item?.tipe_id]}
+              more={item?.storage_name}
+              key={item?.guid}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

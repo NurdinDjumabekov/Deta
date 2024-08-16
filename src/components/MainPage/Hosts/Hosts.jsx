@@ -11,56 +11,32 @@ import editImg from "../../../assets/icons/edit.svg";
 ////// styles
 import "./style.scss";
 
-/////// componets
-import MemoryComp from "../MemoryComp/MemoryComp";
-import Modals from "../../../common/Modals/Modals";
-import MyInputs from "../../../common/MyInput/MyInputs";
-
 /////// fns
-import { delVmbr, setTemporaryHosts } from "../../../store/reducers/stateSlice";
+import { setTemporaryHosts } from "../../../store/reducers/stateSlice";
+import { setGuidHostDel } from "../../../store/reducers/stateSlice";
+import { setGuidHostEdit } from "../../../store/reducers/stateSlice";
 import { getContainers } from "../../../store/reducers/requestSlice";
-import { deleteHost, editHost } from "../../../store/reducers/requestSlice";
 
 const Hosts = ({ item }) => {
-  const { node_name, vmbr } = item;
-  const { host_ip, node_comment, host_status, id } = item;
-  const { percent, GB } = item;
-  //////////////
-  const { host_name, node_uptime_sec, guid } = item;
+  const { host_ip, node_comment, host_status, vmbr } = item;
+  const { host_name, node_uptime_sec, guid, guid_node } = item;
   const { array_storages, node_model } = item;
-  const { storage_name } = item;
-
-  // console.log(storage_content, "storage_content");
-
-  const [del, setDel] = useState(false);
-  const [edit, setEdit] = useState(false);
 
   const dispatch = useDispatch();
 
-  const { activeHost, temporaryHosts } = useSelector(
-    (state) => state.stateSlice
-  );
+  const { activeHost } = useSelector((state) => state.stateSlice);
 
-  const lisVmbr = vmbr?.split(",");
+  const listVmbr = vmbr?.split(",");
 
   const clickHost = () => dispatch(getContainers(guid));
   //// выбор хоста для получения контейнеров связанных с этим хостом
 
-  const delHost = () => dispatch(deleteHost(guid));
-  // удаление хоста через запрос
-
   const editOpenModal = () => {
-    setEdit(true);
-    const obj = { host_name, guid, node_model, array_storages };
-    dispatch(setTemporaryHosts(obj));
-  };
-
-  const editHostFN = () => dispatch(editHost(temporaryHosts));
-  // редактирование хоста через запрос
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(setTemporaryHosts({ ...temporaryHosts, [name]: value }));
+    const obj = { host_name, guid_node, node_model, array_storages };
+    dispatch(setTemporaryHosts({ ...obj, listVmbr }));
+    /// временно хранение данных для редактирования
+    dispatch(setGuidHostEdit(guid_node));
+    //// для открытия модалки
   };
 
   const err = host_status == 5 ? "lineError" : "";
@@ -73,11 +49,11 @@ const Hosts = ({ item }) => {
         <h4>{node_model}</h4>
         <div className="actions">
           <p>
-            {host_name}(<b>{node_uptime_sec}</b>)
+            {host_name}(<b>{secondsToDhms(node_uptime_sec)}</b>)
           </p>
 
           <div className="actions">
-            <button onClick={() => {}}>
+            <button>
               <img src={repeat} alt="x" />
               <span className="moreInfo">Обновить данные хоста</span>
             </button>
@@ -85,7 +61,10 @@ const Hosts = ({ item }) => {
               <img src={editImg} alt="x" />
               <span className="moreInfo">Изменить</span>
             </button>
-            <button className="del" onClick={() => setDel(true)}>
+            <button
+              className="del"
+              onClick={() => dispatch(setGuidHostDel(true))}
+            >
               <img src={delImg} alt="x" />
               <span className="moreInfo">Удалить</span>
             </button>
@@ -93,84 +72,35 @@ const Hosts = ({ item }) => {
         </div>
 
         <div className="vmbrBlock">
-          {array_storages?.map((item, index) => (
+          {listVmbr?.map((item, index) => (
             <div key={index}>
               <p>vmbr {index}</p>
               <img src={diagram} alt="0" />
-              <span>{item?.storage_name}</span>
+              <span>{item}</span>
             </div>
           ))}
         </div>
 
         <p className="ip_host">{host_ip}</p>
 
-        <MemoryComp percent={percent} GB={GB} />
-
         <p className="comment">{node_comment}</p>
       </div>
-
-      {/* для удаления  */}
-      <Modals
-        openModal={del}
-        setOpenModal={() => setDel()}
-        title={"Удалить данный хост ?"}
-      >
-        <div className="modalDel">
-          <button className="yes" onClick={delHost}>
-            Да
-          </button>
-          <button className="no" onClick={() => setDel("")}>
-            Нет
-          </button>
-        </div>
-      </Modals>
-      {/* для удаления  */}
-
-      {/* для редактирования  */}
-      <Modals
-        openModal={edit}
-        setOpenModal={() => setEdit()}
-        title={"Редактирование хоста"}
-      >
-        <div className="addDns hostsEdit">
-          <div className="second">
-            <MyInputs
-              title={"Информация :"}
-              onChange={onChange}
-              name={"record_name"}
-              value={temporaryHosts?.host_name}
-            />
-
-            <MyInputs
-              title={"Модель :"}
-              onChange={onChange}
-              name={"host_ip"}
-              value={temporaryHosts?.node_model}
-            />
-          </div>
-
-          <h6>vmbr</h6>
-
-          <div className="listHostsStorage">
-            {temporaryHosts?.array_storages?.map((item) => (
-              <div className="every" key={item?.guid}>
-                <p>{item?.storage_name}</p>
-                <button className="del" onClick={() => dispatch(delVmbr(item))}>
-                  <img src={delImg} alt="x" />
-                </button>
-              </div>
-            ))}
-          </div>
-          <div className="second actions">
-            <button className="addAction" onClick={editHostFN}>
-              Сохранить
-            </button>
-          </div>
-        </div>
-      </Modals>
-      {/* для редактирования  */}
     </>
   );
 };
 
 export default Hosts;
+
+export const secondsToDhms = (seconds) => {
+  seconds = Number(seconds);
+  var d = Math.floor(seconds / (3600 * 24));
+  var h = Math.floor((seconds % (3600 * 24)) / 3600);
+  var m = Math.floor((seconds % 3600) / 60);
+  var s = Math.floor(seconds % 60);
+
+  var dDisplay = d > 0 ? d + (d == 1 ? "d" : "d") : "";
+  var hDisplay = h > 0 ? h + (h == 1 ? "h " : "h") : "";
+  var mDisplay = m > 0 ? m + (m == 1 ? "m " : "m") : "";
+  var sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
+  return dDisplay + hDisplay + mDisplay;
+};
