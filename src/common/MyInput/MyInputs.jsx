@@ -6,7 +6,7 @@ const MyInputs = (props) => {
   const { onChange, required, value, type } = props;
 
   return (
-    <div className={`myInput`}>
+    <div className="myInput">
       <h5>{title}</h5>
       <input
         type={type ? type : "text"}

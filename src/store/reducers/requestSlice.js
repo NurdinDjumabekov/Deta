@@ -10,9 +10,13 @@ import {
   setActiveDns,
   setActiveHost,
   setGuidHostEdit,
+  setOpenModaDelGroup,
+  setOpenModalAddGroup,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen } from "../../helpers/LocalData";
+import { toast } from "react-toastify";
+import { myAlert } from "../../helpers/MyAlert";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -26,11 +30,10 @@ const initialState = {
   listDnsDomen: [],
   listDnsSubDomen: [],
   listProviders: [],
+  listGroupContainers: [], //// группы контейнеров
 };
 
 const url_socket = "http://217.29.26.222:3633";
-
-////////////////////// mainPage //////////////////////////////
 
 ///// getProviders - для получения провайдеров
 export const getProviders = createAsyncThunk(
@@ -60,7 +63,7 @@ export const updatedProvoders = () => (dispatch) => {
   };
 };
 
-////////////////////////////////////////////////////////// hosts
+//////////////////////////////////////////////////////////// hosts //////////////
 
 ///// getHosts - для получения провайдеров
 export const getHosts = createAsyncThunk(
@@ -74,6 +77,24 @@ export const getHosts = createAsyncThunk(
         dispatch(setActiveHost(first));
         dispatch(getContainers(first));
         /// подставляю первый хост чтобы он был активный
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getGroup - для получения групп где хранятся контейнера
+export const getGroup = createAsyncThunk(
+  "getGroup",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}++++++++++`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -164,7 +185,7 @@ export const editHost = createAsyncThunk(
   }
 );
 
-////////////////////////////////////////////////////////// containers
+////////////////////////////////////////////////////////// containers //////////////
 
 ///// getContainers - для получения контейнеров
 export const getContainers = createAsyncThunk(
@@ -187,7 +208,26 @@ export const getContainers = createAsyncThunk(
   }
 );
 
-///// editContainers - для редактирования контейнеров
+///// addContainersFN - добавление контейнеров
+export const addContainersFN = createAsyncThunk(
+  "addContainersFN",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/+++++++++++++++++++`;
+    ///  data - добавляемые данные хоста
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// editContainers - редактирование контейнеров
 export const editContainers = createAsyncThunk(
   "editContainers",
   async function ({ activeHost, data }, { dispatch, rejectWithValue }) {
@@ -211,7 +251,103 @@ export const editContainers = createAsyncThunk(
   }
 );
 
-////////////////////////////////////////////////////////// сети
+///// editContainerOS - добавление ОС контейнеров
+export const editContainerOS = createAsyncThunk(
+  "editContainerOS",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        ///// очищаю временное хранение данных контейнеров
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// addFileInContainer - добавление файлов в контейнера
+export const addFileInContainer = createAsyncThunk(
+  "addFileInContainer",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        ///// очищаю временное хранение данных контейнеров
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// addGroupContFN - добавление контейнера в группу
+export const addGroupContFN = createAsyncThunk(
+  "addGroupContFN",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setOpenModalAddGroup(""));
+        /// очищаю данные для закрытия модалки
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// fixTimeCreateCont - фиксирование времени создания контейнера
+export const fixTimeCreateCont = createAsyncThunk(
+  "fixTimeCreateCont",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+    myAlert("Время зафиксировано");
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// offContainerFN - выключения контейнера
+export const offContainerFN = createAsyncThunk(
+  "offContainerFN",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setOpenModaDelGroup("")); /// закрываю модалку
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+////////////////////////////////////////////////////////// сети //////////////
 
 ///// getNetworks - для получения сетей
 export const getNetworks = createAsyncThunk(
@@ -265,7 +401,7 @@ export const getDnsDomen = createAsyncThunk(
   }
 );
 
-////////////// domens //////////////
+////////////////////////////////////////////////////////// domens //////////////
 
 ///// addDomens - для добавления доменов
 export const addDomens = createAsyncThunk(
@@ -351,7 +487,7 @@ export const deleteDomen = createAsyncThunk(
 //   }
 // );
 
-////////////// sub domens //////////////
+////////////////////////////////////////////////////////// sub domens //////////////
 
 ///// getDnsSubDomen - для получения dns доменов
 export const getDnsSubDomen = createAsyncThunk(
@@ -494,6 +630,19 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(getHosts.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ////////////////////////////// getGroup
+    builder.addCase(getGroup.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listGroupContainers = action.payload;
+    });
+    builder.addCase(getGroup.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getGroup.pending, (state, action) => {
       // state.preloader = true;
     });
 

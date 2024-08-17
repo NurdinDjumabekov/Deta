@@ -18,7 +18,8 @@ import Test from "../pages/Test/Test";
 // import { Preloader } from "../components/Preloader/Preloader";
 // import Alerts from "../components/Alerts/Alerts";
 
-////fns
+////styles
+import "react-toastify/dist/ReactToastify.css";
 
 const MainRoutes = () => {
   const dispatch = useDispatch();

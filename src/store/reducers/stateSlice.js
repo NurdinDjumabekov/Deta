@@ -4,26 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import container from "../../assets/icons/menu/box.svg";
 import servers from "../../assets/icons/menu/database.svg";
 import users from "../../assets/icons/menu/users.svg";
-import { dnsListDefault } from "../../helpers/LocalData";
-
-const listGr = [
-  { name: "Тестовая группa", decs: "описание1" },
-  { name: "ЛИС стационар", decs: "описание1" },
-  { name: "ЛИС облако", decs: "описание1" },
-  { name: "Мис", decs: "описание1" },
-  { name: "Доставка", decs: "описание1" },
-  { name: "FIN", decs: "описание1" },
-  { name: "1C", decs: "описание1" },
-];
-
-const listname = [
-  { name: "Иван", decs: "описание1" },
-  { name: "Баатыр", decs: "описание1" },
-  { name: "Роза", decs: "описание1" },
-  { name: "Айжамал", decs: "описание1" },
-  { name: "Эржан", decs: "описание1" },
-  { name: "Бек", decs: "описание1" },
-];
+import { dnsListDefault, listGr, listname } from "../../helpers/LocalData";
 
 const initialState = {
   menuInner: [
@@ -152,6 +133,17 @@ const initialState = {
   temporaryContainer: { vm_comment: "", guid: "", listVmbr: [] },
   ///// временный state для хранения временных
   ///// данных контейнеров для редактирвоания
+
+  addTempCont: { container_name: "", cpu: 0, ram: 0, ssd: 0, bool: false },
+  ///// временные данные для добавления контейнеров
+
+  openOSModal: "", ////guid для модалки выбора операц. системы
+
+  openAddFiles: "", ////guid для модалки добавления файлов
+
+  openModalAddGroup: "", ////guid для модалки добавления контейнера в группу
+
+  openModaDelGroup: "", ////guid для модалки выключения контейнера
 };
 
 const stateSlice = createSlice({
@@ -291,6 +283,36 @@ const stateSlice = createSlice({
       //// state для временного хранения данных хоста,
       //// удаляю со списка  vmbr
     },
+
+    setAddTempCont: (state, action) => {
+      state.addTempCont = { ...state.addTempCont, ...action.payload };
+    },
+
+    clearAddTempCont: (state, action) => {
+      state.addTempCont = {
+        container_name: "",
+        cpu: 0,
+        ram: 0,
+        ssd: 0,
+        bool: false,
+      };
+    },
+
+    setOpenOSModal: (state, action) => {
+      state.openOSModal = action.payload;
+    },
+
+    setOpenAddFiles: (state, action) => {
+      state.openAddFiles = action.payload;
+    },
+
+    setOpenModalAddGroup: (state, action) => {
+      state.openModalAddGroup = action.payload;
+    },
+
+    setOpenModaDelGroup: (state, action) => {
+      state.openModaDelGroup = action.payload;
+    },
   },
 });
 
@@ -316,6 +338,12 @@ export const {
   setTemporaryContainer,
   clearTemporaryContainer,
   delVmbrContainer,
+  setAddTempCont,
+  clearAddTempCont,
+  setOpenOSModal,
+  setOpenAddFiles,
+  setOpenModalAddGroup,
+  setOpenModaDelGroup,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

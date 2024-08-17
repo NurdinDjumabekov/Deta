@@ -1,3 +1,162 @@
 .contEdit {
-  width: 450px;
+  width: 450px !important;
+
+  .myInput {
+    margin-bottom: 20px;
+  }
+
+  .actions {
+    justify-content: flex-end !important;
+  }
+}
+
+.contAdd {
+  width: 600px !important;
+}
+
+.osModal {
+  width: 450px !important;
+
+  .listOS {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 5px;
+
+    button {
+      width: 40px;
+      height: 40px;
+
+      &:hover {
+        transform: scale(1.2);
+        transition: 0.3s;
+      }
+
+      img {
+        border-radius: 50%;
+      }
+    }
+  }
+}
+
+.filesAdd {
+  width: 650px;
+  margin: 20px 0px;
+  position: relative;
+  min-height: 200px;
+
+  .dzu-dropzone {
+    min-height: 400px;
+    max-height: 400px;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      min-width: 5px;
+      max-width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+      min-width: 5px;
+      max-width: 5px;
+      &:hover {
+        background-color: #050505;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      cursor: pointer;
+      max-height: 50px;
+      min-height: 50px;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        background-color: #050505;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #ffffff4e;
+      }
+    }
+  }
+
+  .dzu-previewButton {
+    // width: 1px;
+    // height: 1px;
+    // position: relative;
+
+    // &::after {
+    //   content: "";
+    //   background-image: url("../../../assets/images/krest.png");
+    //   width: 20px;
+    //   height: 20px;
+    //   display: block;
+    //   background: #fff;
+    //   position: absolute;
+    //   top: -9px;
+    //   left: -3px;
+    // }
+  }
+
+  .dzu-previewFileName {
+    color: #fff;
+  }
+
+  .actions {
+    justify-content: flex-end !important;
+  }
+}
+
+.choiceGroup {
+  width: 480px;
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 40px 0px 40px;
+    gap: 15px;
+
+    button {
+      width: 220px;
+      background: rgb(30, 31, 35);
+      padding: 5px 0px 7px;
+      border-radius: 5px;
+      font-size: 15px;
+
+      &:hover {
+        background: rgba(30, 31, 35, 0.483);
+        color: #d0caca;
+      }
+    }
+  }
+
+  // .groups {
+  //   justify-content: center !important;
+  // }
+}
+
+.offContainer {
+  width: 440px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0px 20px;
+  gap: 40px;
+
+  .yes {
+    background: green;
+    border-radius: 8px;
+    width: 90px;
+    height: 40px;
+  }
+
+  .no {
+    background: red;
+    border-radius: 8px;
+    width: 90px;
+    height: 40px;
+  }
 }

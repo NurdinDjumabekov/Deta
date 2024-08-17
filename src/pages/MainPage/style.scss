@@ -8,42 +8,50 @@
     gap: 25px;
     border-bottom: 1px solid #6e6b6b;
 
-    &__inner {
+    &__main {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 20px;
+      width: 52%;
+      // background: red;
 
-      > div {
+      &__inner {
         display: flex;
         align-items: center;
-        background: rgb(30, 31, 35);
-        padding: 3px 8px;
-        gap: 5px;
+        gap: 10px;
 
-        p {
-          font-size: 16px;
-        }
+        > div {
+          display: flex;
+          align-items: center;
+          background: rgb(30, 31, 35);
+          padding: 3px 8px;
+          gap: 5px;
 
-        .roundGreen {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          animation: animGreen 0.4s infinite;
-          background: green;
-        }
+          p {
+            font-size: 16px;
+          }
 
-        .roundRed {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          animation: animRed 0.4s infinite;
-          background: rgb(225, 28, 28);
-        }
+          .roundGreen {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: animGreen 0.4s infinite;
+            background: green;
+          }
 
-        span {
-          display: block;
-          font-size: 12px;
-          margin: 0 0 0 8px;
+          .roundRed {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: animRed 0.4s infinite;
+            background: rgb(225, 28, 28);
+          }
+
+          span {
+            display: block;
+            font-size: 12px;
+            margin: 0 0 0 8px;
+          }
         }
       }
     }

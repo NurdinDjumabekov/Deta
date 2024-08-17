@@ -1,0 +1,51 @@
+.sliderScroll {
+  margin: 10px 0 0 0;
+
+  .css-1eoe787-MuiSlider-markLabel {
+    display: none !important;
+  }
+
+  .css-yafthl-MuiSlider-markLabel {
+    display: none !important;
+  }
+
+  .css-1sn4o9w-MuiSlider-root {
+    margin-bottom: 0px !important;
+  }
+
+  .inputNum {
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    border: none;
+    color: #222;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+
+    &::placeholder {
+      font-family: "Cygre Book", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 18px;
+      text-align: left;
+      color: #b9b9b9;
+    }
+
+    &:focus {
+      color: #050505;
+      outline: none;
+      // border: 1px solid #050505;
+    }
+  }
+
+  .title {
+    font-size: 14px;
+    width: 150px;
+  }
+
+  .typeSel {
+    font-size: 12px;
+    width: 70px;
+  }
+}

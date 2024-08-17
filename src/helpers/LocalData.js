@@ -6,6 +6,13 @@ import ipAddres from "../assets/icons/menu/ipAddres.svg";
 import usersIcon from "../assets/icons/menu/users.svg";
 import dns from "../assets/icons/menu/dns.svg";
 
+/////// os
+import windows from "../assets/images/OS/windows.png";
+import ubuntu from "../assets/images/OS/ubuntu.png";
+import freeNas from "../assets/images/OS/freeNas.png";
+import freeBSD from "../assets/images/OS/freeBSD.png";
+import centos from "../assets/images/OS/centos.png";
+
 export const pages = [
   { id: 1, name: "Главная", path: "/", img: home },
   { id: 2, name: "Микротики", path: "/microtic", img: microtic },
@@ -13,6 +20,25 @@ export const pages = [
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
   { id: 6, name: "ДНС", path: "/dns", img: dns },
+];
+
+export const listGr = [
+  { name: "Тестовая группa", decs: "описание1", guid: "asdasdas" },
+  { name: "ЛИС стационар", decs: "описание1", guid: "asdasdas" },
+  { name: "ЛИС облако", decs: "описание1", guid: "asdasdas" },
+  { name: "Мис", decs: "описание1", guid: "asdasdas" },
+  { name: "Доставка", decs: "описание1", guid: "asdasdas" },
+  { name: "FIN", decs: "описание1", guid: "asdasdas" },
+  { name: "1C", decs: "описание1", guid: "asdasdas" },
+];
+
+export const listname = [
+  { name: "Иван", decs: "описание1" },
+  { name: "Баатыр", decs: "описание1" },
+  { name: "Роза", decs: "описание1" },
+  { name: "Айжамал", decs: "описание1" },
+  { name: "Эржан", decs: "описание1" },
+  { name: "Бек", decs: "описание1" },
 ];
 
 export const hosts = [
@@ -3656,3 +3682,11 @@ export const defaultSubDomen = {
   ttl_type: 1,
   comment: "",
 };
+
+export const listOS = [
+  { id: 1, img: windows },
+  { id: 2, img: ubuntu },
+  { id: 3, img: freeNas },
+  { id: 4, img: freeBSD },
+  { id: 5, img: centos },
+];

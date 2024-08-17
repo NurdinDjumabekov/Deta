@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 ////// styles
 import "./style.scss";
 import { setMenuInner } from "../../../store/reducers/stateSlice";
+import Search from "../../MainPage/Search/Search";
 
 /////// components
 
@@ -48,6 +49,7 @@ const MenuInner = () => {
           </div>
         ))}
       </div>
+      <Search />
     </div>
   );
 };

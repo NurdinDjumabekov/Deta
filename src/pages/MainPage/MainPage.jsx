@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 /////// fns
 import {
   addHostFN,
+  getGroup,
   getHosts,
   getProviders,
 } from "../../store/reducers/requestSlice";
@@ -42,6 +43,7 @@ const MainPage = () => {
   useEffect(() => {
     dispatch(getProviders());
     dispatch(getHosts());
+    dispatch(getGroup());
 
     const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
     const disconnectHost = dispatch(updatedHosts()); /// get хосты
@@ -63,23 +65,24 @@ const MainPage = () => {
   return (
     <div className="mainPage">
       <div className="providers">
-        <button className="addBtn" onClick={addHost}>
-          +
-        </button>
-        <div className="providers__inner">
-          {listProviders?.map((item, index) => (
-            <div key={index}>
-              <p>{item?.provider_name}</p>
-              <div
-                className={
-                  item?.provider_status == 1 ? "roundGreen" : "roundRed"
-                }
-              />
-              <span>{item?.provider_pingtime}</span>
-            </div>
-          ))}
+        <div className="providers__main">
+          <button className="addBtn" onClick={addHost}>
+            +
+          </button>
+          <div className="providers__main__inner">
+            {listProviders?.map((item, index) => (
+              <div key={index}>
+                <p>{item?.provider_name}</p>
+                <div
+                  className={
+                    item?.provider_status == 1 ? "roundGreen" : "roundRed"
+                  }
+                />
+                <span>{item?.provider_pingtime}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <Search />
       </div>
 
       <div className="hostAndContainer">

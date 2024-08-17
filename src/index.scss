@@ -69,13 +69,28 @@ img {
 .moreInfo {
   position: absolute;
   top: 0;
+  left: 25px;
   color: #fff;
   padding: 5px 10px;
   border-radius: 3px;
   border: 1px solid #fff;
   display: none;
   font-size: 11px;
-  z-index: 2;
+  z-index: 99;
+  background: #292d32;
+}
+
+.moreInfoLeft {
+  position: absolute;
+  bottom: 15px;
+  right: 25px;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px solid #fff;
+  display: none;
+  font-size: 11px;
+  z-index: 999;
   background: #292d32;
 }
 
