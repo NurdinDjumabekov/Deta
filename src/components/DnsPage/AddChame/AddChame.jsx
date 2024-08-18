@@ -29,8 +29,6 @@ const AddChame = ({ obj }) => {
     dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
   };
 
-  console.log(dnsList?.[obj], "dnsList?.[obj]");
-
   return (
     <div className="addDns">
       <div className="second">

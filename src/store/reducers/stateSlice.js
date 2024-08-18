@@ -8,21 +8,9 @@ import { dnsListDefault, listGr, listname } from "../../helpers/LocalData";
 
 const initialState = {
   menuInner: [
-    { id: 1, name: "Контейнеры", img: container, active: false },
-    {
-      id: 2,
-      name: "Сервисы",
-      img: servers,
-      active: false,
-      list: listGr,
-    },
-    {
-      id: 3,
-      name: "Пользователи",
-      img: users,
-      active: false,
-      list: listname,
-    },
+    { id: 1, name: "Контейнеры", img: container, active: false, list: [] },
+    { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
+    { id: 3, name: "Пользователи", img: users, active: false, list: [] },
   ],
 
   ///// активный host на главной странице
@@ -143,7 +131,19 @@ const initialState = {
 
   openModalAddGroup: "", ////guid для модалки добавления контейнера в группу
 
-  openModaDelGroup: "", ////guid для модалки выключения контейнера
+  openModaDelGroup: "", ////guid для модалки удаления контейнера с группы
+
+  openModaStoppedCont: "", ////guid для модалки выключения контейнера
+
+  openModaDelCont: "", ////guid для модалки удаления контейнера
+
+  openModalBackUp: {
+    name: "", /// тут буду хрпнить данные о контейнере и хостедля простого отображения
+    guid: "", /// guid - контейнера
+    fasts: 0,
+    type: 0,
+    snaps: 0,
+  },
 };
 
 const stateSlice = createSlice({
@@ -159,6 +159,14 @@ const stateSlice = createSlice({
         }
       });
       state.menuInner = newMenu;
+    },
+
+    changeMenuInner: (state, action) => {
+      const { id } = action.payload;
+      const obj = state.menuInner?.find((item) => item.id == id);
+      const updatedMenu = state.menuInner?.filter((item) => item.id !== id);
+      //// ищу по id и возвращаю обьект который хочу поменять
+      state.menuInner = [...updatedMenu, { ...obj, ...action.payload }];
     },
 
     setActiveHost: (state, action) => {
@@ -313,11 +321,34 @@ const stateSlice = createSlice({
     setOpenModaDelGroup: (state, action) => {
       state.openModaDelGroup = action.payload;
     },
+
+    setOpenModalBackUp: (state, action) => {
+      state.openModalBackUp = action.payload;
+    },
+
+    clearOpenModalBackUp: (state, action) => {
+      state.openModalBackUp = {
+        name: "",
+        guid: "",
+        fasts: 0,
+        type: 0,
+        snaps: 0,
+      };
+    },
+
+    setOpenModaStoppedCont: (state, action) => {
+      state.openModaStoppedCont = action.payload;
+    },
+
+    setOpenModaDelCont: (state, action) => {
+      state.openModaDelCont = action.payload;
+    },
   },
 });
 
 export const {
   setMenuInner,
+  changeMenuInner,
   setActiveHost,
   setActiveContainer,
   setActiveDns,
@@ -344,6 +375,10 @@ export const {
   setOpenAddFiles,
   setOpenModalAddGroup,
   setOpenModaDelGroup,
+  setOpenModalBackUp,
+  clearOpenModalBackUp,
+  setOpenModaStoppedCont,
+  setOpenModaDelCont,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

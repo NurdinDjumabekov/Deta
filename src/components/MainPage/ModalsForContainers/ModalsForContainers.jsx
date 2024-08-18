@@ -9,10 +9,14 @@ import StorageIcon from "@mui/icons-material/Storage";
 
 ////// fns
 import {
+  setOpenModaDelCont,
   setOpenModalAddGroup,
-  setOpenModaDelGroup,
-  setOpenOSModal,
 } from "../../../store/reducers/stateSlice";
+import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
+import { setOpenOSModal } from "../../../store/reducers/stateSlice";
+import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
+import { clearOpenModalBackUp } from "../../../store/reducers/stateSlice";
+import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
 import { setOpenAddFiles } from "../../../store/reducers/stateSlice";
 import { clearAddTempCont } from "../../../store/reducers/stateSlice";
 import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
@@ -20,9 +24,12 @@ import { setAddTempCont } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import {
   addGroupContFN,
-  editContainers,
-  offContainerFN,
+  delContainerFN,
 } from "../../../store/reducers/requestSlice";
+import { backUpContainerFN } from "../../../store/reducers/requestSlice";
+import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
+import { editContainers } from "../../../store/reducers/requestSlice";
+import { offContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainerOS } from "../../../store/reducers/requestSlice";
 import { addFileInContainer } from "../../../store/reducers/requestSlice";
 import { addContainersFN } from "../../../store/reducers/requestSlice";
@@ -37,7 +44,11 @@ import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
 
 ////// helpers
-import { listGr, listOS } from "../../../helpers/LocalData";
+import { listFast, listGr } from "../../../helpers/LocalData";
+import { listOS, listSnaps } from "../../../helpers/LocalData";
+import { listTypes } from "../../../helpers/LocalData";
+import Selects from "../../../common/Selects/Selects";
+import { myAlert } from "../../../helpers/MyAlert";
 
 const ModalsForContainers = () => {
   const dispatch = useDispatch();
@@ -100,15 +111,48 @@ const ModalsForContainers = () => {
     dispatch(addGroupContFN({ guid_group: guid, guid: openModalAddGroup }));
   };
 
-  //////////////////////////////////______////// выключения контейнера
+  //////////////////////////////////______////// удаление контейнера c группы
   const { openModaDelGroup } = useSelector((state) => state.stateSlice);
 
-  const offContainer = (guid) => dispatch(offContainerFN(guid));
+  const delContInGroup = () => dispatch(delGroupContainerFN(openModaDelGroup));
+  ///// удаление контейнера с группы через запрос
+
+  //////////////////////////////////______////// выключения контейнера
+  const { openModaStoppedCont } = useSelector((state) => state.stateSlice);
+
+  const offContainer = () => dispatch(offContainerFN(openModaStoppedCont));
   //////// выключения контейнера через запрос
+
+  //////////////////////////////////______////// backUp контейнера
+  const { openModalBackUp } = useSelector((state) => state.stateSlice);
+
+  const onChangeSelect = (nameKey, name, id) => {
+    dispatch(setOpenModalBackUp({ ...openModalBackUp, [nameKey]: id }));
+  };
+
+  const backUpContainer = () => {
+    //////// backUp контейнера через запрос
+    if (!!!openModalBackUp?.fasts) {
+      return myAlert("Выберите первое");
+    }
+    if (!!!openModalBackUp?.type) {
+      return myAlert("Выберите второе");
+    }
+    if (!!!openModalBackUp?.snaps) {
+      return myAlert("Выберите третье");
+    }
+    dispatch(backUpContainerFN(openModalBackUp));
+  };
+
+  //////////////////////////////////______////// удаление контейнера
+  const { openModaDelCont } = useSelector((state) => state.stateSlice);
+
+  const delContainer = () => dispatch(delContainerFN(openModaDelCont));
+  //////// удаление контейнера через запрос
 
   return (
     <>
-      {/* редактирование  */}
+      {/*/////////______//////______////// редактирование  */}
       <Modals
         openModal={!!temporaryContainer?.guid}
         setOpenModal={() => dispatch(clearTemporaryContainer())}
@@ -133,7 +177,7 @@ const ModalsForContainers = () => {
       </Modals>
       {/* редактирование  */}
 
-      {/* добавления контенера  */}
+      {/*/////////______//////______////// добавления контенера  */}
       <Modals
         openModal={addTempCont?.bool}
         setOpenModal={() => dispatch(clearAddTempCont())}
@@ -189,7 +233,7 @@ const ModalsForContainers = () => {
       </Modals>
       {/*  добавления контенера  */}
 
-      {/* выбор операционной системы*/}
+      {/*/////////______//////______////// выбор операционной системы*/}
       <Modals
         openModal={!!openOSModal}
         setOpenModal={() => dispatch(setOpenOSModal())}
@@ -207,7 +251,7 @@ const ModalsForContainers = () => {
       </Modals>
       {/* выбор операционной системы*/}
 
-      {/* добавление файлов в контейнера  */}
+      {/*/////////______//////______////// добавление файлов в контейнера  */}
       <Modals
         openModal={!!openAddFiles}
         setOpenModal={() => dispatch(setOpenAddFiles())}
@@ -225,7 +269,7 @@ const ModalsForContainers = () => {
       </Modals>
       {/* добавление файлов в контейнера  */}
 
-      {/* добавление контейнера в группу  */}
+      {/*/////////______//////______////// добавление контейнера в группу  */}
       <Modals
         openModal={!!openModalAddGroup}
         setOpenModal={() => dispatch(setOpenModalAddGroup())}
@@ -248,17 +292,16 @@ const ModalsForContainers = () => {
       </Modals>
       {/* добавление контейнера в группу  */}
 
-      {/* выключения контейнера через запрос  */}
+      {/*/////////______//////______////// удалить контейнер с группы через запрос  */}
       <Modals
         openModal={!!openModaDelGroup}
         setOpenModal={() => dispatch(setOpenModaDelGroup())}
-        title={"Вы уверены, что хотите удалить?"}
+        title={"Вы уверены, что хотите удалить контейнер с группы?"}
       >
         <div className="addDns offContainer">
-          <button onClick={offContainer} className="yes">
+          <button onClick={delContInGroup} className="yes">
             Да
           </button>
-
           <button
             className="no"
             onClick={() => dispatch(setOpenModaDelGroup(""))}
@@ -267,7 +310,85 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
-      {/* выключения контейнера через запрос  */}
+      {/* удалить контейнер с группы через запрос  */}
+
+      {/*/////////______//////______////// backUp контейнера  */}
+      <div className="backUp">
+        <Modals
+          openModal={!!openModalBackUp?.guid}
+          setOpenModal={() => dispatch(clearOpenModalBackUp())}
+          title={`Бэкап сервера ${openModalBackUp?.name}`}
+        >
+          <div className="addDns hostsEdit backUp__inner">
+            <div className="backUp__main">
+              <Selects
+                list={listFast}
+                initText={"Выбрать"}
+                onChnage={onChangeSelect}
+                nameKey={"fasts"}
+              />
+              <Selects
+                list={listTypes}
+                initText={"Выбрать"}
+                onChnage={onChangeSelect}
+                nameKey={"type"}
+              />
+              <Selects
+                list={listSnaps}
+                initText={"Выбрать"}
+                onChnage={onChangeSelect}
+                nameKey={"snaps"}
+              />
+            </div>
+            <div className="actionsBackUp">
+              <button className="addAction" onClick={backUpContainer}>
+                ОК
+              </button>
+            </div>
+          </div>
+        </Modals>
+      </div>
+      {/*  backUp контейнера  */}
+
+      {/*/////////______//////______////// выключение контейнера  */}
+      <Modals
+        openModal={!!openModaStoppedCont}
+        setOpenModal={() => dispatch(setOpenModaStoppedCont())}
+        title={"Вы уверены, что хотите остановить виртуальную машину?"}
+      >
+        <div className="addDns offContainer">
+          <button onClick={offContainer} className="yes">
+            Да
+          </button>
+          <button
+            className="no"
+            onClick={() => dispatch(setOpenModaStoppedCont(""))}
+          >
+            Нет
+          </button>
+        </div>
+      </Modals>
+      {/* выключение контейнера    */}
+
+      {/*/////////______//////______////// удаление контейнера  */}
+      <Modals
+        openModal={!!openModaDelCont}
+        setOpenModal={() => dispatch(setOpenModaDelCont())}
+        title={"Вы уверены, что хотите удалить контейнер?"}
+      >
+        <div className="addDns offContainer">
+          <button onClick={delContainer} className="yes">
+            Да
+          </button>
+          <button
+            className="no"
+            onClick={() => dispatch(setOpenModaDelCont(""))}
+          >
+            Нет
+          </button>
+        </div>
+      </Modals>
+      {/* удаление контейнера    */}
     </>
   );
 };

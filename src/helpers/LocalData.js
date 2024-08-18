@@ -3690,3 +3690,23 @@ export const listOS = [
   { id: 4, img: freeBSD },
   { id: 5, img: centos },
 ];
+
+export const listFast = [
+  { id: 1, name: "LZO (fast)" },
+  { id: 2, name: "GZIP (good)" },
+  { id: 3, name: "ZSTD (fast and good)" },
+];
+
+export const listTypes = [
+  { id: 1, name: "px-huawei (4421.50 гб)" },
+  { id: 2, name: "pxmb105-2 (538.02 гб)" },
+  { id: 3, name: "pxmb105-6 (3736.70 гб)" },
+  { id: 4, name: "local (85.22 гб)" },
+  { id: 5, name: "pxmb105-5 (538.02 гб)" },
+];
+
+export const listSnaps = [
+  { id: 1, name: "Snapshot" },
+  { id: 2, name: "Suspend" },
+  { id: 3, name: "Stop" },
+];

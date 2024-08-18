@@ -36,7 +36,7 @@ const MemoryComp = (props) => {
   return (
     <div className="memoryBlock">
       <div className="cpu">
-        <img src={materinka} alt="" />
+        <img src={plata} alt="" />
         <div className="blockProPercent">
           <div
             className="percent"
@@ -51,7 +51,7 @@ const MemoryComp = (props) => {
         </div>
       </div>
       <div className="GB">
-        <img src={plata} alt="" />
+        <img src={materinka} alt="" />
         <div className="blockProPercent">
           <div
             className="percent"

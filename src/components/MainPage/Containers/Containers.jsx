@@ -27,27 +27,34 @@ import "./style.scss";
 ////// fns
 import {
   setOpenAddFiles,
-  setOpenModaDelGroup,
-  setOpenModalAddGroup,
-  setOpenOSModal,
-  setTemporaryContainer,
+  setOpenModaDelCont,
 } from "../../../store/reducers/stateSlice";
+import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
+import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
+import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
+import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
+import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
+import { setOpenOSModal } from "../../../store/reducers/stateSlice";
+
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
 
 ////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
+import { secondsToDhms } from "../../../helpers/secondsToDhms";
 
 const Containers = ({ item }) => {
   const { id, host_name, container_name, description } = item;
   const { key, del, percent, GB, guid, info } = item;
   /////
-  const { vm_id, vm_name, vm_comment } = item;
+  const { vm_id, vm_name, vm_comment, vm_uptime } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb } = item;
 
   const dispatch = useDispatch();
 
-  const { activeContainer } = useSelector((state) => state.stateSlice);
+  const { activeContainer, openModalBackUp } = useSelector(
+    (state) => state.stateSlice
+  );
 
   const clickContainer = () => dispatch(setActiveContainer(guid));
 
@@ -68,8 +75,20 @@ const Containers = ({ item }) => {
   const openModalFixTime = () => dispatch(fixTimeCreateCont(guid));
   ////  фиксирование времени создания контейнера
 
+  const openModalBackUpFN = () => {
+    ////  BackUp контейнера через запрос
+    const obj = { name: `${vm_id} - ${vm_name} ${host_name}`, guid };
+    dispatch(setOpenModalBackUp({ ...openModalBackUp, ...obj }));
+  };
+
   const openModalDelInGroup = () => dispatch(setOpenModaDelGroup(guid));
+  //// модалка для удаления контейнера с группы
+
+  const openModalOffContainer = () => dispatch(setOpenModaStoppedCont(guid));
   //// модалка для выключения контейнера
+
+  const delContainer = () => dispatch(setOpenModaDelCont(guid));
+  //// модалка для удаления контейнера
 
   const active = activeContainer == guid ? "containerActive" : "";
 
@@ -135,7 +154,7 @@ const Containers = ({ item }) => {
               <img src={calendarX} alt="#" />
               <span className="moreInfoLeft">Зафиксировать время создания</span>
             </button>
-            <button>
+            <button onClick={openModalBackUpFN}>
               <img src={download} alt="#" />
               <span className="moreInfoLeft">BackUp</span>
             </button>
@@ -143,23 +162,23 @@ const Containers = ({ item }) => {
               <img src={keyIncon} alt="#" />
               <span className="moreInfoLeft"></span>
             </button> */}
-            <button>
+            {/* <button>
               <img src={playCircle} alt="#" />
               <span className="moreInfoLeft">Запустить сервер</span>
-            </button>
-            <button>
+            </button> */}
+            {/* <button>
               <img src={repeat} alt="#" />
               <span className="moreInfoLeft">Перезагрузить сервер</span>
-            </button>
-            <button>
+            </button> */}
+            {/* <button>
               <img src={stopCircle} alt="#" />
               <span className="moreInfoLeft">Мягкое выключение</span>
-            </button>
+            </button> */}
             <button onClick={openModalDelInGroup}>
               <img src={minus} alt="#" />
               <span className="moreInfoLeft">Удалить из списка</span>
             </button>
-            <button>
+            <button onClick={openModalOffContainer}>
               <img src={warning} alt="#" />
               <span className="moreInfoLeft">
                 Жёсткое выключение (!может вызвать повреждение файлов на
@@ -167,9 +186,13 @@ const Containers = ({ item }) => {
               </span>
             </button>
           </div>
-          <div className={`key ${!del ? "actions__key" : ""}`}>
-            <p>({key})</p>
-            {del && <button className="deleteBtn">Удалить</button>}
+          <div className={`key ${del ? "actions__key" : ""}`}>
+            <p>({secondsToDhms(vm_uptime)})</p>
+            {!del && (
+              <button className="deleteBtn" onClick={delContainer}>
+                Удалить
+              </button>
+            )}
           </div>
         </div>
       </div>

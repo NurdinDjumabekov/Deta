@@ -2,14 +2,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-////// helpers
-
 ////// styles
 import "./style.scss";
+
+///////// fns
 import { setMenuInner } from "../../../store/reducers/stateSlice";
-import Search from "../../MainPage/Search/Search";
+import { getContainersInMenu } from "../../../store/reducers/requestSlice";
 
 /////// components
+import Search from "../../MainPage/Search/Search";
 
 const MenuInner = () => {
   const dispatch = useDispatch();
@@ -18,10 +19,15 @@ const MenuInner = () => {
 
   const choice = (id) => dispatch(setMenuInner(id));
 
+  const getCont = (guid) => dispatch(getContainersInMenu(guid));
+
+  // Сортировка массива menuInner по id от меньшего к большему
+  const sortedMenuInner = menuInner?.slice()?.sort((a, b) => a?.id - b?.id);
+
   return (
     <div className="menuInner">
       <div className="menuInner__inner">
-        {menuInner?.map((item, index) => (
+        {sortedMenuInner?.map((item, index) => (
           <div key={index}>
             <div
               className={`every ${item?.active ? "active" : ""}`}
@@ -39,12 +45,16 @@ const MenuInner = () => {
                 item?.list?.length ? "expanded" : "collapsed"
               }`}
             >
-              {item?.list?.map((subItem, index) => (
-                <div key={index}>
-                  <p>{subItem?.name}</p>
-                  <span>{subItem?.desc}</span>
-                </div>
-              ))}
+              {item?.id !== 1 && /// не отображаю контейнера
+                item?.list?.map((subItem) => (
+                  <div
+                    key={subItem?.guid}
+                    onClick={() => getCont(subItem?.guid)}
+                  >
+                    <p>{subItem?.name}</p>
+                    <span>{subItem?.desc}</span>
+                  </div>
+                ))}
             </div>
           </div>
         ))}

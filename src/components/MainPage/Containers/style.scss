@@ -3,7 +3,7 @@
   margin: 10px 0 0 0;
   cursor: pointer;
   border: 1px solid transparent;
-  padding: 3px 2px;
+  padding: 3px 10px 3px 2px;
 
   &__inner {
     display: flex;
@@ -183,17 +183,18 @@
         justify-content: space-between;
         align-items: center;
         position: relative;
+        gap: 10px;
 
         p {
           font-size: 12px;
-          width: 100px;
+          // width: 100px;
           text-align: center;
         }
 
         .deleteBtn {
           background: #bb3030;
-          font-size: 12px;
-          width: 65px;
+          font-size: 11px;
+          width: 55px;
           border-radius: 5px;
           padding: 3px;
           // position: absolute;
@@ -213,6 +214,7 @@
   border: 1px solid #fff;
   position: relative;
   border-radius: 5px;
+  padding: 7px 10px 7px 2px;
 
   &::after {
     content: "";

@@ -2,19 +2,22 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 import {
+  changeMenuInner,
   clearAddHost,
   clearDnsList,
+  clearOpenModalBackUp,
   clearTemporaryContainer,
   clearTemporaryDNS,
   clearTemporaryHosts,
   setActiveDns,
   setActiveHost,
   setGuidHostEdit,
+  setOpenModaDelCont,
   setOpenModaDelGroup,
   setOpenModalAddGroup,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
-import { defaultSubDomen } from "../../helpers/LocalData";
+import { defaultSubDomen, listGr, listname } from "../../helpers/LocalData";
 import { toast } from "react-toastify";
 import { myAlert } from "../../helpers/MyAlert";
 const { REACT_APP_API_URL } = process.env;
@@ -31,6 +34,7 @@ const initialState = {
   listDnsSubDomen: [],
   listProviders: [],
   listGroupContainers: [], //// группы контейнеров
+  listUsers: [],
 };
 
 const url_socket = "http://217.29.26.222:3633";
@@ -77,6 +81,52 @@ export const getHosts = createAsyncThunk(
         dispatch(setActiveHost(first));
         dispatch(getContainers(first));
         /// подставляю первый хост чтобы он был активный
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getUsers - для получения Пользователей
+export const getUsers = createAsyncThunk(
+  "getUsers",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}++++++++++++++++`;
+    dispatch(changeMenuInner({ id: 3, list: listname })); //// delete
+
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(changeMenuInner({ id: 2, list: response?.data }));
+        //// добавляю в меню для сортировки пользователей
+        ///// id: 2 это добавление в список Сервисов
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getServices - для получения сервисов
+export const getServices = createAsyncThunk(
+  "getServices",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}++++++++++++++++`;
+    dispatch(changeMenuInner({ id: 2, list: listGr })); //// delete
+
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(changeMenuInner({ id: 2, list: response?.data }));
+        //// добавляю в меню для сортировки пользователей
+        ///// id: 2 это добавление в список Сервисов
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -187,7 +237,7 @@ export const editHost = createAsyncThunk(
 
 ////////////////////////////////////////////////////////// containers //////////////
 
-///// getContainers - для получения контейнеров
+///// getContainers - для получения контейнеров c помощью хостов
 export const getContainers = createAsyncThunk(
   "getContainers",
   async function (guid, { dispatch, rejectWithValue }) {
@@ -198,6 +248,53 @@ export const getContainers = createAsyncThunk(
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost(guid));
+        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+        //// подставляю данные для меню чтобы узнать кол-во контейнеров
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getContainersInMenu - для получения контейнеров c помощью сервисов и пользователей
+export const getContainersInMenu = createAsyncThunk(
+  "getContainersInMenu",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/+++++++++++++++++++`;
+    const data = { vawe: "1", elemid: guid }; //// guid - хоста
+
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setActiveHost("")); //// очищаю активный хост
+        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+        //// подставляю данные для меню чтобы узнать кол-во контейнеров
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// searchContainers - для получения контейнеров c помощью сервисов и пользователей
+export const searchContainers = createAsyncThunk(
+  "searchContainers",
+  async function (text, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/+++++++++++++++++++${text}`;
+
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setActiveHost("")); //// очищаю активный хост
+        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+        //// подставляю данные для меню чтобы узнать кол-во контейнеров
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -309,6 +406,25 @@ export const addGroupContFN = createAsyncThunk(
   }
 );
 
+//// delGroupContainerFN - удаление контейнера с группы
+export const delGroupContainerFN = createAsyncThunk(
+  "delGroupContainerFN",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setOpenModaDelGroup("")); /// закрываю модалку
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 ///// fixTimeCreateCont - фиксирование времени создания контейнера
 export const fixTimeCreateCont = createAsyncThunk(
   "fixTimeCreateCont",
@@ -337,6 +453,45 @@ export const offContainerFN = createAsyncThunk(
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModaDelGroup("")); /// закрываю модалку
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// backUpContainerFN - бэкап контейнера
+export const backUpContainerFN = createAsyncThunk(
+  "backUpContainerFN",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(clearOpenModalBackUp());
+        /// закрываю модалку и очищаю данные для временного хранения данных бэкапа
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// delContainerFN - удаление контейнера
+export const delContainerFN = createAsyncThunk(
+  "delContainerFN",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setOpenModaDelCont("")); /// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -688,6 +843,32 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(getContainers.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// getContainersInMenu
+    builder.addCase(getContainersInMenu.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listContainers = action.payload?.result;
+    });
+    builder.addCase(getContainersInMenu.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getContainersInMenu.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// searchContainers
+    builder.addCase(searchContainers.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listContainers = action.payload?.result;
+    });
+    builder.addCase(searchContainers.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(searchContainers.pending, (state, action) => {
       // state.preloader = true;
     });
 

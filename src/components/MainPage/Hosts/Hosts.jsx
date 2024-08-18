@@ -16,11 +16,14 @@ import { setTemporaryHosts } from "../../../store/reducers/stateSlice";
 import { setGuidHostDel } from "../../../store/reducers/stateSlice";
 import { setGuidHostEdit } from "../../../store/reducers/stateSlice";
 import { getContainers } from "../../../store/reducers/requestSlice";
+import { secondsToDhms } from "../../../helpers/secondsToDhms";
+import MemoryComp from "../MemoryComp/MemoryComp";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr } = item;
   const { host_name, node_uptime_sec, guid, guid_node } = item;
-  const { array_storages, node_model } = item;
+  const { array_storages, node_model, node_cpu_usage } = item;
+  const { node_cpu, node_ram_usage, node_ram_mb } = item;
 
   const dispatch = useDispatch();
 
@@ -83,6 +86,14 @@ const Hosts = ({ item }) => {
 
         <p className="ip_host">{host_ip}</p>
 
+        <MemoryComp
+          node_cpu_usage={node_cpu_usage}
+          node_cpu={node_cpu}
+          node_ram_usage={node_ram_usage}
+          node_ram_mb={node_ram_mb}
+          array_storages={array_storages}
+        />
+
         <p className="comment">{node_comment}</p>
       </div>
     </>
@@ -90,17 +101,3 @@ const Hosts = ({ item }) => {
 };
 
 export default Hosts;
-
-export const secondsToDhms = (seconds) => {
-  seconds = Number(seconds);
-  var d = Math.floor(seconds / (3600 * 24));
-  var h = Math.floor((seconds % (3600 * 24)) / 3600);
-  var m = Math.floor((seconds % 3600) / 60);
-  var s = Math.floor(seconds % 60);
-
-  var dDisplay = d > 0 ? d + (d == 1 ? "d" : "d") : "";
-  var hDisplay = h > 0 ? h + (h == 1 ? "h " : "h") : "";
-  var mDisplay = m > 0 ? m + (m == 1 ? "m " : "m") : "";
-  var sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
-  return dDisplay + hDisplay + mDisplay;
-};

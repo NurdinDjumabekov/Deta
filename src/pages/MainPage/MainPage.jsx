@@ -5,11 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 /////// fns
 import {
-  addHostFN,
-  getGroup,
-  getHosts,
   getProviders,
+  getServices,
+  getUsers,
 } from "../../store/reducers/requestSlice";
+import { getGroup, getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
 
@@ -44,6 +44,8 @@ const MainPage = () => {
     dispatch(getProviders());
     dispatch(getHosts());
     dispatch(getGroup());
+    dispatch(getUsers());
+    dispatch(getServices());
 
     const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
     const disconnectHost = dispatch(updatedHosts()); /// get хосты
@@ -57,10 +59,11 @@ const MainPage = () => {
 
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 
-  console.log(listContainers, "listContainers");
-
   const addHost = () => dispatch(setAddHost({ bool: true }));
   //// открываю модалку для добавления хоста
+
+  // console.log(listContainers, "listContainers");
+  console.log(listProviders, "listProviders");
 
   return (
     <div className="mainPage">
