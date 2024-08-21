@@ -1,20 +1,47 @@
 .addDnsMain {
-  padding: 0px 10px 0 0;
+  padding: 0px;
 
-  // .myInput {
-  //   h5 {
-  //     margin: 15px 0 3px 0;
-  //   }
-  // }
+  .nameInputs {
+    display: flex;
+    align-self: flex-end;
+    gap: 5px;
 
-  .actions {
-    .editAction {
-      background: #c3602c;
-      color: #fff;
-      font-size: 12px;
-      padding: 8px 10px;
-      border-radius: 3px;
-      margin: 5px 0 0 8px;
+    > .myInput {
+      width: 40%;
+    }
+
+    .timeInputs {
+      display: flex;
+      align-self: flex-end;
+      gap: 5px;
+      width: 60%;
     }
   }
+
+  .comment {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+
+    .myInput {
+      input {
+        height: 30px !important;
+      }
+    }
+
+    .addAction {
+      height: 30px !important;
+    }
+  }
+
+  // .actions {
+  //   .editAction {
+  //     background: #c3602c;
+  //     color: #fff;
+  //     font-size: 12px;
+  //     padding: 8px 10px;
+  //     border-radius: 3px;
+  //     margin: 5px 0 0 8px;
+  //   }
+  // }
 }

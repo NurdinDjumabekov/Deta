@@ -133,7 +133,6 @@
 }
 
 .modalEdit {
-  // display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
@@ -145,7 +144,20 @@
     width: 100%;
   }
 
+  .time {
+    align-items: flex-end;
+
+    > .myInput {
+      width: 30%;
+    }
+  }
+
   .actions {
     justify-content: flex-end !important;
+
+    .addAction {
+      width: 110px !important;
+      min-width: 110px !important;
+    }
   }
 }

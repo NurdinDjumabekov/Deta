@@ -277,8 +277,8 @@ const ModalsForContainers = () => {
       >
         <div className="addDns choiceGroup">
           <div className="choiceGroup__inner">
-            {listGr?.map((item) => (
-              <button onClick={() => addContInGroup(item?.guid)}>
+            {listGr?.map((item, index) => (
+              <button onClick={() => addContInGroup(item?.guid)} key={index}>
                 {item?.name}
               </button>
             ))}

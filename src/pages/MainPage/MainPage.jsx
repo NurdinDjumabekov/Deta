@@ -4,11 +4,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// fns
-import {
-  getProviders,
-  getServices,
-  getUsers,
-} from "../../store/reducers/requestSlice";
+import { getProviders } from "../../store/reducers/requestSlice";
+import { getServices, getUsers } from "../../store/reducers/requestSlice";
 import { getGroup, getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
@@ -22,13 +19,17 @@ import { setAddHost } from "../../store/reducers/stateSlice";
 ///////components
 import MenuInner from "../../components/Menu/MenuInner/MenuInner";
 import Hosts from "../../components/MainPage/Hosts/Hosts";
-import Search from "../../components/MainPage/Search/Search";
 import Containers from "../../components/MainPage/Containers/Containers";
 import StatusContainers from "../../components/MainPage/StatusContainers/StatusContainers";
 import GraphicHosts from "../../components/MainPage/GraphicHosts/GraphicHosts";
 import GraphicContainer from "../../components/MainPage/GraphicContainer/GraphicContainer";
 import ModalsForContainers from "../../components/MainPage/ModalsForContainers/ModalsForContainers";
 import ModalsForHosts from "../../components/MainPage/ModalsForHosts/ModalsForHosts";
+
+/////// imgs
+import aknet from "../../assets/images/providers/aknet.jpg";
+import saima from "../../assets/images/providers/saima.jpg";
+import megaline from "../../assets/images/providers/megaline.jpg";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,8 @@ const MainPage = () => {
   const { activeHost, activeContainer } = useSelector(
     (state) => state.stateSlice
   );
+
+  const listImgsProv = [aknet, saima, saima, megaline];
 
   useEffect(() => {
     dispatch(getProviders());
@@ -63,7 +66,7 @@ const MainPage = () => {
   //// открываю модалку для добавления хоста
 
   // console.log(listContainers, "listContainers");
-  console.log(listProviders, "listProviders");
+  // console.log(listProviders, "listProviders");
 
   return (
     <div className="mainPage">
@@ -75,13 +78,14 @@ const MainPage = () => {
           <div className="providers__main__inner">
             {listProviders?.map((item, index) => (
               <div key={index}>
-                <p>{item?.provider_name}</p>
+                <img src={listImgsProv?.[index]} alt="" />
+                <div className="moreInfo">{item?.provider_name}</div>
+                <span>{item?.provider_pingtime}</span>
                 <div
                   className={
                     item?.provider_status == 1 ? "roundGreen" : "roundRed"
                   }
                 />
-                <span>{item?.provider_pingtime}</span>
               </div>
             ))}
           </div>
@@ -102,6 +106,7 @@ const MainPage = () => {
         </div>
 
         <MenuInner />
+
         <div className={`containers ${checkContainer}`}>
           <div className="containers__inner">
             {listContainers?.map((item, index) => (

@@ -22,9 +22,25 @@ const AddSubDns = ({ obj }) => {
   const onChange = (e) => {
     const { name, value } = e.target;
 
+    const trimmedValue = value?.trim();
+
+    const validText = /^[a-zA-Z0-9._-]*$/.test(trimmedValue);
+
+    const validTtl = /^\d*$/.test(value);
+
+    const validIp = /^[0-9.]*$/.test(trimmedValue);
+
     // Если поле "ttl", проверяем, чтобы вводились только цифры
     if (name === "ttl") {
-      if (/^\d*$/.test(value)) {
+      if (validTtl) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else if (name === "record_name") {
+      if (validText) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else if (name === "host_ip") {
+      if (validIp) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -38,17 +54,17 @@ const AddSubDns = ({ obj }) => {
       return;
     }
 
-    if (dnsList?.one?.host_ip === 0) {
+    if (dnsList?.one?.host_ip == 0) {
       alert("Заполните 'Record name (host)'");
       return;
     }
 
-    if (dnsList?.one?.ttl === "") {
+    if (dnsList?.one?.ttl === "" || dnsList?.one?.ttl == "0") {
       alert("Заполните 'Record TTL'");
       return;
     }
 
-    if (dnsList?.one?.host_ip === 0) {
+    if (dnsList?.one?.host_ip == 0) {
       alert("Заполните 'Record name (host)'");
       return;
     }
@@ -74,9 +90,7 @@ const AddSubDns = ({ obj }) => {
           name={"host_ip"}
           value={dnsList?.[obj]?.host_ip}
         />
-      </div>
 
-      <div className="time">
         <MyInputs
           title={"Record TTL :"}
           onChange={onChange}
@@ -84,25 +98,25 @@ const AddSubDns = ({ obj }) => {
           value={dnsList?.[obj]?.ttl}
         />
 
-        <div className="comment">
-          <MyInputs
-            title={"Record comments :"}
-            onChange={onChange}
-            name={"comment"}
-            value={dnsList?.[obj]?.comment}
-          />
-        </div>
-      </div>
-
-      <div className="second actions">
-        <div className="bool">
-          <input type="checkbox" id="check" />
-          <label htmlFor="check">Update Reverse Zone</label>
-        </div>
+        <MyInputs
+          title={"Record comments :"}
+          onChange={onChange}
+          name={"comment"}
+          value={dnsList?.[obj]?.comment}
+        />
         <button className="addAction" onClick={addInnerSubDomen}>
           Добавить
         </button>
       </div>
+
+      {/* <div className="time">
+        <div className="second actions">
+          <div className="bool">
+            <input type="checkbox" id="check" />
+            <label htmlFor="check">Update Reverse Zone</label>
+          </div>
+        </div>
+      </div> */}
     </div>
   );
 };

@@ -2,7 +2,7 @@
   width: 100%;
 
   .providers {
-    padding: 10px;
+    padding: 5px 10px;
     display: flex;
     align-items: center;
     gap: 25px;
@@ -24,8 +24,27 @@
           display: flex;
           align-items: center;
           background: rgb(30, 31, 35);
-          padding: 3px 8px;
-          gap: 5px;
+          padding: 5px 8px;
+          gap: 10px;
+          border-radius: 3px;
+          position: relative;
+          cursor: pointer;
+
+          &:hover {
+            .moreInfo {
+              display: block;
+              top: 30px;
+              // left: 35px;
+              left: 100px !important;
+            }
+          }
+
+          > img {
+            width: 25px;
+            min-width: 25px;
+            height: 25px;
+            border-radius: 5px;
+          }
 
           p {
             font-size: 16px;
@@ -50,7 +69,6 @@
           span {
             display: block;
             font-size: 12px;
-            margin: 0 0 0 8px;
           }
         }
       }
@@ -72,6 +90,7 @@
         gap: 3px;
         overflow-y: scroll;
         height: 68%;
+
         &::-webkit-scrollbar {
           min-width: 5px;
           max-width: 5px;
@@ -118,7 +137,7 @@
 
       &__inner {
         width: 100%;
-        padding: 10px 2px 10px 10px;
+        // padding: 10px 2px 10px 10px;
         height: 68%;
         overflow-y: scroll;
 

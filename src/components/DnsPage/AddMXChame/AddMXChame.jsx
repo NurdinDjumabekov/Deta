@@ -14,73 +14,110 @@ import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
 
 /////// style
 import "../AddSubDns/style.scss";
+import { addSubDomen } from "../../../store/reducers/requestSlice";
 
 const AddMXChame = ({ obj }) => {
   const dispatch = useDispatch();
 
-  const { dnsList } = useSelector((state) => state.stateSlice);
+  const { dnsList, activeDns } = useSelector((state) => state.stateSlice);
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+
+    const trimmedValue = value?.trim();
+
+    const validText = /^[a-zA-Z0-9._-]*$/.test(trimmedValue);
+
+    const validTtl = /^\d*$/.test(value);
+
+    const validIp = /^[0-9.]*$/.test(trimmedValue);
+
+    // Если поле "ttl", проверяем, чтобы вводились только цифры
+    if (name === "ttl") {
+      if (validTtl) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else if (name === "record_name") {
+      if (validText) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else if (name === "host_ip") {
+      if (validIp) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else {
+      dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+    }
   };
 
-  const onChangeSelect = (nameKey, name, id) => {
-    dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
+  const addInnerSubDomen = () => {
+    if (dnsList?.one?.record_name === "") {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    if (dnsList?.one?.host_ip === 0) {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    if (dnsList?.one?.ttl === "") {
+      alert("Заполните 'Record TTL'");
+      return;
+    }
+
+    if (dnsList?.one?.host_ip === 0) {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    ////// добалвяю суб домен через запрос
+    const obj = { domen_guid: activeDns, ...dnsList?.one };
+    dispatch(addSubDomen(obj));
   };
 
   return (
     <div className="addDns">
       <div className="second">
         <MyInputs
-          title={"Record name (e-mail address domain name) : "}
+          title={"Record name (host) :"}
           onChange={onChange}
-          name={"name3"}
-          value={dnsList?.[obj]?.name3}
+          name={"record_name"}
+          value={dnsList?.[obj]?.record_name}
         />
 
         <MyInputs
-          title={"Perference :"}
+          title={"Host IP address :"}
           onChange={onChange}
-          name={"addres3"}
-          value={dnsList?.[obj]?.perference3}
+          name={"host_ip"}
+          value={dnsList?.[obj]?.host_ip}
         />
 
         <MyInputs
-          title={"Mail server host (FQDN) : "}
+          title={"Record TTL :"}
           onChange={onChange}
-          name={"addres3"}
-          value={dnsList?.[obj]?.addres3}
+          name={"ttl"}
+          value={dnsList?.[obj]?.ttl}
         />
+
+        <MyInputs
+          title={"Record comments :"}
+          onChange={onChange}
+          name={"comment"}
+          value={dnsList?.[obj]?.comment}
+        />
+        <button className="addAction" onClick={addInnerSubDomen}>
+          Добавить
+        </button>
       </div>
 
       <div className="time">
-        <MyInputs
-          title={"Record TTL : "}
-          onChange={onChange}
-          name={"record3"}
-          value={dnsList?.[obj]?.record3}
-        />
-
-        <Selects
-          list={listSel}
-          initText={"Выбрать"}
-          onChnage={onChangeSelect}
-          nameKey={"time3"}
-        />
-      </div>
-
-      <div className="second">
-        <MyInputs
-          title={"Record comments : "}
-          onChange={onChange}
-          name={"comment3"}
-          value={dnsList?.[obj]?.comment3}
-        />
-      </div>
-
-      <div className="second actions rigth">
-        <button className="addAction">Добавить</button>
+        <div className="second actions">
+          <div className="bool">
+            <input type="checkbox" id="check" />
+            <label htmlFor="check">Update Reverse Zone</label>
+          </div>
+        </div>
       </div>
     </div>
   );

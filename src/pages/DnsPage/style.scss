@@ -1,135 +1,25 @@
 .dnsMain {
-  padding: 5px 0px;
+  padding-bottom: 5px;
   width: 100%;
   display: flex;
 
   &__add {
+    padding-top: 5px;
     width: 70%;
     height: 99vh;
     border: 1px dashed rgb(90, 88, 88);
+    background: #292d32 !important;
 
     &__inner {
       height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-
-      .listDns {
-        width: 100%;
-        max-height: 100%;
-        // min-height: 68%;
-        overflow-y: scroll;
-
-        li {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 5px;
-          cursor: pointer;
-          padding: 0 70px 0 5px;
-          height: 30px;
-          position: relative;
-
-          .content {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-
-            img {
-              width: 15px;
-              height: 17px;
-              margin: 2px 0px;
-            }
-
-            p {
-              font-size: 10px;
-            }
-          }
-
-          .actions {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-
-            &__btns {
-              background: #222628;
-              width: 22px;
-              height: 22px;
-              border-radius: 3px;
-              margin: 0 3px;
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-
-              img {
-                width: 75%;
-                height: 77%;
-              }
-            }
-
-            .krest {
-              background: transparent;
-              img {
-                width: 100%;
-                height: 100%;
-              }
-            }
-          }
-        }
-
-        .activeDns {
-          background: #bcb9b9;
-        }
-
-        &::-webkit-scrollbar {
-          min-width: 5px;
-          max-width: 5px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background-color: transparent;
-          min-width: 5px;
-          max-width: 5px;
-          &:hover {
-            background-color: #050505;
-          }
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background-color: transparent;
-          cursor: pointer;
-          max-height: 50px;
-          min-height: 50px;
-        }
-
-        &:hover {
-          &::-webkit-scrollbar-track {
-            background-color: #050505;
-          }
-          &::-webkit-scrollbar-thumb {
-            background-color: #ffffff4e;
-          }
-        }
-      }
-
-      .actionDns {
-        width: 100%;
-        background: rgb(30, 31, 35);
-        margin: 10px 0 0 0;
-        height: 270px;
-        max-height: 270px;
-        min-height: 270px;
-        padding: 5px;
-        border-top: 1px dashed rgb(90, 88, 88);
-      }
     }
 
     .activeDns {
-      border: 1px dashed rgb(90, 88, 88);
+      border: 1px dashed rgb(90, 88, 88) !important;
+      background: #bcb9b96b;
 
       .dnsMain__add__inner {
         height: 100% !important;
@@ -138,11 +28,69 @@
       .actionDns {
         display: none;
       }
+
+      .refresh {
+        color: rgb(9 192 12) !important;
+      }
     }
   }
 
   &__edit {
     width: 100%;
     height: 99vh;
+    padding-top: 5px;
   }
+
+  &__table {
+    background: transparent !important;
+
+    thead {
+      tr {
+        th {
+          padding: 15px 10px;
+          border: none !important;
+        }
+      }
+    }
+    &::-webkit-scrollbar {
+      min-width: 5px;
+      max-width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+      min-width: 5px;
+      max-width: 5px;
+      &:hover {
+        background-color: #050505;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      cursor: pointer;
+      max-height: 50px;
+      min-height: 50px;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        background-color: #050505;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #ffffff4e;
+      }
+    }
+  }
+}
+
+.actionDns {
+  width: 100%;
+  background: rgb(30, 31, 35);
+  margin: 10px 0 0 0;
+  height: 210px;
+  max-height: 210px;
+  min-height: 210px;
+  padding: 5px;
+  border-top: 1px dashed rgb(90, 88, 88);
 }

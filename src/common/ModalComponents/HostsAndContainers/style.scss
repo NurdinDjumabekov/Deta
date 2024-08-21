@@ -1,0 +1,82 @@
+.accessesUsers {
+  margin: 10px 0 0 0;
+
+  .accessesUsers__inner {
+    width: 1000px;
+    overflow-y: scroll;
+    max-height: 80vh;
+
+    thead {
+      th {
+        text-align: center;
+        border: none !important;
+        font-size: 17px !important;
+
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+
+    tbody {
+      td {
+        border: none !important;
+        > div {
+          margin: 0 auto;
+        }
+
+        > p {
+          font-size: 15px;
+        }
+      }
+    }
+
+    &::-webkit-scrollbar {
+      min-width: 5px;
+      max-width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+      min-width: 5px;
+      max-width: 5px;
+      &:hover {
+        background-color: #050505;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+      cursor: pointer;
+      max-height: 50px;
+      min-height: 50px;
+    }
+
+    &:hover {
+      &::-webkit-scrollbar-track {
+        background-color: #050505;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #ffffff4e;
+      }
+    }
+  }
+
+  .save {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 20px 0 0 0;
+
+    button {
+      color: #fff;
+      padding: 8px 10px;
+      height: 40px;
+      border-radius: 3px;
+      background: #08920a;
+      font-size: 15px;
+      line-height: 15px;
+    }
+  }
+}

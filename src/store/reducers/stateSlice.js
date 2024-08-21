@@ -7,6 +7,8 @@ import users from "../../assets/icons/menu/users.svg";
 import { dnsListDefault, listGr, listname } from "../../helpers/LocalData";
 
 const initialState = {
+  modal: 0, /// модалка для всех
+
   menuInner: [
     { id: 1, name: "Контейнеры", img: container, active: false, list: [] },
     { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
@@ -23,7 +25,7 @@ const initialState = {
     one: {
       record_name: "",
       host_ip: "",
-      ttl: "",
+      ttl: "60",
       ttl_type: 1,
       comment: "",
       // bool: false,
@@ -94,6 +96,12 @@ const initialState = {
     ///// данных домена для редактирвоания и удаления
     domen_name: "",
     comment: "",
+    expire: "360000",
+    negative: "3600",
+    refresh: "3600",
+    retry: "900",
+    is_check_my_ip: false,
+    my_ip: "",
   },
 
   temporaryHosts: {
@@ -150,6 +158,14 @@ const stateSlice = createSlice({
   name: "stateSlice",
   initialState,
   reducers: {
+    setOpenModals: (state, action) => {
+      state.modal = action.payload;
+    },
+
+    closeModals: (state, action) => {
+      state.modal = 0;
+    },
+
     setMenuInner: (state, action) => {
       const newMenu = state.menuInner?.map((item) => {
         if (item.id === action.payload) {
@@ -197,6 +213,26 @@ const stateSlice = createSlice({
       };
     },
 
+    setPastDnsInSubDomen: (state, action) => {
+      const record_name = action.payload;
+      const dnsList = state.dnsList;
+      ///// подставляю domen в поля всех sub доменов
+
+      const updateRecordNames = (dnsList, newText) => {
+        const updatedDnsList = { ...dnsList };
+
+        Object.keys(updatedDnsList).forEach((key) => {
+          if (updatedDnsList[key].hasOwnProperty("record_name")) {
+            updatedDnsList[key]["record_name"] = newText;
+          }
+        });
+
+        return updatedDnsList;
+      };
+
+      state.dnsList = updateRecordNames(dnsList, record_name);
+    },
+
     setActiveDnsMenu: (state, action) => {
       state.activeDnsMenu = action.payload;
     },
@@ -206,7 +242,16 @@ const stateSlice = createSlice({
     },
 
     clearTemporaryDNS: (state, action) => {
-      state.temporaryDNS = { domen_name: "", comment: "" };
+      state.temporaryDNS = {
+        domen_name: "",
+        comment: "",
+        expire: "360000",
+        negative: "3600",
+        refresh: "3600",
+        retry: "900",
+        is_check_my_ip: false,
+        my_ip: "",
+      };
       //// state для временного хранения dns данных
     },
 
@@ -347,6 +392,8 @@ const stateSlice = createSlice({
 });
 
 export const {
+  setOpenModals,
+  closeModals,
   setMenuInner,
   changeMenuInner,
   setActiveHost,
@@ -355,6 +402,7 @@ export const {
   setDnsList,
   clearDnsList,
   setDnsEveryKey,
+  setPastDnsInSubDomen,
   setActiveDnsMenu,
   setTemporaryDNS,
   clearTemporaryDNS,

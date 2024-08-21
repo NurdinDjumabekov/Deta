@@ -1,10 +1,18 @@
 import "./Modals.scss";
 import krest from "../../assets/icons/krestWhite.svg";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setOpenModals } from "../../store/reducers/stateSlice";
 
 const Modals = (props) => {
   const { setOpenModal, openModal, title, children } = props;
-  const closeModal = () => setOpenModal(false);
+
+  const dispatch = useDispatch();
+
+  const closeModal = () => {
+    setOpenModal(false);
+    dispatch(setOpenModals(0)); //// закрываю модалку
+  };
 
   useEffect(() => {
     if (openModal) {

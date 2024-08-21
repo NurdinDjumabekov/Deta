@@ -3,8 +3,13 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //////// components
-import MyInputs from "../../../common/MyInput/MyInputs";
-import Selects from "../../../common/Selects/Selects";
+import AddSubDns from "../AddSubDns/AddSubDns";
+import AddChame from "../AddChame/AddChame";
+import AddMXChame from "../AddMXChame/AddMXChame";
+import AddNSChame from "../AddNSChame/AddNSChame";
+import AddTXTChame from "../AddTXTChame/AddTXTChame";
+import AddRTRChame from "../AddRTRChame/AddRTRChame";
+import AddSPFChame from "../AddSPFChame/AddSPFChame";
 
 /////// helpers
 import { listDnsMenu } from "../../../helpers/LocalData";
@@ -14,18 +19,11 @@ import { setActiveDnsMenu } from "../../../store/reducers/stateSlice";
 
 /////// style
 import "./style.scss";
-import AddSubDns from "../AddSubDns/AddSubDns";
-import AddChame from "../AddChame/AddChame";
-import AddMXChame from "../AddMXChame/AddMXChame";
-import AddNSChame from "../AddNSChame/AddNSChame";
-import AddTXTChame from "../AddTXTChame/AddTXTChame";
-import AddRTRChame from "../AddRTRChame/AddRTRChame";
-import AddSPFChame from "../AddSPFChame/AddSPFChame";
 
 const TypeAddDns = () => {
   const dispatch = useDispatch();
 
-  const { dnsList, activeDnsMenu } = useSelector((state) => state.stateSlice);
+  const { activeDnsMenu } = useSelector((state) => state.stateSlice);
 
   const clickMenuDns = (id) => dispatch(setActiveDnsMenu(id));
 

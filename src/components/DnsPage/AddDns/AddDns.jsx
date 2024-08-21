@@ -5,8 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 //////// components
 import MyInputs from "../../../common/MyInput/MyInputs";
 
-/////// helpers
-
 /////// fns
 import { setTemporaryDNS } from "../../../store/reducers/stateSlice";
 import { addDomens } from "../../../store/reducers/requestSlice";
@@ -14,25 +12,77 @@ import { addDomens } from "../../../store/reducers/requestSlice";
 /////// style
 import "./style.scss";
 
+/////// helpers
+import { myAlert } from "../../../helpers/MyAlert";
+
 const AddDns = () => {
   const dispatch = useDispatch();
 
   const { temporaryDNS } = useSelector((state) => state.stateSlice);
 
   const onChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
 
-    dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
+    const check = ["expire", "negative", "refresh", "retry"].includes(name);
+
+    const validText = /^[a-zA-Z0-9._-]*$/.test(value.trim());
+    const validNums = /^[0-9]*$/.test(value.trim());
+    const validIp = /^[0-9.]*$/.test(value.trim());
+
+    if (name === "domen_name") {
+      if (validText) {
+        dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
+      }
+    } else if (check) {
+      if (validNums) {
+        dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
+      }
+    } else if (name === "is_check_my_ip") {
+      dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: checked }));
+    } else if (name === "my_ip") {
+      if (validIp) {
+        dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
+      }
+    } else {
+      dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
+    }
   };
 
   const addDomen = () => {
     if (temporaryDNS?.domen_name === "") {
-      alert("Заполните 'Name domen'");
+      myAlert("Заполните 'Name domen'");
       return;
     }
 
     if (temporaryDNS?.comment === "") {
-      alert("Заполните 'comment'");
+      myAlert("Заполните 'comment'");
+      return;
+    }
+
+    if (temporaryDNS?.expire === "" || temporaryDNS?.expire == "0") {
+      myAlert("Заполните 'expire'");
+      return;
+    }
+
+    if (temporaryDNS?.negative === "" || temporaryDNS?.negative == "0") {
+      myAlert("Заполните 'negative'");
+      return;
+    }
+
+    if (temporaryDNS?.refresh === "" || temporaryDNS?.refresh == "0") {
+      myAlert("Заполните 'refresh'");
+      return;
+    }
+
+    if (temporaryDNS?.is_check_my_ip) {
+      if (temporaryDNS?.my_ip === "" || temporaryDNS?.my_ip == "0") {
+        myAlert("Заполните 'Your IP'");
+        return;
+      }
+    }
+
+    if (temporaryDNS?.retry === "" || temporaryDNS?.retry == "0") {
+      myAlert("Заполните 'retry'");
       return;
     }
 
@@ -40,45 +90,88 @@ const AddDns = () => {
     ////// добалвяю dns через запрос
   };
 
-  const editDns = () => {
-    ///// редактирование dns через запрос
-    //// на потом
-  };
-
   return (
     <div className="addDns addDnsMain">
-      <div className="second">
+      <div className="nameInputs">
         <MyInputs
           title={"Name domen :"}
           onChange={onChange}
           name={"domen_name"}
           value={temporaryDNS?.domen_name}
         />
+        <div className="timeInputs">
+          <MyInputs
+            title={"Expire :"}
+            onChange={onChange}
+            name={"expire"}
+            value={temporaryDNS?.expire}
+          />
+          <MyInputs
+            title={"Negative :"}
+            onChange={onChange}
+            name={"negative"}
+            value={temporaryDNS?.negative}
+          />
+          <MyInputs
+            title={"Refresh :"}
+            onChange={onChange}
+            name={"refresh"}
+            value={temporaryDNS?.refresh}
+          />
+          <MyInputs
+            title={"Retry :"}
+            onChange={onChange}
+            name={"retry"}
+            value={temporaryDNS?.retry}
+          />
+        </div>
       </div>
 
-      <div className="second">
+      <div className="comment">
         <MyInputs
           title={"Comments for domen :"}
           onChange={onChange}
           name={"comment"}
           value={temporaryDNS?.comment}
         />
+        {temporaryDNS?.is_check_my_ip && (
+          <MyInputs
+            title={"Your ip :"}
+            onChange={onChange}
+            name={"my_ip"}
+            value={temporaryDNS?.my_ip}
+          />
+        )}
+        <button className="addAction" onClick={addDomen}>
+          Добавить
+        </button>
+      </div>
+      <div className="time">
+        <div className="second actions">
+          <div className="bool">
+            <input
+              type="checkbox"
+              id="check"
+              onChange={onChange}
+              name="is_check_my_ip"
+              checked={temporaryDNS?.is_check_my_ip}
+            />
+            <label htmlFor="check">Add your ip :</label>
+          </div>
+        </div>
       </div>
 
-      <div className="second actions">
+      {/* <div className="second actions">
         <div className="bool">
           <input type="checkbox" id="check" />
           <label htmlFor="check">Update Reverse Zone</label>
         </div>
         <div>
-          <button className="addAction" onClick={addDomen}>
-            Добавить
-          </button>
-          {/* <button className="editAction" onClick={editDns}>
+          <button className="editAction" onClick={editDns}>
             Редактировать
-          </button> */}
+          </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

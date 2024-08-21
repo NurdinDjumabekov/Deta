@@ -15,6 +15,7 @@ import DnsPage from "../pages/DnsPage/DnsPage";
 import Test from "../pages/Test/Test";
 
 //// components
+import ModalComponents from "../common/ModalComponents/ModalComponents";
 // import { Preloader } from "../components/Preloader/Preloader";
 // import Alerts from "../components/Alerts/Alerts";
 
@@ -43,6 +44,7 @@ const MainRoutes = () => {
       </Routes>
       {/* <Alerts />
       <Preloader /> */}
+      <ModalComponents />
     </>
   );
 };

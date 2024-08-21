@@ -4,13 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../common/MyInput/MyInputs";
-import Selects from "../../../common/Selects/Selects";
 
 /////// helpers
-import { listSel } from "../../../helpers/LocalData";
 
 /////// fns
 import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
+import { addSubDomen } from "../../../store/reducers/requestSlice";
 
 /////// style
 import "../AddSubDns/style.scss";
@@ -18,62 +17,105 @@ import "../AddSubDns/style.scss";
 const AddTXTChame = ({ obj }) => {
   const dispatch = useDispatch();
 
-  const { dnsList } = useSelector((state) => state.stateSlice);
+  const { dnsList, activeDns } = useSelector((state) => state.stateSlice);
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+
+    const trimmedValue = value?.trim();
+
+    const validText = /^[a-zA-Z0-9._-]*$/.test(trimmedValue);
+
+    const validTtl = /^\d*$/.test(value);
+
+    const validIp = /^[0-9.]*$/.test(trimmedValue);
+
+    // Если поле "ttl", проверяем, чтобы вводились только цифры
+    if (name === "ttl") {
+      if (validTtl) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else if (name === "record_name") {
+      if (validText) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else if (name === "host_ip") {
+      if (validIp) {
+        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+      }
+    } else {
+      dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
+    }
   };
 
-  const onChangeSelect = (nameKey, name, id) => {
-    dispatch(setDnsEveryKey({ obj, everyObj: { [nameKey]: id } }));
+  const addInnerSubDomen = () => {
+    if (dnsList?.one?.record_name === "") {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    if (dnsList?.one?.host_ip === 0) {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    if (dnsList?.one?.ttl === "") {
+      alert("Заполните 'Record TTL'");
+      return;
+    }
+
+    if (dnsList?.one?.host_ip === 0) {
+      alert("Заполните 'Record name (host)'");
+      return;
+    }
+
+    ////// добалвяю суб домен через запрос
+    const obj = { domen_guid: activeDns, ...dnsList?.one };
+    dispatch(addSubDomen(obj));
   };
 
   return (
     <div className="addDns">
       <div className="second">
         <MyInputs
-          title={"Record name (host) : "}
+          title={"Record name (host) :"}
           onChange={onChange}
-          name={"name5"}
-          value={dnsList?.[obj]?.name5}
+          name={"record_name"}
+          value={dnsList?.[obj]?.record_name}
         />
 
         <MyInputs
-          title={"Text strings : "}
+          title={"Host IP address :"}
           onChange={onChange}
-          name={"addres5"}
-          value={dnsList?.[obj]?.addres5}
+          name={"host_ip"}
+          value={dnsList?.[obj]?.host_ip}
         />
-      </div>
 
-      <div className="time">
         <MyInputs
-          title={"Record TTL : "}
+          title={"Record TTL :"}
           onChange={onChange}
-          name={"record5"}
-          value={dnsList?.[obj]?.record5}
+          name={"ttl"}
+          value={dnsList?.[obj]?.ttl}
         />
 
-        <Selects
-          list={listSel}
-          initText={"Выбрать"}
-          onChnage={onChangeSelect}
-          nameKey={"time5"}
-        />
-      </div>
-
-      <div className="second">
         <MyInputs
           title={"Record comments :"}
           onChange={onChange}
-          name={"comment5"}
-          value={dnsList?.[obj]?.comment5}
+          name={"comment"}
+          value={dnsList?.[obj]?.comment}
         />
+        <button className="addAction" onClick={addInnerSubDomen}>
+          Добавить
+        </button>
       </div>
 
-      <div className="second actions rigth">
-        <button className="addAction">Добавить</button>
+      <div className="time">
+        <div className="second actions">
+          <div className="bool">
+            <input type="checkbox" id="check" />
+            <label htmlFor="check">Update Reverse Zone</label>
+          </div>
+        </div>
       </div>
     </div>
   );

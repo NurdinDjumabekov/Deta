@@ -99,12 +99,11 @@ const InnerSubDns = () => {
                 <TableCell className="title dta" style={{ width: "15%" }}>
                   Data
                 </TableCell>
-                <TableCell
-                  className="title action"
-                  style={{ width: "10%" }}
-                ></TableCell>
+                <TableCell className="title action" style={{ width: "10%" }}>
+                  ...
+                </TableCell>
                 <TableCell className="title comment" style={{ width: "30%" }}>
-                  Комментарий
+                  Комментарии
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -146,7 +145,7 @@ const InnerSubDns = () => {
                     className="text comment"
                     style={{ maxWidth: "30%" }}
                   >
-                    {row?.comment || "...."}
+                    {row?.comment}
                   </TableCell>
                 </TableRow>
               ))}

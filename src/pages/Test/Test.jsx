@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.scss";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+
 const Test = () => {
   const list = [
     {
@@ -149,74 +159,60 @@ const Test = () => {
   };
 
   return (
-    <div>
-      <div
-        className="menu"
-        onMouseEnter={() => setMenuVisible(true)}
-        ref={menuButtonRef}
-      >
-        menu
-      </div>
-      {menuVisible && (
-        <ul className="TestParent" ref={menuRef}>
-          <div className="first">
-            {list.map((i) => (
-              <li
-                key={i.number_to_categorie}
-                onMouseEnter={() => setActiveCategory(i.number_to_categorie)}
-                onClick={() => click(i?.name)}
+    <TableContainer component={Paper} className="tableEditDns">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell className="title name" style={{ width: "15%" }}>
+              Наименования
+            </TableCell>
+            <TableCell className="title type" style={{ width: "20%" }}>
+              Типы
+            </TableCell>
+            <TableCell className="title ttl" style={{ width: "10%" }}>
+              TTL
+            </TableCell>
+            <TableCell className="title dta" style={{ width: "15%" }}>
+              Data
+            </TableCell>
+            <TableCell
+              className="title action"
+              style={{ width: "10%" }}
+            ></TableCell>
+            <TableCell className="title comment" style={{ width: "30%" }}>
+              Комментарий
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {[]?.map((row) => (
+            <TableRow key={row?.guid}>
+              <TableCell
+                className="text nameText"
+                style={{ margin: "10px", width: "15%" }}
               >
-                {i.name}
-              </li>
-            ))}
-          </div>
-          <div className="second">
-            {list.map((i) => (
-              <li
-                key={i.number_to_categorie}
-                className={
-                  i.number_to_categorie === activeCategory ? "active" : ""
-                }
-              >
-                {i.number_to_categorie === activeCategory && (
-                  <div>
-                    {i.categories.map((j) => (
-                      <div
-                        key={j.codeid}
-                        onMouseEnter={() => setActiveSubCategory(j.codeid)}
-                        onClick={() => click(j.category_name)}
-                      >
-                        {j.category_name}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </li>
-            ))}
-          </div>
-          <div className="third">
-            {list
-              .find((i) => i.number_to_categorie === activeCategory)
-              ?.categories.map((j) =>
-                j.codeid === activeSubCategory ? (
-                  <li key={j.codeid} className="active">
-                    <div>
-                      {j.establishments.map((k) => (
-                        <div
-                          key={k.codeid}
-                          onClick={() => click(k.establishment_name)}
-                        >
-                          {k.establishment_name}
-                        </div>
-                      ))}
-                    </div>
-                  </li>
-                ) : null
-              )}
-          </div>
-        </ul>
-      )}
-    </div>
+                asdasd
+              </TableCell>
+              <TableCell className="text name" style={{ width: "20%" }}>
+                asdasd
+              </TableCell>
+              <TableCell className="text name" style={{ width: "10%" }}>
+                asda
+              </TableCell>
+              <TableCell className="text data" style={{ width: "15%" }}>
+                asda
+              </TableCell>
+              <TableCell className="text actions" style={{ width: "10%" }}>
+                asdas
+              </TableCell>
+              <TableCell className="text comment" style={{ maxWidth: "30%" }}>
+                asdas
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

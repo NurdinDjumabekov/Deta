@@ -1,0 +1,93 @@
+.dnsMain__table {
+  tbody {
+    tr {
+      td {
+        padding: 0px 10px;
+        border: none !important;
+      }
+    }
+  }
+}
+
+.dnsEvery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  cursor: pointer;
+  padding: 0 70px 0 5px;
+  height: 30px;
+  position: relative;
+  width: 100% !important;
+
+  .dnsText {
+    font-size: 12px;
+    color: #c0c0c0;
+  }
+
+  .negative {
+    color: #e24657;
+  }
+
+  .refresh {
+    color: #08920adc;
+  }
+
+  .retry {
+    color: #66b4ff;
+  }
+
+  .expire {
+    color: orange;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+
+    img {
+      width: 15px;
+      height: 17px;
+      margin: 2px 0px;
+    }
+
+    p {
+      font-size: 12px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+
+    &__btns {
+      //   background: #222628;
+      width: 22px;
+      height: 22px;
+      border-radius: 3px;
+      margin: 0 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 75%;
+        height: 77%;
+      }
+    }
+
+    .krest {
+      background: transparent;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.toggle-switch {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #333;
+  border-radius: 20px;
+}
+
+.switch-input {
+  display: none;
+}
+
+.switch-label {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background-color: #bcbcbc;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.switch-input:checked + .switch-label {
+  left: 24px;
+}

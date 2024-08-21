@@ -10,37 +10,23 @@ import "./style.scss";
 
 ////// fns
 import { deleteDomen, getDnsDomen } from "../../store/reducers/requestSlice";
-import { getDnsSubDomen } from "../../store/reducers/requestSlice";
-import { setTemporaryDNS } from "../../store/reducers/stateSlice";
-
-////// imgs
-import diagramWhite from "../../assets/icons/diagramWhite.svg";
-import editIcon from "../../assets/icons/edit.svg";
-import krestIcon from "../../assets/icons/krest.svg";
 
 ////// components
 import InnerSubDns from "../../components/DnsPage/InnerSubDns/InnerSubDns";
-import Modals from "../../common/Modals/Modals";
+import EveryDns from "../../components/DnsPage/EveryDns/EveryDns";
 import AddDns from "../../components/DnsPage/AddDns/AddDns";
+import Modals from "../../common/Modals/Modals";
+import { Table, TableBody } from "@mui/material";
+import { TableCell, TableContainer } from "@mui/material";
+import { TableHead, TableRow } from "@mui/material";
 
 const DnsPage = () => {
   const dispatch = useDispatch();
 
-  const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
-
   const { activeDns } = useSelector((state) => state.stateSlice);
   const { listDnsDomen } = useSelector((state) => state.requestSlice);
 
-  const clickDns = ({ domen_name, guid, server_ttl }) => {
-    dispatch(getDnsSubDomen(guid)); //// get суб домены этого dns
-
-    const domenInfo = { domen_name, comment: `${domen_name}${server_ttl}` };
-    dispatch(setTemporaryDNS(domenInfo));
-    //// подставляю данные в stat eдля редактирования данных dns (так же подставляю данные dns)
-  };
-
-  const callDeleteFn = (guid) => setGuidDelete(guid);
-  ///// вызов модалки для удаления данных суб домена
+  const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
 
   const delDns = () => dispatch(deleteDomen({ guidDelete, setGuidDelete }));
   ///// удаления dns через запрос
@@ -56,34 +42,47 @@ const DnsPage = () => {
       <div className="dnsMain">
         <div className="dnsMain__add">
           <div className={`dnsMain__add__inner ${active}`}>
-            <ul className="listDns">
-              {listDnsDomen?.map((item) => (
-                <li
-                  className={item?.guid === activeDns ? "activeDns" : ""}
-                  key={item?.guid}
-                  onClick={() => clickDns(item)}
-                >
-                  <div className="content">
-                    <img src={diagramWhite} alt="%" />
-                    <p>{item?.domen_name}</p>
-                  </div>
-                  <div className="actions">
-                    {/* <button
-                      className="actions__btns"
-                      onClick={() => callEditFN(item)}
+            <TableContainer className="dnsMain__table">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ width: "40%", color: "#c0c0c0" }}>
+                      Наименования
+                    </TableCell>
+                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
+                      Expire
+                    </TableCell>
+                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
+                      Negative
+                    </TableCell>
+                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
+                      Refresh
+                    </TableCell>
+                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
+                      Retry
+                    </TableCell>
+                    <TableCell
+                      style={{
+                        width: "12%",
+                        color: "#c0c0c0",
+                        textAlign: "center",
+                      }}
                     >
-                      <img src={editIcon} alt="e" />
-                    </button> */}
-                    <button
-                      className="actions__btns krest"
-                      onClick={() => callDeleteFn(item?.guid)}
-                    >
-                      <img src={krestIcon} alt="x" />
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                      ...
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {listDnsDomen?.map((item) => (
+                    <EveryDns
+                      item={item}
+                      setGuidDelete={setGuidDelete}
+                      key={item?.guid}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <div className="actionDns">
               <AddDns />
             </div>
@@ -98,7 +97,7 @@ const DnsPage = () => {
       <Modals
         openModal={!!guidDelete}
         setOpenModal={() => setGuidDelete()}
-        title={"Удалить данный элемент ?"}
+        title={"Удалить данный домен ?"}
       >
         <div className="modalDel">
           <button className="yes" onClick={delDns}>

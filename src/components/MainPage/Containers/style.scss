@@ -4,24 +4,34 @@
   cursor: pointer;
   border: 1px solid transparent;
   padding: 3px 10px 3px 2px;
+  width: 100%;
 
   &__inner {
     display: flex;
     align-items: flex-start;
-    width: 50%;
-    // width: 450px;
-    .numIndex {
-      width: 80px;
-      min-width: 80px;
+    width: 100%;
 
-      > div {
-        display: inline-flex;
+    td {
+      border: none !important;
+      padding: 8px 0px !important;
+    }
+
+    .bottom {
+      position: relative;
+      width: 6%;
+
+      .numIndex,
+      .numIndexShadow {
+        margin-right: 5px !important;
+        width: 80px;
+        min-width: 80px;
+        display: flex;
         align-items: center;
         gap: 5px;
         background: green;
         padding: 2px 5px;
         border-radius: 3px;
-        height: 20px;
+        // height: 20px;
 
         img {
           width: 14px;
@@ -31,6 +41,16 @@
         p {
           font-size: 12px;
         }
+      }
+
+      .numIndexShadow {
+        opacity: 0;
+      }
+
+      .numIndex {
+        position: absolute;
+        left: 0;
+        top: 8px;
       }
     }
 
@@ -42,24 +62,37 @@
 
     .editBlock {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 1px;
-
       margin: 0 5px 0 0;
-      .edit {
-        width: 20px;
-        min-width: 20px;
-        height: 20px;
-        margin: 0 5px;
-        background: rgb(30, 31, 35);
-        padding: 0px 3px;
-        border-radius: 5px;
+      min-width: 5% !important;
 
-        img {
-          width: 100%;
-          height: 100%;
+      &__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+
+        .edit {
+          width: 20px;
+          min-width: 20px;
+          height: 20px;
+          margin: 0 5px;
+          background: rgb(30, 31, 35);
+          padding: 0px 3px;
+          border-radius: 5px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
+    }
+
+    .titles {
+      padding-top: 0px !important;
+      width: 29%;
     }
 
     .hostName {
@@ -72,77 +105,69 @@
       width: 100%;
       max-width: 100%;
 
-      > div {
-        display: flex;
-        width: 100%;
-      }
-
       p {
         font-size: 12px;
         color: #3e86c8;
         width: 100%;
-      }
-
-      span {
-        font-size: 10px;
-        display: block;
-        margin: 5px 0 0 0;
-        // max-width: 400px;
-        max-width: 100%;
+        display: inline;
       }
     }
-  }
 
-  .GB__block {
-    display: flex;
-    align-items: center;
-    width: 50%;
-    justify-content: flex-end;
-    gap: 10px;
+    .description {
+      font-size: 10px;
+      display: block;
+      margin: 5px 0 0 0;
+      max-width: 100%;
+      display: inline;
+    }
 
     .memory {
-      display: flex;
-      align-items: center;
+      max-width: 29%;
 
-      > button {
-        width: 23px;
-        height: 23px;
-        margin: 0 5px;
-        padding: 3px;
-        border-radius: 5px;
-        background: rgb(30, 31, 35);
-      }
-
-      .memoryBlock {
-        width: 170px;
-
-        .GB {
-          width: 100%;
-        }
-
-        .comps {
-          display: none !important;
-        }
-      }
-
-      .GB_dataBase {
+      &__inner {
         display: flex;
         align-items: center;
-        flex-direction: column;
-        margin: 0 0 0 5px;
 
-        > div {
-          background: linear-gradient(
-            0deg,
-            rgba(75, 194, 119, 1) 10%,
-            rgba(255, 255, 255, 1) 90%
-          );
-          height: 20px;
-          width: 18px;
+        > button {
+          width: 23px;
+          height: 23px;
+          margin: 0 5px;
+          padding: 3px;
+          border-radius: 5px;
+          background: rgb(30, 31, 35);
         }
-        p {
-          font-size: 12px;
-          font-weight: 300;
+
+        .memoryBlock {
+          width: 170px;
+
+          .GB {
+            width: 100%;
+          }
+
+          .comps {
+            display: none !important;
+          }
+        }
+
+        .GB_dataBase {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          margin: 0 0 0 5px;
+
+          > div {
+            background: linear-gradient(
+              0deg,
+              rgba(75, 194, 119, 1) 10%,
+              rgba(255, 255, 255, 1) 90%
+            );
+            height: 20px;
+            width: 18px;
+          }
+          p {
+            font-size: 12px;
+            font-weight: 300;
+          }
         }
       }
     }
@@ -151,7 +176,7 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      align-items: center;
+      // align-items: center;
       justify-content: center;
       margin: 0 5px 0 10px;
 
@@ -176,6 +201,14 @@
         }
       }
 
+      .deleteBtn {
+        background: #bb3030;
+        font-size: 11px;
+        width: 55px;
+        border-radius: 5px;
+        padding: 3px;
+      }
+
       .key {
         padding: 3px 0px;
         width: 100%;
@@ -189,17 +222,6 @@
           font-size: 12px;
           // width: 100px;
           text-align: center;
-        }
-
-        .deleteBtn {
-          background: #bb3030;
-          font-size: 11px;
-          width: 55px;
-          border-radius: 5px;
-          padding: 3px;
-          // position: absolute;
-          // right: 0;
-          // top: 0;
         }
       }
 

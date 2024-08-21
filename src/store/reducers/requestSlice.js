@@ -35,6 +35,8 @@ const initialState = {
   listProviders: [],
   listGroupContainers: [], //// группы контейнеров
   listUsers: [],
+
+  listAccessesUsers: [], //// список клиентов, которым надо дать доступы
 };
 
 const url_socket = "http://217.29.26.222:3633";
@@ -561,23 +563,32 @@ export const getDnsDomen = createAsyncThunk(
 ///// addDomens - для добавления доменов
 export const addDomens = createAsyncThunk(
   "addDomens",
-  async function (props, { dispatch, rejectWithValue }) {
-    const { domen_name } = props;
-
+  async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/creareDomen`;
-    const data = { domen_name };
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsDomen()); //// get все домены
-        dispatch(clearTemporaryDNS());
-        //// очищаю state для временного хранения dns данных
         const createGuid = response?.data?.guid;
 
-        setTimeout(() => {
-          dispatch(setActiveDns(createGuid));
-          dispatch(getDnsSubDomen(createGuid));
-        }, 500);
+        if (!!!createGuid) {
+          myAlert("Такой домен уже существует!");
+          myAlert("Такой домен уже существует!");
+          myAlert("Такой домен уже существует!");
+        } else {
+          dispatch(getDnsDomen()); //// get все домены
+          dispatch(clearTemporaryDNS());
+          //// очищаю state для временного хранения dns данных
+
+          setTimeout(() => {
+            dispatch(setActiveDns(createGuid));
+            dispatch(getDnsSubDomen(createGuid));
+            myAlert("Домен успешно добавлен!");
+            myAlert("Домен успешно добавлен!");
+            myAlert("Домен успешно добавлен!");
+          }, 200);
+        }
+        console.log(response?.data, "response");
+
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -758,6 +769,10 @@ const requestSlice = createSlice({
     ///// поиск котейнеров
     setSearchContainer: (state, action) => {
       state.searchContainer = action.payload;
+    },
+
+    setListAccessesUsers: (state, action) => {
+      state.listAccessesUsers = action.payload;
     },
   },
 
@@ -944,6 +959,7 @@ export const {
   setUpdatedNetwork,
   setUpdatedHost,
   setSearchContainer,
+  setListAccessesUsers,
 } = requestSlice.actions;
 
 export default requestSlice.reducer;
