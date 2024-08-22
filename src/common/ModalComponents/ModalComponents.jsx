@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 ////// components
 import Modals from "../Modals/Modals";
-import AccessesUsers from "./HostsAndContainers/AccessesUsers";
+import AccessesUsers from "../../components/MainPage/ModalsForContainers/AccessesUsers/AccessesUsers";
 
 const ModalComponents = () => {
   const { modal } = useSelector((state) => state.stateSlice);
@@ -19,7 +19,7 @@ const ModalComponents = () => {
       title={objModals?.[modal]?.title}
       setOpenModal={() => {}}
     >
-      {objModals?.[modal]?.c}
+      {/* {objModals?.[modal]?.c} */}
     </Modals>
   );
 };

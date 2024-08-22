@@ -9,8 +9,11 @@ import StorageIcon from "@mui/icons-material/Storage";
 
 ////// fns
 import {
+  closeModalStartCont,
   setOpenModaDelCont,
+  setOpenModaStartCont,
   setOpenModalAddGroup,
+  setOpenModalKeyCont,
 } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
@@ -25,6 +28,7 @@ import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import {
   addGroupContFN,
   delContainerFN,
+  editAccessesUsersFN,
 } from "../../../store/reducers/requestSlice";
 import { backUpContainerFN } from "../../../store/reducers/requestSlice";
 import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
@@ -42,13 +46,15 @@ import "./style.scss";
 import SliderScroll from "../../../common/SliderScroll/SliderScroll";
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
+import Selects from "../../../common/Selects/Selects";
 
 ////// helpers
 import { listFast, listGr } from "../../../helpers/LocalData";
 import { listOS, listSnaps } from "../../../helpers/LocalData";
 import { listTypes } from "../../../helpers/LocalData";
-import Selects from "../../../common/Selects/Selects";
 import { myAlert } from "../../../helpers/MyAlert";
+import AccessesUsers from "./AccessesUsers/AccessesUsers";
+import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
 
 const ModalsForContainers = () => {
   const dispatch = useDispatch();
@@ -64,8 +70,7 @@ const ModalsForContainers = () => {
   };
 
   const editContainer = () => {
-    const obj = { activeHost, data: temporaryContainer };
-    dispatch(editContainers(obj));
+    dispatch(editContainers({ activeHost, data: temporaryContainer }));
   };
   ///// редактирую через ззапрос контейнерм (инфу о контейнере)
 
@@ -76,14 +81,10 @@ const ModalsForContainers = () => {
     dispatch(setAddTempCont({ [name]: value }));
   };
 
-  const onChangeSlider = (obj) => {
-    dispatch(setAddTempCont(obj));
-  };
+  const onChangeSlider = (obj) => dispatch(setAddTempCont(obj));
 
-  const addContainer = () => {
-    dispatch(addContainersFN(addTempCont));
-    ///// добавляю контейнер через запрос
-  };
+  const addContainer = () => dispatch(addContainersFN(addTempCont));
+  ///// добавляю контейнер через запрос
 
   //////////////////////////////////______////// операционные системы
   const { openOSModal } = useSelector((state) => state.stateSlice);
@@ -105,10 +106,10 @@ const ModalsForContainers = () => {
   const { openModalAddGroup } = useSelector((state) => state.stateSlice);
 
   const addContInGroup = (guid) => {
+    dispatch(addGroupContFN({ guid_group: guid, guid: openModalAddGroup }));
     ///// добавление контейнера в группу
     ///// guid - guid контейнера
     ///// guid_group - guid группы
-    dispatch(addGroupContFN({ guid_group: guid, guid: openModalAddGroup }));
   };
 
   //////////////////////////////////______////// удаление контейнера c группы
@@ -116,12 +117,6 @@ const ModalsForContainers = () => {
 
   const delContInGroup = () => dispatch(delGroupContainerFN(openModaDelGroup));
   ///// удаление контейнера с группы через запрос
-
-  //////////////////////////////////______////// выключения контейнера
-  const { openModaStoppedCont } = useSelector((state) => state.stateSlice);
-
-  const offContainer = () => dispatch(offContainerFN(openModaStoppedCont));
-  //////// выключения контейнера через запрос
 
   //////////////////////////////////______////// backUp контейнера
   const { openModalBackUp } = useSelector((state) => state.stateSlice);
@@ -143,6 +138,24 @@ const ModalsForContainers = () => {
     }
     dispatch(backUpContainerFN(openModalBackUp));
   };
+
+  //////////////////////////////////______////// для доступов отображения контейнеров клиентам
+  const { openModalKeyCont } = useSelector((state) => state.stateSlice);
+
+  const editAccesses = () => dispatch(editAccessesUsersFN(openModaStoppedCont));
+  //////// смена доступов отображения контейнеров клиентам
+
+  //////////////////////////////////______////// запуск контейнера
+  const { openModaStartCont } = useSelector((state) => state.stateSlice);
+  // setOpenModaStartCont
+  // const offContainer = () => dispatch(offContainerFN(openModaStoppedCont));
+  //////// запуск контейнера через запрос
+
+  //////////////////////////////////______////// выключения контейнера
+  const { openModaStoppedCont } = useSelector((state) => state.stateSlice);
+
+  const offContainer = () => dispatch(offContainerFN(openModaStoppedCont));
+  //////// выключения контейнера через запрос
 
   //////////////////////////////////______////// удаление контейнера
   const { openModaDelCont } = useSelector((state) => state.stateSlice);
@@ -175,8 +188,6 @@ const ModalsForContainers = () => {
           </div>
         </div>
       </Modals>
-      {/* редактирование  */}
-
       {/*/////////______//////______////// добавления контенера  */}
       <Modals
         openModal={addTempCont?.bool}
@@ -231,8 +242,6 @@ const ModalsForContainers = () => {
           </div>
         </div>
       </Modals>
-      {/*  добавления контенера  */}
-
       {/*/////////______//////______////// выбор операционной системы*/}
       <Modals
         openModal={!!openOSModal}
@@ -249,8 +258,6 @@ const ModalsForContainers = () => {
           </div>
         </div>
       </Modals>
-      {/* выбор операционной системы*/}
-
       {/*/////////______//////______////// добавление файлов в контейнера  */}
       <Modals
         openModal={!!openAddFiles}
@@ -267,8 +274,6 @@ const ModalsForContainers = () => {
           />
         </div>
       </Modals>
-      {/* добавление файлов в контейнера  */}
-
       {/*/////////______//////______////// добавление контейнера в группу  */}
       <Modals
         openModal={!!openModalAddGroup}
@@ -290,8 +295,6 @@ const ModalsForContainers = () => {
           </div> */}
         </div>
       </Modals>
-      {/* добавление контейнера в группу  */}
-
       {/*/////////______//////______////// удалить контейнер с группы через запрос  */}
       <Modals
         openModal={!!openModaDelGroup}
@@ -310,8 +313,6 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
-      {/* удалить контейнер с группы через запрос  */}
-
       {/*/////////______//////______////// backUp контейнера  */}
       <div className="backUp">
         <Modals
@@ -348,8 +349,25 @@ const ModalsForContainers = () => {
           </div>
         </Modals>
       </div>
-      {/*  backUp контейнера  */}
+      {/*/////////______//////______////// для доступов отображения контейнеров клиентам  */}
+      <Modals
+        openModal={!!openModalKeyCont}
+        setOpenModal={() => dispatch(setOpenModalKeyCont())}
+        title={"Пользователи"}
+      >
+        <AccessesUsers editAccesses={editAccesses} />
+      </Modals>
 
+      {/*/////////______//////______////// запуска контейнера  */}
+      <div className="virtual">
+        <Modals
+          openModal={!!openModaStartCont?.guid}
+          setOpenModal={() => dispatch(closeModalStartCont())}
+          title={openModaStartCont?.vm_id}
+        >
+          <ActionsVirtualMachine />
+        </Modals>
+      </div>
       {/*/////////______//////______////// выключение контейнера  */}
       <Modals
         openModal={!!openModaStoppedCont}
@@ -368,8 +386,6 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
-      {/* выключение контейнера    */}
-
       {/*/////////______//////______////// удаление контейнера  */}
       <Modals
         openModal={!!openModaDelCont}
@@ -388,7 +404,6 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
-      {/* удаление контейнера    */}
     </>
   );
 };

@@ -7,23 +7,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { Table, TableBody } from "@mui/material";
 import { TableCell, TableContainer } from "@mui/material";
 import { TableHead, TableRow } from "@mui/material";
-import { accessesUsers } from "../../../helpers/LocalData";
-import ToggleSwitch from "../../ToggleSwitch/ToggleSwitch";
+import { accessesUsers } from "../../../../helpers/LocalData";
+import ToggleSwitch from "../../../../common/ToggleSwitch/ToggleSwitch";
 
 ////// imgs
-import play from "../../../assets/icons/play-circle.svg";
-import restart from "../../../assets/icons/repeat.svg";
-import stop from "../../../assets/icons/stop-circle.svg";
-import info from "../../../assets/icons/moreInfo.svg";
-import warning from "../../../assets/icons/warning.svg";
+import play from "../../../../assets/icons/play-circle.svg";
+import restart from "../../../../assets/icons/repeat.svg";
+import stop from "../../../../assets/icons/stop-circle.svg";
+import info from "../../../../assets/icons/moreInfo.svg";
+import warning from "../../../../assets/icons/warning.svg";
 
 //////// style
 import "./style.scss";
 
 //////// fns
-import { setListAccessesUsers } from "../../../store/reducers/requestSlice";
+import { setListAccessesUsers } from "../../../../store/reducers/requestSlice";
 
-const AccessesUsers = () => {
+const AccessesUsers = ({ editAccesses }) => {
   const dispatch = useDispatch();
 
   const { listAccessesUsers } = useSelector((state) => state.requestSlice);
@@ -41,7 +41,7 @@ const AccessesUsers = () => {
     //// chech // потом поменять на запрос чтобы с запроса получать данные
   }, []);
 
-  const changeAccessesUsers = () => {};
+  const changeAccessesUsers = () => editAccesses();
   ///// изменение статусов клиентов, отпрвляю кто что может видеть, у кого какие доступы
 
   return (

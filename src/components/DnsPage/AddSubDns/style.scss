@@ -2,29 +2,29 @@
   padding: 0px;
   animation: modal 0.7s ease-in-out;
 
-  .time {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 5px;
-
-    > .myInput {
-      width: 20%;
-    }
-
-    .comment {
-      width: 100%;
-      .myInput {
-        width: 100%;
-      }
-    }
-  }
-
   .second {
     display: flex;
     align-items: flex-end;
     gap: 5px;
-    justify-content: space-between;
+
+    .myInput:nth-child(1) {
+      width: 220px;
+    }
+    .myInput:nth-child(2) {
+      width: 150px;
+    }
+    .myInput:nth-child(3) {
+      width: 75px;
+    }
+    .myInput:nth-child(4) {
+      width: 300px;
+    }
+
+    .my_ip {
+      .myInput {
+        width: 150px;
+      }
+    }
   }
 
   .bool {
@@ -70,6 +70,24 @@
 
   .rigth {
     justify-content: flex-end;
+  }
+
+  .time {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 5px;
+
+    > .myInput {
+      width: 20%;
+    }
+
+    .comment {
+      width: 100%;
+      .myInput {
+        width: 100%;
+      }
+    }
   }
 }
 

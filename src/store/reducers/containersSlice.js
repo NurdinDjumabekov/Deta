@@ -28,6 +28,7 @@ const initialState = {
       ttl: "60",
       ttl_type: 1,
       comment: "",
+      my_ip: "",
       is_check_my_ip: true,
       type_record: 1,
     },
@@ -144,10 +145,6 @@ const initialState = {
   openModaStoppedCont: "", ////guid для модалки выключения контейнера
 
   openModaDelCont: "", ////guid для модалки удаления контейнера
-
-  openModalKeyCont: "", ////guid  для доступов отображения контейнеров клиентам
-
-  openModaStartCont: { guid: "", vm_id: "" }, ////guid для модалки запуска контейнера
 
   openModalBackUp: {
     name: "", /// тут буду хрпнить данные о контейнере и хостедля простого отображения
@@ -392,18 +389,6 @@ const stateSlice = createSlice({
     setOpenModaDelCont: (state, action) => {
       state.openModaDelCont = action.payload;
     },
-
-    setOpenModalKeyCont: (state, action) => {
-      state.openModalKeyCont = action.payload;
-    },
-
-    setOpenModaStartCont: (state, action) => {
-      state.openModaStartCont = action.payload;
-    },
-
-    closeModalStartCont: (state, action) => {
-      state.openModaStartCont = { guid: "", vm_id: "" };
-    },
   },
 });
 
@@ -443,9 +428,6 @@ export const {
   clearOpenModalBackUp,
   setOpenModaStoppedCont,
   setOpenModaDelCont,
-  setOpenModalKeyCont,
-  setOpenModaStartCont,
-  closeModalStartCont,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

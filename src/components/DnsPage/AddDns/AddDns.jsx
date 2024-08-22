@@ -74,7 +74,7 @@ const AddDns = () => {
       return;
     }
 
-    if (temporaryDNS?.is_check_my_ip) {
+    if (!temporaryDNS?.is_check_my_ip) {
       if (temporaryDNS?.my_ip === "" || temporaryDNS?.my_ip == "0") {
         myAlert("Заполните 'Your IP'");
         return;
@@ -99,6 +99,7 @@ const AddDns = () => {
           name={"domen_name"}
           value={temporaryDNS?.domen_name}
         />
+
         <div className="timeInputs">
           <MyInputs
             title={"Expire :"}
@@ -134,18 +135,21 @@ const AddDns = () => {
           name={"comment"}
           value={temporaryDNS?.comment}
         />
-        {temporaryDNS?.is_check_my_ip && (
-          <MyInputs
-            title={"Your ip :"}
-            onChange={onChange}
-            name={"my_ip"}
-            value={temporaryDNS?.my_ip}
-          />
+        {!temporaryDNS?.is_check_my_ip && (
+          <div className="my_ip">
+            <MyInputs
+              title={"Your ip :"}
+              onChange={onChange}
+              name={"my_ip"}
+              value={temporaryDNS?.my_ip}
+            />
+          </div>
         )}
         <button className="addAction" onClick={addDomen}>
           Добавить
         </button>
       </div>
+
       <div className="time">
         <div className="second actions">
           <div className="bool">
@@ -156,22 +160,10 @@ const AddDns = () => {
               name="is_check_my_ip"
               checked={temporaryDNS?.is_check_my_ip}
             />
-            <label htmlFor="check">Add your ip :</label>
+            <label htmlFor="check">Default IP</label>
           </div>
         </div>
       </div>
-
-      {/* <div className="second actions">
-        <div className="bool">
-          <input type="checkbox" id="check" />
-          <label htmlFor="check">Update Reverse Zone</label>
-        </div>
-        <div>
-          <button className="editAction" onClick={editDns}>
-            Редактировать
-          </button>
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -20,7 +20,7 @@ import { setAddHost } from "../../store/reducers/stateSlice";
 import MenuInner from "../../components/Menu/MenuInner/MenuInner";
 import Hosts from "../../components/MainPage/Hosts/Hosts";
 import Containers from "../../components/MainPage/Containers/Containers";
-import StatusContainers from "../../components/MainPage/StatusContainers/StatusContainers";
+import Volns from "../../components/MainPage/Volns/Volns";
 import GraphicHosts from "../../components/MainPage/GraphicHosts/GraphicHosts";
 import GraphicContainer from "../../components/MainPage/GraphicContainer/GraphicContainer";
 import ModalsForContainers from "../../components/MainPage/ModalsForContainers/ModalsForContainers";
@@ -69,59 +69,63 @@ const MainPage = () => {
   // console.log(listProviders, "listProviders");
 
   return (
-    <div className="mainPage">
-      <div className="providers">
-        <div className="providers__main">
-          <button className="addBtn" onClick={addHost}>
-            +
-          </button>
-          <div className="providers__main__inner">
-            {listProviders?.map((item, index) => (
-              <div key={index}>
-                <img src={listImgsProv?.[index]} alt="" />
-                <div className="moreInfo">{item?.provider_name}</div>
-                <span>{item?.provider_pingtime}</span>
-                <div
-                  className={
-                    item?.provider_status == 1 ? "roundGreen" : "roundRed"
-                  }
-                />
-              </div>
-            ))}
+    <>
+      <div className="mainPage">
+        <div className="providers">
+          <div className="providers__main">
+            <button className="addBtn" onClick={addHost}>
+              +
+            </button>
+            <div className="providers__main__inner">
+              {listProviders?.map((item, index) => (
+                <div key={index}>
+                  <img src={listImgsProv?.[index]} alt="" />
+                  <div className="moreInfo">{item?.provider_name}</div>
+                  <span>{item?.provider_pingtime}</span>
+                  <div
+                    className={
+                      item?.provider_status == 1 ? "roundGreen" : "roundRed"
+                    }
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div className="hostAndContainer">
+          <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
+            <div className="hosts__inner">
+              {listHosts?.map((item) => (
+                <Hosts key={item?.guid} item={item} />
+              ))}
+            </div>
+            <div className="hosts__more_info">
+              <GraphicHosts />
+            </div>
+          </div>
+
+          <MenuInner />
+
+          <div className={`containers ${checkContainer}`}>
+            <div className="containers__inner">
+              {listContainers?.map((item, index) => (
+                <Containers key={index} item={item} />
+              ))}
+            </div>
+            <div className="containers__more_info">
+              <GraphicContainer />
+            </div>
+          </div>
+          <Volns />
         </div>
       </div>
 
-      <div className="hostAndContainer">
-        <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
-          <div className="hosts__inner">
-            {listHosts?.map((item) => (
-              <Hosts key={item?.guid} item={item} />
-            ))}
-          </div>
-          <div className="hosts__more_info">
-            <GraphicHosts />
-          </div>
-          <ModalsForHosts />
-        </div>
-
-        <MenuInner />
-
-        <div className={`containers ${checkContainer}`}>
-          <div className="containers__inner">
-            {listContainers?.map((item, index) => (
-              <Containers key={index} item={item} />
-            ))}
-          </div>
-          <div className="containers__more_info">
-            <GraphicContainer />
-          </div>
-          <ModalsForContainers />
-          {/* ///// модалки контейнеров */}
-        </div>
-        <StatusContainers />
-      </div>
-    </div>
+      <ModalsForHosts />
+      {/* ///// модалки хостов */}
+      <ModalsForContainers />
+      {/* ///// модалки контейнеров */}
+    </>
   );
 };
 

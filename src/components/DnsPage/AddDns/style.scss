@@ -7,14 +7,17 @@
     gap: 5px;
 
     > .myInput {
-      width: 40%;
+      width: 220px;
     }
 
     .timeInputs {
       display: flex;
       align-self: flex-end;
       gap: 5px;
-      width: 60%;
+
+      > .myInput {
+        width: 80px;
+      }
     }
   }
 
@@ -23,25 +26,14 @@
     align-items: flex-end;
     gap: 5px;
 
-    .myInput {
-      input {
-        height: 30px !important;
+    > .myInput {
+      width: 325px;
+    }
+
+    .my_ip {
+      > .myInput {
+        width: 150px;
       }
     }
-
-    .addAction {
-      height: 30px !important;
-    }
   }
-
-  // .actions {
-  //   .editAction {
-  //     background: #c3602c;
-  //     color: #fff;
-  //     font-size: 12px;
-  //     padding: 8px 10px;
-  //     border-radius: 3px;
-  //     margin: 5px 0 0 8px;
-  //   }
-  // }
 }

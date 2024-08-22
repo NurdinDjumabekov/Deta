@@ -48,7 +48,10 @@ const MenuInner = () => {
               {item?.id !== 1 && /// не отображаю контейнера
                 item?.list?.map((subItem, index) => (
                   <div key={index} onClick={() => getCont(subItem?.guid)}>
-                    <p>{subItem?.name}</p>
+                    <p>
+                      {subItem?.name}{" "}
+                      {!!subItem?.count ? <b>[{subItem?.count}]</b> : <></>}
+                    </p>
                     <span>{subItem?.desc}</span>
                   </div>
                 ))}

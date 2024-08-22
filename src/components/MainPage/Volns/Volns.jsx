@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import water from "../../../assets/icons/water.svg";
 import "./style.scss";
-import { listHosts } from "../../../helpers/LocalData";
+import { listHosts, listVolns } from "../../../helpers/LocalData";
+import { useDispatch } from "react-redux";
+import { getVolns } from "../../../store/reducers/requestSlice";
 
 const sections = [
   {
@@ -24,10 +26,16 @@ const sections = [
   },
 ];
 
-const StatusContainers = () => {
+const Volns = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // dispatch(getVolns());
+  }, []);
+
   return (
     <div className="statusContainers">
-      {sections.map((section, index) => (
+      {/* {listVolns.map((section, index) => (
         <div key={index}>
           <p className={section.className}>{section.title}</p>
           <div className="title">
@@ -40,9 +48,9 @@ const StatusContainers = () => {
             ))}
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };
 
-export default StatusContainers;
+export default Volns;

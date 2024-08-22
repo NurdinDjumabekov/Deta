@@ -15,6 +15,7 @@ import {
   setOpenModaDelCont,
   setOpenModaDelGroup,
   setOpenModalAddGroup,
+  setOpenModalKeyCont,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen, listGr, listname } from "../../helpers/LocalData";
@@ -37,6 +38,8 @@ const initialState = {
   listUsers: [],
 
   listAccessesUsers: [], //// список клиентов, которым надо дать доступы
+
+  listVolns: [], //// список волн
 };
 
 const url_socket = "http://217.29.26.222:3633";
@@ -485,6 +488,25 @@ export const backUpContainerFN = createAsyncThunk(
   }
 );
 
+//// editAccessesUsersFN - смена доступов отображения контейнеров клиентам
+export const editAccessesUsersFN = createAsyncThunk(
+  "editAccessesUsersFN",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setOpenModalKeyCont(""));
+        /// закрываю модалку и очищаю данные для временного хранения данных для смены доступов отображения контейнеров клиентам
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 //// delContainerFN - удаление контейнера
 export const delContainerFN = createAsyncThunk(
   "delContainerFN",
@@ -501,6 +523,29 @@ export const delContainerFN = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
+  }
+);
+
+////////////////////////////////////////////////////////// volns //////////////
+
+///// getVolns - для получения волн определенного хоста
+export const getVolns = createAsyncThunk(
+  "getVolns",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
+    const data = { guid }; //// guid - хоста
+
+    // try {
+    //   const response = await axios.post(url, data);
+    //   if (response.status >= 200 && response.status < 300) {
+
+    //     return response?.data;
+    //   } else {
+    //     throw Error(`Error: ${response.status}`);
+    //   }
+    // } catch (error) {
+    //   return rejectWithValue(error.message);
+    // }
   }
 );
 
@@ -587,7 +632,6 @@ export const addDomens = createAsyncThunk(
             myAlert("Домен успешно добавлен!");
           }, 200);
         }
-        console.log(response?.data, "response");
 
         return response?.data;
       } else {
@@ -682,8 +726,18 @@ export const addSubDomen = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsSubDomen(data?.domen_guid)); /// это guid домена
-        dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
+        const alreadyCreate = response?.data?.alreadyCreate;
+        if (alreadyCreate) {
+          myAlert("Такой субдомен уже существует!");
+          myAlert("Такой субдомен уже существует!");
+          myAlert("Такой субдомен уже существует!");
+        } else {
+          dispatch(getDnsSubDomen(data?.domen_guid)); /// это guid домена
+          dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
+          myAlert("Субдомен успешно добавлен!");
+          myAlert("Субдомен успешно добавлен!");
+          myAlert("Субдомен успешно добавлен!");
+        }
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -884,6 +938,19 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(searchContainers.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// getVolns
+    builder.addCase(getVolns.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.listVolns = action.payload;
+    });
+    builder.addCase(getVolns.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getVolns.pending, (state, action) => {
       // state.preloader = true;
     });
 

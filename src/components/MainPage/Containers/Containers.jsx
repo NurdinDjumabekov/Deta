@@ -26,7 +26,11 @@ import keyIncon from "../../../assets/icons/key.svg";
 import "./style.scss";
 
 ////// fns
-import { setOpenAddFiles } from "../../../store/reducers/stateSlice";
+import {
+  setOpenAddFiles,
+  setOpenModaStartCont,
+  setOpenModalKeyCont,
+} from "../../../store/reducers/stateSlice";
 import { setOpenModals } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
@@ -42,16 +46,10 @@ import { setActiveContainer } from "../../../store/reducers/stateSlice";
 import MemoryComp from "../MemoryComp/MemoryComp";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
-import { Table, TableBody } from "@mui/material";
-import { TableCell, TableContainer } from "@mui/material";
-import { TableHead, TableRow } from "@mui/material";
 
 const Containers = ({ item }) => {
-  const { id, host_name, container_name, description } = item;
-  const { key, del, percent, GB, guid, info } = item;
-  /////
-  const { vm_id, vm_name, vm_comment, vm_uptime } = item;
-  const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb } = item;
+  const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del } = item;
+  const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
 
   const dispatch = useDispatch();
 
@@ -62,8 +60,8 @@ const Containers = ({ item }) => {
   const clickContainer = () => dispatch(setActiveContainer(guid));
 
   const openModalEdit = () => {
-    //// открываю модалку для редактирования и подставля. во временный state данные
     dispatch(setTemporaryContainer({ guid, vm_comment }));
+    //// открываю модалку для редактирования и подставля. во временный state данные
   };
 
   const openOSModal = () => dispatch(setOpenOSModal(true));
@@ -93,42 +91,40 @@ const Containers = ({ item }) => {
   const delContainer = () => dispatch(setOpenModaDelCont(guid));
   //// модалка для удаления контейнера
 
-  const openKeyInfo = () => dispatch(setOpenModals(1));
+  const openKeyInfo = () => dispatch(setOpenModalKeyCont(guid));
   //// модалка для доступов отображения контейнеров клиентам
+
+  const handleVirtualMachine = (type) => {
+    const obj = { 1: "Запустить ", 2: "Перезагрузить", 3: "Выключить " };
+    const text = `${obj?.[type]} виртуальную машину ${vm_id} ?`;
+    dispatch(setOpenModaStartCont({ guid, vm_id: text }));
+    //// для модалки запуска, обновления и остановки запуска контейнера
+  };
 
   const active = activeContainer == guid ? "containerActive" : "";
 
   return (
-    <TableContainer>
-      <Table>
-        <TableBody
-          className={`containerMain ${active}`}
-          onClick={clickContainer}
-        >
-          <TableRow className="containerMain__inner">
-            {/* ///// */}
-            <TableCell className="bottom">
-              <div className="numIndex">
-                <img src={container} alt="[]" />
-                <p>{vm_id}</p>
-              </div>
-              <div className="numIndexShadow">
-                <img src={container} alt="[]" />
-                <p>{vm_id}</p>
-              </div>
-            </TableCell>
+    <div className={`containerMain ${active}`} onClick={clickContainer}>
+      <div className="containerMain__inner">
+        {/* ///// */}
+        <div className="bottom">
+          <div className="numIndex">
+            <img src={container} alt="[]" />
+            <p>{vm_id}</p>
+          </div>
+        </div>
 
-            {/* ///// */}
-            <TableCell className="editBlock">
-              <div className="editBlock__inner">
-                <button className="edit" onClick={openModalEdit}>
-                  <img src={edit} alt="" />
-                </button>
-                <button className="OS" onClick={openOSModal}>
-                  <img src={round} alt="os" />
-                </button>
-              </div>
-              {/* <div className="editBlock__inner">
+        {/* ///// */}
+        <div className="editBlock">
+          <div className="editBlock__inner">
+            <button className="edit" onClick={openModalEdit}>
+              <img src={edit} alt="" />
+            </button>
+            <button className="OS" onClick={openOSModal}>
+              <img src={round} alt="os" />
+            </button>
+          </div>
+          {/* <div className="editBlock__inner">
                 <button className="edit">
                   <img src={editBlue} alt="" />
                 </button>
@@ -136,101 +132,97 @@ const Containers = ({ item }) => {
                   <img src={editBlue} alt="" />
                 </button>
               </div> */}
-            </TableCell>
+        </div>
 
-            {/* ///// */}
-            <TableCell className="titles">
-              <div className="mainInfo">
-                <b className="hostName">
-                  [{host_name}] <p className="container_name"> - {vm_name}</p>
-                </b>
+        {/* ///// */}
+        <div className="titles">
+          <div className="mainInfo">
+            <b className="hostName">
+              [{host_name}] <p className="container_name"> - {vm_name}</p>
+            </b>
+          </div>
+          <span className="description">{vm_comment}</span>
+        </div>
+
+        {/* ///// */}
+        <div className="memory">
+          <div className="memory__inner">
+            <button onClick={openAddFiles}>
+              <img src={skrepka} alt="#" />
+            </button>
+            <MemoryComp
+              node_cpu_usage={vm_cpu_usage}
+              node_cpu={vm_cpu}
+              node_ram_usage={vm_ram_usage_mb}
+              node_ram_mb={vm_ram_mb}
+              array_storages={[]}
+            />
+            {info && (
+              <div className="GB_dataBase">
+                <div>
+                  <img src={dataBaseIcon} alt="#" />
+                </div>
+                <p>{getConfigValue(info, "size")}6G</p>
               </div>
-              <span className="description">{vm_comment}</span>
-            </TableCell>
+            )}
+          </div>
+        </div>
 
-            {/* ///// */}
-            <TableCell className="memory">
-              <div className="memory__inner">
-                <button onClick={openAddFiles}>
-                  <img src={skrepka} alt="#" />
-                </button>
-                <MemoryComp
-                  node_cpu_usage={vm_cpu_usage}
-                  node_cpu={vm_cpu}
-                  node_ram_usage={vm_ram_usage_mb}
-                  node_ram_mb={vm_ram_mb}
-                  array_storages={[]}
-                />
-                {info && (
-                  <div className="GB_dataBase">
-                    <div>
-                      <img src={dataBaseIcon} alt="#" />
-                    </div>
-                    <p>{getConfigValue(info, "size")}6G</p>
-                  </div>
-                )}
-              </div>
-            </TableCell>
+        {/* ///// */}
+        <div className="actions">
+          <div className="actions__inner">
+            <button onClick={openModalAddGroup}>
+              <img src={addGroup} alt="#" />
+              <span className="moreInfoLeft">Добавить в группу</span>
+            </button>
+            <button onClick={openModalFixTime}>
+              <img src={calendarX} alt="#" />
+              <span className="moreInfoLeft">Зафиксировать время создания</span>
+            </button>
+            <button onClick={openModalBackUpFN}>
+              <img src={download} alt="#" />
+              <span className="moreInfoLeft">BackUp</span>
+            </button>
+            <button onClick={openKeyInfo}>
+              <img src={keyIncon} alt="#" />
+            </button>
 
-            {/* ///// */}
-            <TableCell className="" style={{ width: "29%" }}>
-              <div className="actions">
-                <div className="actions__inner">
-                  <button onClick={openModalAddGroup}>
-                    <img src={addGroup} alt="#" />
-                    <span className="moreInfoLeft">Добавить в группу</span>
-                  </button>
-                  <button onClick={openModalFixTime}>
-                    <img src={calendarX} alt="#" />
-                    <span className="moreInfoLeft">
-                      Зафиксировать время создания
-                    </span>
-                  </button>
-                  <button onClick={openModalBackUpFN}>
-                    <img src={download} alt="#" />
-                    <span className="moreInfoLeft">BackUp</span>
-                  </button>
-                  <button onClick={openKeyInfo}>
-                    <img src={keyIncon} alt="#" />
-                  </button>
-                  {/* <button>
+            <button onClick={() => handleVirtualMachine(1)}>
               <img src={playCircle} alt="#" />
               <span className="moreInfoLeft">Запустить сервер</span>
-            </button> */}
-                  {/* <button>
+            </button>
+            <button onClick={() => handleVirtualMachine(2)}>
               <img src={repeat} alt="#" />
               <span className="moreInfoLeft">Перезагрузить сервер</span>
-            </button> */}
-                  {/* <button>
+            </button>
+            <button onClick={() => handleVirtualMachine(3)}>
               <img src={stopCircle} alt="#" />
               <span className="moreInfoLeft">Мягкое выключение</span>
-            </button> */}
-                  <button onClick={openModalDelInGroup}>
-                    <img src={minus} alt="#" />
-                    <span className="moreInfoLeft">Удалить из списка</span>
-                  </button>
-                  <button onClick={openModalOffContainer}>
-                    <img src={warning} alt="#" />
-                    <span className="moreInfoLeft">
-                      Жёсткое выключение (!может вызвать повреждение файлов на
-                      высоконагруженных серверах!)
-                    </span>
-                  </button>
-                  {!del && (
-                    <button className="deleteBtn" onClick={delContainer}>
-                      Удалить
-                    </button>
-                  )}
-                </div>
-                <div className={`key ${del ? "actions__key" : ""}`}>
-                  <p>({secondsToDhms(vm_uptime)})</p>
-                </div>
-              </div>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </button>
+
+            <button onClick={openModalDelInGroup}>
+              <img src={minus} alt="#" />
+              <span className="moreInfoLeft">Удалить из списка</span>
+            </button>
+            <button onClick={openModalOffContainer}>
+              <img src={warning} alt="#" />
+              <span className="moreInfoLeft">
+                Жёсткое выключение (!может вызвать повреждение файлов на
+                высоконагруженных серверах!)
+              </span>
+            </button>
+            {!del && (
+              <button className="deleteBtn" onClick={delContainer}>
+                Удалить
+              </button>
+            )}
+          </div>
+          <div className={`key ${del ? "actions__key" : ""}`}>
+            <p>({secondsToDhms(vm_uptime)})</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

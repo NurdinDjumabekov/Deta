@@ -125,3 +125,21 @@
     justify-content: flex-end !important;
   }
 }
+
+.moreEdit {
+  .second {
+    flex-direction: row;
+
+    .myInput {
+      width: 50% !important;
+    }
+  }
+
+  .actions {
+    justify-content: space-between !important;
+    .addAction {
+      width: 80px !important;
+      min-width: 80px !important;
+    }
+  }
+}

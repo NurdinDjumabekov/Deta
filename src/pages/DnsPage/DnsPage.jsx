@@ -67,9 +67,7 @@ const DnsPage = () => {
                         color: "#c0c0c0",
                         textAlign: "center",
                       }}
-                    >
-                      ...
-                    </TableCell>
+                    ></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

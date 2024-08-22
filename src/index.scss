@@ -78,6 +78,7 @@ img {
   font-size: 11px;
   z-index: 99;
   background: #292d32;
+  white-space: nowrap;
 }
 // AddNSChame
 // AddNSChame
@@ -86,16 +87,18 @@ img {
 // AddRTRChame
 .moreInfoLeft {
   position: absolute;
-  bottom: 15px;
-  right: 25px;
+  bottom: 100%; /* Поднимает текст над кнопкой */
+  left: 50%; /* Центрирует текст относительно кнопки */
+  transform: translateX(-50%);
   color: #fff;
   padding: 5px 10px;
   border-radius: 3px;
   border: 1px solid #fff;
   display: none;
   font-size: 11px;
-  z-index: 999;
+  z-index: 999 !important;
   background: #292d32;
+  white-space: nowrap;
 }
 
 @keyframes animation {

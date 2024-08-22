@@ -125,7 +125,7 @@ const ModalsForHosts = () => {
           </div>
         </form>
       </Modals>
-      {/* для добавления  */}
+
       {/* для удаления  */}
       <Modals
         openModal={guidHostDel}
@@ -141,7 +141,6 @@ const ModalsForHosts = () => {
           </button>
         </div>
       </Modals>
-      {/* для удаления  */}
 
       {/* для редактирования  */}
       <Modals
@@ -149,7 +148,7 @@ const ModalsForHosts = () => {
         setOpenModal={() => dispatch(setGuidHostEdit())}
         title={"Редактирование хоста"}
       >
-        <div className="addDns hostsEdit">
+        <div className="addDns hostsEdit moreEdit">
           <div className="second">
             <MyInputs
               title={"Информация :"}

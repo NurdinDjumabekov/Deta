@@ -23,22 +23,22 @@ export const pages = [
 ];
 
 export const listGr = [
-  { name: "Тестовая группa", decs: "описание1", guid: "asdasdas" },
-  { name: "ЛИС стационар", decs: "описание1", guid: "asdasdas" },
-  { name: "ЛИС облако", decs: "описание1", guid: "asdasdas" },
-  { name: "Мис", decs: "описание1", guid: "asdasdas" },
-  { name: "Доставка", decs: "описание1", guid: "asdasdas" },
-  { name: "FIN", decs: "описание1", guid: "asdasdas" },
-  { name: "1C", decs: "описание1", guid: "asdasdas" },
+  { name: "Тестовая группa", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "ЛИС стационар", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "ЛИС облако", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "Мис", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "Доставка", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "FIN", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "1C", decs: "описание1", guid: "asdasdas", count: 12 },
 ];
 
 export const listname = [
-  { name: "Иван", decs: "описание1" },
-  { name: "Баатыр", decs: "описание1" },
-  { name: "Роза", decs: "описание1" },
-  { name: "Айжамал", decs: "описание1" },
-  { name: "Эржан", decs: "описание1" },
-  { name: "Бек", decs: "описание1" },
+  { name: "Иван", decs: "описание1", count: 12 },
+  { name: "Баатыр", decs: "описание1", count: 4 },
+  { name: "Роза", decs: "описание1", count: 6 },
+  { name: "Айжамал", decs: "описание1", count: 7 },
+  { name: "Эржан", decs: "описание1", count: 2 },
+  { name: "Бек", decs: "описание1", count: 0 },
 ];
 
 export const hosts = [
@@ -3615,7 +3615,7 @@ export const dnsListDefault = {
     ttl: "60",
     ttl_type: 1,
     comment: "",
-    // bool: false,
+    is_check_my_ip: true,
     type_record: 1,
   },
   two: {
@@ -3757,3 +3757,34 @@ export const accessesUsers = [
     info: true,
   },
 ];
+
+export const listVolns = {
+  active: [
+    { guid: "32121341c134v12sd3v412", vm_id: "4211" },
+    { guid: "3241c131214v12sd3v412", vm_id: "4211" },
+    { guid: "3241c134v123v4sd11231232", vm_id: "92121" },
+    { guid: "3241c134v1523sdfsdfv412", vm_id: "4291" },
+    { guid: "3241c134v1312sd323v412", vm_id: "4911" },
+    { guid: "3241c131234vsdf123v412", vm_id: "42211" },
+    { guid: "3241c134v546dfsdf5123v412", vm_id: "421511" },
+    { guid: "3241c134546vafa123v412", vm_id: "54211" },
+    { guid: "3241c13474vadf123v412", vm_id: "42311" },
+  ],
+
+  diactive: [
+    { guid: "3241c13483sdf63v123v412", vm_id: "42811" },
+    { guid: "3241c1367fsd3sdfg4v123v412", vm_id: "42711" },
+    { guid: "3241c13833sdf4v123v412", vm_id: "92511" },
+    { guid: "3241c1315gsg14v123v412", vm_id: "43291" },
+    { guid: "3241c1315fds5y54b45154v123v412", vm_id: "491211" },
+    { guid: "3241c131554sdfv123v412", vm_id: "412211" },
+    { guid: "3241c1143gsdf4v123v412", vm_id: "4215511" },
+    { guid: "3241c134v1sdbsd23v412", vm_id: "5484211" },
+    { guid: "3241c131341sd4v123v412", vm_id: "425311" },
+  ],
+
+  clear: [
+    { guid: "3241asdfac134v1fdsfa23v412", vm_id: "42871" },
+    { guid: "3241sdfc134vafdadf123v412", vm_id: "42261" },
+  ],
+};

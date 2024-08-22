@@ -21,7 +21,7 @@
       // border-radius: 5px;
       padding: 8px 10px;
       position: relative;
-      width: 180px;
+      width: 200px;
 
       &:hover {
         background: #ffffff36;
@@ -79,6 +79,12 @@
         p {
           font-size: 13px;
           text-align: left;
+
+          b {
+            font-size: 13px;
+            text-align: left;
+            color: #66b4ff;
+          }
         }
 
         span {
