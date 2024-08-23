@@ -3,7 +3,7 @@
 
   .nameInputs {
     display: flex;
-    align-self: flex-end;
+    align-items: flex-end;
     gap: 5px;
 
     > .myInput {
@@ -19,20 +19,10 @@
         width: 80px;
       }
     }
-  }
-
-  .comment {
-    display: flex;
-    align-items: flex-end;
-    gap: 5px;
-
-    > .myInput {
-      width: 325px;
-    }
 
     .my_ip {
-      > .myInput {
-        width: 150px;
+      > input {
+        color: red;
       }
     }
   }

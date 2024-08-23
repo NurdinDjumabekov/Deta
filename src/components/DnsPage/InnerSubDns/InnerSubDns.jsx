@@ -4,17 +4,12 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 ////// componnets
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import { Table, TableBody } from "@mui/material";
+import { TableCell, TableContainer } from "@mui/material";
+import { TableHead, TableRow, Paper } from "@mui/material";
 import Modals from "../../../common/Modals/Modals";
 import TypeAddDns from "../TypeAddDns/TypeAddDns";
+import MyInputs from "../../../common/MyInput/MyInputs";
 
 ////// imgs
 import editIcon from "../../../assets/icons/edit.svg";
@@ -24,11 +19,16 @@ import krestIcon from "../../../assets/icons/krest.svg";
 import "./style.scss";
 
 ////// helpers
+import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
+import { checkChangeRecordName, checkIP } from "../../../helpers/checkFNS";
+
+import { checkChangeIP, checkChangeTTL } from "../../../helpers/checkFNS";
 
 ////// fns
 import { deleteSubDomen } from "../../../store/reducers/requestSlice";
 import { editSubDomen } from "../../../store/reducers/requestSlice";
-import MyInputs from "../../../common/MyInput/MyInputs";
+import { myAlert } from "../../../helpers/MyAlert";
+import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 
 const InnerSubDns = () => {
   const dispatch = useDispatch();
@@ -60,9 +60,20 @@ const InnerSubDns = () => {
     dispatch(deleteSubDomen({ guidDelete, setGuidDelete, activeDns }));
   };
 
-  ////// редактирование
-
   const editDns = () => {
+    ////// редактирование
+    if (checkSubDomainName(objEdit?.record_name, activeDns)) {
+      return;
+    }
+
+    if (checkIP(objEdit?.host_ip)) {
+      myAlert("Заполните правильно поле 'Host IP address: '");
+      return;
+    }
+
+    if (checkTTL(objEdit?.ttl)) {
+      return;
+    }
     ///// редактирование суб домена через запрос
     dispatch(editSubDomen({ setGuidEdit, setObjedit, objEdit, activeDns }));
   };
@@ -70,9 +81,16 @@ const InnerSubDns = () => {
   const onChange = (e) => {
     const { name, value } = e.target;
 
-    // Если поле "ttl", проверяем, чтобы вводились только цифры
     if (name === "ttl") {
-      if (/^\d*$/.test(value)) {
+      if (checkChangeTTL(value)) {
+        setObjedit({ ...objEdit, [name]: value });
+      }
+    } else if (name === "record_name") {
+      if (checkChangeRecordName(value)) {
+        setObjedit({ ...objEdit, [name]: value });
+      }
+    } else if (name === "host_ip") {
+      if (checkChangeIP(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
     } else {
@@ -88,10 +106,10 @@ const InnerSubDns = () => {
             <TableHead>
               <TableRow>
                 <TableCell className="title name" style={{ width: "15%" }}>
-                  Наименования
+                  Name
                 </TableCell>
-                <TableCell className="title type" style={{ width: "20%" }}>
-                  Типы
+                <TableCell className="title type" style={{ width: "10%" }}>
+                  Types
                 </TableCell>
                 <TableCell className="title ttl" style={{ width: "10%" }}>
                   TTL
@@ -99,12 +117,15 @@ const InnerSubDns = () => {
                 <TableCell className="title dta" style={{ width: "15%" }}>
                   Data
                 </TableCell>
+                <TableCell className="title action" style={{ width: "10%" }}>
+                  status
+                </TableCell>
                 <TableCell
                   className="title action"
                   style={{ width: "10%" }}
                 ></TableCell>
                 <TableCell className="title comment" style={{ width: "30%" }}>
-                  Комментарии
+                  Comments
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -117,7 +138,7 @@ const InnerSubDns = () => {
                   >
                     {row?.record_name}
                   </TableCell>
-                  <TableCell className="text name" style={{ width: "20%" }}>
+                  <TableCell className="text name" style={{ width: "10%" }}>
                     {row?.recordType}
                   </TableCell>
                   <TableCell className="text name" style={{ width: "10%" }}>
@@ -125,6 +146,13 @@ const InnerSubDns = () => {
                   </TableCell>
                   <TableCell className="text data" style={{ width: "15%" }}>
                     {row?.host_ip}
+                  </TableCell>
+                  <TableCell className="text name" style={{ width: "10%" }}>
+                    {!!row?.active_status ? (
+                      <p className="yes">Active</p>
+                    ) : (
+                      <p className="no">Disactive</p>
+                    )}
                   </TableCell>
                   <TableCell className="text actions" style={{ width: "10%" }}>
                     <div className="blockActions">
@@ -180,7 +208,7 @@ const InnerSubDns = () => {
         title={"Редактировать ?"}
       >
         <div className="addDns modalEdit">
-          <div className="second">
+          <div className="second modalEdit__inner">
             <MyInputs
               title={"Record name (host) :"}
               onChange={onChange}
@@ -188,7 +216,7 @@ const InnerSubDns = () => {
               value={objEdit?.record_name}
             />
 
-            <MyInputs
+            <MyIPInput
               title={"Host IP address :"}
               onChange={onChange}
               name={"host_ip"}

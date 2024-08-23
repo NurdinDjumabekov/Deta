@@ -4,8 +4,8 @@
   display: flex;
 
   &__add {
-    padding-top: 5px;
-    width: 70%;
+    padding-top: 4px;
+    width: 40%;
     height: 99vh;
     border: 1px dashed rgb(90, 88, 88);
     background: #292d32 !important;
@@ -36,7 +36,7 @@
   }
 
   &__edit {
-    width: 100%;
+    width: 60%;
     height: 99vh;
     padding-top: 5px;
   }
@@ -47,8 +47,10 @@
     thead {
       tr {
         th {
-          padding: 15px 10px;
-          border: none !important;
+          padding: 0px 10px;
+          font-size: 13px;
+          font-weight: 600;
+          border-bottom: 1px solid rgba(224, 224, 224, 0.205) !important;
         }
       }
     }
@@ -88,9 +90,9 @@
   width: 100%;
   background: rgb(30, 31, 35);
   margin: 10px 0 0 0;
-  height: 210px;
-  max-height: 210px;
-  min-height: 210px;
+  height: 150px;
+  max-height: 150px;
+  min-height: 150px;
   padding: 5px;
   border-top: 1px dashed rgb(90, 88, 88);
 }

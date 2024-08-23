@@ -19,7 +19,7 @@ const initialState = {
 
   activeHost: 0, //// активный временный хост
   activeContainer: 0, //// активный временный контейнер
-  activeDns: "", //// активный временный dns
+  activeDns: { guid: "", name: "" }, //// активный временный dns
 
   dnsList: {
     one: {

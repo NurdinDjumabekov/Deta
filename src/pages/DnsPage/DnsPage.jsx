@@ -35,7 +35,7 @@ const DnsPage = () => {
     dispatch(getDnsDomen());
   }, []);
 
-  const active = activeDns === "" ? "activeDns" : "";
+  const active = activeDns?.guid === "" ? "activeDns" : "";
 
   return (
     <>
@@ -46,10 +46,10 @@ const DnsPage = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell style={{ width: "40%", color: "#c0c0c0" }}>
+                    <TableCell style={{ width: "90%", color: "#c0c0c0" }}>
                       Наименования
                     </TableCell>
-                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
+                    {/* <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
                       Expire
                     </TableCell>
                     <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
@@ -61,9 +61,10 @@ const DnsPage = () => {
                     <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
                       Retry
                     </TableCell>
+                    */}
                     <TableCell
                       style={{
-                        width: "12%",
+                        width: "10%",
                         color: "#c0c0c0",
                         textAlign: "center",
                       }}

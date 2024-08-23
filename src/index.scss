@@ -101,6 +101,24 @@ img {
   white-space: nowrap;
 }
 
+.widthMiddle {
+  .myInput {
+    width: 180px !important;
+  }
+}
+
+.widthBig {
+  .myInput {
+    width: 220px !important;
+  }
+}
+
+.widthMini {
+  .myInput {
+    width: 80px !important;
+  }
+}
+
 @keyframes animation {
   from {
     opacity: 0;

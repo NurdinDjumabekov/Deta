@@ -27,6 +27,10 @@ const MainRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { dnsList } = useSelector((state) => state.stateSlice);
+
+  console.log(dnsList, "dnsList");
+
   return (
     <>
       <Routes>

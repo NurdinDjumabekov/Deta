@@ -16,6 +16,7 @@ import {
   setOpenModaDelGroup,
   setOpenModalAddGroup,
   setOpenModalKeyCont,
+  setPastDnsInSubDomen,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen, listGr, listname } from "../../helpers/LocalData";
@@ -207,7 +208,7 @@ export const deleteHost = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsSubDomen(activeDns)); /// это guid домена
+        dispatch(getDnsSubDomen(activeDns?.guid)); /// это guid домена
         dispatch(setGuidDelete("")); //// закрываю модалку
         return response?.data;
       } else {
@@ -590,9 +591,16 @@ export const getDnsDomen = createAsyncThunk(
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        const firstGuid = response?.data?.[0]?.guid;
-        dispatch(setActiveDns(firstGuid));
-        dispatch(getDnsSubDomen(firstGuid));
+        const guid = response?.data?.[0]?.guid;
+        const name = response?.data?.[0]?.domen_name;
+
+        dispatch(setActiveDns({ guid, name }));
+        ///// подставляю в state для активного guid
+        dispatch(getDnsSubDomen({ guid, domen_name: name }));
+        // //// отправдяю guid для получения суб доменов определенного домена
+        dispatch(setPastDnsInSubDomen(`.${name}`));
+        // //// подставляю домен в поля суб доменов
+
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -613,22 +621,17 @@ export const addDomens = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        const createGuid = response?.data?.guid;
+        const guid = response?.data?.guid;
 
-        if (!!!createGuid) {
-          myAlert("Такой домен уже существует!");
-          myAlert("Такой домен уже существует!");
+        if (!!!guid) {
           myAlert("Такой домен уже существует!");
         } else {
           dispatch(getDnsDomen()); //// get все домены
           dispatch(clearTemporaryDNS());
           //// очищаю state для временного хранения dns данных
-
           setTimeout(() => {
-            dispatch(setActiveDns(createGuid));
-            dispatch(getDnsSubDomen(createGuid));
-            myAlert("Домен успешно добавлен!");
-            myAlert("Домен успешно добавлен!");
+            dispatch(setActiveDns({ guid, name: data?.name }));
+            dispatch(getDnsSubDomen({ guid, domen_name: data?.name }));
             myAlert("Домен успешно добавлен!");
           }, 200);
         }
@@ -684,8 +687,8 @@ export const deleteDomen = createAsyncThunk(
 //         const createGuid = response?.data?.guid;
 
 //         setTimeout(() => {
-//           dispatch(setActiveDns(createGuid));
-//           dispatch(getDnsSubDomen(createGuid));
+//           dispatch(setActiveDns(createGuid)); check check
+//           dispatch(getDnsSubDomen(createGuid));  check check
 //         }, 500);
 //         return response?.data;
 //       } else {
@@ -699,15 +702,15 @@ export const deleteDomen = createAsyncThunk(
 
 ////////////////////////////////////////////////////////// sub domens //////////////
 
-///// getDnsSubDomen - для получения dns доменов
+///// getDnsSubDomen - для получения субдоменов
 export const getDnsSubDomen = createAsyncThunk(
   "getDnsSubDomen",
-  async function (guid, { dispatch, rejectWithValue }) {
+  async function ({ guid, domen_name }, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setActiveDns(guid));
+        dispatch(setActiveDns({ guid, name: domen_name }));
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -721,7 +724,9 @@ export const getDnsSubDomen = createAsyncThunk(
 ///// addSubDomen - для добавления sub доменов
 export const addSubDomen = createAsyncThunk(
   "addSubDomen",
-  async function (data, { dispatch, rejectWithValue }) {
+  async function (props, { dispatch, rejectWithValue }) {
+    console.log(props, "props");
+    const { name, ...data } = props;
     const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
     try {
       const response = await axios.post(url, data);
@@ -729,14 +734,14 @@ export const addSubDomen = createAsyncThunk(
         const alreadyCreate = response?.data?.alreadyCreate;
         if (alreadyCreate) {
           myAlert("Такой субдомен уже существует!");
-          myAlert("Такой субдомен уже существует!");
-          myAlert("Такой субдомен уже существует!");
         } else {
-          dispatch(getDnsSubDomen(data?.domen_guid)); /// это guid домена
+          const obj = { guid: data?.domen_guid, domen_name: name };
+          dispatch(getDnsSubDomen(obj)); /// это guid домена
           dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
           myAlert("Субдомен успешно добавлен!");
-          myAlert("Субдомен успешно добавлен!");
-          myAlert("Субдомен успешно добавлен!");
+
+          dispatch(setPastDnsInSubDomen(`.${name}`));
+          ////// подставляю домен в поля суб доменов
         }
         return response?.data;
       } else {
@@ -759,7 +764,8 @@ export const deleteSubDomen = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsSubDomen(activeDns)); /// это guid домена
+        dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
+        /// это guid домена (get list data)
         dispatch(setGuidDelete("")); //// закрываю модалку
         return response?.data;
       } else {
@@ -782,9 +788,34 @@ export const editSubDomen = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsSubDomen(activeDns)); /// это guid домена (get list data)
+        dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
+        /// это guid домена (get list data)
         dispatch(setGuidEdit("")); //// закрываю модалку
-        setObjedit(defaultSubDomen); //// очищаю временный
+        setObjedit(defaultSubDomen); //// очищаю временный state
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// confirmStatusSubDomenFN - для для изменения статуса добавленных доменов
+export const confirmStatusSubDomenFN = createAsyncThunk(
+  "confirmStatusSubDomenFN",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { guid, name } = props;
+    const data = { guid_domen: guid };
+    const url = `${REACT_APP_API_URL}dns/saveSettings`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen({ guid, domen_name: name }));
+        /// это guid домена (get list data)
+
+        myAlert("Изменения внесены!");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);

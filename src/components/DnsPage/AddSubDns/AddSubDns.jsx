@@ -4,8 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../common/MyInput/MyInputs";
+import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 
 /////// helpers
+import { myAlert } from "../../../helpers/MyAlert";
+import { checkChangeRecordName } from "../../../helpers/checkFNS";
+import { checkChangeIP } from "../../../helpers/checkFNS";
+import { checkChangeTTL, checkIP } from "../../../helpers/checkFNS";
+import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
 
 /////// fns
 import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
@@ -13,7 +19,6 @@ import { addSubDomen } from "../../../store/reducers/requestSlice";
 
 /////// style
 import "./style.scss";
-import { myAlert } from "../../../helpers/MyAlert";
 
 const AddSubDns = ({ obj }) => {
   const dispatch = useDispatch();
@@ -23,21 +28,16 @@ const AddSubDns = ({ obj }) => {
   const onChange = (e) => {
     const { name, value, checked } = e.target;
 
-    const validText = /^[a-zA-Z0-9._-]*$/.test(value?.trim());
-    const validTtl = /^\d*$/.test(value);
-    const validIp = /^[0-9.]*$/.test(value?.trim());
-
-    // Если поле "ttl", проверяем, чтобы вводились только цифры
     if (name === "ttl") {
-      if (validTtl) {
+      if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else if (name === "record_name") {
-      if (validText) {
+      if (checkChangeRecordName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else if (name === "host_ip") {
-      if (validIp) {
+      if (checkChangeIP(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else if (name === "is_check_my_ip") {
@@ -48,32 +48,25 @@ const AddSubDns = ({ obj }) => {
   };
 
   const addInnerSubDomen = () => {
-    if (dnsList?.one?.record_name === "") {
-      myAlert("Заполните 'Record name (host)'");
+    const record_name = dnsList?.one?.record_name;
+
+    if (checkSubDomainName(record_name, activeDns)) {
       return;
     }
 
     if (!dnsList?.one?.is_check_my_ip) {
-      if (dnsList?.one?.host_ip == 0 || dnsList?.one?.host_ip == "") {
-        myAlert("Заполните 'Host IP address'");
+      if (checkIP(dnsList?.one?.host_ip)) {
+        myAlert("Заполните правильно поле 'Host IP address: '");
         return;
       }
     }
 
-    if (dnsList?.one?.ttl === "" || dnsList?.one?.ttl == "0") {
-      myAlert("Заполните 'Record TTL'");
+    if (checkTTL(dnsList?.one?.ttl)) {
       return;
-    }
-
-    if (!dnsList?.one?.is_check_my_ip) {
-      if (dnsList?.one?.my_ip === "" || dnsList?.one?.my_ip == "0") {
-        myAlert("Заполните 'Default IP'");
-        return;
-      }
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = { domen_guid: activeDns, ...dnsList?.one };
+    const obj = { ...dnsList?.one, domen_guid: activeDns?.guid, ...activeDns };
     dispatch(addSubDomen(obj));
   };
 
@@ -81,15 +74,15 @@ const AddSubDns = ({ obj }) => {
     <div className="addDns">
       <div className="second">
         <MyInputs
-          title={"Record name (host) :"}
+          title={"Record name (host):"}
           onChange={onChange}
           name={"record_name"}
           value={dnsList?.[obj]?.record_name}
         />
 
         {!dnsList?.[obj]?.is_check_my_ip && (
-          <MyInputs
-            title={"Host IP address :"}
+          <MyIPInput
+            title={"Host IP address:"}
             onChange={onChange}
             name={"host_ip"}
             value={dnsList?.[obj]?.host_ip}
@@ -97,20 +90,20 @@ const AddSubDns = ({ obj }) => {
         )}
 
         <MyInputs
-          title={"Record TTL"}
+          title={"Record TTL:"}
           onChange={onChange}
           name={"ttl"}
           value={dnsList?.[obj]?.ttl}
         />
-      </div>
 
-      <div className="second">
-        <MyInputs
-          title={"Record comments :"}
-          onChange={onChange}
-          name={"comment"}
-          value={dnsList?.[obj]?.comment}
-        />
+        <div className="widthBig">
+          <MyInputs
+            title={"Record comments:"}
+            onChange={onChange}
+            name={"comment"}
+            value={dnsList?.[obj]?.comment}
+          />
+        </div>
 
         <button className="addAction" onClick={addInnerSubDomen}>
           Добавить

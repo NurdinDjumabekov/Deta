@@ -2,9 +2,10 @@
   padding: 0px 10px 0 0;
   border: 1px dashed rgb(90, 88, 88);
   background: rgb(30, 31, 35);
-  height: 210px;
-  max-height: 210px;
-  min-height: 210px;
+  height: 150px;
+  max-height: 150px;
+  min-height: 150px;
+  position: relative;
 
   &__menu {
     display: flex;

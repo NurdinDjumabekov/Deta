@@ -19,11 +19,13 @@ import { setActiveDnsMenu } from "../../../store/reducers/stateSlice";
 
 /////// style
 import "./style.scss";
+import { confirmStatusSubDomenFN } from "../../../store/reducers/requestSlice";
 
 const TypeAddDns = () => {
   const dispatch = useDispatch();
 
-  const { activeDnsMenu } = useSelector((state) => state.stateSlice);
+  const { activeDnsMenu, activeDns } = useSelector((state) => state.stateSlice);
+  const { listDnsSubDomen } = useSelector((state) => state.requestSlice);
 
   const clickMenuDns = (id) => dispatch(setActiveDnsMenu(id));
 
@@ -35,6 +37,15 @@ const TypeAddDns = () => {
     5: <AddTXTChame obj={"five"} />,
     6: <AddRTRChame obj={"six"} />,
     7: <AddSPFChame obj={"seven"} />,
+  };
+
+  const checkStatus = listDnsSubDomen?.some(
+    ({ active_status }) => active_status == 0
+  );
+  ///// ищу в массиве active_status = true
+
+  const confirmStatusSubDomen = () => {
+    dispatch(confirmStatusSubDomenFN(activeDns));
   };
 
   return (
@@ -51,6 +62,11 @@ const TypeAddDns = () => {
         ))}
       </ul>
       <div className="sendData">{objComp?.[activeDnsMenu]}</div>
+      {checkStatus && (
+        <button className="saveBtn" onClick={confirmStatusSubDomen}>
+          Внести изменения
+        </button>
+      )}
     </div>
   );
 };

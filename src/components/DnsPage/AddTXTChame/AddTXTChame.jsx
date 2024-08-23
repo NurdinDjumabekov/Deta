@@ -2,10 +2,15 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-//////// components
+//////// compfivents
 import MyInputs from "../../../common/MyInput/MyInputs";
 
 /////// helpers
+import { myAlert } from "../../../helpers/MyAlert";
+import { checkChangeRecordName } from "../../../helpers/checkFNS";
+import { checkChangeIP } from "../../../helpers/checkFNS";
+import { checkChangeTTL, checkIP } from "../../../helpers/checkFNS";
+import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
 
 /////// fns
 import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
@@ -22,25 +27,12 @@ const AddTXTChame = ({ obj }) => {
   const onChange = (e) => {
     const { name, value } = e.target;
 
-    const trimmedValue = value?.trim();
-
-    const validText = /^[a-zA-Z0-9._-]*$/.test(trimmedValue);
-
-    const validTtl = /^\d*$/.test(value);
-
-    const validIp = /^[0-9.]*$/.test(trimmedValue);
-
-    // Если поле "ttl", проверяем, чтобы вводились только цифры
     if (name === "ttl") {
-      if (validTtl) {
+      if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else if (name === "record_name") {
-      if (validText) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
-    } else if (name === "host_ip") {
-      if (validIp) {
+      if (checkChangeRecordName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -49,28 +41,23 @@ const AddTXTChame = ({ obj }) => {
   };
 
   const addInnerSubDomen = () => {
-    if (dnsList?.one?.record_name === "") {
-      alert("Заполните 'Record name (host)'");
+    const record_name = dnsList?.five?.record_name;
+
+    if (checkSubDomainName(record_name, activeDns)) {
       return;
     }
 
-    if (dnsList?.one?.host_ip === 0) {
-      alert("Заполните 'Record name (host)'");
+    if (dnsList?.five?.txt_string?.length < 1) {
+      myAlert("Поле 'Text strings' не должно быть пустым");
       return;
     }
 
-    if (dnsList?.one?.ttl === "") {
-      alert("Заполните 'Record TTL'");
-      return;
-    }
-
-    if (dnsList?.one?.host_ip === 0) {
-      alert("Заполните 'Record name (host)'");
+    if (checkTTL(dnsList?.five?.ttl)) {
       return;
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = { domen_guid: activeDns, ...dnsList?.one };
+    const obj = { ...dnsList?.five, domen_guid: activeDns?.guid, ...activeDns };
     dispatch(addSubDomen(obj));
   };
 
@@ -84,12 +71,14 @@ const AddTXTChame = ({ obj }) => {
           value={dnsList?.[obj]?.record_name}
         />
 
-        <MyInputs
-          title={"Host IP address :"}
-          onChange={onChange}
-          name={"host_ip"}
-          value={dnsList?.[obj]?.host_ip}
-        />
+        <div className="widthBig">
+          <MyInputs
+            title={"Text strings :"}
+            onChange={onChange}
+            name={"txt_string"}
+            value={dnsList?.[obj]?.txt_string}
+          />
+        </div>
 
         <MyInputs
           title={"Record TTL :"}
@@ -107,15 +96,6 @@ const AddTXTChame = ({ obj }) => {
         <button className="addAction" onClick={addInnerSubDomen}>
           Добавить
         </button>
-      </div>
-
-      <div className="time">
-        <div className="second actions">
-          <div className="bool">
-            <input type="checkbox" id="check" />
-            <label htmlFor="check">Update Reverse Zone</label>
-          </div>
-        </div>
       </div>
     </div>
   );

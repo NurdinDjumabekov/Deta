@@ -19,10 +19,11 @@ const initialState = {
 
   activeHost: 0, //// активный временный хост
   activeContainer: 0, //// активный временный контейнер
-  activeDns: "", //// активный временный dns
+  activeDns: { guid: "", name: "" }, //// активный временный dns
 
   dnsList: {
     one: {
+      domen_guid: "",
       record_name: "",
       host_ip: "",
       ttl: "60",
@@ -32,58 +33,58 @@ const initialState = {
       type_record: 1,
     },
     two: {
-      name2: "",
-      addres2: "",
-      record2: "",
-      time2: 0,
-      comment2: "",
+      domen_guid: "",
+      record_name: "",
+      host_ip: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 2,
     },
     three: {
-      id: 3,
-      name3: "",
-      addres3: "",
-      record3: "",
-      time3: 0,
-      comment3: "",
-      perference3: "",
+      domen_guid: "",
+      record_name: "",
+      host_ip: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 3,
     },
     four: {
-      id: 4,
-      name4: "",
-      addres4: "",
-      record4: "",
-      time4: 0,
-      comment4: "",
+      domen_guid: "",
+      record_name: "",
+      host_ip: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 4,
     },
     five: {
-      id: 5,
-      name5: "",
-      addres5: "",
-      record5: "",
-      time5: 0,
-      comment5: "",
+      domen_guid: "",
+      record_name: "",
+      txt_string: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 5,
     },
     six: {
-      id: 6,
-      name6: "",
-      addres6: "",
-      record6: "",
-      time6: 0,
-      comment6: "",
+      domen_guid: "",
+      record_name: "",
+      point_to_name: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 6,
     },
     seven: {
-      id: 7,
-      name7: "",
-      addres7: "",
-      record7: "",
-      time7: 0,
-      comment7: "",
-      bool7: false,
+      domen_guid: "",
+      record_name: "",
+      sdf_string: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
+      is_check_my_ip: true,
       type_record: 7,
     },
   },
@@ -220,7 +221,7 @@ const stateSlice = createSlice({
     setPastDnsInSubDomen: (state, action) => {
       const record_name = action.payload;
       const dnsList = state.dnsList;
-      ///// подставляю domen в поля всех sub доменов
+      ///// подставляю domen в поля record_name всех sub доменов
 
       const updateRecordNames = (dnsList, newText) => {
         const updatedDnsList = { ...dnsList };
