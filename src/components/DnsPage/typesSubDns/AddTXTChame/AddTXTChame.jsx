@@ -2,19 +2,20 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-//////// compfivents
-import MyInputs from "../../../common/MyInput/MyInputs";
+//////// components
+import MyInputs from "../../../../common/MyInput/MyInputs";
+import MyIPInput from "../../../../common/MyIPInput/MyIPInput";
 
 /////// helpers
-import { myAlert } from "../../../helpers/MyAlert";
-import { checkChangeRecordName } from "../../../helpers/checkFNS";
-import { checkChangeIP } from "../../../helpers/checkFNS";
-import { checkChangeTTL, checkIP } from "../../../helpers/checkFNS";
-import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
+import { myAlert } from "../../../../helpers/MyAlert";
+import { checkChangeRecordName } from "../../../../helpers/checkFNS";
+import { checkChangeIP } from "../../../../helpers/checkFNS";
+import { checkChangeTTL, checkIP } from "../../../../helpers/checkFNS";
+import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
 
 /////// fns
-import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../store/reducers/requestSlice";
+import { setDnsEveryKey } from "../../../../store/reducers/stateSlice";
+import { addSubDomen } from "../../../../store/reducers/requestSlice";
 
 /////// style
 import "../AddSubDns/style.scss";
@@ -64,12 +65,15 @@ const AddTXTChame = ({ obj }) => {
   return (
     <div className="addDns">
       <div className="second">
-        <MyInputs
-          title={"Record name (host) :"}
-          onChange={onChange}
-          name={"record_name"}
-          value={dnsList?.[obj]?.record_name}
-        />
+        <div className="mainDns">
+          <MyInputs
+            title={"Record name (host) :"}
+            onChange={onChange}
+            name={"record_name"}
+            value={dnsList?.[obj]?.record_name}
+          />
+          <span>.{activeDns?.name}</span>
+        </div>
 
         <div className="widthBig">
           <MyInputs

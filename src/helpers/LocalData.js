@@ -3759,7 +3759,7 @@ export const accessesUsers = [
   },
 ];
 
-export const listVolns = {
+export const mylistVolns = {
   active: [
     { guid: "32121341c134v12sd3v412", vm_id: "4211" },
     { guid: "3241c131214v12sd3v412", vm_id: "4211" },

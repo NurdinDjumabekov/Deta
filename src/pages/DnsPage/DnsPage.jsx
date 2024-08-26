@@ -3,9 +3,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-////style
-import "./style.scss";
-
 //////helpers
 
 ////// fns
@@ -15,10 +12,13 @@ import { deleteDomen, getDnsDomen } from "../../store/reducers/requestSlice";
 import InnerSubDns from "../../components/DnsPage/InnerSubDns/InnerSubDns";
 import EveryDns from "../../components/DnsPage/EveryDns/EveryDns";
 import AddDns from "../../components/DnsPage/AddDns/AddDns";
-import Modals from "../../common/Modals/Modals";
 import { Table, TableBody } from "@mui/material";
 import { TableCell, TableContainer } from "@mui/material";
 import { TableHead, TableRow } from "@mui/material";
+import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
+
+////style
+import "./style.scss";
 
 const DnsPage = () => {
   const dispatch = useDispatch();
@@ -49,19 +49,6 @@ const DnsPage = () => {
                     <TableCell style={{ width: "90%", color: "#c0c0c0" }}>
                       Наименования
                     </TableCell>
-                    {/* <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
-                      Expire
-                    </TableCell>
-                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
-                      Negative
-                    </TableCell>
-                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
-                      Refresh
-                    </TableCell>
-                    <TableCell style={{ width: "12%", color: "#c0c0c0" }}>
-                      Retry
-                    </TableCell>
-                    */}
                     <TableCell
                       style={{
                         width: "10%",
@@ -93,20 +80,12 @@ const DnsPage = () => {
       </div>
 
       {/* для удаления  */}
-      <Modals
-        openModal={!!guidDelete}
-        setOpenModal={() => setGuidDelete()}
+      <ConfirmModal
+        state={!!guidDelete}
         title={"Удалить данный домен ?"}
-      >
-        <div className="modalDel">
-          <button className="yes" onClick={delDns}>
-            Да
-          </button>
-          <button className="no" onClick={() => setGuidDelete("")}>
-            Нет
-          </button>
-        </div>
-      </Modals>
+        yes={delDns}
+        no={() => setGuidDelete()}
+      />
     </>
   );
 };

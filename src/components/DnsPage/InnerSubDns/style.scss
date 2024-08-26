@@ -29,7 +29,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.061);
 
       .yes {
-        color: green;
+        color: #08920a;
         font-size: 11px;
       }
 
@@ -41,6 +41,10 @@
 
     .nameText {
       color: orange;
+    }
+
+    .click {
+      cursor: pointer;
     }
 
     .data {
@@ -124,32 +128,6 @@
     top: 5px;
     font-size: 14px;
     padding: 10px 15px;
-    border-radius: 5px;
-  }
-}
-
-.modalDel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 40px 0px 20px 0px;
-
-  .yes {
-    background: #c50000;
-    padding: 8px 10px;
-    color: #fff;
-    width: 80px;
-    height: 40px;
-    border-radius: 5px;
-  }
-
-  .no {
-    background: #00c503;
-    padding: 8px 10px;
-    color: #fff;
-    width: 80px;
-    height: 40px;
     border-radius: 5px;
   }
 }

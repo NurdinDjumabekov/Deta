@@ -3,24 +3,24 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //////// components
-import MyInputs from "../../../common/MyInput/MyInputs";
+import MyInputs from "../../../../common/MyInput/MyInputs";
+import MyIPInput from "../../../../common/MyIPInput/MyIPInput";
 
 /////// helpers
-import { myAlert } from "../../../helpers/MyAlert";
-import { checkChangeRecordName } from "../../../helpers/checkFNS";
-import { checkChangeIP } from "../../../helpers/checkFNS";
-import { checkChangeTTL, checkIP } from "../../../helpers/checkFNS";
-import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
+import { myAlert } from "../../../../helpers/MyAlert";
+import { checkChangePointToName } from "../../../../helpers/checkFNS";
+import { checkChangeRecordName } from "../../../../helpers/checkFNS";
+import { checkChangeTTL, checkIP } from "../../../../helpers/checkFNS";
+import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
 
 /////// fns
-import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../store/reducers/requestSlice";
+import { setDnsEveryKey } from "../../../../store/reducers/stateSlice";
+import { addSubDomen } from "../../../../store/reducers/requestSlice";
 
 /////// style
 import "../AddSubDns/style.scss";
-import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 
-const AddNSChame = ({ obj }) => {
+const AddRTRChame = ({ obj }) => {
   const dispatch = useDispatch();
 
   const { dnsList, activeDns } = useSelector((state) => state.stateSlice);
@@ -36,8 +36,8 @@ const AddNSChame = ({ obj }) => {
       if (checkChangeRecordName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "host_ip") {
-      if (checkChangeIP(value)) {
+    } else if (dnsList?.six?.point_to_name) {
+      if (checkChangePointToName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -46,45 +46,48 @@ const AddNSChame = ({ obj }) => {
   };
 
   const addInnerSubDomen = () => {
-    const record_name = dnsList?.four?.record_name;
+    const record_name = dnsList?.six?.record_name;
 
     if (checkSubDomainName(record_name, activeDns)) {
       return;
     }
 
-    if (checkIP(dnsList?.four?.host_ip)) {
-      myAlert("Заполните правильно поле 'Host IP address: '");
+    if (dnsList?.six?.point_to_name?.length < 1) {
+      myAlert("Поле 'Point to name (FQDN):' не должно быть пустым");
       return;
     }
 
-    if (checkTTL(dnsList?.four?.ttl)) {
+    if (checkTTL(dnsList?.six?.ttl)) {
       return;
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = { ...dnsList?.four, domen_guid: activeDns?.guid, ...activeDns };
+    const obj = { ...dnsList?.six, domen_guid: activeDns?.guid, ...activeDns };
     dispatch(addSubDomen(obj));
   };
 
   return (
     <div className="addDns">
       <div className="second">
-        <MyInputs
-          title={"Record name (Zone):"}
-          onChange={onChange}
-          name={"record_name"}
-          value={dnsList?.[obj]?.record_name}
-        />
-
-        <MyIPInput
-          title={"DNS Server (FQDN):"}
-          onChange={onChange}
-          name={"host_ip"}
-          value={dnsList?.[obj]?.host_ip}
-        />
+        <div className="mainDns">
+          <MyInputs
+            title={"Record name:"}
+            onChange={onChange}
+            name={"record_name"}
+            value={dnsList?.[obj]?.record_name}
+          />
+          <span>.{activeDns?.name}</span>
+        </div>
 
         <MyInputs
-          title={"Record TTL :"}
+          title={"Point to name (FQDN):"}
+          onChange={onChange}
+          name={"point_to_name"}
+          value={dnsList?.[obj]?.point_to_name}
+        />
+
+        <MyInputs
+          title={"Record TTL:"}
           onChange={onChange}
           name={"ttl"}
           value={dnsList?.[obj]?.ttl}
@@ -104,4 +107,4 @@ const AddNSChame = ({ obj }) => {
   );
 };
 
-export default AddNSChame;
+export default AddRTRChame;

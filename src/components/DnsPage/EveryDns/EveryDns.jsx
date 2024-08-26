@@ -29,8 +29,8 @@ const EveryDns = ({ item, setGuidDelete }) => {
     dispatch(setTemporaryDNS({ ...temporaryDNS, ...domenInfo }));
     //// подставляю данные в stat eдля редактирования данных dns (так же подставляю данные dns)
 
-    dispatch(setPastDnsInSubDomen(`.${domen_name}`));
-    // //// подставляю домен в поля суб домена
+    // dispatch(setPastDnsInSubDomen(`.${domen_name}`));
+    // // //// подставляю домен в поля суб домена
   };
 
   const callDeleteFn = (guid) => setGuidDelete(guid);

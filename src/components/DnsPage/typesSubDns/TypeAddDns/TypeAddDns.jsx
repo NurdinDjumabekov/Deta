@@ -12,14 +12,14 @@ import AddRTRChame from "../AddRTRChame/AddRTRChame";
 import AddSPFChame from "../AddSPFChame/AddSPFChame";
 
 /////// helpers
-import { listDnsMenu } from "../../../helpers/LocalData";
+import { listDnsMenu } from "../../../../helpers/LocalData";
 
 /////// fns
-import { setActiveDnsMenu } from "../../../store/reducers/stateSlice";
+import { setActiveDnsMenu } from "../../../../store/reducers/stateSlice";
 
 /////// style
 import "./style.scss";
-import { confirmStatusSubDomenFN } from "../../../store/reducers/requestSlice";
+import { confirmStatusSubDomenFN } from "../../../../store/reducers/requestSlice";
 
 const TypeAddDns = () => {
   const dispatch = useDispatch();

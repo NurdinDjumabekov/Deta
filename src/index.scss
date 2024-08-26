@@ -80,11 +80,7 @@ img {
   background: #292d32;
   white-space: nowrap;
 }
-// AddNSChame
-// AddNSChame
-// AddNSChame
-// AddNSChame
-// AddRTRChame
+
 .moreInfoLeft {
   position: absolute;
   bottom: 100%; /* Поднимает текст над кнопкой */
@@ -116,6 +112,28 @@ img {
 .widthMini {
   .myInput {
     width: 80px !important;
+  }
+}
+
+.mainDns {
+  position: relative;
+
+  span {
+    font-size: 13px;
+    line-height: 15px;
+    color: #000;
+    position: absolute;
+    font-weight: 600;
+    right: 15px;
+    line-height: 32px;
+    bottom: 0;
+    border-left: 1px solid #222;
+    height: 30px;
+    padding-left: 5px;
+  }
+
+  .myInput input {
+    padding-right: 70px;
   }
 }
 

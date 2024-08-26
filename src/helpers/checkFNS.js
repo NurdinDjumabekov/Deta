@@ -96,9 +96,7 @@ export const checkSubDomainName = (value, activeDns) => {
   const dnsName = activeDns?.name;
   ///// тут хранится наимнование активного домена
 
-  const dnsLength = activeDns?.name?.length;
-
-  const lastText = value?.slice(-dnsLength);
+  const lastText = value?.slice(-1);
 
   // Регулярное выражение для проверки
   const listTextDots = value?.split(".");
@@ -108,13 +106,18 @@ export const checkSubDomainName = (value, activeDns) => {
     return true;
   }
 
-  if (!value.includes(dnsName)) {
-    myAlert("Ошибка! Введите наименование правильного домена!");
+  if (lastText == "-") {
+    myAlert("Ошибка! Уберите все лишние знаки в конце!");
     return true;
   }
 
-  if (lastText != dnsName) {
-    myAlert(`Ошибка! Домен ${dnsName} должен быть в конце!`);
+  if (value.includes(dnsName)) {
+    myAlert("Ошибка! Вы два раза ввели наименование домена!");
+    return true;
+  }
+
+  if (value.includes(".")) {
+    myAlert(`Ошибка! В субдомене не должно быть точки!`);
     return true;
   }
 

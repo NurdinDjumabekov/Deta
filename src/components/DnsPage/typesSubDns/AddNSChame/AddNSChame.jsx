@@ -3,25 +3,24 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //////// components
-import MyInputs from "../../../common/MyInput/MyInputs";
+import MyInputs from "../../../../common/MyInput/MyInputs";
+import MyIPInput from "../../../../common/MyIPInput/MyIPInput";
 
 /////// helpers
-import { myAlert } from "../../../helpers/MyAlert";
-import {
-  checkChangeRecordName,
-  checkChangeSDF,
-} from "../../../helpers/checkFNS";
-import { checkChangeTTL } from "../../../helpers/checkFNS";
-import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
+import { myAlert } from "../../../../helpers/MyAlert";
+import { checkChangeRecordName } from "../../../../helpers/checkFNS";
+import { checkChangeIP } from "../../../../helpers/checkFNS";
+import { checkChangeTTL, checkIP } from "../../../../helpers/checkFNS";
+import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
 
 /////// fns
-import { setDnsEveryKey } from "../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../store/reducers/requestSlice";
+import { setDnsEveryKey } from "../../../../store/reducers/stateSlice";
+import { addSubDomen } from "../../../../store/reducers/requestSlice";
 
 /////// style
 import "../AddSubDns/style.scss";
 
-const AddSPFChame = ({ obj }) => {
+const AddNSChame = ({ obj }) => {
   const dispatch = useDispatch();
 
   const { dnsList, activeDns } = useSelector((state) => state.stateSlice);
@@ -37,8 +36,8 @@ const AddSPFChame = ({ obj }) => {
       if (checkChangeRecordName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "sdf_string") {
-      if (checkChangeSDF(value)) {
+    } else if (name === "host_ip") {
+      if (checkChangeIP(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -47,49 +46,48 @@ const AddSPFChame = ({ obj }) => {
   };
 
   const addInnerSubDomen = () => {
-    const record_name = dnsList?.seven?.record_name;
+    const record_name = dnsList?.four?.record_name;
 
     if (checkSubDomainName(record_name, activeDns)) {
       return;
     }
 
-    if (dnsList?.seven?.sdf_string?.length < 1) {
-      myAlert("Поле 'SPF string:' не должно быть пустым");
+    if (checkIP(dnsList?.four?.host_ip)) {
+      myAlert("Заполните правильно поле 'Host IP address: '");
       return;
     }
 
-    if (checkTTL(dnsList?.seven?.ttl)) {
+    if (checkTTL(dnsList?.four?.ttl)) {
       return;
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = {
-      ...dnsList?.seven,
-      domen_guid: activeDns?.guid,
-      ...activeDns,
-    };
+    const obj = { ...dnsList?.four, domen_guid: activeDns?.guid, ...activeDns };
     dispatch(addSubDomen(obj));
   };
 
   return (
     <div className="addDns">
       <div className="second">
-        <MyInputs
-          title={"Record name (e-mail domain):"}
+        <div className="mainDns">
+          <MyInputs
+            title={"Record name (Zone):"}
+            onChange={onChange}
+            name={"record_name"}
+            value={dnsList?.[obj]?.record_name}
+          />
+          <span>.{activeDns?.name}</span>
+        </div>
+
+        <MyIPInput
+          title={"DNS Server (FQDN):"}
           onChange={onChange}
-          name={"record_name"}
-          value={dnsList?.[obj]?.record_name}
+          name={"host_ip"}
+          value={dnsList?.[obj]?.host_ip}
         />
 
         <MyInputs
-          title={"SPF string:"}
-          onChange={onChange}
-          name={"sdf_string"}
-          value={dnsList?.[obj]?.sdf_string}
-        />
-
-        <MyInputs
-          title={"Record TTL:"}
+          title={"Record TTL :"}
           onChange={onChange}
           name={"ttl"}
           value={dnsList?.[obj]?.ttl}
@@ -105,17 +103,8 @@ const AddSPFChame = ({ obj }) => {
           Добавить
         </button>
       </div>
-
-      {/* <div className="time">
-        <div className="second actions">
-          <div className="bool">
-            <input type="checkbox" id="check" />
-            <label htmlFor="check">Update Reverse Zone</label>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
 
-export default AddSPFChame;
+export default AddNSChame;
