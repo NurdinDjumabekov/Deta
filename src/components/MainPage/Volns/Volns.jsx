@@ -28,14 +28,14 @@ const Volns = () => {
     };
 
     // Удаляем элемент из исходного массива
-    const [movedItem] = updatedListVolns[source.droppableId].splice(
-      source.index,
+    const [movedItem] = updatedListVolns[source.droppableId]?.splice(
+      source?.index,
       1
     );
 
     // Вставляем элемент в новый массив
-    updatedListVolns[destination.droppableId].splice(
-      destination.index,
+    updatedListVolns[destination.droppableId]?.splice(
+      destination?.index,
       0,
       movedItem
     );
@@ -52,36 +52,36 @@ const Volns = () => {
         <Droppable droppableId="clear">
           {(provided) => (
             <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
+              {...provided?.droppableProps}
+              ref={provided?.innerRef}
               className="droppable"
             >
               <RenderVolds list={listVolns?.clear} title="Очистить" />
-              {provided.placeholder}
+              {provided?.placeholder}
             </div>
           )}
         </Droppable>
         <Droppable droppableId="active">
           {(provided) => (
             <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
+              {...provided?.droppableProps}
+              ref={provided?.innerRef}
               className="droppable"
             >
               <RenderVolds list={listVolns?.active} title="Активные" />
-              {provided.placeholder}
+              {provided?.placeholder}
             </div>
           )}
         </Droppable>
         <Droppable droppableId="diactive">
           {(provided) => (
             <div
-              {...provided.droppableProps}
-              ref={provided.innerRef}
+              {...provided?.droppableProps}
+              ref={provided?.innerRef}
               className="droppable"
             >
               <RenderVolds list={listVolns?.diactive} title="Не активные" />
-              {provided.placeholder}
+              {provided?.placeholder}
             </div>
           )}
         </Droppable>
@@ -102,14 +102,14 @@ const RenderVolds = ({ list, title }) => {
       </div>
       <div className="list">
         {list?.map((item, index) => (
-          <Draggable key={item.guid} draggableId={item.guid} index={index}>
+          <Draggable key={item?.guid} draggableId={item?.guid} index={index}>
             {(provided) => (
               <span
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
+                ref={provided?.innerRef}
+                {...provided?.draggableProps}
+                {...provided?.dragHandleProps}
               >
-                {item.vm_id}
+                {item?.vm_id}
               </span>
             )}
           </Draggable>

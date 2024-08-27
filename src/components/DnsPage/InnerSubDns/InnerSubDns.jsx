@@ -1,24 +1,24 @@
 /////// hooks
-import React from 'react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 ////// componnets
-import { Table, TableBody } from '@mui/material';
-import { TableCell, TableContainer } from '@mui/material';
-import { TableHead, TableRow, Paper } from '@mui/material';
-import TypeAddDns from '../typesSubDns/TypeAddDns/TypeAddDns';
-import ModalsForAllDns from '../ModalsForAllDns/ModalsForAllDns';
+import { Table, TableBody } from "@mui/material";
+import { TableCell, TableContainer } from "@mui/material";
+import { TableHead, TableRow, Paper } from "@mui/material";
+import TypeAddDns from "../typesSubDns/TypeAddDns/TypeAddDns";
+import ModalsForAllDns from "../ModalsForAllDns/ModalsForAllDns";
 
 ////// imgs
-import editIcon from '../../../assets/icons/edit.svg';
-import krestIcon from '../../../assets/icons/krest.svg';
+import editIcon from "../../../assets/icons/edit.svg";
+import krestIcon from "../../../assets/icons/krest.svg";
 
 ////// fns
-import { sortSubDomen } from '../../../store/reducers/requestSlice';
+import { sortSubDomen } from "../../../store/reducers/requestSlice";
 
 ////// style
-import './style.scss';
+import "./style.scss";
 
 const InnerSubDns = () => {
   const dispatch = useDispatch();
@@ -26,14 +26,14 @@ const InnerSubDns = () => {
   const { listDnsSubDomen } = useSelector((state) => state.requestSlice);
   const { activeDns } = useSelector((state) => state.stateSlice);
 
-  const [guidEdit, setGuidEdit] = useState(''); // храню временный guid для редактирования
-  const [guidDelete, setGuidDelete] = useState(''); // храню временный guid для удаления
+  const [guidEdit, setGuidEdit] = useState(""); // храню временный guid для редактирования
+  const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
   const [objEdit, setObjedit] = useState({
-    record_name: '',
-    host_ip: '',
-    ttl: '',
+    record_name: "",
+    host_ip: "",
+    ttl: "",
     ttl_type: 1,
-    comment: '',
+    comment: "",
   }); /// временные данные для редактирования
 
   const callEditFN = (obj) => {
@@ -48,7 +48,7 @@ const InnerSubDns = () => {
   const [sort, setSort] = useState(1); // счетчик 1 или 2
 
   const sortList = (field_name) => {
-    const newSort = sort == '1' ? '2' : '1';
+    const newSort = sort == "1" ? "2" : "1";
     setSort(newSort);
     const data = { domen_guid: activeDns?.guid, sort: newSort };
     dispatch(sortSubDomen({ ...data, field_name }));
@@ -63,32 +63,32 @@ const InnerSubDns = () => {
             <TableRow>
               <TableCell
                 className="title name click"
-                style={{ width: '15%' }}
-                onClick={() => sortList('domen_name')}
+                style={{ width: "15%" }}
+                onClick={() => sortList("domen_name")}
               >
                 Name
               </TableCell>
               <TableCell
                 className="title type click"
-                style={{ width: '10%' }}
-                onClick={() => sortList('recordType')}
+                style={{ width: "10%" }}
+                onClick={() => sortList("recordType")}
               >
                 Types
               </TableCell>
-              <TableCell className="title ttl" style={{ width: '10%' }}>
+              <TableCell className="title ttl" style={{ width: "10%" }}>
                 TTL
               </TableCell>
-              <TableCell className="title dta" style={{ width: '15%' }}>
+              <TableCell className="title dta" style={{ width: "15%" }}>
                 Data
               </TableCell>
-              <TableCell className="title action" style={{ width: '10%' }}>
+              <TableCell className="title action" style={{ width: "10%" }}>
                 Status
               </TableCell>
               <TableCell
                 className="title action"
-                style={{ width: '10%' }}
+                style={{ width: "10%" }}
               ></TableCell>
-              <TableCell className="title comment" style={{ width: '30%' }}>
+              <TableCell className="title comment" style={{ width: "30%" }}>
                 Comments
               </TableCell>
             </TableRow>
@@ -98,27 +98,27 @@ const InnerSubDns = () => {
               <TableRow key={row?.guid}>
                 <TableCell
                   className="text nameText"
-                  style={{ margin: '10px', width: '15%' }}
+                  style={{ margin: "10px", width: "15%" }}
                 >
-                  {row?.record_name}.{row?.domen_name}
+                  {row?.record_name}
                 </TableCell>
-                <TableCell className="text name" style={{ width: '10%' }}>
+                <TableCell className="text name" style={{ width: "10%" }}>
                   {row?.recordType}
                 </TableCell>
-                <TableCell className="text name" style={{ width: '10%' }}>
+                <TableCell className="text name" style={{ width: "10%" }}>
                   {row?.ttl}
                 </TableCell>
-                <TableCell className="text data" style={{ width: '15%' }}>
+                <TableCell className="text data" style={{ width: "15%" }}>
                   {row?.host_ip}
                 </TableCell>
-                <TableCell className="text name" style={{ width: '10%' }}>
+                <TableCell className="text name" style={{ width: "10%" }}>
                   {!!row?.active_status ? (
                     <p className="yes">Active</p>
                   ) : (
                     <p className="no">Disactive</p>
                   )}
                 </TableCell>
-                <TableCell className="text actions" style={{ width: '10%' }}>
+                <TableCell className="text actions" style={{ width: "10%" }}>
                   <div className="blockActions">
                     <button
                       className="actions__btns"
@@ -134,7 +134,7 @@ const InnerSubDns = () => {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell className="text comment" style={{ maxWidth: '30%' }}>
+                <TableCell className="text comment" style={{ maxWidth: "30%" }}>
                   {row?.comment}
                 </TableCell>
               </TableRow>
