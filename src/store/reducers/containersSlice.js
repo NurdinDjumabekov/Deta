@@ -9,6 +9,8 @@ import { dnsListDefault } from "../../helpers/LocalData";
 const initialState = {
   modal: 0, /// модалка для всех
 
+  listDiagrams: [], //// для диаграммы хостов на главной странице
+
   menuInner: [
     { id: 1, name: "Контейнеры", img: container, active: false, list: [] },
     { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
@@ -23,68 +25,68 @@ const initialState = {
 
   dnsList: {
     one: {
+      domen_guid: "",
       record_name: "",
       host_ip: "",
       ttl: "60",
       ttl_type: 1,
       comment: "",
-      my_ip: "",
       is_check_my_ip: true,
       type_record: 1,
     },
     two: {
-      name2: "",
-      addres2: "",
-      record2: "",
-      time2: 0,
-      comment2: "",
+      domen_guid: "",
+      record_name: "",
+      host_ip: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 2,
     },
     three: {
-      id: 3,
-      name3: "",
-      addres3: "",
-      record3: "",
-      time3: 0,
-      comment3: "",
-      perference3: "",
+      domen_guid: "",
+      record_name: "",
+      host_ip: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 3,
     },
     four: {
-      id: 4,
-      name4: "",
-      addres4: "",
-      record4: "",
-      time4: 0,
-      comment4: "",
+      domen_guid: "",
+      record_name: "",
+      host_ip: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 4,
     },
     five: {
-      id: 5,
-      name5: "",
-      addres5: "",
-      record5: "",
-      time5: 0,
-      comment5: "",
+      domen_guid: "",
+      record_name: "",
+      txt_string: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 5,
     },
     six: {
-      id: 6,
-      name6: "",
-      addres6: "",
-      record6: "",
-      time6: 0,
-      comment6: "",
+      domen_guid: "",
+      record_name: "",
+      point_to_name: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
       type_record: 6,
     },
     seven: {
-      id: 7,
-      name7: "",
-      addres7: "",
-      record7: "",
-      time7: 0,
-      comment7: "",
-      bool7: false,
+      domen_guid: "",
+      record_name: "",
+      sdf_string: "",
+      ttl: "60",
+      ttl_type: 1,
+      comment: "",
+      is_check_my_ip: true,
       type_record: 7,
     },
   },
@@ -146,6 +148,10 @@ const initialState = {
 
   openModaDelCont: "", ////guid для модалки удаления контейнера
 
+  openModalKeyCont: "", ////guid  для доступов отображения контейнеров клиентам
+
+  openModaStartCont: { guid: "", vm_id: "" }, ////guid для модалки запуска контейнера
+
   openModalBackUp: {
     name: "", /// тут буду хрпнить данные о контейнере и хостедля простого отображения
     guid: "", /// guid - контейнера
@@ -153,10 +159,12 @@ const initialState = {
     type: 0,
     snaps: 0,
   },
+
+  lookMoreInfo: {}, //// state для хранения более подрьнйо инфы о контейнере
 };
 
-const stateSlice = createSlice({
-  name: "stateSlice",
+const containersSlice = createSlice({
+  name: "containersSlice",
   initialState,
   reducers: {
     setOpenModals: (state, action) => {
@@ -165,6 +173,16 @@ const stateSlice = createSlice({
 
     closeModals: (state, action) => {
       state.modal = 0;
+    },
+
+    setListDiagrams: (state, action) => {
+      state.listDiagrams = action.payload?.map((item) => {
+        return {
+          time: item?.date_system,
+          CPU: item?.node_cpu_usage,
+          RAM: item?.node_ram_usage,
+        };
+      });
     },
 
     setMenuInner: (state, action) => {
@@ -180,10 +198,18 @@ const stateSlice = createSlice({
 
     changeMenuInner: (state, action) => {
       const { id } = action.payload;
-      const obj = state.menuInner?.find((item) => item.id == id);
-      const updatedMenu = state.menuInner?.filter((item) => item.id !== id);
+      const obj = state.menuInner?.find((item) => item?.id == id);
+      const updatedMenu = state.menuInner?.filter((item) => item?.id !== id);
       //// ищу по id и возвращаю обьект который хочу поменять
       state.menuInner = [...updatedMenu, { ...obj, ...action.payload }];
+    },
+
+    clearMenuInner: (state, action) => {
+      ///// очищаю активный state
+      state.menuInner = state.menuInner?.map((item) => ({
+        ...item,
+        active: false,
+      }));
     },
 
     setActiveHost: (state, action) => {
@@ -217,7 +243,7 @@ const stateSlice = createSlice({
     setPastDnsInSubDomen: (state, action) => {
       const record_name = action.payload;
       const dnsList = state.dnsList;
-      ///// подставляю domen в поля всех sub доменов
+      ///// подставляю domen в поля record_name всех sub доменов
 
       const updateRecordNames = (dnsList, newText) => {
         const updatedDnsList = { ...dnsList };
@@ -389,14 +415,36 @@ const stateSlice = createSlice({
     setOpenModaDelCont: (state, action) => {
       state.openModaDelCont = action.payload;
     },
+
+    setOpenModalKeyCont: (state, action) => {
+      state.openModalKeyCont = action.payload;
+    },
+
+    setOpenModaStartCont: (state, action) => {
+      state.openModaStartCont = action.payload;
+    },
+
+    closeModalStartCont: (state, action) => {
+      state.openModaStartCont = { guid: "", vm_id: "" };
+    },
+
+    setLookMoreInfo: (state, action) => {
+      state.lookMoreInfo = action.payload;
+    },
+
+    closeLookMoreInfo: (state, action) => {
+      state.lookMoreInfo = {};
+    },
   },
 });
 
 export const {
   setOpenModals,
   closeModals,
+  setListDiagrams,
   setMenuInner,
   changeMenuInner,
+  clearMenuInner,
   setActiveHost,
   setActiveContainer,
   setActiveDns,
@@ -428,6 +476,11 @@ export const {
   clearOpenModalBackUp,
   setOpenModaStoppedCont,
   setOpenModaDelCont,
-} = stateSlice.actions;
+  setOpenModalKeyCont,
+  setOpenModaStartCont,
+  closeModalStartCont,
+  setLookMoreInfo,
+  closeLookMoreInfo,
+} = containersSlice.actions;
 
-export default stateSlice.reducer;
+export default containersSlice.reducer;

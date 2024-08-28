@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// imgs
@@ -21,6 +21,8 @@ import minus from "../../../assets/icons/circle-minus.svg";
 import dataBaseIcon from "../../../assets/images/memoryImgs/database.png";
 import round from "../../../assets/images/OS/round.png";
 import keyIncon from "../../../assets/icons/key.svg";
+import lookEye from "../../../assets/icons/eye-look.svg";
+import noLookEye from "../../../assets/icons/eye-no-look.svg";
 
 ////// styles
 import "./style.scss";
@@ -46,6 +48,7 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
+import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
 
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del } = item;
@@ -53,6 +56,7 @@ const Containers = ({ item }) => {
 
   const dispatch = useDispatch();
 
+  const { lookMoreInfo } = useSelector((state) => state.containersSlice);
   const { activeContainer, openModalBackUp } = useSelector(
     (state) => state.stateSlice
   );
@@ -109,6 +113,9 @@ const Containers = ({ item }) => {
     //// для модалки запуска, обновления и остановки запуска контейнера
   };
 
+  const openLookMoreInfo = () => dispatch(setLookMoreInfo(item));
+  //// открытие модалки для просмотра болеее подробной информации
+
   const active = activeContainer == guid ? "containerActive" : "";
 
   return (
@@ -136,9 +143,11 @@ const Containers = ({ item }) => {
             <button className="edit">
               <img src={editBlue} alt="" />
             </button>
-            <button className="edit">
-              <img src={editBlue} alt="" />
-            </button>
+            {!!info && (
+              <button className="edit" onClick={openLookMoreInfo}>
+                <img src={!!lookMoreInfo?.guid ? noLookEye : lookEye} alt="" />
+              </button>
+            )}
           </div>
         </div>
 

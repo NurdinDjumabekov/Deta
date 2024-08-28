@@ -55,6 +55,7 @@ import { listTypes } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
 import AccessesUsers from "./AccessesUsers/AccessesUsers";
 import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
+import { closeLookMoreInfo } from "../../../store/reducers/containersSlice";
 
 const ModalsForContainers = () => {
   const dispatch = useDispatch();
@@ -163,6 +164,11 @@ const ModalsForContainers = () => {
   const delContainer = () => dispatch(delContainerFN(openModaDelCont));
   //////// удаление контейнера через запрос
 
+  //////////////////////////////////______////// для просмотра более подробной инфы контейнера
+  const { lookMoreInfo } = useSelector((state) => state.containersSlice);
+
+  console.log(lookMoreInfo, "lookMoreInfo");
+
   return (
     <>
       {/*/////////______//////______////// редактирование  */}
@@ -188,6 +194,7 @@ const ModalsForContainers = () => {
           </div>
         </div>
       </Modals>
+
       {/*/////////______//////______////// добавления контенера  */}
       <Modals
         openModal={addTempCont?.bool}
@@ -242,6 +249,7 @@ const ModalsForContainers = () => {
           </div>
         </div>
       </Modals>
+
       {/*/////////______//////______////// выбор операционной системы*/}
       <Modals
         openModal={!!openOSModal}
@@ -258,6 +266,7 @@ const ModalsForContainers = () => {
           </div>
         </div>
       </Modals>
+
       {/*/////////______//////______////// добавление файлов в контейнера  */}
       <Modals
         openModal={!!openAddFiles}
@@ -274,6 +283,7 @@ const ModalsForContainers = () => {
           />
         </div>
       </Modals>
+
       {/*/////////______//////______////// добавление контейнера в группу  */}
       <Modals
         openModal={!!openModalAddGroup}
@@ -295,6 +305,7 @@ const ModalsForContainers = () => {
           </div> */}
         </div>
       </Modals>
+
       {/*/////////______//////______////// удалить контейнер с группы через запрос  */}
       <Modals
         openModal={!!openModaDelGroup}
@@ -313,6 +324,7 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
+
       {/*/////////______//////______////// backUp контейнера  */}
       <div className="backUp">
         <Modals
@@ -349,6 +361,7 @@ const ModalsForContainers = () => {
           </div>
         </Modals>
       </div>
+
       {/*/////////______//////______////// для доступов отображения контейнеров клиентам  */}
       <Modals
         openModal={!!openModalKeyCont}
@@ -368,6 +381,7 @@ const ModalsForContainers = () => {
           <ActionsVirtualMachine />
         </Modals>
       </div>
+
       {/*/////////______//////______////// выключение контейнера  */}
       <Modals
         openModal={!!openModaStoppedCont}
@@ -386,6 +400,7 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
+
       {/*/////////______//////______////// удаление контейнера  */}
       <Modals
         openModal={!!openModaDelCont}
@@ -404,8 +419,29 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
+
+      {/*/////////______//////______////// удаление контейнера  */}
+      <Modals
+        openModal={!!lookMoreInfo?.guid}
+        setOpenModal={() => dispatch(closeLookMoreInfo())}
+        title={lookMoreInfo?.vm_name}
+      >
+        <div className="addDns moreText">
+          <pre>{formatText(lookMoreInfo?.info)}</pre>
+        </div>
+      </Modals>
     </>
   );
 };
 
 export default ModalsForContainers;
+
+const formatText = (inputText) => {
+  // Декодируем текст из URL-кодировки
+  const decodedText = decodeURIComponent(inputText);
+
+  // Заменяем \n на реальные переносы строк
+  const formattedText = decodedText?.replace(/\\n/g, "\n");
+
+  return formattedText;
+};

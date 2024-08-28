@@ -15,8 +15,14 @@ import storage from "redux-persist/lib/storage";
 import stateSlice from "./reducers/stateSlice";
 import saveDataSlice from "./reducers/saveDataSlice";
 import requestSlice from "./reducers/requestSlice";
+import containersSlice from "./reducers/containersSlice";
 
-const reducer = combineReducers({ requestSlice, stateSlice, saveDataSlice });
+const reducer = combineReducers({
+  requestSlice,
+  stateSlice,
+  saveDataSlice,
+  containersSlice,
+});
 
 const persistConfig = {
   key: "root",
