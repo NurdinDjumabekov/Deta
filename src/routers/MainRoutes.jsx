@@ -29,8 +29,6 @@ const MainRoutes = () => {
 
   const { dnsList } = useSelector((state) => state.stateSlice);
 
-  console.log(dnsList, "dnsList");
-
   return (
     <>
       <Routes>

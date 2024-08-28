@@ -61,12 +61,13 @@ const AddSPFChame = ({ obj }) => {
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = {
+    const send = {
       ...dnsList?.seven,
-      domen_guid: activeDns?.guid,
       ...activeDns,
+      domen_guid: activeDns?.guid,
     };
-    dispatch(addSubDomen(obj));
+    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    dispatch(addSubDomen({ ...send, ...obj }));
   };
 
   return (

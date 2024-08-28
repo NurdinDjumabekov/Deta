@@ -1,4 +1,8 @@
+//////// hooks
 import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+
+/////// components
 import {
   LineChart,
   Line,
@@ -10,47 +14,23 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+////// styles
 import "./style.scss";
-import { generateRandomData } from "../../../helpers/LocalData";
-
-// Кастомный компонент для точек
-const CustomDot = React.memo((props) => {
-  const { cx, cy, stroke, fill } = props;
-
-  return (
-    <svg x={cx - 5} y={cy - 5} width={10} height={10}>
-      <polygon
-        points="5,0 10,5 5,10 0,5"
-        fill={fill}
-        stroke={stroke}
-        strokeWidth={1}
-      />
-    </svg>
-  );
-});
 
 const GraphicContainer = () => {
-  const data = useMemo(() => generateRandomData(50), []);
+  const { diagramsContainer } = useSelector((state) => state.requestSlice);
 
   return (
     <div className="graphicContainer">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 80, // Увеличьте нижний отступ для размещения вертикальных меток
-          }}
-        >
+        <LineChart data={diagramsContainer} margin={{ bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="time"
-            angle={-60} // Поворот текста меток
-            textAnchor="end" // Выравнивание текста
-            height={80} // Увеличьте высоту оси X для размещения текста
-            tick={{ fontSize: 12 }} // Настройка размера шрифта меток
+            angle={-60}
+            textAnchor="end"
+            height={80}
+            tick={{ fontSize: 10 }}
           />
           <YAxis yAxisId="left" orientation="left" stroke="#ff0077" />
           <YAxis yAxisId="right" orientation="right" stroke="#00bfff" />
@@ -61,16 +41,14 @@ const GraphicContainer = () => {
             type="monotone"
             dataKey="CPU"
             stroke="#ff0077"
-            strokeWidth={3} // Установите желаемую ширину линии
-            dot={<CustomDot />} // Используйте кастомный компонент для точек
+            strokeWidth={1}
           />
           <Line
             yAxisId="right"
             type="monotone"
             dataKey="RAM"
             stroke="#00bfff"
-            strokeWidth={3} // Установите желаемую ширину линии
-            dot={<CustomDot />} // Используйте кастомный компонент для точек
+            strokeWidth={1}
           />
         </LineChart>
       </ResponsiveContainer>

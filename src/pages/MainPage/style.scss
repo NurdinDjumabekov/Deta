@@ -34,7 +34,6 @@
             .moreInfo {
               display: block;
               top: 30px;
-              // left: 35px;
               left: 100px !important;
             }
           }
@@ -48,6 +47,10 @@
 
           p {
             font-size: 16px;
+          }
+
+          .title {
+            font-size: 15px;
           }
 
           .roundGreen {

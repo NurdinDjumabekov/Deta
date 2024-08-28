@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 /////// fns
 import { getProviders } from "../../store/reducers/requestSlice";
-import { getServices, getUsers } from "../../store/reducers/requestSlice";
 import { getGroup, getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
@@ -41,14 +40,12 @@ const MainPage = () => {
     (state) => state.stateSlice
   );
 
-  const listImgsProv = [aknet, saima, saima, megaline];
+  // const listImgsProv = [aknet, saima, saima, megaline];
 
   useEffect(() => {
     dispatch(getProviders());
     dispatch(getHosts());
     dispatch(getGroup());
-    dispatch(getUsers());
-    dispatch(getServices());
 
     const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
     const disconnectHost = dispatch(updatedHosts()); /// get хосты
@@ -65,9 +62,6 @@ const MainPage = () => {
   const addHost = () => dispatch(setAddHost({ bool: true }));
   //// открываю модалку для добавления хоста
 
-  // console.log(listContainers, "listContainers");
-  // console.log(listProviders, "listProviders");
-
   return (
     <>
       <div className="mainPage">
@@ -79,8 +73,9 @@ const MainPage = () => {
             <div className="providers__main__inner">
               {listProviders?.map((item, index) => (
                 <div key={index}>
-                  <img src={listImgsProv?.[index]} alt="" />
-                  <div className="moreInfo">{item?.provider_name}</div>
+                  {/* <img src={listImgsProv?.[index]} alt="" /> */}
+                  {/* <div className="moreInfo">{item?.provider_name}</div> */}
+                  <div className="title">{item?.provider_name}</div>
                   <span>{item?.provider_pingtime}</span>
                   <div
                     className={

@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  top: -39px;
+  top: -36px;
   left: 0;
   min-width: 100%;
 
@@ -27,6 +27,7 @@
       background: rgb(30, 31, 35);
       border: 1px solid #ffffff83;
       border-radius: 5px;
+      font-size: 15px;
 
       &:focus {
         border: 1px solid #ffffffbc;

@@ -9,6 +9,8 @@ import { dnsListDefault } from "../../helpers/LocalData";
 const initialState = {
   modal: 0, /// модалка для всех
 
+  listDiagrams: [], //// для диаграммы хостов на главной странице
+
   menuInner: [
     { id: 1, name: "Контейнеры", img: container, active: false, list: [] },
     { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
@@ -171,6 +173,16 @@ const stateSlice = createSlice({
       state.modal = 0;
     },
 
+    setListDiagrams: (state, action) => {
+      state.listDiagrams = action.payload?.map((item) => {
+        return {
+          time: item?.date_system,
+          CPU: item?.node_cpu_usage,
+          RAM: item?.node_ram_usage,
+        };
+      });
+    },
+
     setMenuInner: (state, action) => {
       const newMenu = state.menuInner?.map((item) => {
         if (item.id === action.payload) {
@@ -184,10 +196,18 @@ const stateSlice = createSlice({
 
     changeMenuInner: (state, action) => {
       const { id } = action.payload;
-      const obj = state.menuInner?.find((item) => item.id == id);
-      const updatedMenu = state.menuInner?.filter((item) => item.id !== id);
+      const obj = state.menuInner?.find((item) => item?.id == id);
+      const updatedMenu = state.menuInner?.filter((item) => item?.id !== id);
       //// ищу по id и возвращаю обьект который хочу поменять
       state.menuInner = [...updatedMenu, { ...obj, ...action.payload }];
+    },
+
+    clearMenuInner: (state, action) => {
+      ///// очищаю активный state
+      state.menuInner = state.menuInner?.map((item) => ({
+        ...item,
+        active: false,
+      }));
     },
 
     setActiveHost: (state, action) => {
@@ -411,8 +431,10 @@ const stateSlice = createSlice({
 export const {
   setOpenModals,
   closeModals,
+  setListDiagrams,
   setMenuInner,
   changeMenuInner,
+  clearMenuInner,
   setActiveHost,
   setActiveContainer,
   setActiveDns,

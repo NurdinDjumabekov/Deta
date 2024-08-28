@@ -62,8 +62,14 @@ const AddRTRChame = ({ obj }) => {
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = { ...dnsList?.six, domen_guid: activeDns?.guid, ...activeDns };
-    dispatch(addSubDomen(obj));
+
+    const send = {
+      ...dnsList?.six,
+      ...activeDns,
+      domen_guid: activeDns?.guid,
+    };
+    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    dispatch(addSubDomen({ ...send, ...obj }));
   };
 
   return (

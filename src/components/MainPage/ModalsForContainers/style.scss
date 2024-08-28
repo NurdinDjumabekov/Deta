@@ -2,7 +2,12 @@
   width: 450px !important;
 
   .myInput {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    width: 100% !important;
+
+    h5 {
+      margin-bottom: 5px;
+    }
   }
 
   .actions {

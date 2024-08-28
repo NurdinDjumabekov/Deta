@@ -15,11 +15,17 @@ import Search from "../../MainPage/Search/Search";
 const MenuInner = () => {
   const dispatch = useDispatch();
 
-  const { menuInner } = useSelector((state) => state.stateSlice);
+  const { menuInner, activeHost } = useSelector((state) => state.stateSlice);
 
   const choice = (id) => dispatch(setMenuInner(id));
 
-  const getCont = (guid) => dispatch(getContainersInMenu(guid));
+  const getContainer = (guid, id) => {
+    const guid_service = id == 2 ? guid : undefined;
+    const guid_user = id == 3 ? guid : undefined;
+    const obj = { guid_host: activeHost, guid_service, guid_user };
+    dispatch(getContainersInMenu(obj));
+    choice(id);
+  };
 
   // Сортировка массива menuInner по id от меньшего к большему
   const sortedMenuInner = menuInner?.slice()?.sort((a, b) => a?.id - b?.id);
@@ -47,7 +53,10 @@ const MenuInner = () => {
             >
               {item?.id !== 1 && /// не отображаю контейнера
                 item?.list?.map((subItem, index) => (
-                  <div key={index} onClick={() => getCont(subItem?.guid)}>
+                  <div
+                    key={index}
+                    onClick={() => getContainer(subItem?.guid, item?.id)}
+                  >
                     <p>
                       {subItem?.name}{" "}
                       {!!subItem?.count ? <b>[{subItem?.count}]</b> : <></>}

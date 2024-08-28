@@ -1,5 +1,5 @@
 .statusContainers {
-  width: 300px;
+  width: 290px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -8,6 +8,8 @@
     width: 33%;
     border-left: 2px solid rgb(30, 31, 35);
     height: 96vh;
+    position: relative;
+    padding-bottom: 50px;
 
     p {
       padding: 5px 2px 6px;
@@ -27,12 +29,12 @@
       padding: 5px 0px;
 
       img {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
       }
 
       span {
-        font-size: 14px;
+        font-size: 12px;
         color: #3e86c8;
       }
     }
@@ -44,13 +46,37 @@
       gap: 5px;
       margin: 5px 0 0 0;
 
+      .everyInner {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+        gap: 7px;
+        padding: 0 5px;
+      }
+
       input {
-        color: #222;
-        width: 55px;
+        width: 80%;
+        background: #292d32;
+        border-radius: 3px;
+        height: 20px;
+        font-size: 11px;
+        color: #fff;
+        padding: 2px 4px;
+        border: 1px solid #ffffff2d;
+
+        &:focus {
+          outline: none;
+        }
       }
 
       span {
-        font-size: 13px;
+        font-size: 11px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 50px;
+        padding: 0px 3px;
 
         &:hover {
           text-decoration: underline;
@@ -59,14 +85,93 @@
       }
     }
 
-    .clear {
-      background: red;
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 15px 2px;
+      position: absolute;
+      left: 50%;
+      bottom: 10px;
+      transform: translate(-50%);
+
+      button {
+        position: relative;
+        width: 18px;
+        min-width: 18px;
+        height: 18px;
+
+        span {
+          right: 0px;
+          transform: translateX(1px);
+          left: auto;
+        }
+
+        &:hover {
+          .moreInfoLeft {
+            display: block;
+          }
+        }
+      }
     }
-    .active {
-      background: green;
+  }
+
+  .clear {
+    h6 {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0px 0 0;
+      color: red;
     }
-    .disActive {
-      background: #dd8537;
+  }
+
+  .active {
+    background: transparent !important;
+    h6 {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0px 0 0;
+      color: green;
     }
+  }
+  .diactive {
+    h6 {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0px 0 0;
+      color: #dd8537;
+    }
+  }
+}
+
+.load {
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+
+.load::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #3498db;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

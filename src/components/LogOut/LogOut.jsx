@@ -1,5 +1,6 @@
 import React from "react";
-import logout from "../../assets/icons/menu/logout.png";
+// import logout from "../../assets/icons/menu/logout.png";
+import logout from "../../assets/images/logout.png";
 
 import "./style.scss";
 

@@ -106,6 +106,7 @@
       &__inner {
         display: flex;
         align-items: center;
+        gap: 10px;
 
         > button {
           width: 23px;
@@ -156,7 +157,7 @@
       flex-direction: column;
       gap: 4px;
       justify-content: center;
-      margin: 5px 5px 0 10px;
+      margin: 5px 5px 0 15px;
       width: 300px;
 
       &__inner {

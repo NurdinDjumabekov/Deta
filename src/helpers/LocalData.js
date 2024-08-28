@@ -23,22 +23,22 @@ export const pages = [
 ];
 
 export const listGr = [
-  { name: "Тестовая группa", decs: "описание1", guid: "asdasdas", count: 12 },
-  { name: "ЛИС стационар", decs: "описание1", guid: "asdasdas", count: 12 },
-  { name: "ЛИС облако", decs: "описание1", guid: "asdasdas", count: 12 },
-  { name: "Мис", decs: "описание1", guid: "asdasdas", count: 12 },
-  { name: "Доставка", decs: "описание1", guid: "asdasdas", count: 12 },
-  { name: "FIN", decs: "описание1", guid: "asdasdas", count: 12 },
-  { name: "1C", decs: "описание1", guid: "asdasdas", count: 12 },
+  { name: "Тестовая группa", guid: "asdasdas", count: 12 },
+  { name: "ЛИС стационар", guid: "asdasdas", count: 12 },
+  { name: "ЛИС облако", guid: "asdasdas", count: 12 },
+  { name: "Мис", guid: "asdasdas", count: 12 },
+  { name: "Доставка", guid: "asdasdas", count: 12 },
+  { name: "FIN", guid: "asdasdas", count: 12 },
+  { name: "1C", guid: "asdasdas", count: 12 },
 ];
 
 export const listname = [
-  { name: "Иван", decs: "описание1", count: 12 },
-  { name: "Баатыр", decs: "описание1", count: 4 },
-  { name: "Роза", decs: "описание1", count: 6 },
-  { name: "Айжамал", decs: "описание1", count: 7 },
-  { name: "Эржан", decs: "описание1", count: 2 },
-  { name: "Бек", decs: "описание1", count: 0 },
+  { name: "Иван", count: 12 },
+  { name: "Баатыр", count: 4 },
+  { name: "Роза", count: 6 },
+  { name: "Айжамал", count: 7 },
+  { name: "Эржан", count: 2 },
+  { name: "Бек", count: 0 },
 ];
 
 export const hosts = [

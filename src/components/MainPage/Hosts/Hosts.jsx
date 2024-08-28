@@ -13,17 +13,22 @@ import "./style.scss";
 
 /////// fns
 import { setTemporaryHosts } from "../../../store/reducers/stateSlice";
+import { setListDiagrams } from "../../../store/reducers/stateSlice";
 import { setGuidHostDel } from "../../../store/reducers/stateSlice";
 import { setGuidHostEdit } from "../../../store/reducers/stateSlice";
 import { getContainers } from "../../../store/reducers/requestSlice";
-import { secondsToDhms } from "../../../helpers/secondsToDhms";
+
+/////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
+
+////// helpers
+import { secondsToDhms } from "../../../helpers/secondsToDhms";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr } = item;
   const { host_name, node_uptime_sec, guid, guid_node } = item;
   const { array_storages, node_model, node_cpu_usage } = item;
-  const { node_cpu, node_ram_usage, node_ram_mb } = item;
+  const { node_cpu, node_ram_usage, node_ram_mb, chart } = item;
 
   const dispatch = useDispatch();
 
@@ -31,8 +36,11 @@ const Hosts = ({ item }) => {
 
   const listVmbr = vmbr?.split(",");
 
-  const clickHost = () => dispatch(getContainers(guid));
-  //// выбор хоста для получения контейнеров связанных с этим хостом
+  const clickHost = () => {
+    dispatch(getContainers(guid));
+    dispatch(setListDiagrams(chart));
+    //// выбор хоста для получения контейнеров связанных с этим хостом
+  };
 
   const editOpenModal = () => {
     const obj = { host_name, guid_node, node_model, array_storages };

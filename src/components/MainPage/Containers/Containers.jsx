@@ -26,11 +26,9 @@ import keyIncon from "../../../assets/icons/key.svg";
 import "./style.scss";
 
 ////// fns
-import {
-  setOpenAddFiles,
-  setOpenModaStartCont,
-  setOpenModalKeyCont,
-} from "../../../store/reducers/stateSlice";
+import { setOpenAddFiles } from "../../../store/reducers/stateSlice";
+import { setOpenModaStartCont } from "../../../store/reducers/stateSlice";
+import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
 import { setOpenModals } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
@@ -39,12 +37,14 @@ import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
 import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
-
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
+import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
+import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
 
 ////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
-import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
+
+/////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
 
 const Containers = ({ item }) => {
@@ -57,7 +57,15 @@ const Containers = ({ item }) => {
     (state) => state.stateSlice
   );
 
-  const clickContainer = () => dispatch(setActiveContainer(guid));
+  const clickVmId = () => {
+    ///// перекидываю на другую (постороннюю) ссылку
+    window.open(`http://dccs.ibm.kg/vnc?vnc_key=${guid}`, "_blank");
+  };
+
+  const clickContainer = () => {
+    dispatch(setActiveContainer(guid)); //// делаю активным нажатый контейнер
+    dispatch(getDiagramsContainers(guid)); //// для get диграмм контейнеров
+  };
 
   const openModalEdit = () => {
     dispatch(setTemporaryContainer({ guid, vm_comment }));
@@ -107,7 +115,7 @@ const Containers = ({ item }) => {
     <div className={`containerMain ${active}`} onClick={clickContainer}>
       <div className="containerMain__inner">
         {/* ///// */}
-        <div className="bottom">
+        <div className="bottom" onClick={clickVmId}>
           <div className="numIndex">
             <img src={container} alt="[]" />
             <p>{vm_id}</p>
@@ -124,14 +132,14 @@ const Containers = ({ item }) => {
               <img src={round} alt="os" />
             </button>
           </div>
-          {/* <div className="editBlock__inner">
-                <button className="edit">
-                  <img src={editBlue} alt="" />
-                </button>
-                <button className="edit">
-                  <img src={editBlue} alt="" />
-                </button>
-              </div> */}
+          <div className="editBlock__inner">
+            <button className="edit">
+              <img src={editBlue} alt="" />
+            </button>
+            <button className="edit">
+              <img src={editBlue} alt="" />
+            </button>
+          </div>
         </div>
 
         {/* ///// */}
@@ -162,7 +170,7 @@ const Containers = ({ item }) => {
                 <div>
                   <img src={dataBaseIcon} alt="#" />
                 </div>
-                <p>{getConfigValue(info, "size")}6G</p>
+                <p>{getConfigValue(info, "size")}</p>
               </div>
             )}
           </div>

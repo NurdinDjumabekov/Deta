@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import socketIOClient from 'socket.io-client';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import socketIOClient from "socket.io-client";
+import axios from "axios";
 import {
   changeMenuInner,
   clearAddHost,
@@ -12,16 +12,17 @@ import {
   setActiveDns,
   setActiveHost,
   setGuidHostEdit,
+  setListDiagrams,
   setOpenModaDelCont,
   setOpenModaDelGroup,
   setOpenModalAddGroup,
   setOpenModalKeyCont,
-  setPastDnsInSubDomen,
-} from './stateSlice';
-import { transformListNetwork } from '../../helpers/transformListNetwork';
-import { defaultSubDomen, listGr, listname } from '../../helpers/LocalData';
-import { toast } from 'react-toastify';
-import { myAlert } from '../../helpers/MyAlert';
+} from "./stateSlice";
+import { transformListNetwork } from "../../helpers/transformListNetwork";
+import { defaultSubDomen, listGr, listname } from "../../helpers/LocalData";
+import { toast } from "react-toastify";
+import { myAlert } from "../../helpers/MyAlert";
+import { tranformKey } from "../../helpers/tranformTextInNum";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -29,7 +30,8 @@ const initialState = {
 
   ///// containers /////
   listContainers: [],
-  searchContainer: '',
+  searchContainer: "",
+  diagramsContainer: [], //// для диаграммы хостов на главной странице
 
   listNetwork: [],
   listDnsDomen: [],
@@ -43,11 +45,11 @@ const initialState = {
   listVolns: {}, //// список волн
 };
 
-const url_socket = 'http://217.29.26.222:3633';
+const url_socket = "http://217.29.26.222:3633";
 
 ///// getProviders - для получения провайдеров
 export const getProviders = createAsyncThunk(
-  'getProviders',
+  "getProviders",
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}api/network/getProviders`;
     try {
@@ -65,7 +67,7 @@ export const getProviders = createAsyncThunk(
 
 export const updatedProvoders = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
-  socket.on('updateProviders', ({ data }) => {
+  socket.on("updateProviders", ({ data }) => {
     dispatch(setUpdatedProvider(data));
   });
   return () => {
@@ -77,62 +79,19 @@ export const updatedProvoders = () => (dispatch) => {
 
 ///// getHosts - для получения провайдеров
 export const getHosts = createAsyncThunk(
-  'getHosts',
+  "getHosts",
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/getHostList`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
         const first = response?.data?.[0]?.guid;
+        const chart = response?.data?.[0]?.chart;
         dispatch(setActiveHost(first));
         dispatch(getContainers(first));
         /// подставляю первый хост чтобы он был активный
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
 
-///// getUsers - для получения Пользователей
-export const getUsers = createAsyncThunk(
-  'getUsers',
-  async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}++++++++++++++++`;
-    dispatch(changeMenuInner({ id: 3, list: listname })); //// delete
-
-    try {
-      const response = await axios(url);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(changeMenuInner({ id: 2, list: response?.data }));
-        //// добавляю в меню для сортировки пользователей
-        ///// id: 2 это добавление в список Сервисов
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-///// getServices - для получения сервисов
-export const getServices = createAsyncThunk(
-  'getServices',
-  async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}++++++++++++++++`;
-    dispatch(changeMenuInner({ id: 2, list: listGr })); //// delete
-
-    try {
-      const response = await axios(url);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(changeMenuInner({ id: 2, list: response?.data }));
-        //// добавляю в меню для сортировки пользователей
-        ///// id: 2 это добавление в список Сервисов
+        dispatch(setListDiagrams(chart)); //// для диаграммы хостов
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -145,7 +104,7 @@ export const getServices = createAsyncThunk(
 
 ///// getGroup - для получения групп где хранятся контейнера
 export const getGroup = createAsyncThunk(
-  'getGroup',
+  "getGroup",
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}++++++++++`;
     try {
@@ -163,14 +122,14 @@ export const getGroup = createAsyncThunk(
 
 ///// addHostFN - для редактирования суб доменов
 export const addHostFN = createAsyncThunk(
-  'addHostFN',
+  "addHostFN",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/createHost`;
     ///  data - новые добавляемые данные хоста
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        console.log(response?.data, 'response?.data');
+        console.log(response?.data, "response?.data");
         dispatch(clearAddHost()); //// очищаю временные данные для создания хоста
 
         const guid = response?.data?.[0]; //// guid нового созданного хоста
@@ -189,7 +148,7 @@ export const addHostFN = createAsyncThunk(
 ////// для моментального обновления хоста
 export const updatedHosts = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
-  socket.on('asdas', ({ data }) => {
+  socket.on("asdas", ({ data }) => {
     dispatch(setUpdatedHost(data));
   });
   return () => {
@@ -199,7 +158,7 @@ export const updatedHosts = () => (dispatch) => {
 
 ///// deleteSubDomen - для удаления суб доменов
 export const deleteHost = createAsyncThunk(
-  'deleteSubDomen',
+  "deleteSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const { guidDelete, setGuidDelete, activeDns } = props;
     /// guidDelete - guid суб домена
@@ -209,7 +168,7 @@ export const deleteHost = createAsyncThunk(
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen(activeDns?.guid)); /// это guid домена
-        dispatch(setGuidDelete('')); //// закрываю модалку
+        dispatch(setGuidDelete("")); //// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -222,7 +181,7 @@ export const deleteHost = createAsyncThunk(
 
 ///// editHost - для редактирования суб доменов
 export const editHost = createAsyncThunk(
-  'editHost',
+  "editHost",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/editHost`;
     ///  data - изменяемы данные хоста
@@ -230,7 +189,7 @@ export const editHost = createAsyncThunk(
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearTemporaryHosts()); ///// очищаю временное хранение данных хоста
-        dispatch(setGuidHostEdit('')); //// закрываю модалку
+        dispatch(setGuidHostEdit("")); //// закрываю модалку
         return response?.data?.[0];
       } else {
         throw Error(`Error: ${response.status}`);
@@ -245,17 +204,26 @@ export const editHost = createAsyncThunk(
 
 ///// getContainers - для получения контейнеров c помощью хостов
 export const getContainers = createAsyncThunk(
-  'getContainers',
+  "getContainers",
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/getHostContainerList`;
-    const data = { vawe: '1', elemid: guid }; //// guid - хоста
+    const data = { vawe: "1", elemid: guid }; //// guid - хоста
 
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost(guid));
-        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+
+        const record = response?.data?.usersAndService?.record;
+        const result = response?.data?.usersAndService?.result;
+
+        const objResult = { id: 2, list: tranformKey("service", result) };
+        dispatch(changeMenuInner(objResult));
+
+        const objRecord = { id: 3, list: tranformKey("user", record) };
+        dispatch(changeMenuInner(objRecord));
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
+
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -268,17 +236,37 @@ export const getContainers = createAsyncThunk(
 
 ///// getContainersInMenu - для получения контейнеров c помощью сервисов и пользователей
 export const getContainersInMenu = createAsyncThunk(
-  'getContainersInMenu',
-  async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}host/+++++++++++++++++++`;
-    const data = { vawe: '1', elemid: guid }; //// guid - хоста
+  "getContainersInMenu",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { guid_host, guid_service, guid_user } = props;
+    const url = `${REACT_APP_API_URL}host/filterByUserService`;
+    const data = { guid_host, guid_service, guid_user }; //// guid - хоста
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setActiveHost("")); //// очищаю активный хост
+        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+        //// подставляю данные для меню чтобы узнать кол-во контейнеров
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getDiagramsContainers - для получения контейнеров c помощью сервисов и пользователей
+export const getDiagramsContainers = createAsyncThunk(
+  "getDiagramsContainers",
+  async function (guid_vm, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/getVmDiagramData`;
+    const data = { guid_vm }; //// guid - контейнерв
 
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setActiveHost('')); //// очищаю активный хост
-        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
-        //// подставляю данные для меню чтобы узнать кол-во контейнеров
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -291,17 +279,19 @@ export const getContainersInMenu = createAsyncThunk(
 
 ///// searchContainers - для получения контейнеров c помощью сервисов и пользователей
 export const searchContainers = createAsyncThunk(
-  'searchContainers',
+  "searchContainers",
   async function (text, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}host/+++++++++++++++++++${text}`;
+    const url = `${REACT_APP_API_URL}host/search?searchText=${text}`;
 
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setActiveHost('')); //// очищаю активный хост
-        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+        // dispatch(setActiveHost("")); //// очищаю активный хост
+        // dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
-        return response?.data;
+
+        console.log(response?.data?.result, "response?.data");
+        return response?.data?.result;
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -313,7 +303,7 @@ export const searchContainers = createAsyncThunk(
 
 ///// addContainersFN - добавление контейнеров
 export const addContainersFN = createAsyncThunk(
-  'addContainersFN',
+  "addContainersFN",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/+++++++++++++++++++`;
     ///  data - добавляемые данные хоста
@@ -332,7 +322,7 @@ export const addContainersFN = createAsyncThunk(
 
 ///// editContainers - редактирование контейнеров
 export const editContainers = createAsyncThunk(
-  'editContainers',
+  "editContainers",
   async function ({ activeHost, data }, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/editContainer`;
     ///  data - изменяемы данные хоста
@@ -356,7 +346,7 @@ export const editContainers = createAsyncThunk(
 
 ///// editContainerOS - добавление ОС контейнеров
 export const editContainerOS = createAsyncThunk(
-  'editContainerOS',
+  "editContainerOS",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
     try {
@@ -375,7 +365,7 @@ export const editContainerOS = createAsyncThunk(
 
 ///// addFileInContainer - добавление файлов в контейнера
 export const addFileInContainer = createAsyncThunk(
-  'addFileInContainer',
+  "addFileInContainer",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
     try {
@@ -394,13 +384,13 @@ export const addFileInContainer = createAsyncThunk(
 
 ///// addGroupContFN - добавление контейнера в группу
 export const addGroupContFN = createAsyncThunk(
-  'addGroupContFN',
+  "addGroupContFN",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++`;
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModalAddGroup(''));
+        dispatch(setOpenModalAddGroup(""));
         /// очищаю данные для закрытия модалки
         return response?.data;
       } else {
@@ -414,13 +404,13 @@ export const addGroupContFN = createAsyncThunk(
 
 //// delGroupContainerFN - удаление контейнера с группы
 export const delGroupContainerFN = createAsyncThunk(
-  'delGroupContainerFN',
+  "delGroupContainerFN",
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModaDelGroup('')); /// закрываю модалку
+        dispatch(setOpenModaDelGroup("")); /// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -433,10 +423,10 @@ export const delGroupContainerFN = createAsyncThunk(
 
 ///// fixTimeCreateCont - фиксирование времени создания контейнера
 export const fixTimeCreateCont = createAsyncThunk(
-  'fixTimeCreateCont',
+  "fixTimeCreateCont",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++`;
-    myAlert('Время зафиксировано');
+    myAlert("Время зафиксировано");
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -452,13 +442,13 @@ export const fixTimeCreateCont = createAsyncThunk(
 
 //// offContainerFN - выключения контейнера
 export const offContainerFN = createAsyncThunk(
-  'offContainerFN',
+  "offContainerFN",
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModaDelGroup('')); /// закрываю модалку
+        dispatch(setOpenModaDelGroup("")); /// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -471,7 +461,7 @@ export const offContainerFN = createAsyncThunk(
 
 //// backUpContainerFN - бэкап контейнера
 export const backUpContainerFN = createAsyncThunk(
-  'backUpContainerFN',
+  "backUpContainerFN",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++`;
     try {
@@ -491,13 +481,13 @@ export const backUpContainerFN = createAsyncThunk(
 
 //// editAccessesUsersFN - смена доступов отображения контейнеров клиентам
 export const editAccessesUsersFN = createAsyncThunk(
-  'editAccessesUsersFN',
+  "editAccessesUsersFN",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++`;
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModalKeyCont(''));
+        dispatch(setOpenModalKeyCont(""));
         /// закрываю модалку и очищаю данные для временного хранения данных для смены доступов отображения контейнеров клиентам
       } else {
         throw Error(`Error: ${response.status}`);
@@ -510,13 +500,13 @@ export const editAccessesUsersFN = createAsyncThunk(
 
 //// delContainerFN - удаление контейнера
 export const delContainerFN = createAsyncThunk(
-  'delContainerFN',
+  "delContainerFN",
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModaDelCont('')); /// закрываю модалку
+        dispatch(setOpenModaDelCont("")); /// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -531,7 +521,7 @@ export const delContainerFN = createAsyncThunk(
 
 ///// getVolns - для получения волн определенного хоста
 export const getVolns = createAsyncThunk(
-  'getVolns',
+  "getVolns",
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
     const data = { guid }; //// guid - хоста
@@ -554,7 +544,7 @@ export const getVolns = createAsyncThunk(
 
 ///// getNetworks - для получения сетей
 export const getNetworks = createAsyncThunk(
-  'getNetworks',
+  "getNetworks",
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}api/network/getallIpList`;
     try {
@@ -572,7 +562,7 @@ export const getNetworks = createAsyncThunk(
 
 export const updatedNetwork = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
-  socket.on('pingStatusUpdate', (data) => {
+  socket.on("pingStatusUpdate", (data) => {
     // console.log("Получены данные pingStatusUpdate:", data);
     dispatch(setUpdatedNetwork(data));
   });
@@ -585,7 +575,7 @@ export const updatedNetwork = () => (dispatch) => {
 
 ///// getDnsDomen - для получения dns доменов
 export const getDnsDomen = createAsyncThunk(
-  'getDnsDomen',
+  "getDnsDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/getDomens`;
     try {
@@ -615,7 +605,7 @@ export const getDnsDomen = createAsyncThunk(
 
 ///// addDomens - для добавления доменов
 export const addDomens = createAsyncThunk(
-  'addDomens',
+  "addDomens",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/creareDomen`;
     try {
@@ -624,7 +614,7 @@ export const addDomens = createAsyncThunk(
         const guid = response?.data?.guid;
 
         if (!!!guid) {
-          myAlert('Такой домен уже существует!');
+          myAlert("Такой домен уже существует!");
         } else {
           dispatch(getDnsDomen()); //// get все домены
           dispatch(clearTemporaryDNS());
@@ -632,7 +622,7 @@ export const addDomens = createAsyncThunk(
           setTimeout(() => {
             dispatch(setActiveDns({ guid, name: data?.domen_name }));
             dispatch(getDnsSubDomen({ guid, domen_name: data?.domen_name }));
-            myAlert('Домен успешно добавлен!');
+            myAlert("Домен успешно добавлен!");
           }, 200);
         }
 
@@ -648,7 +638,7 @@ export const addDomens = createAsyncThunk(
 
 ///// deleteDomen - для удаления доменов
 export const deleteDomen = createAsyncThunk(
-  'deleteDomen',
+  "deleteDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const { guidDelete, setGuidDelete } = props;
 
@@ -658,7 +648,7 @@ export const deleteDomen = createAsyncThunk(
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsDomen()); //// get все домены
-        dispatch(setGuidDelete('')); //// закрываю модалку
+        dispatch(setGuidDelete("")); //// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -709,7 +699,7 @@ export const deleteDomen = createAsyncThunk(
 
 ///// getDnsSubDomen - для получения субдоменов
 export const getDnsSubDomen = createAsyncThunk(
-  'getDnsSubDomen',
+  "getDnsSubDomen",
   async function ({ guid, domen_name }, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}`;
     try {
@@ -728,7 +718,7 @@ export const getDnsSubDomen = createAsyncThunk(
 
 ///// sortSubDomen - для сортировки sub доменов
 export const sortSubDomen = createAsyncThunk(
-  'sortSubDomen',
+  "sortSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const { domen_guid, sort, field_name } = props;
     const url = `${REACT_APP_API_URL}dns/sortingSubDomens`;
@@ -749,9 +739,9 @@ export const sortSubDomen = createAsyncThunk(
 
 ///// addSubDomen - для добавления sub доменов
 export const addSubDomen = createAsyncThunk(
-  'addSubDomen',
+  "addSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
-    console.log(props, 'props');
+    console.log(props, "props");
     const { name, ...data } = props;
     const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
     try {
@@ -759,12 +749,12 @@ export const addSubDomen = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         const alreadyCreate = response?.data?.alreadyCreate;
         if (alreadyCreate) {
-          myAlert('Такой субдомен уже существует!');
+          myAlert("Такой субдомен уже существует!");
         } else {
           const obj = { guid: data?.domen_guid, domen_name: name };
           dispatch(getDnsSubDomen(obj)); /// это guid домена
           dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
-          myAlert('Субдомен успешно добавлен!');
+          myAlert("Субдомен успешно добавлен!");
 
           // dispatch(setPastDnsInSubDomen(`.${name}`));
           ////// подставляю домен в поля суб доменов
@@ -781,7 +771,7 @@ export const addSubDomen = createAsyncThunk(
 
 ///// deleteSubDomen - для удаления суб доменов
 export const deleteSubDomen = createAsyncThunk(
-  'deleteSubDomen',
+  "deleteSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const { guidDelete, setGuidDelete, activeDns } = props;
     /// guidDelete - guid суб домена
@@ -792,7 +782,7 @@ export const deleteSubDomen = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
         /// это guid домена (get list data)
-        dispatch(setGuidDelete('')); //// закрываю модалку
+        dispatch(setGuidDelete("")); //// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -805,7 +795,7 @@ export const deleteSubDomen = createAsyncThunk(
 
 ///// editSubDomen - для редактирования суб доменов
 export const editSubDomen = createAsyncThunk(
-  'editSubDomen',
+  "editSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const { setGuidEdit, objEdit, setObjedit, activeDns } = props;
 
@@ -818,7 +808,7 @@ export const editSubDomen = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
         /// это guid домена (get list data)
-        dispatch(setGuidEdit('')); //// закрываю модалку
+        dispatch(setGuidEdit("")); //// закрываю модалку
         setObjedit(defaultSubDomen); //// очищаю временный state
         return response?.data;
       } else {
@@ -832,7 +822,7 @@ export const editSubDomen = createAsyncThunk(
 
 ///// confirmStatusSubDomenFN - для для изменения статуса добавленных доменов
 export const confirmStatusSubDomenFN = createAsyncThunk(
-  'confirmStatusSubDomenFN',
+  "confirmStatusSubDomenFN",
   async function (props, { dispatch, rejectWithValue }) {
     const { guid, name } = props;
     const data = { guid_domen: guid };
@@ -843,7 +833,7 @@ export const confirmStatusSubDomenFN = createAsyncThunk(
         dispatch(getDnsSubDomen({ guid, domen_name: name }));
         /// это guid домена (get list data)
 
-        myAlert('Изменения внесены!');
+        myAlert("Изменения внесены!");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -855,7 +845,7 @@ export const confirmStatusSubDomenFN = createAsyncThunk(
 );
 
 const requestSlice = createSlice({
-  name: 'requestSlice',
+  name: "requestSlice",
   initialState,
   reducers: {
     setListNetwork: (state, action) => {
@@ -981,7 +971,7 @@ const requestSlice = createSlice({
     ///////////////////////////// getContainersInMenu
     builder.addCase(getContainersInMenu.fulfilled, (state, action) => {
       // state.preloader = false;
-      state.listContainers = action.payload?.result;
+      state.listContainers = action.payload;
     });
     builder.addCase(getContainersInMenu.rejected, (state, action) => {
       state.error = action.payload;
@@ -991,10 +981,29 @@ const requestSlice = createSlice({
       // state.preloader = true;
     });
 
+    ///////////////////////////// getDiagramsContainers
+    builder.addCase(getDiagramsContainers.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.diagramsContainer = action.payload?.map((item) => {
+        return {
+          time: item?.date_system,
+          CPU: item?.vm_cpu_usage,
+          RAM: item?.vm_ram_usage_mb,
+        };
+      });
+    });
+    builder.addCase(getDiagramsContainers.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getDiagramsContainers.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
     ///////////////////////////// searchContainers
     builder.addCase(searchContainers.fulfilled, (state, action) => {
       // state.preloader = false;
-      state.listContainers = action.payload?.result;
+      state.listContainers = action.payload;
     });
     builder.addCase(searchContainers.rejected, (state, action) => {
       state.error = action.payload;

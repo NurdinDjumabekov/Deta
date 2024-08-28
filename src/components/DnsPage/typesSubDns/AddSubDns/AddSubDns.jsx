@@ -66,8 +66,9 @@ const AddSubDns = ({ obj }) => {
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = { ...dnsList?.one, domen_guid: activeDns?.guid, ...activeDns };
-    dispatch(addSubDomen(obj));
+    const send = { ...dnsList?.one, domen_guid: activeDns?.guid, ...activeDns };
+    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    dispatch(addSubDomen({ ...send, ...obj }));
   };
 
   return (

@@ -8,7 +8,12 @@ import { useCallback, useState } from "react";
 import "./style.scss";
 
 //////// fns
-import { setAddTempCont } from "../../../store/reducers/stateSlice";
+import {
+  clearMenuInner,
+  setActiveContainer,
+  setActiveHost,
+  setAddTempCont,
+} from "../../../store/reducers/stateSlice";
 import { searchContainers } from "../../../store/reducers/requestSlice";
 import { getHosts } from "../../../store/reducers/requestSlice";
 
@@ -27,6 +32,11 @@ const Search = () => {
       if (text?.length > 1) {
         dispatch(searchContainers(text));
         // Выполнение поиска с заданными параметрами
+
+        dispatch(clearMenuInner()); /// активное меню
+        dispatch(setActiveHost(0)); //// активный хост
+        dispatch(setActiveContainer(0)); //// активный контейнер
+        /////// сброс все автивных состояний
       }
     }, 500),
     []

@@ -2,7 +2,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-//////// components
+//////// compthreents
 import MyInputs from "../../../../common/MyInput/MyInputs";
 import MyIPInput from "../../../../common/MyIPInput/MyIPInput";
 
@@ -46,26 +46,31 @@ const AddMXChame = ({ obj }) => {
   };
 
   const addInnerSubDomen = () => {
-    const record_name = dnsList?.one?.record_name;
+    const record_name = dnsList?.three?.record_name;
 
     if (checkSubDomainName(record_name, activeDns)) {
       return;
     }
 
-    if (!dnsList?.one?.is_check_my_ip) {
-      if (checkIP(dnsList?.one?.host_ip)) {
-        myAlert("Заполните правильно поле 'Host IP address: '");
+    if (!dnsList?.three?.is_check_my_ip) {
+      if (checkIP(dnsList?.three?.host_ip)) {
+        myAlert("Заполните правильно поле 'Perference'");
         return;
       }
     }
 
-    if (checkTTL(dnsList?.one?.ttl)) {
+    if (checkTTL(dnsList?.three?.ttl)) {
       return;
     }
 
     ////// добалвяю суб домен через запрос
-    const obj = { ...dnsList?.one, domen_guid: activeDns?.guid, ...activeDns };
-    dispatch(addSubDomen(obj));
+    const send = {
+      ...dnsList?.three,
+      ...activeDns,
+      domen_guid: activeDns?.guid,
+    };
+    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    dispatch(addSubDomen({ ...send, ...obj }));
   };
 
   return (
@@ -81,7 +86,7 @@ const AddMXChame = ({ obj }) => {
           <span>.{activeDns?.name}</span>
         </div>
 
-        <div className="widthMini">
+        <div className="widthMiddle">
           <MyInputs
             title={"Perference :"}
             onChange={onChange}
@@ -90,14 +95,14 @@ const AddMXChame = ({ obj }) => {
           />
         </div>
 
-        <div className="widthMiddle">
+        {/* <div className="widthMiddle">
           <MyInputs
             title={"Mail server host (FQDN) :"}
             onChange={onChange}
             name={"ttl"}
             value={dnsList?.[obj]?.ttl}
           />
-        </div>
+        </div> */}
 
         <div className="widthMini">
           <MyInputs
