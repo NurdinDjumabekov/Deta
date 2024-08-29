@@ -12,7 +12,9 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    min-width: 200px;
+    min-width: 240px;
+    width: 240px;
+    max-width: 400px;
 
     .every {
       display: inline-flex;
@@ -67,7 +69,7 @@
       }
 
       &.expanded {
-        max-height: 500px;
+        max-height: 650px;
         opacity: 1;
         margin: 5px 0 0 33px;
         overflow-y: scroll;

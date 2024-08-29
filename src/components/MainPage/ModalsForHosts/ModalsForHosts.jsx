@@ -29,7 +29,7 @@ const ModalsForHosts = () => {
 
   const dispatch = useDispatch();
 
-  const { temporaryHosts, guidHostDel, guidHostEdit, addTempHost } =
+  const { temporaryHosts, guidHostDel, guidHostEdit, addTempHost, activeHost } =
     useSelector((state) => state.stateSlice);
 
   const addHost = (e) => {
@@ -37,7 +37,7 @@ const ModalsForHosts = () => {
     dispatch(addHostFN(addTempHost));
   };
 
-  const delHost = () => dispatch(deleteHost(guidHostDel));
+  const delHost = () => dispatch(deleteHost(activeHost));
   // удаление хоста через запрос
 
   const editHostFN = () => {

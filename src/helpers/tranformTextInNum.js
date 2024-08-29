@@ -10,7 +10,7 @@ export const tranformTextInNum = (text) => {
 export const tranformKey = (name, list) => {
   ///// перезаписываю ключи для массивов
   const newList = list?.map((item) => {
-    return { name: item?.[name], count: item?.vmCount };
+    return { name: item?.[name], count: item?.vmCount, guid: item?.guid };
   });
 
   return newList;

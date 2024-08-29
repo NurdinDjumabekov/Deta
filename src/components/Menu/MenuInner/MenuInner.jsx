@@ -20,6 +20,7 @@ const MenuInner = () => {
   const choice = (id) => dispatch(setMenuInner(id));
 
   const getContainer = (guid, id) => {
+    console.log(guid, "guid");
     const guid_service = id == 2 ? guid : undefined;
     const guid_user = id == 3 ? guid : undefined;
     const obj = { guid_host: activeHost, guid_service, guid_user };
@@ -58,8 +59,7 @@ const MenuInner = () => {
                     onClick={() => getContainer(subItem?.guid, item?.id)}
                   >
                     <p>
-                      {subItem?.name}{" "}
-                      {!!subItem?.count ? <b>[{subItem?.count}]</b> : <></>}
+                      {subItem?.name} {<b>[{subItem?.count}]</b>}
                     </p>
                     <span>{subItem?.desc}</span>
                   </div>

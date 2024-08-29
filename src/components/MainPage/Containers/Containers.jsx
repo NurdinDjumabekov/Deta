@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// imgs
-import container from "../../../assets/icons//menu/box.svg";
+import container from "../../../assets/icons/menu/box2.svg";
+import virtualka from "../../../assets/icons/tv.svg";
 import edit from "../../../assets/icons/edit.svg";
 import editBlue from "../../../assets/icons/editBlue.svg";
 import skrepka from "../../../assets/icons/skrepka.svg";
@@ -118,13 +119,25 @@ const Containers = ({ item }) => {
 
   const active = activeContainer == guid ? "containerActive" : "";
 
+  const objType = { cont: container, virt: virtualka, service: container };
+
+  const objTypeData = {
+    container: "containerColor",
+    virtualka: "virtualkaColor",
+    service: "serviceColor",
+  };
+
+  // #514848
   return (
-    <div className={`containerMain ${active}`} onClick={clickContainer}>
+    <div
+      className={`containerMain ${active} ${objTypeData?.["service"]}`}
+      onClick={clickContainer}
+    >
       <div className="containerMain__inner">
         {/* ///// */}
         <div className="bottom" onClick={clickVmId}>
           <div className="numIndex">
-            <img src={container} alt="[]" />
+            <img src={objType?.["virt"]} alt="[]" />
             <p>{vm_id}</p>
           </div>
         </div>
@@ -140,9 +153,6 @@ const Containers = ({ item }) => {
             </button>
           </div>
           <div className="editBlock__inner">
-            <button className="edit">
-              <img src={editBlue} alt="" />
-            </button>
             {!!info && (
               <button className="edit" onClick={openLookMoreInfo}>
                 <img src={!!lookMoreInfo?.guid ? noLookEye : lookEye} alt="" />

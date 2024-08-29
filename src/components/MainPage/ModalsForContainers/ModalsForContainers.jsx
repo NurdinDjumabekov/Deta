@@ -167,7 +167,7 @@ const ModalsForContainers = () => {
   //////////////////////////////////______////// для просмотра более подробной инфы контейнера
   const { lookMoreInfo } = useSelector((state) => state.containersSlice);
 
-  console.log(lookMoreInfo, "lookMoreInfo");
+  // console.log(lookMoreInfo, "lookMoreInfo");
 
   return (
     <>
@@ -179,12 +179,14 @@ const ModalsForContainers = () => {
       >
         <div className="addDns hostsEdit contEdit">
           <div className="second">
-            <MyInputs
-              title={"Информация"}
-              onChange={onChange}
-              name={"vm_comment"}
-              value={temporaryContainer?.vm_comment}
-            />
+            <div className="myInput">
+              <h5>Информация</h5>
+              <textarea
+                name={"vm_comment"}
+                onChange={onChange}
+                value={temporaryContainer?.vm_comment}
+              />
+            </div>
           </div>
 
           <div className="second actions">

@@ -13,7 +13,8 @@
       align-items: center;
       gap: 20px;
       width: 52%;
-      // background: red;
+      min-width: 52%;
+      max-width: 52%;
 
       &__inner {
         display: flex;
@@ -72,6 +73,7 @@
           span {
             display: block;
             font-size: 12px;
+            margin: 3px 0 0 0;
           }
         }
       }
@@ -136,7 +138,9 @@
     .containers {
       height: 96vh;
       width: 38%;
-      padding: 8px;
+      min-width: 38%;
+      max-width: 38%;
+      padding: 8px 0px;
 
       &__inner {
         width: 100%;

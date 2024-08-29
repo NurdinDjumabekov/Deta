@@ -9,8 +9,10 @@ import {
   clearTemporaryContainer,
   clearTemporaryDNS,
   clearTemporaryHosts,
+  setActiveContainer,
   setActiveDns,
   setActiveHost,
+  setGuidHostDel,
   setGuidHostEdit,
   setListDiagrams,
   setOpenModaDelCont,
@@ -159,16 +161,15 @@ export const updatedHosts = () => (dispatch) => {
 ///// deleteSubDomen - для удаления суб доменов
 export const deleteHost = createAsyncThunk(
   "deleteSubDomen",
-  async function (props, { dispatch, rejectWithValue }) {
-    const { guidDelete, setGuidDelete, activeDns } = props;
-    /// guidDelete - guid суб домена
-    const url = `${REACT_APP_API_URL}dns/1231231231`;
-    const data = { guid: guidDelete };
+  async function (guid, { dispatch, rejectWithValue }) {
+    /// guid - guid хоста
+    const url = `${REACT_APP_API_URL}host/deleteHost`;
+    const data = { guid };
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getDnsSubDomen(activeDns?.guid)); /// это guid домена
-        dispatch(setGuidDelete("")); //// закрываю модалку
+        dispatch(getHosts()); /// снова получаю все данные
+        dispatch(setGuidHostDel(false)); /// закрываю модалку для удаления хоста
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -241,13 +242,14 @@ export const getContainersInMenu = createAsyncThunk(
     const { guid_host, guid_service, guid_user } = props;
     const url = `${REACT_APP_API_URL}host/filterByUserService`;
     const data = { guid_host, guid_service, guid_user }; //// guid - хоста
+
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost("")); //// очищаю активный хост
-        dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
+        dispatch(setActiveContainer(0)); ///очищаю активный контейнер
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
-        return response?.data;
+        return response?.data?.result;
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -282,15 +284,11 @@ export const searchContainers = createAsyncThunk(
   "searchContainers",
   async function (text, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/search?searchText=${text}`;
-
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
-        // dispatch(setActiveHost("")); //// очищаю активный хост
-        // dispatch(changeMenuInner({ id: 1, list: response?.data?.result }));
-        //// подставляю данные для меню чтобы узнать кол-во контейнеров
-
-        console.log(response?.data?.result, "response?.data");
+        dispatch(setActiveHost("")); //// очищаю активный хост
+        dispatch(setActiveContainer(0)); ///очищаю активный контейнер
         return response?.data?.result;
       } else {
         throw Error(`Error: ${response.status}`);
