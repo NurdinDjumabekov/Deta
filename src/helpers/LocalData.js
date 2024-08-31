@@ -3789,3 +3789,19 @@ export const mylistVolns = {
     { guid: "3241sdfc134vafdadf123v412", vm_id: "42261" },
   ],
 };
+
+export const listIp = [
+  { id: "asdas1", name: "212.112.105.251" },
+  { id: "asdas2", name: "212.112.105.45" },
+  { id: "asdas3", name: "212.112.105.212" },
+  { id: "asdas4", name: "212.112.105.22" },
+  { id: "asdas5", name: "212.112.105.156" },
+];
+
+export const listIpTwo = [
+  { id: "asdas1", ip: "212.112.105.100" },
+  { id: "asdas2", ip: "212.112.105.200" },
+  { id: "asdas3", ip: "212.112.105.30" },
+  { id: "asdas4", ip: "212.112.105.40" },
+  { id: "asdas5", ip: "212.112.105.86" },
+];

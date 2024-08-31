@@ -1,26 +1,42 @@
 //////// hooks
-import React from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../common/MyInput/MyInputs";
 import MyIPInput from "../../../common/MyIPInput/MyIPInput";
+import Selects from "../../../common/Selects/Selects";
 
 /////// fns
 import { setTemporaryDNS } from "../../../store/reducers/stateSlice";
 import { addDomens } from "../../../store/reducers/requestSlice";
+import { changeIpProviders } from "../../../store/reducers/requestSlice";
+import { returnIpProviders } from "../../../store/reducers/requestSlice";
 
 /////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
-import { checkDomainName, checkIP } from "../../../helpers/checkFNS";
+import { checkChangeIP } from "../../../helpers/checkFNS";
+import { checkDomainName } from "../../../helpers/checkFNS";
+import { checkIP } from "../../../helpers/checkFNS";
+import { listIp } from "../../../helpers/LocalData";
+
+/////// imgs
+import resturn from "../../../assets/icons/repeat.svg";
+import distribution from "../../../assets/icons/distribution.svg";
 
 /////// style
 import "./style.scss";
+import { tranformDataProviders } from "../../../helpers/transformListNetwork";
 
 const AddDns = () => {
   const dispatch = useDispatch();
 
-  const { temporaryDNS } = useSelector((state) => state.stateSlice);
+  const { temporaryDNS, activeDns } = useSelector((state) => state.stateSlice);
+  const { listProviders } = useSelector((state) => state.requestSlice);
+
+  console.log(listProviders, "listProviders");
+
+  const [objIP, setObjIP] = useState({ from: "", to: "" });
 
   const regex = /^[a-z0-9.-]*$/;
 
@@ -36,6 +52,12 @@ const AddDns = () => {
     } else {
       dispatch(setTemporaryDNS({ ...temporaryDNS, [name]: value }));
     }
+  };
+
+  const onChangeSelect = (nameKey, name, id) => {
+    setObjIP({ ...objIP, [nameKey]: id });
+    // const { name, value } = e.target;
+    // setObjIP({ ...objIP, [name]: value });
   };
 
   const addDomen = () => {
@@ -54,43 +76,113 @@ const AddDns = () => {
     // Добавляем DNS через запрос
   };
 
+  const changeIPs = () => {
+    if (objIP.from === "") {
+      myAlert("Заполните поле 'From'!", "error");
+      return;
+    }
+    if (objIP.to === "") {
+      myAlert("Заполните поле 'To'!", "error");
+      return;
+    }
+
+    dispatch(changeIpProviders({ objIP, setObjIP, activeDns }));
+    ///// запрос для смены провайдер0в
+  };
+
+  const returnIpAddres = () => dispatch(returnIpProviders(activeDns));
+  ////// возвращаю api провайдера
+
   return (
-    <div className="addDns addDnsMain">
-      <div className="nameInputs">
-        <MyInputs
-          title={"Name domen :"}
-          onChange={onChange}
-          name={"domen_name"}
-          value={temporaryDNS?.domen_name}
-        />
-
-        {!temporaryDNS?.is_check_my_ip && (
-          <div className="my_ip">
-            <MyIPInput
-              onChange={onChange}
-              name={"my_ip"}
-              value={temporaryDNS?.my_ip}
-              title={"Your ip :"}
+    <div className="actionDns">
+      <div className="changeIpAddres">
+        <div>
+          <div className="everyInput">
+            <h5>From</h5>
+            <Selects
+              list={tranformDataProviders(listProviders)}
+              initText={"Выбрать"}
+              onChnage={onChangeSelect}
+              nameKey={"from"}
             />
+            {/* <MyIPInput
+              title={"From :"}
+              onChange={onChangeSelect}
+              name={"from"}
+              value={objIP?.from}
+            /> */}
           </div>
-        )}
+          <div className="everyInput">
+            <h5>To</h5>
+            <Selects
+              list={tranformDataProviders(listProviders)}
+              initText={"Выбрать"}
+              onChnage={onChangeSelect}
+              nameKey={"to"}
+            />
 
-        <button className="addAction" onClick={addDomen}>
-          Добавить
-        </button>
+            {/* <MyIPInput
+              title={"To :"}
+              onChange={onChangeSelect}
+              name={"to"}
+              value={objIP?.to}
+            /> */}
+          </div>
+          <button className="changeBtn" onClick={changeIPs}>
+            Изменить
+          </button>
+        </div>
+        <div className="returnsIp">
+          <button className="returnsIp__btn" onClick={returnIpAddres}>
+            {/* Перебить возврат */}
+            <img src={resturn} alt="[]" />
+            <span className="moreInfoLeft">Возврат предыдущего провайдера</span>
+          </button>
+          <button className="returnsIp__btn" onClick={returnIpAddres}>
+            {/* Распределить нагрузку */}
+            <img src={distribution} alt="[]" />
+            <span className="moreInfoLeft">Распределить нагрузку</span>
+          </button>
+        </div>
       </div>
 
-      <div className="time">
-        <div className="second actions">
-          <div className="bool">
-            <input
-              type="checkbox"
-              id="check"
-              onChange={onChange}
-              name="is_check_my_ip"
-              checked={temporaryDNS?.is_check_my_ip}
-            />
-            <label htmlFor="check">Default IP</label>
+      <div className="addDns addDnsMain">
+        <div className="nameInputs">
+          <MyInputs
+            title={"Name domen :"}
+            onChange={onChange}
+            name={"domen_name"}
+            value={temporaryDNS?.domen_name}
+          />
+
+          {!temporaryDNS?.is_check_my_ip && (
+            <div className="my_ip">
+              <MyIPInput
+                onChange={onChange}
+                name={"my_ip"}
+                value={temporaryDNS?.my_ip}
+                title={"IP address :"}
+              />
+            </div>
+          )}
+
+          <button className="addAction" onClick={addDomen}>
+            Добавить
+          </button>
+        </div>
+
+        <div className="time">
+          <div className="second actions">
+            <div className="bool">
+              <input
+                type="checkbox"
+                id="check"
+                onChange={onChange}
+                name="is_check_my_ip"
+                checked={temporaryDNS?.is_check_my_ip}
+              />
+              <label htmlFor="check">Default IP</label>
+            </div>
           </div>
         </div>
       </div>

@@ -3,11 +3,9 @@ import "./style.scss";
 import { useSelector } from "react-redux";
 
 export const Preloader = () => {
-  const { preloader } = useSelector((state) => state.sendDocsSlice);
-  const { preloaderSel } = useSelector((state) => state.selectsSlice);
-  const { preloaderAuth } = useSelector((state) => state.authSlice);
+  // const { preloader } = useSelector((state) => state.sendDocsSlice);
 
-  if (preloaderAuth || preloaderSel || preloader) {
+  if (false) {
     return (
       <div className="preloader">
         <div className="lds-roller">

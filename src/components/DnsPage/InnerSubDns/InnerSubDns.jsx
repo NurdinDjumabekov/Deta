@@ -56,41 +56,29 @@ const InnerSubDns = () => {
   };
 
   return (
-    <div className={`blockSubDomen`}>
+    <div className="blockSubDomen">
       <TableContainer component={Paper} className="tableEditDns">
         <Table>
           <TableHead>
             <TableRow>
               <TableCell
-                className="title name click"
                 style={{ width: "15%" }}
                 onClick={() => sortList("domen_name")}
               >
                 Name
               </TableCell>
               <TableCell
-                className="title type click"
                 style={{ width: "10%" }}
                 onClick={() => sortList("recordType")}
               >
                 Types
               </TableCell>
-              <TableCell className="title ttl" style={{ width: "10%" }}>
-                TTL
-              </TableCell>
-              <TableCell className="title dta" style={{ width: "15%" }}>
-                Data
-              </TableCell>
-              <TableCell className="title action" style={{ width: "10%" }}>
-                Status
-              </TableCell>
-              <TableCell
-                className="title action"
-                style={{ width: "10%" }}
-              ></TableCell>
-              <TableCell className="title comment" style={{ width: "30%" }}>
-                Comments
-              </TableCell>
+              <TableCell style={{ width: "5%" }}>TTL</TableCell>
+              <TableCell style={{ width: "15%" }}>Data</TableCell>
+              <TableCell style={{ width: "15%" }}>Change</TableCell>
+              <TableCell style={{ width: "8%" }}>Status</TableCell>
+              <TableCell style={{ width: "8%" }}></TableCell>
+              <TableCell style={{ width: "24%" }}>Comments</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -105,20 +93,23 @@ const InnerSubDns = () => {
                 <TableCell className="text name" style={{ width: "10%" }}>
                   {row?.recordType}
                 </TableCell>
-                <TableCell className="text name" style={{ width: "10%" }}>
+                <TableCell className="text name" style={{ width: "5%" }}>
                   {row?.ttl}
                 </TableCell>
                 <TableCell className="text data" style={{ width: "15%" }}>
                   {row?.host_ip}
                 </TableCell>
-                <TableCell className="text name" style={{ width: "10%" }}>
+                <TableCell className="text data" style={{ width: "15%" }}>
+                  {row?.host_ip_insurance || ""}
+                </TableCell>
+                <TableCell className="text name" style={{ width: "8%" }}>
                   {!!row?.active_status ? (
                     <p className="yes">Active</p>
                   ) : (
                     <p className="no">Disactive</p>
                   )}
                 </TableCell>
-                <TableCell className="text actions" style={{ width: "10%" }}>
+                <TableCell className="text actions" style={{ width: "8%" }}>
                   <div className="blockActions">
                     <button
                       className="actions__btns"
@@ -134,7 +125,7 @@ const InnerSubDns = () => {
                     </button>
                   </div>
                 </TableCell>
-                <TableCell className="text comment" style={{ maxWidth: "30%" }}>
+                <TableCell className="text comment" style={{ maxWidth: "24%" }}>
                   {row?.comment}
                 </TableCell>
               </TableRow>

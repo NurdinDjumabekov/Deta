@@ -38,7 +38,7 @@ const Selects = (props) => {
     onChnage(nameKey, name, id);
   };
 
-  const textSelect = list?.find((i) => i?.id === id);
+  const textSelect = list?.find((i) => i?.id == id);
 
   return (
     <div className="selectBlockMain">
@@ -52,7 +52,7 @@ const Selects = (props) => {
         {active && (
           <div className="selectBlock__activeBlock">
             {list?.map((i) => (
-              <p onClick={() => clickSelect(+i?.id, i?.name)} key={i.id}>
+              <p onClick={() => clickSelect(i?.id, i?.name)} key={i.id}>
                 {i?.name}
               </p>
             ))}

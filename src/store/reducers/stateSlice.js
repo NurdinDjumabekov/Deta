@@ -7,8 +7,6 @@ import users from "../../assets/icons/menu/users.svg";
 import { dnsListDefault } from "../../helpers/LocalData";
 
 const initialState = {
-  modal: 0, /// модалка для всех
-
   listDiagrams: [], //// для диаграммы хостов на главной странице
 
   menuInner: [

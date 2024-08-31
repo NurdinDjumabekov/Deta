@@ -21,8 +21,7 @@ import {
   setOpenModalKeyCont,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
-import { defaultSubDomen, listGr, listname } from "../../helpers/LocalData";
-import { toast } from "react-toastify";
+import { defaultSubDomen } from "../../helpers/LocalData";
 import { myAlert } from "../../helpers/MyAlert";
 import { tranformKey } from "../../helpers/tranformTextInNum";
 const { REACT_APP_API_URL } = process.env;
@@ -34,6 +33,7 @@ const initialState = {
   listContainers: [],
   searchContainer: "",
   diagramsContainer: [], //// для диаграммы хостов на главной странице
+  dataForBackUp: {}, //// выборка данных для бэкапа
 
   listNetwork: [],
   listDnsDomen: [],
@@ -268,6 +268,24 @@ export const getDiagramsContainers = createAsyncThunk(
 
     try {
       const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getDataForBackUp - для получения данных для бэкапа
+export const getDataForBackUp = createAsyncThunk(
+  "getDataForBackUp",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getBackUpData`;
+    try {
+      const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -842,6 +860,51 @@ export const confirmStatusSubDomenFN = createAsyncThunk(
   }
 );
 
+///// changeIpProviders для смены одног0 провайдера на другой
+export const changeIpProviders = createAsyncThunk(
+  "changeIpProviders",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { objIP, setObjIP, activeDns } = props;
+    const data = { ...objIP, domen_guid: activeDns?.guid };
+    const url = `${REACT_APP_API_URL}dns/undateIpInsurance`;
+
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        setObjIP({ from: "", to: "" }); //// очишаю state
+        dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
+        myAlert("Изменения внесены!");
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// returnIpProviders для смены одног0 провайдера на другой
+export const returnIpProviders = createAsyncThunk(
+  "returnIpProviders",
+  async function (activeDns, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}dns/returnIpInsurance?domen_guid=${activeDns?.guid}`;
+    const data = { domen_guid: activeDns?.guid };
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
+        myAlert("Изменения внесены!");
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const requestSlice = createSlice({
   name: "requestSlice",
   initialState,
@@ -995,6 +1058,19 @@ const requestSlice = createSlice({
       // state.preloader = false;
     });
     builder.addCase(getDiagramsContainers.pending, (state, action) => {
+      // state.preloader = true;
+    });
+
+    ///////////////////////////// getDataForBackUp
+    builder.addCase(getDataForBackUp.fulfilled, (state, action) => {
+      // state.preloader = false;
+      state.dataForBackUp = action.payload;
+    });
+    builder.addCase(getDataForBackUp.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloader = false;
+    });
+    builder.addCase(getDataForBackUp.pending, (state, action) => {
       // state.preloader = true;
     });
 

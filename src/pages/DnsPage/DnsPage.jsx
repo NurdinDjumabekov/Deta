@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 //////helpers
 
 ////// fns
-import { deleteDomen, getDnsDomen } from "../../store/reducers/requestSlice";
+import {
+  deleteDomen,
+  getDnsDomen,
+  getProviders,
+} from "../../store/reducers/requestSlice";
 
 ////// components
 import InnerSubDns from "../../components/DnsPage/InnerSubDns/InnerSubDns";
@@ -33,6 +37,7 @@ const DnsPage = () => {
 
   useEffect(() => {
     dispatch(getDnsDomen());
+    dispatch(getProviders());
   }, []);
 
   const active = activeDns?.guid === "" ? "activeDns" : "";
@@ -42,6 +47,7 @@ const DnsPage = () => {
       <div className="dnsMain">
         <div className="dnsMain__add">
           <div className={`dnsMain__add__inner ${active}`}>
+            <AddDns />
             <TableContainer className="dnsMain__table">
               <Table>
                 <TableHead>
@@ -69,9 +75,6 @@ const DnsPage = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <div className="actionDns">
-              <AddDns />
-            </div>
           </div>
         </div>
         <div className="dnsMain__edit">

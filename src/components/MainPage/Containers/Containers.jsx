@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// imgs
@@ -41,7 +41,10 @@ import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
-import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
+import {
+  getDataForBackUp,
+  getDiagramsContainers,
+} from "../../../store/reducers/requestSlice";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
 
 ////// components
@@ -61,6 +64,11 @@ const Containers = ({ item }) => {
   const { activeContainer, openModalBackUp } = useSelector(
     (state) => state.stateSlice
   );
+
+  useEffect(() => {
+    dispatch(getDataForBackUp());
+    ///// для получения данных для процесса бэкапа
+  }, []);
 
   const clickVmId = () => {
     ///// перекидываю на другую (постороннюю) ссылку

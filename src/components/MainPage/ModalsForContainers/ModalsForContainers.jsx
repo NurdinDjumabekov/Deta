@@ -1,6 +1,6 @@
+//////// hooks
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Dropzone from "react-dropzone-uploader";
 
 /////// imgs
 import CpuIcon from "@mui/icons-material/Memory";
@@ -8,13 +8,10 @@ import MemoryIcon from "@mui/icons-material/Memory";
 import StorageIcon from "@mui/icons-material/Storage";
 
 ////// fns
-import {
-  closeModalStartCont,
-  setOpenModaDelCont,
-  setOpenModaStartCont,
-  setOpenModalAddGroup,
-  setOpenModalKeyCont,
-} from "../../../store/reducers/stateSlice";
+import { closeModalStartCont } from "../../../store/reducers/stateSlice";
+import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
+import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
+import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
@@ -25,11 +22,9 @@ import { clearAddTempCont } from "../../../store/reducers/stateSlice";
 import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setAddTempCont } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
-import {
-  addGroupContFN,
-  delContainerFN,
-  editAccessesUsersFN,
-} from "../../../store/reducers/requestSlice";
+import { addGroupContFN } from "../../../store/reducers/requestSlice";
+import { delContainerFN } from "../../../store/reducers/requestSlice";
+import { editAccessesUsersFN } from "../../../store/reducers/requestSlice";
 import { backUpContainerFN } from "../../../store/reducers/requestSlice";
 import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainers } from "../../../store/reducers/requestSlice";
@@ -37,6 +32,7 @@ import { offContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainerOS } from "../../../store/reducers/requestSlice";
 import { addFileInContainer } from "../../../store/reducers/requestSlice";
 import { addContainersFN } from "../../../store/reducers/requestSlice";
+import { closeLookMoreInfo } from "../../../store/reducers/containersSlice";
 
 /////// styles
 import "react-dropzone-uploader/dist/styles.css";
@@ -47,15 +43,15 @@ import SliderScroll from "../../../common/SliderScroll/SliderScroll";
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
 import Selects from "../../../common/Selects/Selects";
+import Dropzone from "react-dropzone-uploader";
+import AccessesUsers from "./AccessesUsers/AccessesUsers";
+import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
 
 ////// helpers
 import { listFast, listGr } from "../../../helpers/LocalData";
 import { listOS, listSnaps } from "../../../helpers/LocalData";
 import { listTypes } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
-import AccessesUsers from "./AccessesUsers/AccessesUsers";
-import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
-import { closeLookMoreInfo } from "../../../store/reducers/containersSlice";
 
 const ModalsForContainers = () => {
   const dispatch = useDispatch();
@@ -73,10 +69,12 @@ const ModalsForContainers = () => {
   const editContainer = () => {
     dispatch(editContainers({ activeHost, data: temporaryContainer }));
   };
+
   ///// редактирую через ззапрос контейнерм (инфу о контейнере)
 
   //////////////////////////////////______////// добавление
   const { addTempCont } = useSelector((state) => state.stateSlice);
+
   const onChangeAdd = (e) => {
     const { name, value } = e.target;
     dispatch(setAddTempCont({ [name]: value }));
@@ -167,8 +165,6 @@ const ModalsForContainers = () => {
   //////////////////////////////////______////// для просмотра более подробной инфы контейнера
   const { lookMoreInfo } = useSelector((state) => state.containersSlice);
 
-  // console.log(lookMoreInfo, "lookMoreInfo");
-
   return (
     <>
       {/*/////////______//////______////// редактирование  */}
@@ -188,7 +184,6 @@ const ModalsForContainers = () => {
               />
             </div>
           </div>
-
           <div className="second actions">
             <button className="addAction" onClick={editContainer}>
               Сохранить
