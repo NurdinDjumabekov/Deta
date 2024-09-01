@@ -12,6 +12,7 @@ import {
   setActiveContainer,
   setActiveDns,
   setActiveHost,
+  setDistributeIpModal,
   setGuidHostDel,
   setGuidHostEdit,
   setListDiagrams,
@@ -905,6 +906,29 @@ export const returnIpProviders = createAsyncThunk(
   }
 );
 
+///// distributeIpAddresFN для смены одног0 провайдера на другой
+export const distributeIpAddresFN = createAsyncThunk(
+  "distributeIpAddresFN",
+  async function (activeDns, { dispatch, rejectWithValue }) {
+    const data = { domen_guid: activeDns?.guid };
+    const url = `${REACT_APP_API_URL}dns/distributeIp`;
+
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        dispatch(setDistributeIpModal()); /// закрываю модалку подтверждения
+        dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
+        myAlert("Изменения внесены!");
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const requestSlice = createSlice({
   name: "requestSlice",
   initialState,
@@ -947,46 +971,46 @@ const requestSlice = createSlice({
   extraReducers: (builder) => {
     ///////////////////////////// getProviders
     builder.addCase(getProviders.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listProviders = action.payload;
     });
     builder.addCase(getProviders.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getProviders.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getHosts
     builder.addCase(getHosts.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listHosts = action.payload;
     });
     builder.addCase(getHosts.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getHosts.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ////////////////////////////// getGroup
     builder.addCase(getGroup.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listGroupContainers = action.payload;
     });
     builder.addCase(getGroup.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getGroup.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// addHostFN
     builder.addCase(addHostFN.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       const obj = action.payload;
       state.listHosts = state.listHosts?.map((item) =>
         item?.guid == obj?.guid ? obj : item
@@ -994,15 +1018,15 @@ const requestSlice = createSlice({
     });
     builder.addCase(addHostFN.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(addHostFN.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// editHost
     builder.addCase(editHost.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       const obj = action.payload;
       state.listHosts = state.listHosts?.map((item) =>
         item?.guid == obj?.guid ? obj : item
@@ -1010,41 +1034,41 @@ const requestSlice = createSlice({
     });
     builder.addCase(editHost.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(editHost.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getContainers
     builder.addCase(getContainers.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listContainers = action.payload?.result;
     });
     builder.addCase(getContainers.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getContainers.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getContainersInMenu
     builder.addCase(getContainersInMenu.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listContainers = action.payload;
     });
     builder.addCase(getContainersInMenu.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getContainersInMenu.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getDiagramsContainers
     builder.addCase(getDiagramsContainers.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.diagramsContainer = action.payload?.map((item) => {
         return {
           time: item?.date_system,
@@ -1055,126 +1079,126 @@ const requestSlice = createSlice({
     });
     builder.addCase(getDiagramsContainers.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getDiagramsContainers.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getDataForBackUp
     builder.addCase(getDataForBackUp.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.dataForBackUp = action.payload;
     });
     builder.addCase(getDataForBackUp.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getDataForBackUp.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// searchContainers
     builder.addCase(searchContainers.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listContainers = action.payload;
     });
     builder.addCase(searchContainers.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(searchContainers.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getVolns
     builder.addCase(getVolns.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listVolns = action.payload;
     });
     builder.addCase(getVolns.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getVolns.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ///////////////////////////// getNetworks
     builder.addCase(getNetworks.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listNetwork = action.payload;
     });
     builder.addCase(getNetworks.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getNetworks.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ////////////////////////////// getDnsDomen
     builder.addCase(getDnsDomen.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listDnsDomen = action.payload;
     });
     builder.addCase(getDnsDomen.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getDnsDomen.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ////////////////////////////// getDnsSubDomen
     builder.addCase(getDnsSubDomen.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listDnsSubDomen = action.payload;
     });
     builder.addCase(getDnsSubDomen.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(getDnsSubDomen.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ////////////////////////////// sortSubDomen
     builder.addCase(sortSubDomen.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
       state.listDnsSubDomen = action.payload;
     });
     builder.addCase(sortSubDomen.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(sortSubDomen.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ////////////////////////////// deleteSubDomen
     builder.addCase(deleteSubDomen.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(deleteSubDomen.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
       // alert("Не удалось удалить!");
     });
     builder.addCase(deleteSubDomen.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
 
     ////////////////////////////// editSubDomen
     builder.addCase(editSubDomen.fulfilled, (state, action) => {
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(editSubDomen.rejected, (state, action) => {
       state.error = action.payload;
-      // state.preloader = false;
+      state.preloader = false;
     });
     builder.addCase(editSubDomen.pending, (state, action) => {
-      // state.preloader = true;
+      state.preloader = true;
     });
   },
 });

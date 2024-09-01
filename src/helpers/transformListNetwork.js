@@ -20,8 +20,8 @@ export const transformListNetwork = (list, targetObj) => {
 export const tranformDataProviders = (list) => {
   ///// для преобразования ключей
   const newList = list?.map((item) => ({
-    id: item?.guid,
-    name: item?.provider_name,
+    id: item?.provider_gateway,
+    name: `${item?.provider_gateway} (${item?.provider_name})`,
   }));
 
   return newList;

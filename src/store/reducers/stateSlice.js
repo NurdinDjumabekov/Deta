@@ -157,6 +157,9 @@ const initialState = {
     type: 0,
     snaps: 0,
   },
+
+  distributeIpModal: false,
+  //// для подтверждения распределения нагрузки субднс
 };
 
 const stateSlice = createSlice({
@@ -423,6 +426,10 @@ const stateSlice = createSlice({
     closeModalStartCont: (state, action) => {
       state.openModaStartCont = { guid: "", vm_id: "" };
     },
+
+    setDistributeIpModal: (state, action) => {
+      state.distributeIpModal = action.payload;
+    },
   },
 });
 
@@ -467,6 +474,7 @@ export const {
   setOpenModalKeyCont,
   setOpenModaStartCont,
   closeModalStartCont,
+  setDistributeIpModal,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

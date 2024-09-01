@@ -13,9 +13,13 @@ import { checkChangeIP, checkChangeTTL } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
 
 ////// fns
-import { deleteSubDomen } from "../../../store/reducers/requestSlice";
+import {
+  deleteSubDomen,
+  distributeIpAddresFN,
+} from "../../../store/reducers/requestSlice";
 import { editSubDomen } from "../../../store/reducers/requestSlice";
 import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
+import { setDistributeIpModal } from "../../../store/reducers/stateSlice";
 
 const ModalsForAllDns = (props) => {
   const { guidDelete, setGuidDelete, objEdit, setObjedit } = props;
@@ -23,7 +27,9 @@ const ModalsForAllDns = (props) => {
 
   const dispatch = useDispatch();
 
-  const { activeDns } = useSelector((state) => state.stateSlice);
+  const { activeDns, distributeIpModal } = useSelector(
+    (state) => state.stateSlice
+  );
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -68,6 +74,9 @@ const ModalsForAllDns = (props) => {
     ///// редактирование суб домена через запрос
     dispatch(editSubDomen({ setGuidEdit, setObjedit, objEdit, activeDns }));
   };
+
+  const distributeIpAddres = () => dispatch(distributeIpAddresFN(activeDns));
+  //// для подтверждения распределения нагрузки субднс
 
   return (
     <div>
@@ -127,6 +136,14 @@ const ModalsForAllDns = (props) => {
           </div>
         </div>
       </Modals>
+
+      {/* для удаления  */}
+      <ConfirmModal
+        state={distributeIpModal}
+        title={"Распределить нагрузку ?"}
+        yes={distributeIpAddres}
+        no={() => dispatch(setDistributeIpModal())}
+      />
     </div>
   );
 };

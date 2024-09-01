@@ -8,7 +8,10 @@ import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 import Selects from "../../../common/Selects/Selects";
 
 /////// fns
-import { setTemporaryDNS } from "../../../store/reducers/stateSlice";
+import {
+  setDistributeIpModal,
+  setTemporaryDNS,
+} from "../../../store/reducers/stateSlice";
 import { addDomens } from "../../../store/reducers/requestSlice";
 import { changeIpProviders } from "../../../store/reducers/requestSlice";
 import { returnIpProviders } from "../../../store/reducers/requestSlice";
@@ -56,8 +59,6 @@ const AddDns = () => {
 
   const onChangeSelect = (nameKey, name, id) => {
     setObjIP({ ...objIP, [nameKey]: id });
-    // const { name, value } = e.target;
-    // setObjIP({ ...objIP, [name]: value });
   };
 
   const addDomen = () => {
@@ -93,6 +94,9 @@ const AddDns = () => {
   const returnIpAddres = () => dispatch(returnIpProviders(activeDns));
   ////// возвращаю api провайдера
 
+  const distributeIpAddres = () => dispatch(setDistributeIpModal(true));
+  //// для подтверждения распределения нагрузки субднс
+
   return (
     <div className="actionDns">
       <div className="changeIpAddres">
@@ -105,12 +109,6 @@ const AddDns = () => {
               onChnage={onChangeSelect}
               nameKey={"from"}
             />
-            {/* <MyIPInput
-              title={"From :"}
-              onChange={onChangeSelect}
-              name={"from"}
-              value={objIP?.from}
-            /> */}
           </div>
           <div className="everyInput">
             <h5>To</h5>
@@ -120,13 +118,6 @@ const AddDns = () => {
               onChnage={onChangeSelect}
               nameKey={"to"}
             />
-
-            {/* <MyIPInput
-              title={"To :"}
-              onChange={onChangeSelect}
-              name={"to"}
-              value={objIP?.to}
-            /> */}
           </div>
           <button className="changeBtn" onClick={changeIPs}>
             Изменить
@@ -138,7 +129,7 @@ const AddDns = () => {
             <img src={resturn} alt="[]" />
             <span className="moreInfoLeft">Возврат предыдущего провайдера</span>
           </button>
-          <button className="returnsIp__btn" onClick={returnIpAddres}>
+          <button className="returnsIp__btn" onClick={distributeIpAddres}>
             {/* Распределить нагрузку */}
             <img src={distribution} alt="[]" />
             <span className="moreInfoLeft">Распределить нагрузку</span>

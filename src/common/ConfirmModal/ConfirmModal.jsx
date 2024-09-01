@@ -6,10 +6,10 @@ const ConfirmModal = ({ state, no, title, yes }) => {
   return (
     <Modals openModal={state} setOpenModal={no} title={title}>
       <div className="modalDel">
-        <button className="yes" onClick={yes}>
+        <button className="no" onClick={yes}>
           Да
         </button>
-        <button className="no" onClick={no}>
+        <button className="yes" onClick={no}>
           Нет
         </button>
       </div>
