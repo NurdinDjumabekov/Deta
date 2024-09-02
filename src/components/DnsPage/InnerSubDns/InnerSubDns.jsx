@@ -37,8 +37,9 @@ const InnerSubDns = () => {
   }); /// временные данные для редактирования
 
   const callEditFN = (obj) => {
+    const record_name = obj?.record_name?.replace(`.${activeDns?.name}`, "");
     setGuidEdit(obj?.guid); //// активный guid для редактирования
-    setObjedit(obj); //// временный обьект для редактирования
+    setObjedit({ ...obj, record_name }); //// временный обьект для редактирования
   };
   ///// вызов модалки для релактирования данных суб домена
 

@@ -37,8 +37,6 @@ const AddDns = () => {
   const { temporaryDNS, activeDns } = useSelector((state) => state.stateSlice);
   const { listProviders } = useSelector((state) => state.requestSlice);
 
-  console.log(listProviders, "listProviders");
-
   const [objIP, setObjIP] = useState({ from: "", to: "" });
 
   const regex = /^[a-z0-9.-]*$/;
@@ -84,6 +82,11 @@ const AddDns = () => {
     }
     if (objIP.to === "") {
       myAlert("Заполните поле 'To'!", "error");
+      return;
+    }
+
+    if (objIP.to === objIP.from) {
+      myAlert("У вас похожие провайдеры!", "error");
       return;
     }
 

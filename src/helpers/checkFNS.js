@@ -111,7 +111,7 @@ export const checkSubDomainName = (value, activeDns) => {
     return true;
   }
 
-  if (value.includes(dnsName)) {
+  if (value?.includes(dnsName)) {
     myAlert("Ошибка! Вы два раза ввели наименование домена!");
     return true;
   }

@@ -13,13 +13,14 @@ import { checkChangeIP, checkChangeTTL } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
 
 ////// fns
-import {
-  deleteSubDomen,
-  distributeIpAddresFN,
-} from "../../../store/reducers/requestSlice";
+import { distributeIpAddresFN } from "../../../store/reducers/requestSlice";
+import { deleteSubDomen } from "../../../store/reducers/requestSlice";
 import { editSubDomen } from "../../../store/reducers/requestSlice";
 import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 import { setDistributeIpModal } from "../../../store/reducers/stateSlice";
+
+///////style
+import "./style.scss";
 
 const ModalsForAllDns = (props) => {
   const { guidDelete, setGuidDelete, objEdit, setObjedit } = props;
@@ -57,21 +58,19 @@ const ModalsForAllDns = (props) => {
   };
 
   const editDns = () => {
-    ////// редактирование
-    if (checkSubDomainName(objEdit?.record_name, activeDns)) {
+    //// редактирование
+    const name = objEdit?.record_name?.replace(activeDns?.name, "");
+    if (checkSubDomainName(name, activeDns)) {
       return;
     }
-
     if (checkIP(objEdit?.host_ip)) {
       myAlert("Заполните правильно поле 'Host IP address: '");
       return;
     }
-
     if (checkTTL(objEdit?.ttl)) {
       return;
     }
-
-    ///// редактирование суб домена через запрос
+    // ///// редактирование суб домена через запрос
     dispatch(editSubDomen({ setGuidEdit, setObjedit, objEdit, activeDns }));
   };
 
@@ -96,12 +95,15 @@ const ModalsForAllDns = (props) => {
       >
         <div className="addDns modalEdit">
           <div className="second modalEdit__inner">
-            <MyInputs
-              title={"Record name (host) :"}
-              onChange={onChange}
-              name={"record_name"}
-              value={objEdit?.record_name}
-            />
+            <div className="addSubDnsModal">
+              <MyInputs
+                title={"Record name (host) :"}
+                onChange={onChange}
+                name={"record_name"}
+                value={objEdit?.record_name}
+              />
+              <span>.{activeDns?.name}</span>
+            </div>
 
             <MyIPInput
               title={"Host IP address :"}

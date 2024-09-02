@@ -62,11 +62,11 @@ const TypeAddDns = () => {
         ))}
       </ul>
       <div className="sendData">{objComp?.[activeDnsMenu]}</div>
-      {checkStatus && (
-        <button className="saveBtn" onClick={confirmStatusSubDomen}>
-          Внести изменения
-        </button>
-      )}
+      {/* {checkStatus && (
+      )} */}
+      <button className="saveBtn" onClick={confirmStatusSubDomen}>
+        Внести изменения
+      </button>
     </div>
   );
 };
