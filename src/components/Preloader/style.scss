@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f9fafd;
+  background: #0000006b;
   .lds-roller {
     display: inline-block;
     position: relative;
@@ -26,7 +26,7 @@
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #000;
+    background: #fff;
     margin: -4px 0 0 -4px;
   }
   .lds-roller div:nth-child(1) {

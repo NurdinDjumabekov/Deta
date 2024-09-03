@@ -20,12 +20,11 @@ const MenuInner = () => {
   const choice = (id) => dispatch(setMenuInner(id));
 
   const getContainer = (guid, id) => {
-    console.log(guid, "guid");
     const guid_service = id == 2 ? guid : undefined;
     const guid_user = id == 3 ? guid : undefined;
     const obj = { guid_host: activeHost, guid_service, guid_user };
     dispatch(getContainersInMenu(obj));
-    choice(id);
+    // choice(id);
   };
 
   // Сортировка массива menuInner по id от меньшего к большему

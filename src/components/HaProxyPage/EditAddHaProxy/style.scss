@@ -1,0 +1,35 @@
+.addEditProxy {
+  padding: 10px 0 0 0;
+
+  .myInput {
+    margin-top: 10px !important;
+  }
+
+  h6,
+  label {
+    display: block;
+    font-size: 12px;
+    line-height: 13px;
+    text-align: left;
+    font-weight: 500;
+    color: #c0c0c0;
+    margin: 10px 0px 5px !important;
+  }
+
+  .btnBlock {
+    margin: 5px 0 0 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .bool,
+  label {
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    input {
+      cursor: pointer;
+    }
+  }
+}

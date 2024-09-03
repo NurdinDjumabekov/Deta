@@ -16,12 +16,14 @@ import stateSlice from "./reducers/stateSlice";
 import saveDataSlice from "./reducers/saveDataSlice";
 import requestSlice from "./reducers/requestSlice";
 import containersSlice from "./reducers/containersSlice";
+import requestHaProxySlice from "./reducers/requestHaProxySlice";
 
 const reducer = combineReducers({
   requestSlice,
   stateSlice,
   saveDataSlice,
   containersSlice,
+  requestHaProxySlice,
 });
 
 const persistConfig = {

@@ -13,6 +13,7 @@ import HaProxy from "../pages/HaProxyPage/HaProxyPage";
 import IpAddresPage from "../pages/IpAddresPage/IpAddresPage";
 import DnsPage from "../pages/DnsPage/DnsPage";
 import Test from "../pages/Test/Test";
+import VncPage from "../pages/VncPage/VncPage";
 
 //// components
 
@@ -38,6 +39,7 @@ const MainRoutes = () => {
           <Route path="/ip-addres" element={<IpAddresPage />} />
           <Route path="/dns" element={<DnsPage />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/vnc/:vns_key" element={<VncPage />} />
         </Route>
         {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>

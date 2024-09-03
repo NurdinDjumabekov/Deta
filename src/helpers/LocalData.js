@@ -3149,61 +3149,73 @@ export const haProxy = [
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(для операторской Иски) (для операторской Иски) (для операторской Иски)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "Сайт для магазина Эко-ленд",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(Сайт для веб верии таджикистана)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "()",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(Сайт для магазина Эко-ленд)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(для операторской Иски)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(для операторской Иски)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "()",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(для операторской Иски)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(для операторской Иски)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "(для операторской Иски)",
+    guid: "asdadasdasdas",
   },
   {
     name: "isko-operator.333.kg",
     host: "11.12.2.36:80",
     desc: "()",
+    guid: "asdadasdasdas",
   },
 ];
 
@@ -3805,3 +3817,21 @@ export const listIpTwo = [
   { id: "asdas4", ip: "212.112.105.40" },
   { id: "asdas5", ip: "212.112.105.86" },
 ];
+
+export const listProtocols = [
+  { id: 1, name: "http" },
+  { id: 2, name: "https" },
+  { id: 3, name: "http/https" },
+];
+
+export const objDefault = {
+  //// потом надо удалить
+  guid: "",
+  name: "",
+  status: true,
+  comment: "asdasdas",
+  type: 1,
+  ip_addres: "212.222",
+  checkType: true,
+  typeAction: 0, //// 1 - создание, 2 - редактирование, 3 удаление
+};

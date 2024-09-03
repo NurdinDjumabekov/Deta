@@ -28,6 +28,7 @@ import { tranformKey } from "../../helpers/tranformTextInNum";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
+  preloader: false,
   listHosts: [],
 
   ///// containers /////

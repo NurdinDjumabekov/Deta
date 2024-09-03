@@ -34,6 +34,10 @@
           font-size: 12px;
         }
       }
+
+      .noActivce {
+        background: #514848 !important;
+      }
     }
 
     .editBlock {
@@ -235,14 +239,14 @@
   }
 }
 
-// .containerColor {
-//   border-left: 4px solid #66b4ff;
-// }
+.containerColor {
+  border-left: 4px solid #66b4ff;
+}
 
-// .virtualkaColor {
-//   border-left: 4px solid #ce723b;
-// }
+.virtualkaColor {
+  border-left: 4px solid #ce723b;
+}
 
-// .serviceColor {
-//   border-left: 4px solid #e1e16f;
-// }
+.serviceColor {
+  border-left: 4px solid #e1e16f;
+}

@@ -29,7 +29,7 @@ const NetworksPage = () => {
       <button className="addBtn">+</button>
       <div className="listNetworks">
         {listNetwork?.map((item) => (
-          <div className="every" key={item.network_id}>
+          <div className="every" key={item.guid}>
             <div className="title">
               <h6>{item?.network_name}</h6>
               <p>x</p>

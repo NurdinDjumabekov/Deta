@@ -4,7 +4,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// fns
-import { getProviders } from "../../store/reducers/requestSlice";
+import {
+  getDataForBackUp,
+  getProviders,
+} from "../../store/reducers/requestSlice";
 import { getGroup, getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
@@ -46,6 +49,9 @@ const MainPage = () => {
     dispatch(getProviders());
     dispatch(getHosts());
     dispatch(getGroup());
+
+    dispatch(getDataForBackUp());
+    ///// для получения данных для процесса бэкапа
 
     const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
     const disconnectHost = dispatch(updatedHosts()); /// get хосты

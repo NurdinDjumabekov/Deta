@@ -41,10 +41,7 @@ import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
-import {
-  getDataForBackUp,
-  getDiagramsContainers,
-} from "../../../store/reducers/requestSlice";
+import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
 
 ////// components
@@ -53,26 +50,28 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
 import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
+import { useNavigate } from "react-router-dom";
 
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { lookMoreInfo } = useSelector((state) => state.containersSlice);
   const { activeContainer, openModalBackUp } = useSelector(
     (state) => state.stateSlice
   );
 
-  useEffect(() => {
-    dispatch(getDataForBackUp());
-    ///// для получения данных для процесса бэкапа
-  }, []);
-
   const clickVmId = () => {
     ///// перекидываю на другую (постороннюю) ссылку
-    window.open(`http://dccs.ibm.kg/vnc?vnc_key=${guid}`, "_blank");
+    // window.open(
+    //   `http://localhost:3000/vnc?vnc_key=${guid}`,
+    //   "_blank",
+    //   "noopener,noreferrer"
+    // );
+    navigate(`/vnc/${guid}`);
   };
 
   const clickContainer = () => {
@@ -129,22 +128,34 @@ const Containers = ({ item }) => {
 
   const objType = { cont: container, virt: virtualka, service: container };
 
+  // const objTypeData = {
+  //   container: "containerColor",
+  //   virtualka: "virtualkaColor",
+  //   service: "serviceColor",
+  // };
+
   const objTypeData = {
-    container: "containerColor",
-    virtualka: "virtualkaColor",
-    service: "serviceColor",
+    1: "containerColor",
+    2: "virtualkaColor",
+    3: "serviceColor",
   };
 
-  // #514848
+  const haveKeyType = "yes"; /// check
+
+  function nums() {
+    return Math.floor(Math.random() * 3) + 1;
+  }
+
   return (
     <div
-      className={`containerMain ${active} ${objTypeData?.["service"]}`}
+      // className={`containerMain ${active} ${objTypeData?.["virtualka"]}`}
+      className={`containerMain ${active} ${objTypeData?.[nums()]}`}
       onClick={clickContainer}
     >
       <div className="containerMain__inner">
         {/* ///// */}
         <div className="bottom" onClick={clickVmId}>
-          <div className="numIndex">
+          <div className={`numIndex ${haveKeyType ? "" : "noActivce"}`}>
             <img src={objType?.["virt"]} alt="[]" />
             <p>{vm_id}</p>
           </div>

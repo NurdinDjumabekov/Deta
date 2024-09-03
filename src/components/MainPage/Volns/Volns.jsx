@@ -64,7 +64,7 @@ const Volns = () => {
     { key: "diactive", title: "Не активные", guid: "asdasd745", num: 3 },
   ];
 
-  console.log(listVolns, "listVolns");
+  // console.log(listVolns, "listVolns");
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
