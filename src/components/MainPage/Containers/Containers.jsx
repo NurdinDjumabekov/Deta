@@ -53,7 +53,7 @@ import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
 import { useNavigate } from "react-router-dom";
 
 const Containers = ({ item }) => {
-  const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del } = item;
+  const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del, files } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
 
   const dispatch = useDispatch();
@@ -84,11 +84,11 @@ const Containers = ({ item }) => {
     //// открываю модалку для редактирования и подставля. во временный state данные
   };
 
-  const openOSModal = () => dispatch(setOpenOSModal(true));
+  const openOSModal = () => dispatch(setOpenOSModal(guid));
   //// открываю модалку выбора операц. системы
 
-  const openAddFiles = () => dispatch(setOpenAddFiles(guid));
-  //// открываю модалку для добавления файлов в контейнер\
+  const openAddFilesFN = () => dispatch(setOpenAddFiles({ guid, files }));
+  //// открываю модалку для добавления файлов в контейнер
 
   const openModalAddGroup = () => dispatch(setOpenModalAddGroup(guid));
   //// открываю модалку для добавления контейнера в группу
@@ -127,12 +127,6 @@ const Containers = ({ item }) => {
   const active = activeContainer == guid ? "containerActive" : "";
 
   const objType = { cont: container, virt: virtualka, service: container };
-
-  // const objTypeData = {
-  //   container: "containerColor",
-  //   virtualka: "virtualkaColor",
-  //   service: "serviceColor",
-  // };
 
   const objTypeData = {
     1: "containerColor",
@@ -193,7 +187,7 @@ const Containers = ({ item }) => {
         {/* ///// */}
         <div className="memory">
           <div className="memory__inner">
-            <button onClick={openAddFiles}>
+            <button onClick={openAddFilesFN}>
               <img src={skrepka} alt="#" />
             </button>
             <MemoryComp
@@ -246,10 +240,10 @@ const Containers = ({ item }) => {
               <span className="moreInfoLeft">Мягкое выключение</span>
             </button>
 
-            <button onClick={openModalDelInGroup}>
+            {/* <button onClick={openModalDelInGroup}>
               <img src={minus} alt="#" />
               <span className="moreInfoLeft">Удалить из списка</span>
-            </button>
+            </button> */}
             <button onClick={openModalOffContainer}>
               <img src={warning} alt="#" />
               <span className="moreInfoLeft">

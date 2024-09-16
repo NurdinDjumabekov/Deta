@@ -136,7 +136,10 @@ const initialState = {
 
   openOSModal: "", ////guid для модалки выбора операц. системы
 
-  openAddFiles: "", ////guid для модалки добавления файлов
+  openAddFiles: {
+    files: [], //// подсталяю файлы, которые приходят с базы
+    guid: "",
+  }, //// guid для модалки добавления файлов
 
   openModalAddGroup: "", ////guid для модалки добавления контейнера в группу
 
@@ -382,7 +385,12 @@ const stateSlice = createSlice({
     },
 
     setOpenAddFiles: (state, action) => {
-      state.openAddFiles = action.payload;
+      state.openAddFiles = { ...state.openAddFiles, ...action.payload };
+    },
+
+    clearOpenAddFiles: (state, action) => {
+      state.openAddFiles = { files: [], guid: "" };
+      //// подсталяю файлы, которые приходят с базы
     },
 
     setOpenModalAddGroup: (state, action) => {
@@ -465,6 +473,7 @@ export const {
   clearAddTempCont,
   setOpenOSModal,
   setOpenAddFiles,
+  clearOpenAddFiles,
   setOpenModalAddGroup,
   setOpenModaDelGroup,
   setOpenModalBackUp,

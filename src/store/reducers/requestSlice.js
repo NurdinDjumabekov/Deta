@@ -20,6 +20,7 @@ import {
   setOpenModaDelGroup,
   setOpenModalAddGroup,
   setOpenModalKeyCont,
+  setOpenOSModal,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen } from "../../helpers/LocalData";
@@ -38,6 +39,7 @@ const initialState = {
   dataForBackUp: {}, //// выборка данных для бэкапа
 
   listNetwork: [],
+  listOS: [],
   listDnsDomen: [],
   listDnsSubDomen: [],
   listProviders: [],
@@ -124,7 +126,25 @@ export const getGroup = createAsyncThunk(
   }
 );
 
-///// addHostFN - для редактирования суб доменов
+///// getOS - для получения операционных систем
+export const getOS = createAsyncThunk(
+  "getOS",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getOS`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// addHostFN - для добавления хостов //// check
 export const addHostFN = createAsyncThunk(
   "addHostFN",
   async function (data, { dispatch, rejectWithValue }) {
@@ -133,12 +153,8 @@ export const addHostFN = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        console.log(response?.data, "response?.data");
         dispatch(clearAddHost()); //// очищаю временные данные для создания хоста
-
-        const guid = response?.data?.[0]; //// guid нового созданного хоста
-        dispatch(setActiveHost(guid)); /// для того чтобы сделать активным созданный хост
-        dispatch(getContainers(guid)); /// для того чтобы взять контейнера созданного хоста
+        myAlert("Хост добавлен, ожидайте обновление хоста");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -182,7 +198,7 @@ export const deleteHost = createAsyncThunk(
   }
 );
 
-///// editHost - для редактирования суб доменов
+///// editHost - для редактирования хостов
 export const editHost = createAsyncThunk(
   "editHost",
   async function (data, { dispatch, rejectWithValue }) {
@@ -342,7 +358,7 @@ export const addContainersFN = createAsyncThunk(
 export const editContainers = createAsyncThunk(
   "editContainers",
   async function ({ activeHost, data }, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}host/editContainer`;
+    const url = `${REACT_APP_API_URL}node/editContainer`;
     ///  data - изменяемы данные хоста
     try {
       const response = await axios.post(url, data);
@@ -366,11 +382,12 @@ export const editContainers = createAsyncThunk(
 export const editContainerOS = createAsyncThunk(
   "editContainerOS",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
+    const url = `${REACT_APP_API_URL}node/updateVmOc`;
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        ///// очищаю временное хранение данных контейнеров
+        dispatch(getContainers(data?.activeHost)); //// guid - хоста
+        dispatch(setOpenOSModal("")); ///// очищаю временное хранение данных ОС
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -385,9 +402,11 @@ export const editContainerOS = createAsyncThunk(
 export const addFileInContainer = createAsyncThunk(
   "addFileInContainer",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}host/+++++++++++++++`;
+    const url = `${REACT_APP_API_URL}node/sendFile`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axios.post(url, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       if (response.status >= 200 && response.status < 300) {
         ///// очищаю временное хранение данных контейнеров
         return response?.data;
@@ -632,7 +651,7 @@ export const addDomens = createAsyncThunk(
         const guid = response?.data?.guid;
 
         if (!!!guid) {
-          myAlert("Такой домен уже существует!");
+          myAlert("Такой домен уже существует!", "error");
         } else {
           dispatch(getDnsDomen()); //// get все домены
           dispatch(clearTemporaryDNS());
@@ -767,7 +786,7 @@ export const addSubDomen = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         const alreadyCreate = response?.data?.alreadyCreate;
         if (alreadyCreate) {
-          myAlert("Такой субдомен уже существует!");
+          myAlert("Такой субдомен уже существует!", "error");
         } else {
           const obj = { guid: data?.domen_guid, domen_name: name };
           dispatch(getDnsSubDomen(obj)); /// это guid домена
@@ -850,7 +869,6 @@ export const confirmStatusSubDomenFN = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ guid, domen_name: name }));
         /// это guid домена (get list data)
-
         myAlert("Изменения внесены!");
         return response?.data;
       } else {
@@ -1009,6 +1027,19 @@ const requestSlice = createSlice({
       state.preloader = true;
     });
 
+    ////////////////////////////// getOS
+    builder.addCase(getOS.fulfilled, (state, action) => {
+      state.preloader = false;
+      state.listOS = action.payload;
+    });
+    builder.addCase(getOS.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(getOS.pending, (state, action) => {
+      state.preloader = true;
+    });
+
     ///////////////////////////// addHostFN
     builder.addCase(addHostFN.fulfilled, (state, action) => {
       state.preloader = false;
@@ -1151,6 +1182,18 @@ const requestSlice = createSlice({
       state.preloader = true;
     });
 
+    ////////////////////////////// addDomens
+    builder.addCase(addDomens.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(addDomens.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(addDomens.pending, (state, action) => {
+      state.preloader = true;
+    });
+
     ////////////////////////////// getDnsSubDomen
     builder.addCase(getDnsSubDomen.fulfilled, (state, action) => {
       state.preloader = false;
@@ -1174,6 +1217,18 @@ const requestSlice = createSlice({
       state.preloader = false;
     });
     builder.addCase(sortSubDomen.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    ////////////////////////////// confirmStatusSubDomenFN
+    builder.addCase(confirmStatusSubDomenFN.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(confirmStatusSubDomenFN.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(confirmStatusSubDomenFN.pending, (state, action) => {
       state.preloader = true;
     });
 

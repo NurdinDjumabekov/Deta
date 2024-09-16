@@ -52,7 +52,7 @@ const AddSPFChame = ({ obj }) => {
     }
 
     if (dnsList?.seven?.sdf_string?.length < 1) {
-      myAlert("Поле 'SPF string:' не должно быть пустым");
+      myAlert("Поле 'SPF string:' не должно быть пустым", "error");
       return;
     }
 

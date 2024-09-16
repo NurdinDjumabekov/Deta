@@ -54,7 +54,7 @@ const AddMXChame = ({ obj }) => {
 
     if (!dnsList?.three?.is_check_my_ip) {
       if (checkIP(dnsList?.three?.host_ip)) {
-        myAlert("Заполните правильно поле 'Perference'");
+        myAlert("Заполните правильно поле 'Perference'", "error");
         return;
       }
     }

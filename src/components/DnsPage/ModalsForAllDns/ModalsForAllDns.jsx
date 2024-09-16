@@ -64,7 +64,7 @@ const ModalsForAllDns = (props) => {
       return;
     }
     if (checkIP(objEdit?.host_ip)) {
-      myAlert("Заполните правильно поле 'Host IP address: '");
+      myAlert("Заполните правильно поле 'Host IP address: '", "error");
       return;
     }
     if (checkTTL(objEdit?.ttl)) {

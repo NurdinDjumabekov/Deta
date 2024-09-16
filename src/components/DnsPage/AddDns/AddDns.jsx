@@ -66,7 +66,7 @@ const AddDns = () => {
 
     if (!temporaryDNS?.is_check_my_ip) {
       if (checkIP(temporaryDNS?.my_ip)) {
-        myAlert("Заполните правильно поле 'Your IP'");
+        myAlert("Заполните правильно поле 'Your IP'", "error");
         return;
       }
     }

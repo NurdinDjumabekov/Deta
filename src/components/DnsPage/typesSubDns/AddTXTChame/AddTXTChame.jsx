@@ -49,7 +49,7 @@ const AddTXTChame = ({ obj }) => {
     }
 
     if (dnsList?.five?.txt_string?.length < 1) {
-      myAlert("Поле 'Text strings' не должно быть пустым");
+      myAlert("Поле 'Text strings' не должно быть пустым", "error");
       return;
     }
 

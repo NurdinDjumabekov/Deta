@@ -53,7 +53,7 @@ const AddRTRChame = ({ obj }) => {
     }
 
     if (dnsList?.six?.point_to_name?.length < 1) {
-      myAlert("Поле 'Point to name (FQDN):' не должно быть пустым");
+      myAlert("Поле 'Point to name (FQDN):' не должно быть пустым", "error");
       return;
     }
 

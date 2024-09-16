@@ -53,7 +53,7 @@ const AddChame = ({ obj }) => {
     }
 
     if (checkIP(dnsList?.two?.host_ip)) {
-      myAlert("Заполните правильно поле 'Host IP address: '");
+      myAlert("Заполните правильно поле 'Host IP address: '", "error");
       return;
     }
 

@@ -23,6 +23,9 @@ import { setTemporaryHosts } from "../../../store/reducers/stateSlice";
 
 /////// style
 import "./style.scss";
+import MyIPInput from "../../../common/MyIPInput/MyIPInput";
+import { checkIP } from "../../../helpers/checkFNS";
+import { myAlert } from "../../../helpers/MyAlert";
 
 const ModalsForHosts = () => {
   const [input, setInput] = useState("");
@@ -34,6 +37,12 @@ const ModalsForHosts = () => {
 
   const addHost = (e) => {
     e.preventDefault();
+
+    if (checkIP(addTempHost?.ip_address)) {
+      myAlert("Заполните правильно поле 'IP Хоста'", "error");
+      return;
+    }
+
     dispatch(addHostFN(addTempHost));
   };
 
@@ -70,7 +79,7 @@ const ModalsForHosts = () => {
 
   return (
     <>
-      {/* для добавления  */}
+      {/* для добавления  хостов*/}
       <Modals
         openModal={addTempHost?.bool}
         setOpenModal={() => dispatch(clearAddHost())}
@@ -85,7 +94,7 @@ const ModalsForHosts = () => {
             required={true}
           />
 
-          <MyInputs
+          <MyIPInput
             title={"IP Хоста"}
             onChange={onChangeAdd}
             name={"ip_address"}
@@ -126,7 +135,7 @@ const ModalsForHosts = () => {
         </form>
       </Modals>
 
-      {/* для удаления  */}
+      {/* для удаления  хостов*/}
       <Modals
         openModal={guidHostDel}
         setOpenModal={() => dispatch(setGuidHostDel())}
@@ -142,7 +151,7 @@ const ModalsForHosts = () => {
         </div>
       </Modals>
 
-      {/* для редактирования  */}
+      {/* для редактирования  хостов*/}
       <Modals
         openModal={guidHostEdit}
         setOpenModal={() => dispatch(setGuidHostEdit())}
@@ -195,7 +204,6 @@ const ModalsForHosts = () => {
           </div>
         </div>
       </Modals>
-      {/* для редактирования  */}
     </>
   );
 };

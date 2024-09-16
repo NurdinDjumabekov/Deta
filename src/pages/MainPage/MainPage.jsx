@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 /////// fns
 import {
   getDataForBackUp,
+  getOS,
   getProviders,
 } from "../../store/reducers/requestSlice";
 import { getGroup, getHosts } from "../../store/reducers/requestSlice";
@@ -49,6 +50,7 @@ const MainPage = () => {
     dispatch(getProviders());
     dispatch(getHosts());
     dispatch(getGroup());
+    dispatch(getOS());
 
     dispatch(getDataForBackUp());
     ///// для получения данных для процесса бэкапа

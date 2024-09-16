@@ -24,37 +24,37 @@ export const checkDomainName = (value) => {
   const listText_ = value?.split("-");
 
   if (value?.[0] == "." || value?.[0] == "-") {
-    myAlert("Домен не может начинаться со знаков - или . ");
+    myAlert("Домен не может начинаться со знаков - или . ", "error");
     return true;
   }
 
   if (listTextDots?.length > 2) {
-    myAlert("Домен должен состоять из одной точки!");
+    myAlert("Домен должен состоять из одной точки!", "error");
     return true;
   }
 
   if (listTextDots?.length == 0 || listTextDots?.[0] == "") {
-    myAlert("Домен пустой!");
+    myAlert("Домен пустой!", "error");
     return true;
   }
 
   if (/[-]\./.test(value) || /\.[-]/.test(value)) {
-    myAlert("Запрещены комбинации ' -. ' или ' .- ' в домене.");
+    myAlert("Запрещены комбинации ' -. ' или ' .- ' в домене.", "error");
     return true;
   }
 
   if (/--|\.\./.test(value)) {
-    myAlert("Запрещено использовать двойные тире или двойные точки.");
+    myAlert("Запрещено использовать двойные тире или двойные точки.", "error");
     return true;
   }
 
   if (!ccTLDs?.includes(listTextDots?.[1]) || listTextDots?.length == 1) {
-    myAlert("Введите правильный домен верхнего уровня");
+    myAlert("Введите правильный домен верхнего уровня", "error");
     return true;
   }
 
   if (listText_?.length > 2) {
-    myAlert("Домен должен состоять из двух слов");
+    myAlert("Домен должен состоять из двух слов", "error");
     return true;
   }
 
@@ -102,47 +102,47 @@ export const checkSubDomainName = (value, activeDns) => {
   const listTextDots = value?.split(".");
 
   if (value.includes(" ")) {
-    myAlert("Ошибка! Уберите все лишние отступы!");
+    myAlert("Ошибка! Уберите все лишние отступы!", "error");
     return true;
   }
 
   if (lastText == "-") {
-    myAlert("Ошибка! Уберите все лишние знаки в конце!");
+    myAlert("Ошибка! Уберите все лишние знаки в конце!", "error");
     return true;
   }
 
   if (value?.includes(dnsName)) {
-    myAlert("Ошибка! Вы два раза ввели наименование домена!");
+    myAlert("Ошибка! Вы два раза ввели наименование домена!", "error");
     return true;
   }
 
   if (value.includes(".")) {
-    myAlert(`Ошибка! В субдомене не должно быть точки!`);
+    myAlert(`Ошибка! В субдомене не должно быть точки!`, "error");
     return true;
   }
 
   if (/[-]\./.test(value) || /\.[-]/.test(value)) {
-    myAlert("Запрещены комбинации ' -. ' или ' .- ' в субдомен.");
+    myAlert("Запрещены комбинации ' -. ' или ' .- ' в субдомен.", "error");
     return true;
   }
 
   if (/--|\.\./.test(value)) {
-    myAlert("Запрещено использовать двойные тире или двойные точки.");
+    myAlert("Запрещено использовать двойные тире или двойные точки.", "error");
     return true;
   }
 
   if (listTextDots?.length == 0 || listTextDots?.[0] == "") {
-    myAlert("Субдомен пустой!");
+    myAlert("Субдомен пустой!", "error");
     return true;
   }
 
   if (value?.[0] == "." || value?.[0] == "-") {
-    myAlert("Субдомен не может начинаться со знаков - или . ");
+    myAlert("Субдомен не может начинаться со знаков - или . ", "error");
     return true;
   }
 
   if (listTextDots?.length > 3) {
-    myAlert("Субдомен должен состоять из двух точек!");
+    myAlert("Субдомен должен состоять из двух точек!", "error");
     return true;
   }
 
@@ -163,11 +163,11 @@ export const checkSubDomainName = (value, activeDns) => {
 
 export const checkTTL = (value) => {
   if (value?.length === 0 || value == 0) {
-    myAlert("Заполните 'Record TTL'!");
+    myAlert("Заполните 'Record TTL'!", "error");
   }
 
   if (value?.length >= 1 && value?.[0] == 0) {
-    myAlert("Поле 'Record TTL' не может начинаться с '0'");
+    myAlert("Поле 'Record TTL' не может начинаться с '0'", "error");
   }
 
   return false;

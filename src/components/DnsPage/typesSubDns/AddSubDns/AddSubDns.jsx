@@ -56,7 +56,7 @@ const AddSubDns = ({ obj }) => {
 
     if (!dnsList?.one?.is_check_my_ip) {
       if (checkIP(dnsList?.one?.host_ip)) {
-        myAlert("Заполните правильно поле 'Host IP address: '");
+        myAlert("Заполните правильно поле 'Host IP address: '", "error");
         return;
       }
     }

@@ -9,6 +9,7 @@ import StorageIcon from "@mui/icons-material/Storage";
 
 ////// fns
 import { closeModalStartCont } from "../../../store/reducers/stateSlice";
+import { clearOpenAddFiles } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
 import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
@@ -17,7 +18,6 @@ import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { clearOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
-import { setOpenAddFiles } from "../../../store/reducers/stateSlice";
 import { clearAddTempCont } from "../../../store/reducers/stateSlice";
 import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setAddTempCont } from "../../../store/reducers/stateSlice";
@@ -49,9 +49,10 @@ import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine
 
 ////// helpers
 import { listFast, listGr } from "../../../helpers/LocalData";
-import { listOS, listSnaps } from "../../../helpers/LocalData";
+import { listSnaps } from "../../../helpers/LocalData";
 import { listTypes } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
+const { REACT_APP_API_URL } = process.env;
 
 const ModalsForContainers = () => {
   const dispatch = useDispatch();
@@ -82,24 +83,55 @@ const ModalsForContainers = () => {
 
   const onChangeSlider = (obj) => dispatch(setAddTempCont(obj));
 
-  const addContainer = () => dispatch(addContainersFN(addTempCont));
+  const addContainer = () => {
+    if (!!!addTempCont?.container_name) {
+      return myAlert("Заполните название сервера", "error");
+    }
+
+    if (!!!addTempCont?.cpu) {
+      return myAlert("Выберите CPU сервера", "error");
+    }
+
+    if (!!!addTempCont?.ram) {
+      return myAlert("Выберите RAM сервера", "error");
+    }
+
+    if (!!!addTempCont?.ssd) {
+      return myAlert("Выберите SSD/NVME сервера", "error");
+    }
+
+    dispatch(addContainersFN(addTempCont));
+  };
   ///// добавляю контейнер через запрос
 
   //////////////////////////////////______////// операционные системы
   const { openOSModal } = useSelector((state) => state.stateSlice);
+  const { listOS } = useSelector((state) => state.requestSlice);
 
-  const choiceOS = (id_os) => {
+  const choiceOS = (oc_guid) => {
     ///// выбираю ОС через запрос
-    dispatch(editContainerOS({ id_os, guid: openOSModal }));
+    const data = { oc_guid, guid_vm: openOSModal, activeHost };
+    dispatch(editContainerOS(data));
   };
 
   //////////////////////////////////______////// добавление файлов
   const { openAddFiles } = useSelector((state) => state.stateSlice);
 
-  const addFilesInCont = (files) => {
-    ///// добавление файлов в контейнера
-    dispatch(addFileInContainer({ openAddFiles, files }));
+  const addFilesInCont = (filesList) => {
+    const files = new FormData();
+
+    // Проверка файлов и их добавление
+    filesList.forEach(({ file }) => {
+      files.append("file", file); // "files" — это ключ для отправки файлов на сервер
+    });
+    files.append("guid_vm", openAddFiles?.guid);
+    // Отправка данных на сервер
+    dispatch(addFileInContainer(files));
+
+    console.log(openAddFiles, "openAddFiles");
   };
+
+  ///// добавление файлов в контейнера
 
   //////////////////////////////////______////// добавление контейнера в группу
   const { openModalAddGroup } = useSelector((state) => state.stateSlice);
@@ -127,13 +159,13 @@ const ModalsForContainers = () => {
   const backUpContainer = () => {
     //////// backUp контейнера через запрос
     if (!!!openModalBackUp?.fasts) {
-      return myAlert("Выберите первое");
+      return myAlert("Выберите первое", "error");
     }
     if (!!!openModalBackUp?.type) {
-      return myAlert("Выберите второе");
+      return myAlert("Выберите второе", "error");
     }
     if (!!!openModalBackUp?.snaps) {
-      return myAlert("Выберите третье");
+      return myAlert("Выберите третье", "error");
     }
     dispatch(backUpContainerFN(openModalBackUp));
   };
@@ -256,8 +288,8 @@ const ModalsForContainers = () => {
         <div className="addDns hostsEdit osModal">
           <div className="listOS">
             {listOS?.map((i) => (
-              <button key={i?.id} onClick={() => choiceOS(i?.id)}>
-                <img src={i?.img} alt="os" />
+              <button key={i?.guid} onClick={() => choiceOS(i?.guid)}>
+                <img src={`${REACT_APP_API_URL}${i?.icon_url}`} alt="os" />
               </button>
             ))}
           </div>
@@ -266,8 +298,8 @@ const ModalsForContainers = () => {
 
       {/*/////////______//////______////// добавление файлов в контейнера  */}
       <Modals
-        openModal={!!openAddFiles}
-        setOpenModal={() => dispatch(setOpenAddFiles())}
+        openModal={!!openAddFiles?.guid}
+        setOpenModal={() => dispatch(clearOpenAddFiles())}
         title={"Редактирование"}
       >
         <div className="addDns filesAdd">

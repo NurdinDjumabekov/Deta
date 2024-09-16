@@ -33,13 +33,13 @@ const ModalsHaProxy = () => {
     /// для удаления,редактирования и добавления Haproxy через запрос
 
     if (name == "") {
-      myAlert("Заполните наименование");
+      myAlert("Заполните наименование", "error");
       return;
     }
 
     if (typeAction == 1 || typeAction == 2) {
       if (checkIP(modalActionsHaProxy?.ip_addres)) {
-        myAlert("Заполните правильно IP адрес");
+        myAlert("Заполните правильно IP адрес", "error");
         return;
       }
     }

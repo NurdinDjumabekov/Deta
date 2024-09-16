@@ -53,7 +53,7 @@ const AddNSChame = ({ obj }) => {
     }
 
     if (checkIP(dnsList?.four?.host_ip)) {
-      myAlert("Заполните правильно поле 'Host IP address: '");
+      myAlert("Заполните правильно поле 'Host IP address: '", "error");
       return;
     }
 

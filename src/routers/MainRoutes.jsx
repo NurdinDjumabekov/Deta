@@ -28,22 +28,20 @@ const MainRoutes = () => {
   const { dnsList } = useSelector((state) => state.stateSlice);
 
   return (
-    <>
-      <Routes>
-        {/* <Route path="/" element={<SignIn />} /> */}
-        <Route element={<MainLayouts />}>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/microtic" element={<MicroticPage />} />
-          <Route path="/networks" element={<NetworksPage />} />
-          <Route path="/ha-proxy" element={<HaProxy />} />
-          <Route path="/ip-addres" element={<IpAddresPage />} />
-          <Route path="/dns" element={<DnsPage />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/vnc/:vns_key" element={<VncPage />} />
-        </Route>
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
-      </Routes>
-    </>
+    <Routes>
+      {/* <Route path="/" element={<SignIn />} /> */}
+      <Route element={<MainLayouts />}>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/microtic" element={<MicroticPage />} />
+        <Route path="/networks" element={<NetworksPage />} />
+        <Route path="/ha-proxy" element={<HaProxy />} />
+        <Route path="/ip-addres" element={<IpAddresPage />} />
+        <Route path="/dns" element={<DnsPage />} />
+        <Route path="/test" element={<Test />} />
+        <Route path="/vnc/:vns_key" element={<VncPage />} />
+      </Route>
+      {/* <Route path="*" element={<NotFoundPage />} /> */}
+    </Routes>
   );
 };
 
