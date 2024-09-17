@@ -4,11 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// fns
-import {
-  getDataForBackUp,
-  getOS,
-  getProviders,
-} from "../../store/reducers/requestSlice";
+import { getOS, getProviders } from "../../store/reducers/requestSlice";
 import { getGroup, getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
@@ -52,18 +48,17 @@ const MainPage = () => {
     dispatch(getGroup());
     dispatch(getOS());
 
-    dispatch(getDataForBackUp());
-    ///// для получения данных для процесса бэкапа
+    // ///// для получения данных для процесса бэкапа
 
-    const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
-    const disconnectHost = dispatch(updatedHosts()); /// get хосты
+    // const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
+    // const disconnectHost = dispatch(updatedHosts()); /// get хосты
 
-    return () => {
-      disconnectProv();
-      disconnectHost();
-      // Отключение сокетов при размонтировании компонента
-    };
-  }, [dispatch]);
+    // return () => {
+    //   disconnectProv();
+    //   disconnectHost();
+    //   // Отключение сокетов при размонтировании компонента
+    // };
+  }, []);
 
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 

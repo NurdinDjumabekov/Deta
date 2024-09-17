@@ -72,6 +72,10 @@
           width: 23px;
           min-width: 23px;
           height: 23px;
+
+          > img {
+            border-radius: 50%;
+          }
         }
       }
     }

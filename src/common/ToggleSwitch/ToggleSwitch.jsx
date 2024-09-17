@@ -1,22 +1,23 @@
 import React from "react";
-
 import "./style.scss";
 
-const ToggleSwitch = ({ onChange, name, value, guid }) => {
-  const click = () => {
-    onChange({ value: !value, name, guid });
-  };
+const ToggleSwitch = ({ onChange, name, value, guid, keyGuid }) => {
+  const click = () => onChange({ value: !value, name, guid });
 
   return (
-    <div className="toggle-switch" onClick={click}>
+    <div className={`toggle-switch ${value ? "checked" : ""}`} onClick={click}>
       <input
         type="checkbox"
-        id={`switch-${guid}${name}`}
+        id={`switch-${keyGuid}${name}`}
         className="switch-input"
         checked={value}
         name={name}
+        readOnly
       />
-      <label htmlFor={`switch-${guid}`} className="switch-label"></label>
+      <label
+        htmlFor={`switch-${keyGuid}${name}`}
+        className="switch-label"
+      ></label>
     </div>
   );
 };

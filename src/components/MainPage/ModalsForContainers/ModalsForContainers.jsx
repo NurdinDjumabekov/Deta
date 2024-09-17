@@ -1,11 +1,12 @@
 //////// hooks
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// imgs
 import CpuIcon from "@mui/icons-material/Memory";
 import MemoryIcon from "@mui/icons-material/Memory";
 import StorageIcon from "@mui/icons-material/Storage";
+import krest from "../../../assets/icons/krest.svg";
 
 ////// fns
 import { closeModalStartCont } from "../../../store/reducers/stateSlice";
@@ -24,13 +25,12 @@ import { setAddTempCont } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { addGroupContFN } from "../../../store/reducers/requestSlice";
 import { delContainerFN } from "../../../store/reducers/requestSlice";
-import { editAccessesUsersFN } from "../../../store/reducers/requestSlice";
 import { backUpContainerFN } from "../../../store/reducers/requestSlice";
 import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainers } from "../../../store/reducers/requestSlice";
 import { offContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainerOS } from "../../../store/reducers/requestSlice";
-import { addFileInContainer } from "../../../store/reducers/requestSlice";
+import { addDelFileInContainer } from "../../../store/reducers/requestSlice";
 import { addContainersFN } from "../../../store/reducers/requestSlice";
 import { closeLookMoreInfo } from "../../../store/reducers/containersSlice";
 
@@ -48,10 +48,11 @@ import AccessesUsers from "./AccessesUsers/AccessesUsers";
 import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
 
 ////// helpers
-import { listFast, listGr } from "../../../helpers/LocalData";
+import { listFast } from "../../../helpers/LocalData";
 import { listSnaps } from "../../../helpers/LocalData";
 import { listTypes } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
+import { transformLists } from "../../../helpers/transformLists";
 const { REACT_APP_API_URL } = process.env;
 
 const ModalsForContainers = () => {
@@ -117,40 +118,58 @@ const ModalsForContainers = () => {
   //////////////////////////////////______////// добавление файлов
   const { openAddFiles } = useSelector((state) => state.stateSlice);
 
-  const addFilesInCont = (filesList) => {
-    const files = new FormData();
+  const handleChangeStatus = (filesList) => {
+    const guid_container = openAddFiles?.guid;
 
-    // Проверка файлов и их добавление
-    filesList.forEach(({ file }) => {
-      files.append("file", file); // "files" — это ключ для отправки файлов на сервер
-    });
-    files.append("guid_vm", openAddFiles?.guid);
-    // Отправка данных на сервер
-    dispatch(addFileInContainer(files));
+    if (guid_container) {
+      const data = new FormData();
+      data.append("files", filesList.file);
+      data.append("guid_vm", guid_container);
+      data.append("status", 1); // 1 - добавление
 
-    console.log(openAddFiles, "openAddFiles");
+      dispatch(addDelFileInContainer({ data, guid_container }));
+      //// добавляю файлы в контейнер через зарпрос
+    }
   };
 
-  ///// добавление файлов в контейнера
+  const delFilesInCont = (file_guid) => {
+    const data = { status: 2, file_guid }; // 2 - добавление
+    const guid_container = openAddFiles?.guid;
+    // Отправка данных на сервер для удаления
+
+    dispatch(addDelFileInContainer({ data, guid_container }));
+    ///// удаление файлов с контейнера
+  };
 
   //////////////////////////////////______////// добавление контейнера в группу
   const { openModalAddGroup } = useSelector((state) => state.stateSlice);
+  const { listUsers } = useSelector((state) => state.requestSlice);
 
-  const addContInGroup = (guid) => {
-    dispatch(addGroupContFN({ guid_group: guid, guid: openModalAddGroup }));
+  const addContInGroup = (codeid) => {
+    const data = { codeid_group: codeid, guid_vm: openModalAddGroup };
+    dispatch(addGroupContFN(data));
     ///// добавление контейнера в группу
-    ///// guid - guid контейнера
-    ///// guid_group - guid группы
+    ///// guid_vm - guid контейнера
+    ///// codeid_group - guid группы(пользов-лей)
   };
 
   //////////////////////////////////______////// удаление контейнера c группы
   const { openModaDelGroup } = useSelector((state) => state.stateSlice);
 
   const delContInGroup = () => dispatch(delGroupContainerFN(openModaDelGroup));
-  ///// удаление контейнера с группы через запрос
+  ///// удаление контейнера с группы через запрос (openModaDelGroup - guid контейнера)
 
   //////////////////////////////////______////// backUp контейнера
   const { openModalBackUp } = useSelector((state) => state.stateSlice);
+  const { dataForBackUp } = useSelector((state) => state.requestSlice);
+
+  const listFasts = transformLists(
+    dataForBackUp?.storage,
+    "guid",
+    "storage_name"
+  );
+
+  console.log(listFasts, "listFasts");
 
   const onChangeSelect = (nameKey, name, id) => {
     dispatch(setOpenModalBackUp({ ...openModalBackUp, [nameKey]: id }));
@@ -172,9 +191,7 @@ const ModalsForContainers = () => {
 
   //////////////////////////////////______////// для доступов отображения контейнеров клиентам
   const { openModalKeyCont } = useSelector((state) => state.stateSlice);
-
-  const editAccesses = () => dispatch(editAccessesUsersFN(openModaStoppedCont));
-  //////// смена доступов отображения контейнеров клиентам
+  //// остальные действия в компоненте
 
   //////////////////////////////////______////// запуск контейнера
   const { openModaStartCont } = useSelector((state) => state.stateSlice);
@@ -300,16 +317,28 @@ const ModalsForContainers = () => {
       <Modals
         openModal={!!openAddFiles?.guid}
         setOpenModal={() => dispatch(clearOpenAddFiles())}
-        title={"Редактирование"}
+        title={"Редактирование и добавление файлов"}
       >
         <div className="addDns filesAdd">
           <Dropzone
-            onSubmit={addFilesInCont}
+            onChangeStatus={handleChangeStatus}
             accept="*"
-            inputContent={"Прикрепить файл"}
-            inputWithFilesContent={"Добавить файл"}
-            submitButtonContent={"Сохранить"}
+            inputContent={"Прикрепить файлы"}
+            inputWithFilesContent={"Прикрепить файлы"}
+            submitButtonContent={""}
           />
+          <div className="listFiles">
+            {openAddFiles?.files?.map((i) => (
+              <div className="everyFile">
+                <a href={`${REACT_APP_API_URL}${i?.path}`} target="_blank">
+                  {i?.original_name}
+                </a>
+                <button onClick={() => delFilesInCont(i?.guid)}>
+                  <img src={krest} alt="x" />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </Modals>
 
@@ -321,17 +350,16 @@ const ModalsForContainers = () => {
       >
         <div className="addDns choiceGroup">
           <div className="choiceGroup__inner">
-            {listGr?.map((item, index) => (
-              <button onClick={() => addContInGroup(item?.guid)} key={index}>
+            {listUsers?.map((item) => (
+              <button
+                key={item?.codeid}
+                onClick={() => addContInGroup(item?.codeid)}
+                className={item?.checked ? "activeGroup" : ""}
+              >
                 {item?.name}
               </button>
             ))}
           </div>
-          {/* <div className="second groups">
-            <button className="addAction" onClick={addContainer}>
-              Добавить
-            </button>
-          </div> */}
         </div>
       </Modals>
 
@@ -339,7 +367,7 @@ const ModalsForContainers = () => {
       <Modals
         openModal={!!openModaDelGroup}
         setOpenModal={() => dispatch(setOpenModaDelGroup())}
-        title={"Вы уверены, что хотите удалить контейнер с группы?"}
+        title={"Вы уверены, что хотите удалить?"}
       >
         <div className="addDns offContainer">
           <button onClick={delContInGroup} className="yes">
@@ -364,7 +392,7 @@ const ModalsForContainers = () => {
           <div className="addDns hostsEdit backUp__inner">
             <div className="backUp__main">
               <Selects
-                list={listFast}
+                list={listFasts}
                 initText={"Выбрать"}
                 onChnage={onChangeSelect}
                 nameKey={"fasts"}
@@ -397,7 +425,7 @@ const ModalsForContainers = () => {
         setOpenModal={() => dispatch(setOpenModalKeyCont())}
         title={"Пользователи"}
       >
-        <AccessesUsers editAccesses={editAccesses} />
+        <AccessesUsers />
       </Modals>
 
       {/*/////////______//////______////// запуска контейнера  */}
@@ -434,7 +462,7 @@ const ModalsForContainers = () => {
       <Modals
         openModal={!!openModaDelCont}
         setOpenModal={() => dispatch(setOpenModaDelCont())}
-        title={"Вы уверены, что хотите удалить контейнер?"}
+        title={"Вы уверены, что хотите удалить виртуальную машину?"}
       >
         <div className="addDns offContainer">
           <button onClick={delContainer} className="yes">
@@ -449,7 +477,7 @@ const ModalsForContainers = () => {
         </div>
       </Modals>
 
-      {/*/////////______//////______////// удаление контейнера  */}
+      {/*/////////______//////______////// просмотр подробной инфы(глазик)  */}
       <Modals
         openModal={!!lookMoreInfo?.guid}
         setOpenModal={() => dispatch(closeLookMoreInfo())}

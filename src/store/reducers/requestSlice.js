@@ -16,6 +16,7 @@ import {
   setGuidHostDel,
   setGuidHostEdit,
   setListDiagrams,
+  setOpenAddFiles,
   setOpenModaDelCont,
   setOpenModaDelGroup,
   setOpenModalAddGroup,
@@ -36,7 +37,7 @@ const initialState = {
   listContainers: [],
   searchContainer: "",
   diagramsContainer: [], //// для диаграммы хостов на главной странице
-  dataForBackUp: {}, //// выборка данных для бэкапа
+  dataForBackUp: {}, //// выборка данных для бэкапа (3 селекта)
 
   listNetwork: [],
   listOS: [],
@@ -297,24 +298,6 @@ export const getDiagramsContainers = createAsyncThunk(
   }
 );
 
-///// getDataForBackUp - для получения данных для бэкапа
-export const getDataForBackUp = createAsyncThunk(
-  "getDataForBackUp",
-  async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/getBackUpData`;
-    try {
-      const response = await axios(url);
-      if (response.status >= 200 && response.status < 300) {
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 ///// searchContainers - для получения контейнеров c помощью сервисов и пользователей
 export const searchContainers = createAsyncThunk(
   "searchContainers",
@@ -398,16 +381,38 @@ export const editContainerOS = createAsyncThunk(
   }
 );
 
-///// addFileInContainer - добавление файлов в контейнера
-export const addFileInContainer = createAsyncThunk(
-  "addFileInContainer",
-  async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/sendFile`;
+///// getFilesInContainer - get файлов каждого контейнера
+export const getFilesInContainer = createAsyncThunk(
+  "getFilesInContainer",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getvmFiles?guid_vm=${guid}`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        ///// очищаю временное хранение данных контейнеров
+        dispatch(setOpenAddFiles({ guid, files: response?.data?.files }));
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// addDelFileInContainer - добавление и удаление файлов в контейнера
+export const addDelFileInContainer = createAsyncThunk(
+  "addDelFileInContainer",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { data, guid_container } = props;
+    const url = `${REACT_APP_API_URL}node/sendDellFile`;
     try {
       const response = await axios.post(url, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status >= 200 && response.status < 300) {
+        dispatch(getFilesInContainer(guid_container));
         ///// очищаю временное хранение данных контейнеров
         return response?.data;
       } else {
@@ -423,7 +428,7 @@ export const addFileInContainer = createAsyncThunk(
 export const addGroupContFN = createAsyncThunk(
   "addGroupContFN",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+    const url = `${REACT_APP_API_URL}node/updateUserOrGroupPermissions`;
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -443,11 +448,12 @@ export const addGroupContFN = createAsyncThunk(
 export const delGroupContainerFN = createAsyncThunk(
   "delGroupContainerFN",
   async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
+    const url = `${REACT_APP_API_URL}node/delInGroup?guid=${guid}`;
     try {
       const response = await axios(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModaDelGroup("")); /// закрываю модалку
+        myAlert("Виртуальная машина удалена с группы!");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -462,11 +468,11 @@ export const delGroupContainerFN = createAsyncThunk(
 export const fixTimeCreateCont = createAsyncThunk(
   "fixTimeCreateCont",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++`;
-    myAlert("Время зафиксировано");
+    const url = `${REACT_APP_API_URL}node/createTimeMark`;
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
+        myAlert("Время зафиксировано");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -496,16 +502,15 @@ export const offContainerFN = createAsyncThunk(
   }
 );
 
-//// backUpContainerFN - бэкап контейнера
-export const backUpContainerFN = createAsyncThunk(
-  "backUpContainerFN",
-  async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+///// getDataForBackUp - для получения данных для бэкапа
+export const getDataForBackUp = createAsyncThunk(
+  "getDataForBackUp",
+  async function (guid_vm, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getBackUpData`;
+    const data = { guid_vm };
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(clearOpenModalBackUp());
-        /// закрываю модалку и очищаю данные для временного хранения данных бэкапа
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -516,14 +521,56 @@ export const backUpContainerFN = createAsyncThunk(
   }
 );
 
-//// editAccessesUsersFN - смена доступов отображения контейнеров клиентам
-export const editAccessesUsersFN = createAsyncThunk(
-  "editAccessesUsersFN",
-  async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++`;
+//// backUpContainerFN - бэкап контейнера
+export const backUpContainerFN = createAsyncThunk(
+  "backUpContainerFN",
+  async function (props, { dispatch, rejectWithValue }) {
+    const { fasts, guid, snaps, type } = props;
+    const url = `${REACT_APP_API_URL}node/createBackUp`;
+    const data = { storage: fasts, mode: snaps, compress: type, guid };
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
+        dispatch(clearOpenModalBackUp());
+        /// закрываю модалку и очищаю данные для временного хранения данных бэкапа
+        myAlert("'Backup' успешно был выполнен!");
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getDataAcceptUsers - get данные доступов для пользователей и обычный список польз-лей
+export const getDataAcceptUsers = createAsyncThunk(
+  "getDataAcceptUsers",
+  async function (guid, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getAccept?guid_vm=${guid}`;
+    try {
+      const response = await axios(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// editAccessesUsersFN - смена доступов отображения контейнеров клиентам и смена групп
+export const editAccessesUsersFN = createAsyncThunk(
+  "editAccessesUsersFN",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/updateUserOrGroupPermissions`;
+    try {
+      const response = await axios.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        myAlert("Данные сохранены");
         dispatch(setOpenModalKeyCont(""));
         /// закрываю модалку и очищаю данные для временного хранения данных для смены доступов отображения контейнеров клиентам
       } else {
@@ -539,11 +586,13 @@ export const editAccessesUsersFN = createAsyncThunk(
 export const delContainerFN = createAsyncThunk(
   "delContainerFN",
   async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
+    const url = `${REACT_APP_API_URL}node/shutdown`;
+    const data = { guid };
     try {
-      const response = await axios(url);
+      const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModaDelCont("")); /// закрываю модалку
+        myAlert("Виртуальная машина удалена!");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -1143,6 +1192,18 @@ const requestSlice = createSlice({
       state.preloader = true;
     });
 
+    ////////////////////////////// getFilesInContainer
+    builder.addCase(getFilesInContainer.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(getFilesInContainer.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(getFilesInContainer.pending, (state, action) => {
+      state.preloader = true;
+    });
+
     ///////////////////////////// getVolns
     builder.addCase(getVolns.fulfilled, (state, action) => {
       state.preloader = false;
@@ -1254,6 +1315,20 @@ const requestSlice = createSlice({
       state.preloader = false;
     });
     builder.addCase(editSubDomen.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    /////////////////////////////// getDataAcceptUsers
+    builder.addCase(getDataAcceptUsers.fulfilled, (state, action) => {
+      state.preloader = false;
+      state.listAccessesUsers = action.payload?.users || [];
+      state.listUsers = action.payload?.services || [];
+    });
+    builder.addCase(getDataAcceptUsers.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(getDataAcceptUsers.pending, (state, action) => {
       state.preloader = true;
     });
   },

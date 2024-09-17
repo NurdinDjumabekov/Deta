@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 /////// imgs
 import container from "../../../assets/icons/menu/box2.svg";
@@ -41,7 +42,12 @@ import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
+import {
+  getDataAcceptUsers,
+  getDataForBackUp,
+} from "../../../store/reducers/requestSlice";
 import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
+import { getFilesInContainer } from "../../../store/reducers/requestSlice";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
 
 ////// components
@@ -50,11 +56,12 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
 import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
-import { useNavigate } from "react-router-dom";
+const { REACT_APP_API_URL } = process.env;
 
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del, files } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
+  const { icon_url } = item;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,19 +94,26 @@ const Containers = ({ item }) => {
   const openOSModal = () => dispatch(setOpenOSModal(guid));
   //// открываю модалку выбора операц. системы
 
-  const openAddFilesFN = () => dispatch(setOpenAddFiles({ guid, files }));
-  //// открываю модалку для добавления файлов в контейнер
+  const openAddFilesFN = () => dispatch(getFilesInContainer(guid));
+  ///// get файлы каждого контейнера
+  //// внутри него открываю модалку для добавления файлов в контейнер
 
-  const openModalAddGroup = () => dispatch(setOpenModalAddGroup(guid));
-  //// открываю модалку для добавления контейнера в группу
+  const openModalAddGroup = () => {
+    dispatch(setOpenModalAddGroup(guid)); // (guid - guid контейнера)
+    //// открываю модалку для добавления контейнера в группу
+    dispatch(getDataAcceptUsers(guid)); // (guid - guid контейнера)
+    //// запрос на получения списка для доступов пользователей и для получения обычных user
+  };
 
-  const openModalFixTime = () => dispatch(fixTimeCreateCont(guid));
+  const openModalFixTime = () => dispatch(fixTimeCreateCont({ guid_vm: guid }));
   ////  фиксирование времени создания контейнера
 
   const openModalBackUpFN = () => {
     ////  BackUp контейнера через запрос
     const obj = { name: `${vm_id} - ${vm_name} ${host_name}`, guid };
     dispatch(setOpenModalBackUp({ ...openModalBackUp, ...obj }));
+    dispatch(getDataForBackUp(guid));
+    //// get данные для бэкапа
   };
 
   const openModalDelInGroup = () => dispatch(setOpenModaDelGroup(guid));
@@ -111,8 +125,12 @@ const Containers = ({ item }) => {
   const delContainer = () => dispatch(setOpenModaDelCont(guid));
   //// модалка для удаления контейнера
 
-  const openKeyInfo = () => dispatch(setOpenModalKeyCont(guid));
-  //// модалка для доступов отображения контейнеров клиентам
+  const openKeyInfo = () => {
+    dispatch(setOpenModalKeyCont(guid));
+    //// модалка для доступов отображения контейнеров клиентам
+    dispatch(getDataAcceptUsers(guid)); // (guid - guid контейнера)
+    //// запрос на получения списка для доступов пользователей и для получения обычных user
+  };
 
   const handleVirtualMachine = (type) => {
     const obj = { 1: "Запустить ", 2: "Перезагрузить", 3: "Выключить " };
@@ -162,7 +180,11 @@ const Containers = ({ item }) => {
               <img src={edit} alt="" />
             </button>
             <button className="OS" onClick={openOSModal}>
-              <img src={round} alt="os" />
+              {icon_url ? (
+                <img src={`${REACT_APP_API_URL}${icon_url}`} alt="os" />
+              ) : (
+                <img src={round} alt="os" />
+              )}
             </button>
           </div>
           <div className="editBlock__inner">
@@ -240,10 +262,10 @@ const Containers = ({ item }) => {
               <span className="moreInfoLeft">Мягкое выключение</span>
             </button>
 
-            {/* <button onClick={openModalDelInGroup}>
+            <button onClick={openModalDelInGroup}>
               <img src={minus} alt="#" />
               <span className="moreInfoLeft">Удалить из списка</span>
-            </button> */}
+            </button>
             <button onClick={openModalOffContainer}>
               <img src={warning} alt="#" />
               <span className="moreInfoLeft">

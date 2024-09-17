@@ -83,57 +83,40 @@
   min-height: 200px;
 
   .dzu-dropzone {
-    min-height: 400px;
-    max-height: 400px;
-    overflow-x: hidden;
+    min-height: 200px;
+    max-height: 200px;
+    overflow: hidden;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
 
-    &::-webkit-scrollbar {
-      min-width: 5px;
-      max-width: 5px;
+    .dzu-inputLabelWithFiles {
+      width: 100%;
+      min-height: 200px !important;
+      font-family: "Helvetica", sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #2484ff;
+      background: transparent !important;
+      text-align: center;
+      margin: 0 !important;
     }
 
-    &::-webkit-scrollbar-track {
-      background-color: transparent;
-      min-width: 5px;
-      max-width: 5px;
-      &:hover {
-        background-color: #050505;
-      }
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: transparent;
-      cursor: pointer;
-      max-height: 50px;
-      min-height: 50px;
-    }
-
-    &:hover {
-      &::-webkit-scrollbar-track {
-        background-color: #050505;
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: #ffffff4e;
-      }
+    .dzu-submitButtonContainer {
+      display: none !important;
     }
   }
 
-  .dzu-previewButton {
-    // width: 1px;
-    // height: 1px;
-    // position: relative;
+  .dzu-submitButton {
+    display: none !important;
+  }
 
-    // &::after {
-    //   content: "";
-    //   background-image: url("../../../assets/images/krest.png");
-    //   width: 20px;
-    //   height: 20px;
-    //   display: block;
-    //   background: #fff;
-    //   position: absolute;
-    //   top: -9px;
-    //   left: -3px;
-    // }
+  .dzu-previewContainer {
+    display: none !important;
+  }
+
+  .dzu-inputLabel {
+    display: flex !important;
   }
 
   .dzu-previewFileName {
@@ -142,6 +125,32 @@
 
   .actions {
     justify-content: flex-end !important;
+  }
+
+  .listFiles {
+    padding: 10px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .everyFile {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 10px;
+      gap: 20px;
+
+      a {
+        width: 70%;
+        overflow-x: hidden;
+      }
+
+      button {
+        width: 28px;
+        min-width: 28px;
+        height: 28px;
+      }
+    }
   }
 }
 
@@ -167,11 +176,16 @@
         color: #d0caca;
       }
     }
-  }
 
-  // .groups {
-  //   justify-content: center !important;
-  // }
+    .activeGroup {
+      background: #66b4ff !important;
+
+      &:hover {
+        background: #66b4ff !important;
+        color: #fff;
+      }
+    }
+  }
 }
 
 .offContainer {
@@ -203,7 +217,7 @@
   }
 
   &__inner {
-    width: 400px !important;
+    width: 100% !important;
     margin: 20px 0px 10px;
   }
 

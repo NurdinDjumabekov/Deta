@@ -1,13 +1,11 @@
 /////// hooks
 import React from "react";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /////// components
 import { Table, TableBody } from "@mui/material";
 import { TableCell, TableContainer } from "@mui/material";
 import { TableHead, TableRow } from "@mui/material";
-import { accessesUsers } from "../../../../helpers/LocalData";
 import ToggleSwitch from "../../../../common/ToggleSwitch/ToggleSwitch";
 
 ////// imgs
@@ -22,27 +20,26 @@ import "./style.scss";
 
 //////// fns
 import { setListAccessesUsers } from "../../../../store/reducers/requestSlice";
+import { editAccessesUsersFN } from "../../../../store/reducers/requestSlice";
 
-const AccessesUsers = ({ editAccesses }) => {
+const AccessesUsers = () => {
   const dispatch = useDispatch();
 
   const { listAccessesUsers } = useSelector((state) => state.requestSlice);
+  const { activeContainer } = useSelector((state) => state.stateSlice);
 
   const onChange = ({ value, name, guid }) => {
     const newList = listAccessesUsers?.map((item) =>
       guid == item?.guid ? { ...item, [name]: value } : item
     );
-    console.log(newList, "newList");
     dispatch(setListAccessesUsers(newList));
   };
 
-  useEffect(() => {
-    dispatch(setListAccessesUsers(accessesUsers));
-    //// chech // потом поменять на запрос чтобы с запроса получать данные
-  }, []);
-
-  const changeAccessesUsers = () => editAccesses();
-  ///// изменение статусов клиентов, отпрвляю кто что может видеть, у кого какие доступы
+  const changeAccessesUsers = () => {
+    const data = { guid_vm: activeContainer, accessesUsers: listAccessesUsers };
+    dispatch(editAccessesUsersFN(data));
+    ///// изменение статусов клиентов, отпрaвляю кто что может видеть, у кого какие доступы
+  };
 
   return (
     <div className="accessesUsers">
@@ -84,17 +81,18 @@ const AccessesUsers = ({ editAccesses }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {listAccessesUsers?.map((item) => (
-              <TableRow className="" key={item?.guid}>
+            {listAccessesUsers?.map((item, index) => (
+              <TableRow className="" key={index}>
                 <TableCell style={{ width: "30%", padding: 0 }}>
-                  <p>{item?.name}</p>
+                  <p>{item?.fio}</p>
                 </TableCell>
                 <TableCell className="dnsText expire" style={{ width: "14%" }}>
                   <ToggleSwitch
                     onChange={onChange}
-                    name={"view"}
-                    value={item?.view}
+                    name={"show"}
+                    value={item?.show}
                     guid={item?.guid}
+                    keyGuid={index + 1}
                   />
                 </TableCell>
                 <TableCell className="dnsText negative" style={{ width: "7%" }}>
@@ -103,22 +101,34 @@ const AccessesUsers = ({ editAccesses }) => {
                     name={"vnc"}
                     value={item?.vnc}
                     guid={item?.guid}
+                    keyGuid={index + 1}
                   />
                 </TableCell>
                 <TableCell className="dnsText refresh" style={{ width: "7%" }}>
                   <ToggleSwitch
                     onChange={onChange}
-                    name={"play"}
-                    value={item?.play}
+                    name={"start"}
+                    value={item?.start}
                     guid={item?.guid}
+                    keyGuid={index + 1}
                   />
                 </TableCell>
                 <TableCell className="dnsText retry" style={{ width: "7%" }}>
                   <ToggleSwitch
                     onChange={onChange}
-                    name={"restart"}
-                    value={item?.restart}
+                    name={"reboot"}
+                    value={item?.reboot}
                     guid={item?.guid}
+                    keyGuid={index + 1}
+                  />
+                </TableCell>
+                <TableCell className="dnsText retry" style={{ width: "7%" }}>
+                  <ToggleSwitch
+                    onChange={onChange}
+                    name={"shutdown"}
+                    value={item?.shutdown}
+                    guid={item?.guid}
+                    keyGuid={index + 1}
                   />
                 </TableCell>
                 <TableCell className="dnsText retry" style={{ width: "7%" }}>
@@ -126,23 +136,17 @@ const AccessesUsers = ({ editAccesses }) => {
                     onChange={onChange}
                     name={"stop"}
                     value={item?.stop}
+                    keyGuid={index + 1}
                     guid={item?.guid}
                   />
                 </TableCell>
                 <TableCell className="dnsText retry" style={{ width: "7%" }}>
                   <ToggleSwitch
                     onChange={onChange}
-                    name={"warning"}
-                    value={item?.warning}
+                    name={"history"}
+                    value={item?.history}
                     guid={item?.guid}
-                  />
-                </TableCell>
-                <TableCell className="dnsText retry" style={{ width: "7%" }}>
-                  <ToggleSwitch
-                    onChange={onChange}
-                    name={"info"}
-                    value={item?.info}
-                    guid={item?.guid}
+                    keyGuid={index + 1}
                   />
                 </TableCell>
               </TableRow>
