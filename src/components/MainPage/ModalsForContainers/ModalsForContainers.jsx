@@ -169,7 +169,7 @@ const ModalsForContainers = () => {
     "storage_name"
   );
 
-  console.log(listFasts, "listFasts");
+  //// и еще 2 таких же селекта
 
   const onChangeSelect = (nameKey, name, id) => {
     dispatch(setOpenModalBackUp({ ...openModalBackUp, [nameKey]: id }));

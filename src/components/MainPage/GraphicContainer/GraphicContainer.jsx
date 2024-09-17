@@ -20,10 +20,18 @@ import "./style.scss";
 const GraphicContainer = () => {
   const { diagramsContainer } = useSelector((state) => state.requestSlice);
 
+  const newDiagrams = diagramsContainer?.map((i) => ({
+    ...i,
+    RAM: i?.RAM / 10000,
+    CPU: i?.CPU * 1000,
+  }));
+
+  console.log(newDiagrams, "newDiagrams");
+
   return (
     <div className="graphicContainer">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={diagramsContainer} margin={{ bottom: 30 }}>
+        <LineChart data={newDiagrams} margin={{ bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="time"

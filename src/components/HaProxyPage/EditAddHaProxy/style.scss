@@ -28,8 +28,16 @@
     display: flex;
     gap: 5px;
     align-items: center;
+    margin: 0 !important;
     input {
       cursor: pointer;
+      width: 18px;
+      height: 18px;
     }
+  }
+
+  .bool {
+    display: flex;
+    padding: 10px 0px 0 0;
   }
 }
