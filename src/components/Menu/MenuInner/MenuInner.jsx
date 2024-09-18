@@ -7,6 +7,7 @@ import "./style.scss";
 
 ///////// fns
 import { setMenuInner } from "../../../store/reducers/stateSlice";
+import { setActiveGroup } from "../../../store/reducers/stateSlice";
 import { getContainersInMenu } from "../../../store/reducers/requestSlice";
 
 /////// components
@@ -16,6 +17,7 @@ const MenuInner = () => {
   const dispatch = useDispatch();
 
   const { menuInner, activeHost } = useSelector((state) => state.stateSlice);
+  const { activeGroup } = useSelector((state) => state.stateSlice);
 
   const choice = (id) => dispatch(setMenuInner(id));
 
@@ -24,16 +26,16 @@ const MenuInner = () => {
     const guid_user = id == 3 ? guid : undefined;
     const obj = { guid_host: activeHost, guid_service, guid_user };
     dispatch(getContainersInMenu(obj));
-    // choice(id);
+    dispatch(setActiveGroup({ guid_service, guid_user }));
   };
 
   // Сортировка массива menuInner по id от меньшего к большему
-  const sortedMenuInner = menuInner?.slice()?.sort((a, b) => a?.id - b?.id);
+  // const sortedMenuInner = menuInner?.slice()?.sort((a, b) => a?.id - b?.id);
 
   return (
     <div className="menuInner">
       <div className="menuInner__inner">
-        {sortedMenuInner?.map((item, index) => (
+        {menuInner?.map((item, index) => (
           <div key={index}>
             <div
               className={`every ${item?.active ? "active" : ""}`}

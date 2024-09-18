@@ -369,8 +369,14 @@ export const editContainerOS = createAsyncThunk(
     try {
       const response = await axios.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(getContainers(data?.activeHost)); //// guid - хоста
         dispatch(setOpenOSModal("")); ///// очищаю временное хранение данных ОС
+
+        if (!!data?.activeHost) {
+          dispatch(getContainers(data?.activeHost)); //// guid - хоста
+        } else {
+          const obj = { guid_host: data?.activeHost, ...data?.activeGroup };
+          dispatch(getContainersInMenu(obj)); /// guid групп (сервера и поль-тели)
+        }
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);

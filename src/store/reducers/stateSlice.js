@@ -14,8 +14,8 @@ const initialState = {
     { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
     { id: 3, name: "Пользователи", img: users, active: false, list: [] },
   ],
-
-  ///// активный host на главной странице
+  activeGroup: {}, //// активная группа на главной стр (сервисы, пользователи)
+  /// подставляю guid_service или guid_user
 
   activeHost: 0, //// активный временный хост
   activeContainer: 0, //// активный временный контейнер
@@ -438,6 +438,10 @@ const stateSlice = createSlice({
     setDistributeIpModal: (state, action) => {
       state.distributeIpModal = action.payload;
     },
+
+    setActiveGroup: (state, action) => {
+      state.activeGroup = action.payload;
+    },
   },
 });
 
@@ -484,6 +488,7 @@ export const {
   setOpenModaStartCont,
   closeModalStartCont,
   setDistributeIpModal,
+  setActiveGroup,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

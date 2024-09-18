@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import container from "../../../assets/icons/menu/box2.svg";
 import virtualka from "../../../assets/icons/tv.svg";
 import edit from "../../../assets/icons/edit.svg";
-import editBlue from "../../../assets/icons/editBlue.svg";
 import skrepka from "../../../assets/icons/skrepka.svg";
 
 //// imgs
@@ -42,10 +41,8 @@ import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
-import {
-  getDataAcceptUsers,
-  getDataForBackUp,
-} from "../../../store/reducers/requestSlice";
+import { getDataForBackUp } from "../../../store/reducers/requestSlice";
+import { getDataAcceptUsers } from "../../../store/reducers/requestSlice";
 import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
 import { getFilesInContainer } from "../../../store/reducers/requestSlice";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
@@ -273,7 +270,7 @@ const Containers = ({ item }) => {
                 высоконагруженных серверах!)
               </span>
             </button>
-            {!del && (
+            {false && (
               <button className="deleteBtn" onClick={delContainer}>
                 Удалить
               </button>

@@ -3705,9 +3705,10 @@ export const listOS = [
 ];
 
 export const listFast = [
-  { id: 1, name: "LZO (fast)" },
-  { id: 2, name: "GZIP (good)" },
-  { id: 3, name: "ZSTD (fast and good)" },
+  { id: "0", name: "none" },
+  { id: "lzo", name: "LZO (fast)" },
+  { id: "gzip", name: "GZIP (good)" },
+  { id: "zstd", name: "ZSTD (fast and good)" },
 ];
 
 export const listTypes = [
@@ -3719,9 +3720,9 @@ export const listTypes = [
 ];
 
 export const listSnaps = [
-  { id: 1, name: "Snapshot" },
-  { id: 2, name: "Suspend" },
-  { id: 3, name: "Stop" },
+  { id: "snapshot", name: "Snapshot" },
+  { id: "suspend", name: "Suspend" },
+  { id: "stop", name: "Stop" },
 ];
 
 export const accessesUsers = [

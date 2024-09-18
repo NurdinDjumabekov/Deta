@@ -48,7 +48,7 @@ const MainPage = () => {
     dispatch(getGroup());
     dispatch(getOS());
 
-    // ///// для получения данных для процесса бэкапа
+    ///// для получения данных для процесса бэкапа
 
     // const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
     // const disconnectHost = dispatch(updatedHosts()); /// get хосты

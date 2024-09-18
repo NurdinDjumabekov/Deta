@@ -47,8 +47,6 @@ const ModalsHaProxy = () => {
     dispatch(actionsCreateHaProxyFN(modalActionsHaProxy));
   };
 
-  console.log(modalActionsHaProxy?.type, "modalActionsHaProxy");
-
   return (
     <div className="modalsProxy">
       {/* для добавления  */}

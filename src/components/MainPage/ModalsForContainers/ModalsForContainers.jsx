@@ -48,9 +48,7 @@ import AccessesUsers from "./AccessesUsers/AccessesUsers";
 import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
 
 ////// helpers
-import { listFast } from "../../../helpers/LocalData";
-import { listSnaps } from "../../../helpers/LocalData";
-import { listTypes } from "../../../helpers/LocalData";
+import { listFast, listSnaps } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
 import { transformLists } from "../../../helpers/transformLists";
 const { REACT_APP_API_URL } = process.env;
@@ -106,12 +104,12 @@ const ModalsForContainers = () => {
   ///// добавляю контейнер через запрос
 
   //////////////////////////////////______////// операционные системы
-  const { openOSModal } = useSelector((state) => state.stateSlice);
+  const { openOSModal, activeGroup } = useSelector((state) => state.stateSlice);
   const { listOS } = useSelector((state) => state.requestSlice);
 
   const choiceOS = (oc_guid) => {
     ///// выбираю ОС через запрос
-    const data = { oc_guid, guid_vm: openOSModal, activeHost };
+    const data = { oc_guid, guid_vm: openOSModal, activeHost, activeGroup };
     dispatch(editContainerOS(data));
   };
 
@@ -163,7 +161,7 @@ const ModalsForContainers = () => {
   const { openModalBackUp } = useSelector((state) => state.stateSlice);
   const { dataForBackUp } = useSelector((state) => state.requestSlice);
 
-  const listFasts = transformLists(
+  const listTypes = transformLists(
     dataForBackUp?.storage,
     "guid",
     "storage_name"
@@ -392,7 +390,7 @@ const ModalsForContainers = () => {
           <div className="addDns hostsEdit backUp__inner">
             <div className="backUp__main">
               <Selects
-                list={listFasts}
+                list={listFast}
                 initText={"Выбрать"}
                 onChnage={onChangeSelect}
                 nameKey={"fasts"}
