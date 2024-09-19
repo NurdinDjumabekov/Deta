@@ -7,7 +7,6 @@ import MyInputs from "../../../../common/MyInput/MyInputs";
 
 /////// helpers
 import { myAlert } from "../../../../helpers/MyAlert";
-import { checkChangeSDF } from "../../../../helpers/checkFNS";
 import { checkChangeRecordName } from "../../../../helpers/checkFNS";
 import { checkChangeTTL } from "../../../../helpers/checkFNS";
 import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
@@ -31,12 +30,8 @@ const AddSPFChame = ({ obj }) => {
       if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "record_name") {
+    } else if (name === "record_name" || name === "sdf_string") {
       if (checkChangeRecordName(value)) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
-    } else if (name === "sdf_string") {
-      if (checkChangeSDF(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -51,7 +46,7 @@ const AddSPFChame = ({ obj }) => {
       return;
     }
 
-    if (dnsList?.seven?.sdf_string?.length < 1) {
+    if (!!!dnsList?.seven?.sdf_string) {
       myAlert("Поле 'SPF string:' не должно быть пустым", "error");
       return;
     }

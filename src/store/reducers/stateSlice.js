@@ -5,6 +5,13 @@ import container from "../../assets/icons/menu/box.svg";
 import servers from "../../assets/icons/menu/database.svg";
 import users from "../../assets/icons/menu/users.svg";
 import { dnsListDefault } from "../../helpers/LocalData";
+import {
+  clearAddTempContData,
+  clearBackUp,
+  clearDataAddHost,
+  clearDataTemporaryDNS,
+  clearDataTemporaryHosts,
+} from "../../helpers/clear";
 
 const initialState = {
   listDiagrams: [], //// для диаграммы хостов на главной странице
@@ -271,16 +278,7 @@ const stateSlice = createSlice({
     },
 
     clearTemporaryDNS: (state, action) => {
-      state.temporaryDNS = {
-        domen_name: "",
-        comment: "",
-        expire: "360000",
-        negative: "3600",
-        refresh: "3600",
-        retry: "900",
-        is_check_my_ip: true,
-        my_ip: "",
-      };
+      state.temporaryDNS = clearDataTemporaryDNS;
       //// state для временного хранения dns данных
     },
 
@@ -303,14 +301,7 @@ const stateSlice = createSlice({
 
     ////// очищаю временн0 хранящиеся данные хоста
     clearAddHost: (state, action) => {
-      state.addTempHost = {
-        host_name: "",
-        login: "",
-        password: "",
-        ip_address: "",
-        sort: 1,
-        bool: false,
-      };
+      state.addTempHost = clearDataAddHost;
     },
 
     ///////////////////////// temporaryHosts
@@ -319,12 +310,7 @@ const stateSlice = createSlice({
     },
 
     clearTemporaryHosts: (state, action) => {
-      state.temporaryHosts = {
-        host_name: "",
-        guid_node: "",
-        node_model: "",
-        listVmbr: [],
-      };
+      state.temporaryHosts = clearDataTemporaryHosts;
       //// state для временного хранения данных хоста
     },
 
@@ -371,13 +357,7 @@ const stateSlice = createSlice({
     },
 
     clearAddTempCont: (state, action) => {
-      state.addTempCont = {
-        container_name: "",
-        cpu: 0,
-        ram: 0,
-        ssd: 0,
-        bool: false,
-      };
+      state.addTempCont = clearAddTempContData;
     },
 
     setOpenOSModal: (state, action) => {
@@ -406,13 +386,7 @@ const stateSlice = createSlice({
     },
 
     clearOpenModalBackUp: (state, action) => {
-      state.openModalBackUp = {
-        name: "",
-        guid: "",
-        fasts: 0,
-        type: 0,
-        snaps: 0,
-      };
+      state.openModalBackUp = clearBackUp;
     },
 
     setOpenModaStoppedCont: (state, action) => {

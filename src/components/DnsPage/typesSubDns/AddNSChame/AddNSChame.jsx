@@ -37,9 +37,7 @@ const AddNSChame = ({ obj }) => {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else if (name === "host_ip") {
-      if (checkChangeIP(value)) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
+      dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
     } else {
       dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
     }
@@ -48,11 +46,11 @@ const AddNSChame = ({ obj }) => {
   const addInnerSubDomen = () => {
     const record_name = dnsList?.four?.record_name;
 
-    if (checkSubDomainName(record_name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(record_name, activeDns)) {
+    //   return;
+    // }
 
-    if (checkIP(dnsList?.four?.host_ip)) {
+    if (dnsList?.four?.host_ip == "") {
       myAlert("Заполните правильно поле 'Host IP address: '", "error");
       return;
     }
@@ -68,7 +66,11 @@ const AddNSChame = ({ obj }) => {
       ...activeDns,
       domen_guid: activeDns?.guid,
     };
-    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    const obj = {
+      record_name: `${!!send?.record_name ? send?.record_name : ""}${
+        activeDns.name
+      }`,
+    };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -82,10 +84,10 @@ const AddNSChame = ({ obj }) => {
             name={"record_name"}
             value={dnsList?.[obj]?.record_name}
           />
-          <span>.{activeDns?.name}</span>
+          <span>{activeDns?.name}</span>
         </div>
 
-        <MyIPInput
+        <MyInputs
           title={"DNS Server (FQDN):"}
           onChange={onChange}
           name={"host_ip"}

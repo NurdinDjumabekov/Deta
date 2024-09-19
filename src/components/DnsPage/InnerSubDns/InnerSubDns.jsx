@@ -112,12 +112,16 @@ const InnerSubDns = () => {
                 </TableCell>
                 <TableCell className="text actions" style={{ width: "8%" }}>
                   <div className="blockActions">
-                    <button
-                      className="actions__btns"
-                      onClick={() => callEditFN(row)}
-                    >
-                      <img src={editIcon} alt="e" />
-                    </button>
+                    {row?.recordType != "SOA" ? (
+                      <button
+                        className="actions__btns"
+                        onClick={() => callEditFN(row)}
+                      >
+                        <img src={editIcon} alt="e" />
+                      </button>
+                    ) : (
+                      <button className="actions__push"></button>
+                    )}
                     <button
                       className="actions__btns krest"
                       onClick={() => callDeleteFn(row?.guid)}

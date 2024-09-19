@@ -4,12 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../../common/MyInput/MyInputs";
-import MyIPInput from "../../../../common/MyIPInput/MyIPInput";
 
 /////// helpers
 import { myAlert } from "../../../../helpers/MyAlert";
 import { checkChangeRecordName } from "../../../../helpers/checkFNS";
-import { checkChangeIP } from "../../../../helpers/checkFNS";
 import { checkChangeTTL, checkIP } from "../../../../helpers/checkFNS";
 import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
 
@@ -32,12 +30,8 @@ const AddChame = ({ obj }) => {
       if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "record_name") {
+    } else if (name === "record_name" || name === "host_ip") {
       if (checkChangeRecordName(value)) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
-    } else if (name === "host_ip") {
-      if (checkChangeIP(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -52,8 +46,8 @@ const AddChame = ({ obj }) => {
       return;
     }
 
-    if (checkIP(dnsList?.two?.host_ip)) {
-      myAlert("Заполните правильно поле 'Host IP address: '", "error");
+    if (!!!dnsList?.two?.host_ip) {
+      myAlert("Заполните поле 'Alias for domain (FQDN)'", "error");
       return;
     }
 
@@ -81,7 +75,7 @@ const AddChame = ({ obj }) => {
         </div>
 
         <div className="widthMiddle">
-          <MyIPInput
+          <MyInputs
             onChange={onChange}
             name={"host_ip"}
             value={dnsList?.two?.host_ip}

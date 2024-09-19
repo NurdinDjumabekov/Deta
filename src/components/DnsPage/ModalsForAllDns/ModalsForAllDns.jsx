@@ -8,8 +8,8 @@ import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 
 ////// helpers
 import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
-import { checkChangeRecordName, checkIP } from "../../../helpers/checkFNS";
-import { checkChangeIP, checkChangeTTL } from "../../../helpers/checkFNS";
+import { checkChangeRecordName } from "../../../helpers/checkFNS";
+import { checkChangeTTL } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
 
 ////// fns
@@ -21,6 +21,7 @@ import { setDistributeIpModal } from "../../../store/reducers/stateSlice";
 
 ///////style
 import "./style.scss";
+import { objTyperecordsKeys } from "../../../helpers/LocalData";
 
 const ModalsForAllDns = (props) => {
   const { guidDelete, setGuidDelete, objEdit, setObjedit } = props;
@@ -39,12 +40,8 @@ const ModalsForAllDns = (props) => {
       if (checkChangeTTL(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
-    } else if (name === "record_name") {
+    } else if (name === "record_name" || name === "host_ip") {
       if (checkChangeRecordName(value)) {
-        setObjedit({ ...objEdit, [name]: value });
-      }
-    } else if (name === "host_ip") {
-      if (checkChangeIP(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
     } else {
@@ -63,7 +60,7 @@ const ModalsForAllDns = (props) => {
     if (checkSubDomainName(name, activeDns)) {
       return;
     }
-    if (checkIP(objEdit?.host_ip)) {
+    if (!!!objEdit?.host_ip) {
       myAlert("Заполните правильно поле 'Host IP address: '", "error");
       return;
     }
@@ -105,8 +102,8 @@ const ModalsForAllDns = (props) => {
               <span>.{activeDns?.name}</span>
             </div>
 
-            <MyIPInput
-              title={"Host IP address :"}
+            <MyInputs
+              title={`${objTyperecordsKeys?.[objEdit?.recordType]} :`}
               onChange={onChange}
               name={"host_ip"}
               value={objEdit?.host_ip}

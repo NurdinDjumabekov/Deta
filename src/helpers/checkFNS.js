@@ -69,7 +69,7 @@ export const checkIP = (text) => {
 };
 
 export const checkChangeRecordName = (value) => {
-  const validText = /^[a-z0-9.-]*$/.test(value);
+  const validText = /^[a-z0-9._-]*$/.test(value);
   return validText;
 };
 
@@ -90,7 +90,7 @@ export const checkChangeIP = (value) => {
 export const checkChangePointToName = (value) => {
   const validText = /^[a-zA-Z0-9А-Яа-я.-_]*$/.test(value);
   return validText;
-};
+}; //// delete
 
 export const checkSubDomainName = (value, activeDns) => {
   const dnsName = activeDns?.name;
@@ -116,10 +116,10 @@ export const checkSubDomainName = (value, activeDns) => {
     return true;
   }
 
-  if (value.includes(".")) {
-    myAlert(`Ошибка! В субдомене не должно быть точки!`, "error");
-    return true;
-  }
+  // if (value.includes(".")) {
+  //   myAlert(`Ошибка! В субдомене не должно быть точки!`, "error");
+  //   return true;
+  // }
 
   if (/[-]\./.test(value) || /\.[-]/.test(value)) {
     myAlert("Запрещены комбинации ' -. ' или ' .- ' в субдомен.", "error");
@@ -141,10 +141,10 @@ export const checkSubDomainName = (value, activeDns) => {
     return true;
   }
 
-  if (listTextDots?.length > 3) {
-    myAlert("Субдомен должен состоять из двух точек!", "error");
-    return true;
-  }
+  // if (listTextDots?.length > 3) {
+  //   myAlert("Субдомен должен состоять из двух точек!", "error");
+  //   return true;
+  // }
 
   ///////////////////////////////////
 
@@ -175,5 +175,5 @@ export const checkTTL = (value) => {
 
 export const checkChangeSDF = (value) => {
   const validText = /^[a-zA-Z0-9._\-!?]*$/.test(value);
-  return validText;
+  return validText; //// delete
 };

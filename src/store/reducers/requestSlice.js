@@ -1261,6 +1261,18 @@ const requestSlice = createSlice({
       state.preloader = true;
     });
 
+    /////////////////////////////// deleteDomen
+    builder.addCase(deleteDomen.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(deleteDomen.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(deleteDomen.pending, (state, action) => {
+      state.preloader = true;
+    });
+
     ////////////////////////////// getDnsSubDomen
     builder.addCase(getDnsSubDomen.fulfilled, (state, action) => {
       state.preloader = false;

@@ -32,12 +32,8 @@ const AddMXChame = ({ obj }) => {
       if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "record_name") {
+    } else if (name === "record_name" || name === "host_ip") {
       if (checkChangeRecordName(value)) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
-    } else if (name === "host_ip") {
-      if (checkChangeIP(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
@@ -52,11 +48,9 @@ const AddMXChame = ({ obj }) => {
       return;
     }
 
-    if (!dnsList?.three?.is_check_my_ip) {
-      if (checkIP(dnsList?.three?.host_ip)) {
-        myAlert("Заполните правильно поле 'Perference'", "error");
-        return;
-      }
+    if (!!!dnsList?.three?.host_ip) {
+      myAlert("Заполните правильно поле 'Mail server host (FQDN)'", "error");
+      return;
     }
 
     if (checkTTL(dnsList?.three?.ttl)) {
@@ -78,7 +72,7 @@ const AddMXChame = ({ obj }) => {
       <div className="second">
         <div className="mainDns">
           <MyInputs
-            title={"Record name(e-mail address):"}
+            title={"Record name(e-mail address) :"}
             onChange={onChange}
             name={"record_name"}
             value={dnsList?.[obj]?.record_name}
@@ -86,23 +80,23 @@ const AddMXChame = ({ obj }) => {
           <span>.{activeDns?.name}</span>
         </div>
 
-        <div className="widthMiddle">
+        {/* <div className="widthMiddle">
           <MyInputs
             title={"Perference :"}
             onChange={onChange}
             name={"host_ip"}
             value={dnsList?.[obj]?.host_ip}
           />
-        </div>
+        </div> */}
 
-        {/* <div className="widthMiddle">
+        <div className="widthMiddle">
           <MyInputs
             title={"Mail server host (FQDN) :"}
             onChange={onChange}
-            name={"ttl"}
-            value={dnsList?.[obj]?.ttl}
+            name={"host_ip"}
+            value={dnsList?.[obj]?.host_ip}
           />
-        </div> */}
+        </div>
 
         <div className="widthMini">
           <MyInputs

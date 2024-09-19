@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import MyInputs from "../../../../common/MyInput/MyInputs";
-import MyIPInput from "../../../../common/MyIPInput/MyIPInput";
 
 /////// helpers
 import { myAlert } from "../../../../helpers/MyAlert";
@@ -32,12 +31,8 @@ const AddRTRChame = ({ obj }) => {
       if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "record_name") {
+    } else if (name === "record_name" || name === "point_to_name") {
       if (checkChangeRecordName(value)) {
-        dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
-      }
-    } else if (dnsList?.six?.point_to_name) {
-      if (checkChangePointToName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
     } else {
