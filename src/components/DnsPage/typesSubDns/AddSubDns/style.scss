@@ -25,6 +25,24 @@
         width: 150px;
       }
     }
+
+    .emptyInput {
+      position: relative;
+      .myInput {
+        input {
+          background: red;
+          width: 0;
+          // display: none;
+          background: transparent;
+        }
+      }
+      span {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 220px !important;
+      }
+    }
   }
 
   .bool {

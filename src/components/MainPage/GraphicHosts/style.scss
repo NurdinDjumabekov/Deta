@@ -22,3 +22,14 @@
     display: none !important;
   }
 }
+
+.custom-tooltip {
+  background: #ffffffd4 !important;
+  padding: 8px;
+  border-radius: 5px;
+
+  p {
+    font-weight: 500;
+    font-size: 15px;
+  }
+}

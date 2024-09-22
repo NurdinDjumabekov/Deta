@@ -48,16 +48,16 @@ const MainPage = () => {
     dispatch(getGroup());
     dispatch(getOS());
 
-    ///// для получения данных для процесса бэкапа
+    /// для получения данных для процесса бэкапа
 
-    // const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
-    // const disconnectHost = dispatch(updatedHosts()); /// get хосты
+    const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
+    const disconnectHost = dispatch(updatedHosts()); /// get хосты
 
-    // return () => {
-    //   disconnectProv();
-    //   disconnectHost();
-    //   // Отключение сокетов при размонтировании компонента
-    // };
+    return () => {
+      disconnectProv();
+      disconnectHost();
+      // Отключение сокетов при размонтировании компонента
+    };
   }, []);
 
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";

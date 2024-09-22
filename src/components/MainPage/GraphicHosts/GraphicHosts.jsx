@@ -1,4 +1,3 @@
-/////// hooks
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -14,6 +13,24 @@ import {
 
 ////// style
 import "./style.scss";
+import { cutNums } from "../../../helpers/cutNums";
+
+// Кастомный Tooltip
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip">
+        {payload?.map((entry, index) => (
+          <p key={`item-${index}`} style={{ color: entry.color }}>
+            {`${entry?.name}: ${cutNums(entry?.value, 3)}`}
+          </p>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
+};
 
 const GraphicHosts = () => {
   const { listDiagrams } = useSelector((state) => state.stateSlice);
@@ -41,20 +58,13 @@ const GraphicHosts = () => {
           />
           <YAxis yAxisId="left" orientation="left" stroke="#ff0077" />
           <YAxis yAxisId="right" orientation="right" stroke="#00bfff" />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Line
             yAxisId="left"
             type="monotone"
             dataKey="CPU"
             stroke="#ff0077"
-            strokeWidth={1}
-          />
-          <Line
-            yAxisId="right"
-            type="monotone"
-            dataKey="RAM"
-            stroke="#00bfff"
             strokeWidth={1}
           />
           <Line

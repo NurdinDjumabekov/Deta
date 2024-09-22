@@ -16,6 +16,8 @@ const ccTLDs = [
   "md",
   "ge",
   "com",
+  "eu",
+  "xyz",
 ];
 
 export const checkDomainName = (value) => {
@@ -28,8 +30,8 @@ export const checkDomainName = (value) => {
     return true;
   }
 
-  if (listTextDots?.length > 2) {
-    myAlert("Домен должен состоять из одной точки!", "error");
+  if (listTextDots?.length > 3) {
+    myAlert("Домен должен состоять максимум из 2х точек!", "error");
     return true;
   }
 
@@ -48,7 +50,10 @@ export const checkDomainName = (value) => {
     return true;
   }
 
-  if (!ccTLDs?.includes(listTextDots?.[1]) || listTextDots?.length == 1) {
+  if (
+    !ccTLDs?.includes(listTextDots?.[listTextDots?.length - 1]) ||
+    listTextDots?.length == 1
+  ) {
     myAlert("Введите правильный домен верхнего уровня", "error");
     return true;
   }
@@ -138,6 +143,11 @@ export const checkSubDomainName = (value, activeDns) => {
 
   if (value?.[0] == "." || value?.[0] == "-") {
     myAlert("Субдомен не может начинаться со знаков - или . ", "error");
+    return true;
+  }
+
+  if (value?.[value.length - 1] === ".") {
+    myAlert("В субдомене не должно быть в конце точки(.)", "error");
     return true;
   }
 
