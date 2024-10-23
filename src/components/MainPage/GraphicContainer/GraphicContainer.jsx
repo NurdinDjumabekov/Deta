@@ -23,7 +23,7 @@ const GraphicContainer = () => {
   const newDiagrams = diagramsContainer?.map((i) => ({
     ...i,
     RAM: i?.RAM / 10000,
-    CPU: i?.CPU * 1000,
+    CPU: i?.CPU * 100,
   }));
 
   console.log(newDiagrams, "newDiagrams");
