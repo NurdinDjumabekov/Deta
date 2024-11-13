@@ -42,9 +42,9 @@ const AddChame = ({ obj }) => {
   const addInnerSubDomen = () => {
     const record_name = dnsList?.two?.record_name;
 
-    if (checkSubDomainName(record_name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(record_name, activeDns)) {
+    //   return;
+    // }
 
     if (!!!dnsList?.two?.host_ip) {
       myAlert("Заполните поле 'Alias for domain (FQDN)'", "error");
@@ -57,7 +57,7 @@ const AddChame = ({ obj }) => {
 
     ////// добалвяю суб домен через запрос
     const send = { ...dnsList?.two, domen_guid: activeDns?.guid, ...activeDns };
-    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    const obj = { record_name: `${activeDns.name}` };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -69,9 +69,9 @@ const AddChame = ({ obj }) => {
             title={"Record name (alias name) : "}
             onChange={onChange}
             name={"record_name"}
-            value={dnsList?.[obj]?.record_name}
+            value={activeDns?.name}
           />
-          <span>.{activeDns?.name}</span>
+          {/* <span>.{activeDns?.name}</span> */}
         </div>
 
         <div className="widthMiddle">

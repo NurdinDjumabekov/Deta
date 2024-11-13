@@ -33,6 +33,8 @@ const ModalsForAllDns = (props) => {
     (state) => state.stateSlice
   );
 
+  console.log(objEdit, "objEdit");
+
   const onChange = (e) => {
     const { name, value } = e.target;
 
@@ -57,9 +59,9 @@ const ModalsForAllDns = (props) => {
   const editDns = () => {
     //// редактирование
     const name = objEdit?.record_name?.replace(activeDns?.name, "");
-    if (checkSubDomainName(name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(name, activeDns)) {
+    //   return;
+    // }
     if (!!!objEdit?.host_ip) {
       myAlert("Заполните правильно поле 'Host IP address: '", "error");
       return;
@@ -92,15 +94,26 @@ const ModalsForAllDns = (props) => {
       >
         <div className="addDns modalEdit">
           <div className="second modalEdit__inner">
-            <div className="addSubDnsModal">
-              <MyInputs
-                title={"Record name (host) :"}
-                onChange={onChange}
-                name={"record_name"}
-                value={objEdit?.record_name}
-              />
-              <span>.{activeDns?.name}</span>
-            </div>
+            {objEdit?.recordType == "A" ? (
+              <div className="addSubDnsModal">
+                <MyInputs
+                  title={"Record name (host) :"}
+                  onChange={onChange}
+                  name={"record_name"}
+                  value={objEdit?.record_name}
+                />
+                <span>.{activeDns?.name}</span>
+              </div>
+            ) : (
+              <div className="addSubDnsModal">
+                <MyInputs
+                  title={"Record name (host) :"}
+                  onChange={onChange}
+                  name={"record_name"}
+                  value={activeDns?.name}
+                />
+              </div>
+            )}
 
             <MyInputs
               title={`${objTyperecordsKeys?.[objEdit?.recordType]} :`}

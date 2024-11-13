@@ -833,7 +833,6 @@ export const sortSubDomen = createAsyncThunk(
 export const addSubDomen = createAsyncThunk(
   "addSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
-    console.log(props, "props");
     const { name, ...data } = props;
     const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
     try {
@@ -841,12 +840,12 @@ export const addSubDomen = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         const alreadyCreate = response?.data?.alreadyCreate;
         if (alreadyCreate) {
-          myAlert("Такой субдомен уже существует!", "error");
+          myAlert("Такая запись уже существует!", "error");
         } else {
           const obj = { guid: data?.domen_guid, domen_name: name };
           dispatch(getDnsSubDomen(obj)); /// это guid домена
           dispatch(clearDnsList()); /// очищаю данные всех input для добавления dns
-          myAlert("Субдомен успешно добавлен!");
+          myAlert("Процедура успешно завершена!");
 
           // dispatch(setPastDnsInSubDomen(`.${name}`));
           ////// подставляю домен в поля суб доменов
@@ -891,7 +890,9 @@ export const editSubDomen = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const { setGuidEdit, objEdit, setObjedit, activeDns } = props;
 
-    const record_name = `${objEdit?.record_name}.${activeDns?.name}`;
+    const record_name = !!objEdit?.record_name
+      ? `${objEdit?.record_name}.${activeDns?.name}`
+      : ``;
 
     const url = `${REACT_APP_API_URL}dns/updateSubDomen`;
     const data = { ...objEdit, type_record: 1, record_name }; ///  type_record: 1, chech (dhtvtyyj)

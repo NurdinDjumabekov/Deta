@@ -43,9 +43,9 @@ const AddRTRChame = ({ obj }) => {
   const addInnerSubDomen = () => {
     const record_name = dnsList?.six?.record_name;
 
-    if (checkSubDomainName(record_name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(record_name, activeDns)) {
+    //   return;
+    // }
 
     if (dnsList?.six?.point_to_name?.length < 1) {
       myAlert("Поле 'Point to name (FQDN):' не должно быть пустым", "error");
@@ -63,7 +63,7 @@ const AddRTRChame = ({ obj }) => {
       ...activeDns,
       domen_guid: activeDns?.guid,
     };
-    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    const obj = { record_name: `${activeDns.name}` };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -75,9 +75,9 @@ const AddRTRChame = ({ obj }) => {
             title={"Record name:"}
             onChange={onChange}
             name={"record_name"}
-            value={dnsList?.[obj]?.record_name}
+            value={activeDns?.name}
           />
-          <span>.{activeDns?.name}</span>
+          {/* <span>.{activeDns?.name}</span> */}
         </div>
 
         <MyInputs

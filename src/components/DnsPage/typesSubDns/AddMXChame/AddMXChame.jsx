@@ -44,9 +44,9 @@ const AddMXChame = ({ obj }) => {
   const addInnerSubDomen = () => {
     const record_name = dnsList?.three?.record_name;
 
-    if (checkSubDomainName(record_name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(record_name, activeDns)) {
+    //   return;
+    // }
 
     if (!!!dnsList?.three?.host_ip) {
       myAlert("Заполните правильно поле 'Mail server host (FQDN)'", "error");
@@ -63,7 +63,7 @@ const AddMXChame = ({ obj }) => {
       ...activeDns,
       domen_guid: activeDns?.guid,
     };
-    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    const obj = { record_name: `${activeDns.name}` };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -75,9 +75,9 @@ const AddMXChame = ({ obj }) => {
             title={"Record name(e-mail address) :"}
             onChange={onChange}
             name={"record_name"}
-            value={dnsList?.[obj]?.record_name}
+            value={activeDns?.name}
           />
-          <span>.{activeDns?.name}</span>
+          {/* <span>.{activeDns?.name}</span> */}
         </div>
 
         {/* <div className="widthMiddle">

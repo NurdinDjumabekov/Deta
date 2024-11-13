@@ -44,9 +44,9 @@ const AddTXTChame = ({ obj }) => {
   const addInnerSubDomen = () => {
     const record_name = dnsList?.five?.record_name;
 
-    if (checkSubDomainName(record_name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(record_name, activeDns)) {
+    //   return;
+    // }
 
     if (dnsList?.five?.txt_string?.length < 1) {
       myAlert("Поле 'Text strings' не должно быть пустым", "error");
@@ -63,7 +63,7 @@ const AddTXTChame = ({ obj }) => {
       ...activeDns,
       domen_guid: activeDns?.guid,
     };
-    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    const obj = { record_name: `${activeDns.name}` };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -75,9 +75,9 @@ const AddTXTChame = ({ obj }) => {
             title={"Record name (host) :"}
             onChange={onChange}
             name={"record_name"}
-            value={dnsList?.[obj]?.record_name}
+            value={activeDns?.name}
           />
-          <span>.{activeDns?.name}</span>
+          {/* <span>.{activeDns?.name}</span> */}
         </div>
 
         <div className="widthBig">

@@ -136,10 +136,10 @@ export const checkSubDomainName = (value, activeDns) => {
     return true;
   }
 
-  if (listTextDots?.length == 0 || listTextDots?.[0] == "") {
-    myAlert("Субдомен пустой!", "error");
-    return true;
-  }
+  // if (listTextDots?.length == 0 || listTextDots?.[0] == "") {
+  //   myAlert("Субдомен пустой!", "error");
+  //   return true;
+  // }
 
   if (value?.[0] == "." || value?.[0] == "-") {
     myAlert("Субдомен не может начинаться со знаков - или . ", "error");

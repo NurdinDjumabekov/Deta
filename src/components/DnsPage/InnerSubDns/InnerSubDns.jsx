@@ -37,7 +37,8 @@ const InnerSubDns = () => {
   }); /// временные данные для редактирования
 
   const callEditFN = (obj) => {
-    const record_name = obj?.record_name?.replace(`.${activeDns?.name}`, "");
+    const text = obj?.record_name == obj?.domen_name ? "" : obj?.record_name;
+    const record_name = text?.replace(`.${activeDns?.name}`, "");
     setGuidEdit(obj?.guid); //// активный guid для редактирования
     setObjedit({ ...obj, record_name }); //// временный обьект для редактирования
   };
@@ -97,7 +98,14 @@ const InnerSubDns = () => {
                 <TableCell className="text name" style={{ width: "5%" }}>
                   {row?.ttl}
                 </TableCell>
-                <TableCell className="text data" style={{ width: "15%" }}>
+                <TableCell
+                  className="text data"
+                  style={{
+                    width: "15%",
+                    maxWidth: 400,
+                    overflow: "hidden",
+                  }}
+                >
                   {row?.host_ip}
                 </TableCell>
                 <TableCell className="text data" style={{ width: "15%" }}>

@@ -42,9 +42,9 @@ const AddSPFChame = ({ obj }) => {
   const addInnerSubDomen = () => {
     const record_name = dnsList?.seven?.record_name;
 
-    if (checkSubDomainName(record_name, activeDns)) {
-      return;
-    }
+    // if (checkSubDomainName(record_name, activeDns)) {
+    //   return;
+    // }
 
     if (!!!dnsList?.seven?.sdf_string) {
       myAlert("Поле 'SPF string:' не должно быть пустым", "error");
@@ -61,7 +61,7 @@ const AddSPFChame = ({ obj }) => {
       ...activeDns,
       domen_guid: activeDns?.guid,
     };
-    const obj = { record_name: `${send?.record_name}.${activeDns.name}` };
+    const obj = { record_name: `${activeDns.name}` };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -73,9 +73,9 @@ const AddSPFChame = ({ obj }) => {
             title={"Record name (e-mail domain):"}
             onChange={onChange}
             name={"record_name"}
-            value={dnsList?.[obj]?.record_name}
+            value={activeDns?.name}
           />
-          <span>.{activeDns?.name}</span>
+          {/* <span>.{activeDns?.name}</span> */}
         </div>
 
         <MyInputs
