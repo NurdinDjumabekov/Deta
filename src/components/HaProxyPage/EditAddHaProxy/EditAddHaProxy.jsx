@@ -9,7 +9,7 @@ import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 import Selects from "../../../common/Selects/Selects";
 
 /////// fns
-import { setModalActionsHaProxy } from "../../../store/reducers/requestHaProxySlice";
+import { setModalActionsHaProxy } from "../../../store/reducers/haProxySlice";
 
 /////// helpers
 import { listProtocols } from "../../../helpers/LocalData";
@@ -17,19 +17,28 @@ import { listProtocols } from "../../../helpers/LocalData";
 /////// style
 import "./style.scss";
 
-const EditAddHaProxy = ({ sendData }) => {
+const EditAddHaProxy = ({ sendData, typeAction }) => {
   const dispatch = useDispatch();
 
-  const { modalActionsHaProxy } = useSelector(
-    (state) => state.requestHaProxySlice
-  );
+  const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
 
   const onChange = (e) => {
     const { name, value, checked } = e.target;
 
     if (name === "checkType") {
-      const obj = { ...modalActionsHaProxy, [name]: checked };
+      console.log(checked, "checked");
+      const obj = { ...modalActionsHaProxy, [name]: checked ? 1 : 0 };
       dispatch(setModalActionsHaProxy(obj));
+      return;
+    }
+
+    if (name === "ip_addres") {
+      const regex = /^[0-9.:]*$/;
+      if (regex?.test(value)) {
+        const obj = { ...modalActionsHaProxy, [name]: value };
+        dispatch(setModalActionsHaProxy(obj));
+        return;
+      }
     } else {
       const obj = { ...modalActionsHaProxy, [name]: value };
       dispatch(setModalActionsHaProxy(obj));
@@ -39,6 +48,8 @@ const EditAddHaProxy = ({ sendData }) => {
   const onChangeSelect = (nameKey, name, id) => {
     dispatch(setModalActionsHaProxy({ ...modalActionsHaProxy, [nameKey]: id }));
   };
+
+  const listHttp = typeAction == 1 ? listProtocols : listProtocols?.slice(0, 2);
 
   return (
     <div className="addEditProxy">
@@ -61,26 +72,27 @@ const EditAddHaProxy = ({ sendData }) => {
       <div className="protocols">
         <h6>Тип протокола</h6>
         <Selects
-          list={listProtocols}
+          list={listHttp}
           initText={"Выбрать"}
           onChnage={onChangeSelect}
           nameKey={"type"}
         />
       </div>
 
-      <MyIPInput
+      <MyInputs
         title={"IP адрес :"}
         onChange={onChange}
         name={"ip_addres"}
         value={modalActionsHaProxy?.ip_addres}
       />
+
       <div className="bool">
         <input
           type="checkbox"
           id="checkbox"
           onChange={onChange}
           name="checkType"
-          checked={modalActionsHaProxy?.checkType}
+          checked={!!modalActionsHaProxy?.checkType}
         />
         <label htmlFor="checkbox">Check</label>
       </div>

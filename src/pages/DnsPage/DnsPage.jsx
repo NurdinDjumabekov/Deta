@@ -2,6 +2,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 //////helpers
 
@@ -26,6 +27,7 @@ import "./style.scss";
 
 const DnsPage = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const { activeDns } = useSelector((state) => state.stateSlice);
   const { listDnsDomen } = useSelector((state) => state.requestSlice);
@@ -38,7 +40,7 @@ const DnsPage = () => {
   useEffect(() => {
     dispatch(getDnsDomen());
     dispatch(getProviders());
-  }, []);
+  }, [pathname]);
 
   const active = activeDns?.guid === "" ? "activeDns" : "";
 

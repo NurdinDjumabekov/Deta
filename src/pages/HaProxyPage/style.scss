@@ -1,21 +1,19 @@
 .haProxy {
-  padding: 10px 0px;
+  padding: 5px 0px;
   width: 100%;
   height: 100vh;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 
   &__menu {
     display: flex;
     align-items: center;
     background: rgb(30, 31, 35);
     height: 50px;
-    top: 0;
-    gap: 10px;
-    position: fixed;
-    left: 60px;
+    gap: 20px;
     min-width: 100%;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 5px;
     z-index: 10;
+    border-left: 3px solid #292d32;
 
     .save {
       background: #43a0dd;
@@ -50,27 +48,45 @@
     width: 100%;
     display: flex;
     gap: 5px 2px;
-    padding: 42px 0 0 0;
+    padding: 5px 0 0 0;
+    height: calc(100% - 50px);
+    overflow: scroll;
+
+    > div {
+      width: 100% !important;
+
+      > div {
+        display: flex !important;
+        flex-direction: row !important;
+      }
+    }
 
     .every {
-      width: 17%;
       box-sizing: border-box;
-      min-height: 92vh;
       border-right: 1px solid #808080;
+      width: 17% !important;
 
       &__inner {
         border-bottom: 1px solid #808080;
-        padding: 5px 10px 5px 10px;
+        padding: 2px 5px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
 
         &__data {
+          width: calc(100% - 12px);
           .action {
             display: flex;
             align-items: center;
             gap: 8px;
+            justify-content: space-between;
+
+            > div {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
 
             p {
               font-size: 13px;
@@ -123,39 +139,46 @@
         }
 
         .offHaproxy {
-          background: rgb(218, 55, 55);
+          background: rgba(20, 221, 20, 0.789);
+        }
+
+        .onHaproxy {
+          background: rgb(204, 25, 25);
         }
       }
     }
-  }
 
-  &::-webkit-scrollbar {
-    min-width: 5px;
-    max-width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-    min-width: 5px;
-    max-width: 5px;
-    &:hover {
-      background-color: #050505;
+    &::-webkit-scrollbar {
+      width: 14px; // Установим ширину полосы прокрутки
+      height: 14px; // Для горизонтальной прокрутки, если нужно
     }
-  }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    cursor: pointer;
-    max-height: 50px;
-    min-height: 50px;
-  }
-
-  &:hover {
+    // Трек (фоновая область полосы прокрутки)
     &::-webkit-scrollbar-track {
-      background-color: #050505;
+      background-color: #f1f1f1; // Цвет фона для трека
+      border-radius: 3px; // Скругленные углы
     }
+
+    // Ползунок прокрутки
     &::-webkit-scrollbar-thumb {
-      background-color: #ffffff4e;
+      background-color: #888; // Цвет ползунка
+      border-radius: 3px; // Скругленные углы
+      border: 2px solid #fff; // Белая граница вокруг ползунка
+    }
+
+    // Эффект на ползунок при наведении
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #555; // Цвет ползунка при наведении
+    }
+
+    // Эффект на трек при наведении
+    &:hover {
+      &::-webkit-scrollbar-track {
+        background-color: #e0e0e0; // Цвет фона для трека при наведении
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #333; // Цвет ползунка при наведении
+      }
     }
   }
 }

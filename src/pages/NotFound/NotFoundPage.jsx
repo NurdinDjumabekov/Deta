@@ -10,6 +10,7 @@ const NotFoundPage = () => {
       localStorage.clear();
     }, 3000);
   }, []);
+
   return (
     <div className="notFound">
       <div>

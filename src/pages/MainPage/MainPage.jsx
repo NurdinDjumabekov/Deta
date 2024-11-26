@@ -2,6 +2,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 /////// fns
 import { getOS, getProviders } from "../../store/reducers/requestSlice";
@@ -32,6 +33,7 @@ import megaline from "../../assets/images/providers/megaline.jpg";
 
 const MainPage = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const { listProviders, listHosts, listContainers } = useSelector(
     (state) => state.requestSlice
@@ -58,7 +60,7 @@ const MainPage = () => {
       disconnectHost();
       // Отключение сокетов при размонтировании компонента
     };
-  }, []);
+  }, [pathname]);
 
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 

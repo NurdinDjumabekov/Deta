@@ -1,3 +1,42 @@
+.dataCenters {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 10px;
+  padding-top: 100px;
+  justify-content: flex-end;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 20px 15px;
+    cursor: pointer;
+
+    &:hover {
+      background: #ffffff36;
+      p {
+        display: inline-block;
+      }
+    }
+
+    p {
+      font-size: 17px;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      margin: 0;
+      color: white;
+    }
+  }
+
+  .activeDC {
+    background: #ffffff36;
+    p {
+      display: inline-block;
+    }
+  }
+}
+
 .menuBar {
   background: rgba(30, 31, 35, 255);
   display: flex;

@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 
-import { myAlert } from "../../helpers/MyAlert";
 import { clearHaPrioxy } from "../../helpers/clear";
+import axiosInstance from "../../axiosInstance";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -23,17 +23,22 @@ const initialState = {
   }, //// для редактирование и удаления HaProxy
 };
 
-const url_socket = "http://217.29.26.222:3633";
-
 ///// getHaProxyList - для списка Haproxy
 export const getHaProxyList = createAsyncThunk(
   "getHaProxyList",
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}proxy/getHaproxyList`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
-        return response?.data;
+        return {
+          list: response?.data?.list,
+          counts: {
+            all: response?.data?.all || 0,
+            active: response?.data?.active || 0,
+            de_active: response?.data?.de_active || 0,
+          },
+        };
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -43,29 +48,17 @@ export const getHaProxyList = createAsyncThunk(
   }
 );
 
-// ////// для моментального обновления хоста
-// export const updatedHosts = () => (dispatch) => {
-//   const socket = socketIOClient(url_socket);
-//   socket.on("asdas", ({ data }) => {
-//     dispatch(setUpdatedHost(data));
-//   });
-//   return () => {
-//     socket.disconnect();
-//   };
-// };
-
-///// actionsCreateHaProxyFN - /// для удаления,редактирования и добавления Haproxy
-export const actionsCreateHaProxyFN = createAsyncThunk(
-  "actionsCreateHaProxyFN",
+///// crudHaProxyReq - /// для удаления,редактирования и добавления Haproxy
+export const crudHaProxyReq = createAsyncThunk(
+  "crudHaProxyReq",
   async function (data, { dispatch, rejectWithValue }) {
     /// typeAction (для удаления(3),редактирования(2) и добавления(1) Haproxy)
     const url = `${REACT_APP_API_URL}proxy/actionsHaproxy`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearModalActionsHaProxy()); /// очищаю state для редактирования
-        dispatch(getHaProxyList()); /// get список HaProxy
-        return response?.data;
+        return response?.data.result;
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -92,13 +85,31 @@ const requestHaProxySlice = createSlice({
     /////////////////////////// getHaProxyList
     builder.addCase(getHaProxyList.fulfilled, (state, action) => {
       state.preloaderProxy = false;
-      state.listHaProxy = action.payload;
+      const newList = Array.from({ length: 7 }, () => []);
+      action.payload?.list?.forEach((item, index) => {
+        const targetIndex = index % 7; // определяем индекс подмассива, в который нужно поместить элемент
+        newList[targetIndex].push(item); // добавляем элемент в соответствующий подмассив
+      });
+
+      state.listHaProxy = newList;
     });
     builder.addCase(getHaProxyList.rejected, (state, action) => {
       state.error = action.payload;
       state.preloaderProxy = false;
     });
     builder.addCase(getHaProxyList.pending, (state, action) => {
+      state.preloaderProxy = true;
+    });
+
+    ///////////////////////// crudHaProxyReq
+    builder.addCase(crudHaProxyReq.fulfilled, (state, action) => {
+      state.preloaderProxy = false;
+    });
+    builder.addCase(crudHaProxyReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloaderProxy = false;
+    });
+    builder.addCase(crudHaProxyReq.pending, (state, action) => {
       state.preloaderProxy = true;
     });
   },

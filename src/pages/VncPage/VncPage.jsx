@@ -18,7 +18,7 @@ const VncPage = () => {
     };
   }, []);
 
-  const vncUrl = `http://217.29.26.222:3633/api2/json/nodes/host19/qemu/${vns_key}/vncwebsocket?port=5900&vncticket=PVEVNC:66D70074::pf8/zqUA+4Shrn5PFtYuxbuDZEpXGvIdP4vjahLcpFh8+I/0u3mr4lkP1kMrW1oiZTyl81qJOOAHD9VXf3jQUvbVL0FDMBwhkqN6I/K8s1EdMUs7TMiN0pbd0MS24pqAdtvCJbxzFCrlKJFHwCb6LkswutL3GERa5hgoHMoZLyIqWJKzf9KUv+jlcbNTYwpi9cD0dxcl5GhlsjttQPslZtM/HYNshFRhPU5teEnUp8q8g1IRVzNXxvg5wZEO1KtSPvN4pn7ypZVSi61gJk3uEoqHg/dwj7zyiaq/RYJtF87uKa0+5PzUCBWFczuuh/At7iRO4/tNnAQmLCtVlkdNgQ==`;
+  const vncUrl = `https://dd-api.ibm.kg/api2/json/nodes/host19/qemu/${vns_key}/vncwebsocket?port=5900&vncticket=PVEVNC:66D70074::pf8/zqUA+4Shrn5PFtYuxbuDZEpXGvIdP4vjahLcpFh8+I/0u3mr4lkP1kMrW1oiZTyl81qJOOAHD9VXf3jQUvbVL0FDMBwhkqN6I/K8s1EdMUs7TMiN0pbd0MS24pqAdtvCJbxzFCrlKJFHwCb6LkswutL3GERa5hgoHMoZLyIqWJKzf9KUv+jlcbNTYwpi9cD0dxcl5GhlsjttQPslZtM/HYNshFRhPU5teEnUp8q8g1IRVzNXxvg5wZEO1KtSPvN4pn7ypZVSi61gJk3uEoqHg/dwj7zyiaq/RYJtF87uKa0+5PzUCBWFczuuh/At7iRO4/tNnAQmLCtVlkdNgQ==`;
 
   return (
     <VncScreen
@@ -39,7 +39,7 @@ export default VncPage;
 
 // const VncPage = () => {
 //   const { vns_key } = useParams();
-//   const url = `http://217.29.26.222:3633/vnc/?key=${vns_key}`;
+//   const url = `https://dd-api.ibm.kg/vnc/?key=${vns_key}`;
 //   const vncContainer = useRef(null);
 
 //   useEffect(() => {

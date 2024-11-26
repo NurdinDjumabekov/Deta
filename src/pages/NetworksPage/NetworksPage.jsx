@@ -1,5 +1,7 @@
+////// hooks
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 ///// style
 import "./style.scss";
@@ -12,6 +14,7 @@ import { returnColorStatus } from "../../helpers/returnColorStatus";
 
 const NetworksPage = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const { listNetwork } = useSelector((state) => state.requestSlice);
 
@@ -22,7 +25,7 @@ const NetworksPage = () => {
     return () => {
       disconnectSocket(); // Отключение сокета при размонтировании компонента
     };
-  }, [dispatch]);
+  }, [dispatch, pathname]);
 
   return (
     <div className="networksPage">
@@ -35,9 +38,9 @@ const NetworksPage = () => {
               <p>x</p>
             </div>
             <div className="grid-container">
-              {item?.ips?.map((i) => (
+              {item?.ips?.map((i, index) => (
                 <div
-                  key={i.ip_id}
+                  key={index}
                   className={`grid-item ${returnColorStatus(i)}`}
                 >
                   <p>{i?.ip_number}</p>

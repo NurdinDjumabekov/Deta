@@ -35,14 +35,11 @@ const CustomTooltip = ({ active, payload, label }) => {
 const GraphicHosts = () => {
   const { listDiagrams } = useSelector((state) => state.stateSlice);
 
-  console.log(listDiagrams, "listDiagrams");
   const newDiagrams = listDiagrams?.map((i) => ({
     ...i,
     RAM: i?.RAM / 1000,
     CPU: i?.CPU * 100,
   }));
-
-  console.log(newDiagrams, "newDiagrams");
 
   return (
     <div className="graphicHosts">

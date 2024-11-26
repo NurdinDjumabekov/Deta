@@ -26,8 +26,6 @@ const GraphicContainer = () => {
     CPU: i?.CPU * 100,
   }));
 
-  console.log(newDiagrams, "newDiagrams");
-
   return (
     <div className="graphicContainer">
       <ResponsiveContainer width="100%" height="100%">

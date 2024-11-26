@@ -1,4 +1,7 @@
-import React from "react";
+/////// hooks
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 ////style
 import "./style.scss";
@@ -12,6 +15,12 @@ import editIcon from "../../assets/icons/edit.svg";
 import monitor from "../../assets/icons/display.svg";
 
 const IpAddresPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+
+  useEffect(() => {}, [pathname]);
+
   return (
     <div className="ipAddresPage">
       <div className="ipAddresPage__menu">

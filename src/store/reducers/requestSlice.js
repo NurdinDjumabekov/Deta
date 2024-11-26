@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
-import axios from "axios";
 import {
   changeMenuInner,
   clearAddHost,
@@ -27,6 +26,8 @@ import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen } from "../../helpers/LocalData";
 import { myAlert } from "../../helpers/MyAlert";
 import { tranformKey } from "../../helpers/tranformTextInNum";
+import axiosInstance from "../../axiosInstance";
+import axios from "axios";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -52,7 +53,7 @@ const initialState = {
   listVolns: {}, //// список волн
 };
 
-const url_socket = "http://217.29.26.222:3633";
+const url_socket = "https://dd-api.ibm.kg";
 
 ///// getProviders - для получения провайдеров
 export const getProviders = createAsyncThunk(
@@ -60,7 +61,7 @@ export const getProviders = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}api/network/getProviders`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data?.data;
       } else {
@@ -88,9 +89,9 @@ export const updatedProvoders = () => (dispatch) => {
 export const getHosts = createAsyncThunk(
   "getHosts",
   async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}host/getHostList`;
+    const url = `host/getHostList`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance.get(url);
       if (response.status >= 200 && response.status < 300) {
         const first = response?.data?.[0]?.guid;
         const chart = response?.data?.[0]?.chart;
@@ -115,7 +116,7 @@ export const getGroup = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}++++++++++`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -133,7 +134,7 @@ export const getOS = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/getOS`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -152,7 +153,7 @@ export const addHostFN = createAsyncThunk(
     const url = `${REACT_APP_API_URL}host/createHost`;
     ///  data - новые добавляемые данные хоста
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearAddHost()); //// очищаю временные данные для создания хоста
         myAlert("Хост добавлен, ожидайте обновление хоста");
@@ -185,7 +186,7 @@ export const deleteHost = createAsyncThunk(
     const url = `${REACT_APP_API_URL}host/deleteHost`;
     const data = { guid };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getHosts()); /// снова получаю все данные
         dispatch(setGuidHostDel(false)); /// закрываю модалку для удаления хоста
@@ -206,7 +207,7 @@ export const editHost = createAsyncThunk(
     const url = `${REACT_APP_API_URL}host/editHost`;
     ///  data - изменяемы данные хоста
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearTemporaryHosts()); ///// очищаю временное хранение данных хоста
         dispatch(setGuidHostEdit("")); //// закрываю модалку
@@ -230,7 +231,7 @@ export const getContainers = createAsyncThunk(
     const data = { vawe: "1", elemid: guid }; //// guid - хоста
 
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost(guid));
 
@@ -263,7 +264,7 @@ export const getContainersInMenu = createAsyncThunk(
     const data = { guid_host, guid_service, guid_user }; //// guid - хоста
 
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost("")); //// очищаю активный хост
         dispatch(setActiveContainer(0)); ///очищаю активный контейнер
@@ -286,7 +287,7 @@ export const getDiagramsContainers = createAsyncThunk(
     const data = { guid_vm }; //// guid - контейнерв
 
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -304,7 +305,7 @@ export const searchContainers = createAsyncThunk(
   async function (text, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/search?searchText=${text}`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost("")); //// очищаю активный хост
         dispatch(setActiveContainer(0)); ///очищаю активный контейнер
@@ -325,7 +326,7 @@ export const addContainersFN = createAsyncThunk(
     const url = `${REACT_APP_API_URL}host/+++++++++++++++++++`;
     ///  data - добавляемые данные хоста
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -344,7 +345,7 @@ export const editContainers = createAsyncThunk(
     const url = `${REACT_APP_API_URL}node/editContainer`;
     ///  data - изменяемы данные хоста
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getContainers(activeHost));
         //// guid активного хоста
@@ -367,7 +368,7 @@ export const editContainerOS = createAsyncThunk(
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/updateVmOc`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenOSModal("")); ///// очищаю временное хранение данных ОС
 
@@ -393,7 +394,7 @@ export const getFilesInContainer = createAsyncThunk(
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/getvmFiles?guid_vm=${guid}`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         ///// очищаю временное хранение данных контейнеров
         dispatch(setOpenAddFiles({ guid, files: response?.data?.files }));
@@ -414,7 +415,7 @@ export const addDelFileInContainer = createAsyncThunk(
     const { data, guid_container } = props;
     const url = `${REACT_APP_API_URL}node/sendDellFile`;
     try {
-      const response = await axios.post(url, data, {
+      const response = await axiosInstance.post(url, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status >= 200 && response.status < 300) {
@@ -436,7 +437,7 @@ export const addGroupContFN = createAsyncThunk(
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/updateUserOrGroupPermissions`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModalAddGroup(""));
         /// очищаю данные для закрытия модалки
@@ -456,7 +457,7 @@ export const delGroupContainerFN = createAsyncThunk(
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/delInGroup?guid=${guid}`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModaDelGroup("")); /// закрываю модалку
         myAlert("Виртуальная машина удалена с группы!");
@@ -476,7 +477,7 @@ export const fixTimeCreateCont = createAsyncThunk(
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/createTimeMark`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         myAlert("Время зафиксировано");
         return response?.data;
@@ -495,7 +496,7 @@ export const offContainerFN = createAsyncThunk(
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModaDelGroup("")); /// закрываю модалку
         return response?.data;
@@ -515,7 +516,7 @@ export const getDataForBackUp = createAsyncThunk(
     const url = `${REACT_APP_API_URL}node/getBackUpData`;
     const data = { guid_vm };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -535,7 +536,7 @@ export const backUpContainerFN = createAsyncThunk(
     const url = `${REACT_APP_API_URL}node/createBackUp`;
     const data = { storage: fasts, mode: snaps, compress: type, guid };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearOpenModalBackUp());
         /// закрываю модалку и очищаю данные для временного хранения данных бэкапа
@@ -556,7 +557,7 @@ export const getDataAcceptUsers = createAsyncThunk(
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/getAccept?guid_vm=${guid}`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -574,7 +575,7 @@ export const editAccessesUsersFN = createAsyncThunk(
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/updateUserOrGroupPermissions`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         myAlert("Данные сохранены");
         dispatch(setOpenModalKeyCont(""));
@@ -595,7 +596,7 @@ export const delContainerFN = createAsyncThunk(
     const url = `${REACT_APP_API_URL}node/shutdown`;
     const data = { guid };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setOpenModaDelCont("")); /// закрываю модалку
         myAlert("Виртуальная машина удалена!");
@@ -619,7 +620,7 @@ export const getVolns = createAsyncThunk(
     const data = { guid }; //// guid - хоста
 
     // try {
-    //   const response = await axios.post(url, data);
+    //   const response = await axiosInstance.post(url, data);
     //   if (response.status >= 200 && response.status < 300) {
 
     //     return response?.data;
@@ -640,7 +641,7 @@ export const getNetworks = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}api/network/getallIpList`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data?.data;
       } else {
@@ -671,7 +672,7 @@ export const getDnsDomen = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/getDomens`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         const guid = response?.data?.[0]?.guid;
         const name = response?.data?.[0]?.domen_name;
@@ -701,7 +702,7 @@ export const addDomens = createAsyncThunk(
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/creareDomen`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         const guid = response?.data?.guid;
 
@@ -737,7 +738,7 @@ export const deleteDomen = createAsyncThunk(
     const url = `${REACT_APP_API_URL}dns/deleteDomen`;
     const data = { guid: guidDelete };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsDomen()); //// get все домены
         dispatch(setGuidDelete("")); //// закрываю модалку
@@ -760,7 +761,7 @@ export const deleteDomen = createAsyncThunk(
 //     const url = `${REACT_APP_API_URL}`;
 //     const data = { ...objEdit, type_record: 1 }; ///  type_record: 1, chech (dhtvtyyj)
 //     try {
-//       const response = await axios.post(url, data);
+//       const response = await axiosInstance.post(url, data);
 //       if (response.status >= 200 && response.status < 300) {
 
 //         dispatch(getDnsDomen()); //// get все домены
@@ -795,7 +796,7 @@ export const getDnsSubDomen = createAsyncThunk(
   async function ({ guid, domen_name }, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}`;
     try {
-      const response = await axios(url);
+      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveDns({ guid, name: domen_name }));
         return response?.data;
@@ -817,7 +818,7 @@ export const sortSubDomen = createAsyncThunk(
     const data = { domen_guid, sort, field_name };
 
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -836,7 +837,7 @@ export const addSubDomen = createAsyncThunk(
     const { name, ...data } = props;
     const url = `${REACT_APP_API_URL}dns/creareSubDomen`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         const alreadyCreate = response?.data?.alreadyCreate;
         if (alreadyCreate) {
@@ -869,7 +870,7 @@ export const deleteSubDomen = createAsyncThunk(
     const url = `${REACT_APP_API_URL}dns/deleteSubDomen`;
     const data = { guid: guidDelete };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
         /// это guid домена (get list data)
@@ -897,7 +898,7 @@ export const editSubDomen = createAsyncThunk(
     const url = `${REACT_APP_API_URL}dns/updateSubDomen`;
     const data = { ...objEdit, type_record: 1, record_name }; ///  type_record: 1, chech (dhtvtyyj)
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
         /// это guid домена (get list data)
@@ -921,7 +922,7 @@ export const confirmStatusSubDomenFN = createAsyncThunk(
     const data = { guid_domen: guid };
     const url = `${REACT_APP_API_URL}dns/saveSettings`;
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ guid, domen_name: name }));
         /// это guid домена (get list data)
@@ -945,7 +946,7 @@ export const changeIpProviders = createAsyncThunk(
     const url = `${REACT_APP_API_URL}dns/undateIpInsurance`;
 
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         setObjIP({ from: "", to: "" }); //// очишаю state
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
@@ -967,7 +968,7 @@ export const returnIpProviders = createAsyncThunk(
     const url = `${REACT_APP_API_URL}dns/returnIpInsurance?domen_guid=${activeDns?.guid}`;
     const data = { domen_guid: activeDns?.guid };
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
         myAlert("Изменения внесены!");
@@ -989,7 +990,7 @@ export const distributeIpAddresFN = createAsyncThunk(
     const url = `${REACT_APP_API_URL}dns/distributeIp`;
 
     try {
-      const response = await axios.post(url, data);
+      const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setDistributeIpModal()); /// закрываю модалку подтверждения
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));

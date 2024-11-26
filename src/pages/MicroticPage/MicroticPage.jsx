@@ -1,8 +1,8 @@
+/////// hooks
 import React from "react";
 import { useEffect } from "react";
-
-/////// hooks
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 /////// fns
 
@@ -21,8 +21,9 @@ import "./style.scss";
 
 const MicroticPage = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
-  useEffect(() => {}, []);
+  useEffect(() => {}, [pathname]);
 
   return (
     <div className="microticPage">

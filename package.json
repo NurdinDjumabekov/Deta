@@ -35,6 +35,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
     "react-vnc": "^2.0.2",
+    "react-window": "^1.8.10",
     "recharts": "^2.12.7",
     "redux-persist": "^6.0.0",
     "sass": "^1.69.5",
