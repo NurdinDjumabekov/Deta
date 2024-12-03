@@ -53,7 +53,7 @@
         box-sizing: border-box; /* Учитывайте отступы и границы в расчет ширины и высоты */
         border-left: 1px solid #050505;
         border-top: 1px solid #050505;
-        padding: 3px 1px;
+        padding: 0px 1px;
       }
 
       .grid-item p {
@@ -115,6 +115,25 @@
   .blueAnimSheat {
     animation: animBlue 0.4s infinite;
     background-color: #87a7e1;
+  }
+}
+
+.inputsNetworks {
+  .actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    .addAction {
+      font-size: 13px;
+      height: 35px;
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 3px;
+      margin: 15px 0 0 0;
+      background: #08920a;
+      line-height: 10px;
+    }
   }
 }
 

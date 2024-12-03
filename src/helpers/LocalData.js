@@ -14,12 +14,15 @@ import freeBSD from "../assets/images/OS/freeBSD.png";
 import centos from "../assets/images/OS/centos.png";
 
 export const pages = [
-  { id: 1, name: "Главная", path: "/", img: home },
+  { id: 1, name: "Главная", path: "/hosts", img: home },
   { id: 2, name: "Микротики", path: "/microtic", img: microtic },
-  { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
-  { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
+];
+
+export const pagesAllDC = [
   { id: 6, name: "ДНС", path: "/dns", img: dns },
+  { id: 3, name: "Сети", path: "/networks", img: seti },
+  { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
 ];
 
 export const listGr = [
@@ -40,69 +43,6 @@ export const listname = [
   { name: "Эржан", count: 2 },
   { name: "Бек", count: 0 },
 ];
-
-export const providers = [
-  { name: "Aknet", speed: "0.708" },
-  { name: "Megaline", speed: "0.587" },
-  { name: "Saima", speed: "0.888" },
-  { name: "Saima2", speed: "0.883" },
-];
-
-export const listHosts = {
-  listOne: [
-    "1231",
-    "1231",
-    "3242",
-    "5432",
-    "2133",
-    "1231",
-    "4121",
-    "1231",
-    "3242",
-    "5432",
-    "1231",
-    "4121",
-  ],
-  listTwo: ["3242", "1231", "1231", "3242", "2133", "1231", "4121"],
-  listThree: [
-    "1231",
-    "1231",
-    "3242",
-    "5432",
-    "1231",
-    "5432",
-    "2133",
-    "1231",
-    "4121",
-    "1231",
-    "1231",
-    "3242",
-    "5432",
-    "1231",
-    "5432",
-    "2133",
-    "1231",
-    "4121",
-    "1231",
-    "1231",
-    "3242",
-    "5432",
-    "1231",
-    "5432",
-    "2133",
-    "1231",
-    "4121",
-    "1231",
-    "1231",
-    "3242",
-    "5432",
-    "1231",
-    "5432",
-    "2133",
-    "1231",
-    "4121",
-  ],
-};
 
 export const listColor = [
   {

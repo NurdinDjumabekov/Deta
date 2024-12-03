@@ -144,3 +144,35 @@ img {
     opacity: 1;
   }
 }
+
+.hoverScroll {
+  &::-webkit-scrollbar {
+    min-width: 8px;
+    max-width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    min-width: 8px;
+    max-width: 8px;
+    &:hover {
+      background-color: #050505;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    cursor: pointer;
+    max-height: 50px;
+    min-height: 50px;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #050505;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ffffff4e;
+    }
+  }
+}

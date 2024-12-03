@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 /////// componets
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
+import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 
 /////// imgs
 import delImg from "../../../assets/icons/delete.svg";
@@ -23,7 +24,8 @@ import { setTemporaryHosts } from "../../../store/reducers/stateSlice";
 
 /////// style
 import "./style.scss";
-import MyIPInput from "../../../common/MyIPInput/MyIPInput";
+
+////// helpers
 import { checkIP } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
 
@@ -35,7 +37,7 @@ const ModalsForHosts = () => {
   const { temporaryHosts, guidHostDel, guidHostEdit, addTempHost, activeHost } =
     useSelector((state) => state.stateSlice);
 
-  const addHost = (e) => {
+  const addHost = async (e) => {
     e.preventDefault();
 
     if (checkIP(addTempHost?.ip_address)) {

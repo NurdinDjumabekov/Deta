@@ -175,16 +175,6 @@ const containersSlice = createSlice({
       state.modal = 0;
     },
 
-    setListDiagrams: (state, action) => {
-      state.listDiagrams = action.payload?.map((item) => {
-        return {
-          time: item?.date_system,
-          CPU: item?.node_cpu_usage,
-          RAM: item?.node_ram_usage,
-        };
-      });
-    },
-
     setMenuInner: (state, action) => {
       const newMenu = state.menuInner?.map((item) => {
         if (item.id === action.payload) {
@@ -441,7 +431,6 @@ const containersSlice = createSlice({
 export const {
   setOpenModals,
   closeModals,
-  setListDiagrams,
   setMenuInner,
   changeMenuInner,
   clearMenuInner,

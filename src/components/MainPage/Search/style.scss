@@ -1,9 +1,8 @@
 .mainAction {
   display: flex;
+  flex-direction: column;
+  gap: 5px;
   align-items: center;
-  position: absolute;
-  top: -36px;
-  left: 0;
   min-width: 100%;
 
   button {
@@ -15,14 +14,14 @@
   }
 
   .mainSearch {
-    width: 400px;
     position: relative;
     height: 30px;
-    margin: 0 0 0 20px;
+    width: 94%;
+    margin: 20px 0 0 0;
 
     input {
       width: 100%;
-      padding: 0px 10px 0pc 40px;
+      padding: 0px 10px 0px 40px;
       height: 30px;
       background: rgb(30, 31, 35);
       border: 1px solid #ffffff83;

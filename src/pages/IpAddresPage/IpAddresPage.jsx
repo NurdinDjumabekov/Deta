@@ -1,7 +1,7 @@
 /////// hooks
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 ////style
 import "./style.scss";
@@ -14,24 +14,34 @@ import addicon from "../../assets/icons/add.svg";
 import editIcon from "../../assets/icons/edit.svg";
 import monitor from "../../assets/icons/display.svg";
 
+/////// fns
+import { getStaticsIpAddresReq } from "../../store/reducers/networkSlice";
+import { cutNums } from "../../helpers/cutNums";
+
 const IpAddresPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  useEffect(() => {}, [pathname]);
+  const { listStaticsIp } = useSelector((state) => state.networkSlice);
+
+  useEffect(() => {
+    dispatch(getStaticsIpAddresReq());
+  }, []);
+
+  console.log(listStaticsIp, "listStaticsIp");
 
   return (
-    <div className="ipAddresPage">
+    <div className="ipAddresPage hoverScroll">
       <div className="ipAddresPage__menu">
         <button className="addBtn">+</button>
       </div>
 
       <div className="ipAddresPage__inner">
-        {listPrivoiders?.map((item, index) => (
-          <div className="every" key={index}>
+        {listStaticsIp?.map((item, index) => (
+          <div className="every" key={item?.guid}>
             <div className="titlesAction">
-              <h5>{item?.privoider}</h5>
+              <h5>{item?.name_group}</h5>
               <div className="actions">
                 <button>
                   <img src={addicon} alt="+" />
@@ -41,12 +51,12 @@ const IpAddresPage = () => {
                 </button>
               </div>
             </div>
-            {item?.listInnerProv?.map((i, index) => (
+            {item?.subgroups?.map((i, index) => (
               <div className="every__inner" key={index}>
                 <div className="titleInner">
                   <div className="header">
-                    <h6>{i?.nameBlock}</h6>
-                    <p>{i?.hostTwo}</p>
+                    <h6>{i?.subgroup_name}</h6>
+                    <p>{i?.subgroup_comment}</p>
                     <div className="actions">
                       <button>
                         <img src={addicon} alt="+" />
@@ -59,23 +69,31 @@ const IpAddresPage = () => {
                   <span className="host">{i?.host}</span>
                 </div>
                 <div className="listIp">
-                  {i?.list?.map((i, index) => (
-                    <div className="ip__every">
+                  <div className="titles">
+                    <p>№</p>
+                    <p>IP</p>
+                    <p>PING</p>
+                    <p>Комментарий</p>
+                  </div>
+                  {i?.ips?.map((jex, index) => (
+                    <div className="ip__every" key={jex?.guid}>
                       <div className="ip__every__inner">
                         <div className="index">
                           <b>{index + 1}</b>
                           <div className="btnBlink"></div>
                         </div>
-                        <div className="moreInfo">
-                          <p>{i?.ip}</p>
-                          <span>{i?.ping} мс</span>
-                          <div className="nums">
-                            <img src={monitor} alt="[]" />
-                            <p>{i?.num}</p>
+                        <div className="moreInfoIp">
+                          <p>{jex?.static_ip}</p>
+                          <span>{cutNums(+jex?.avg_ping, 4)} мс</span>
+                          <div className="other">
+                            <p className="comment">{jex?.comment}</p>
+                            <div className="nums">
+                              <p>{jex?.number_ip}</p>
+                              <img src={monitor} alt="[]" />
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <p className="comment">{i?.comment}</p>
                     </div>
                   ))}
                 </div>

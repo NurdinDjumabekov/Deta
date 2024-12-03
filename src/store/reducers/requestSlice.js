@@ -36,6 +36,7 @@ const initialState = {
 
   ///// containers /////
   listContainers: [],
+  countsContainers: {}, //// кол-во вкл, откл. контейнеров
   searchContainer: "",
   diagramsContainer: [], //// для диаграммы хостов на главной странице
   dataForBackUp: {}, //// выборка данных для бэкапа (3 селекта)
@@ -95,11 +96,13 @@ export const getHosts = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         const first = response?.data?.[0]?.guid;
         const chart = response?.data?.[0]?.chart;
+        const node_ram_mb = response?.data?.[0]?.node_ram_mb;
         dispatch(setActiveHost(first));
         dispatch(getContainers(first));
         /// подставляю первый хост чтобы он был активный
 
-        dispatch(setListDiagrams(chart)); //// для диаграммы хостов
+        dispatch(setListDiagrams({ list: chart, node_ram_mb }));
+        //// для диаграммы хостов
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -151,12 +154,19 @@ export const addHostFN = createAsyncThunk(
   "addHostFN",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/createHost`;
-    ///  data - новые добавляемые данные хоста
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(clearAddHost()); //// очищаю временные данные для создания хоста
-        myAlert("Хост добавлен, ожидайте обновление хоста");
+        if (response.data.res == 1) {
+          myAlert("Хост добавлен, ожидайте обновление хоста");
+        } else if (response.data.res == 2) {
+          myAlert("Хост с таким наименованием уже существует", "error");
+        } else if (response.data.res == 3) {
+          myAlert("Хост с таким ip адресом уже существует", "error");
+        } else {
+          myAlert("Упс, что-то пошло не так!", "error");
+        }
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -190,6 +200,7 @@ export const deleteHost = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         dispatch(getHosts()); /// снова получаю все данные
         dispatch(setGuidHostDel(false)); /// закрываю модалку для удаления хоста
+        myAlert("Хост удалён!");
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -245,6 +256,9 @@ export const getContainers = createAsyncThunk(
         dispatch(changeMenuInner(objRecord));
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
 
+        dispatch(countsContainersFN(response?.data?.counts));
+        //// подставляю кол-ва вкл и откл контейнеров
+
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -269,6 +283,9 @@ export const getContainersInMenu = createAsyncThunk(
         dispatch(setActiveHost("")); //// очищаю активный хост
         dispatch(setActiveContainer(0)); ///очищаю активный контейнер
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
+
+        dispatch(countsContainersFN(response?.data?.counts));
+        //// подставляю кол-ва вкл и откл контейнеров
         return response?.data?.result;
       } else {
         throw Error(`Error: ${response.status}`);
@@ -1017,6 +1034,10 @@ const requestSlice = createSlice({
       state.listProviders = action.payload;
     },
 
+    countsContainersFN: (state, action) => {
+      state.countsContainers = action.payload;
+    },
+
     setUpdatedNetwork: (state, action) => {
       const obj = action.payload;
       const list = state.listNetwork;
@@ -1094,22 +1115,6 @@ const requestSlice = createSlice({
       state.preloader = false;
     });
     builder.addCase(getOS.pending, (state, action) => {
-      state.preloader = true;
-    });
-
-    ///////////////////////////// addHostFN
-    builder.addCase(addHostFN.fulfilled, (state, action) => {
-      state.preloader = false;
-      const obj = action.payload;
-      state.listHosts = state.listHosts?.map((item) =>
-        item?.guid == obj?.guid ? obj : item
-      );
-    });
-    builder.addCase(addHostFN.rejected, (state, action) => {
-      state.error = action.payload;
-      state.preloader = false;
-    });
-    builder.addCase(addHostFN.pending, (state, action) => {
       state.preloader = true;
     });
 
@@ -1362,6 +1367,7 @@ export const {
   setSearchContainer,
   setListAccessesUsers,
   setListVolns,
+  countsContainersFN,
 } = requestSlice.actions;
 
 export default requestSlice.reducer;

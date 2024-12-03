@@ -21,6 +21,12 @@
             width: 20%;
             border-bottom: 1px solid rgba(224, 224, 224, 0.205) !important;
             cursor: pointer;
+
+            img {
+              width: 8px;
+              height: 8px;
+              margin: 0 0 0 4px;
+            }
           }
         }
       }

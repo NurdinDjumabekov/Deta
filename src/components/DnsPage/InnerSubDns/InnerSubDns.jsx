@@ -13,6 +13,7 @@ import ModalsForAllDns from "../ModalsForAllDns/ModalsForAllDns";
 ////// imgs
 import editIcon from "../../../assets/icons/edit.svg";
 import krestIcon from "../../../assets/icons/krest.svg";
+import arrowSort from "../../../assets/icons/arrowSort.svg";
 
 ////// fns
 import { sortSubDomen } from "../../../store/reducers/requestSlice";
@@ -68,12 +69,14 @@ const InnerSubDns = () => {
                 onClick={() => sortList("domen_name")}
               >
                 Name
+                <img src={arrowSort} alt=">" />
               </TableCell>
               <TableCell
                 style={{ width: "10%" }}
                 onClick={() => sortList("recordType")}
               >
                 Types
+                <img src={arrowSort} alt=">" />
               </TableCell>
               <TableCell style={{ width: "5%" }}>TTL</TableCell>
               <TableCell style={{ width: "15%" }}>Data</TableCell>

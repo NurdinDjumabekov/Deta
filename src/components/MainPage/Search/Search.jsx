@@ -52,10 +52,10 @@ const Search = () => {
 
   return (
     <div className="mainAction">
-      <button onClick={openAddCont}>+</button>
+      {/* <button onClick={openAddCont}>+</button> */}
       <div className="mainSearch">
         <img src={loop} alt="" />
-        <input type="text" onChange={onChange} value={input} />
+        <input type="search" onChange={onChange} value={input} />
       </div>
     </div>
   );

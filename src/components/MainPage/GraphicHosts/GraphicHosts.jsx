@@ -53,8 +53,18 @@ const GraphicHosts = () => {
             height={80}
             tick={{ fontSize: 10 }}
           />
-          <YAxis yAxisId="left" orientation="left" stroke="#ff0077" />
-          <YAxis yAxisId="right" orientation="right" stroke="#00bfff" />
+          <YAxis
+            yAxisId="left"
+            orientation="left"
+            stroke="#ff0077"
+            domain={[0, 100]}
+          />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            stroke="#00bfff"
+            domain={[0, +listDiagrams?.[0]?.node_ram_mb]}
+          />
           <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Line

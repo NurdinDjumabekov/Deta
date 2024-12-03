@@ -7,6 +7,9 @@ import delImg from "../../../assets/icons/delete.svg";
 import diagram from "../../../assets/icons/diagram.svg";
 import repeat from "../../../assets/icons/repeat.svg";
 import editImg from "../../../assets/icons/edit.svg";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 ////// styles
 import "./style.scss";
@@ -23,6 +26,7 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 
 ////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
+import { cutNums } from "../../../helpers/cutNums";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr } = item;
@@ -38,7 +42,7 @@ const Hosts = ({ item }) => {
 
   const clickHost = () => {
     dispatch(getContainers(guid));
-    dispatch(setListDiagrams(chart));
+    dispatch(setListDiagrams({ list: chart, node_ram_mb }));
     //// выбор хоста для получения контейнеров связанных с этим хостом
   };
 
@@ -50,61 +54,58 @@ const Hosts = ({ item }) => {
     //// для открытия модалки
   };
 
-  const err = host_status == 5 ? "lineError" : "";
+  const err = host_status == -1 ? "lineError" : "";
 
   const active = activeHost == guid ? "activeHost" : "";
 
   return (
-    <>
-      <div className={`hostsMain ${err} ${active}`} onClick={clickHost}>
-        <h4>{node_model}</h4>
+    <div className={`hostsMain ${err} ${active}`} onClick={clickHost}>
+      <h4>{node_model}</h4>
+      <div className="actions">
+        <p>
+          {host_name}(<b>{secondsToDhms(node_uptime_sec)}</b>)
+        </p>
         <div className="actions">
-          <p>
-            {host_name}(<b>{secondsToDhms(node_uptime_sec)}</b>)
-          </p>
-
-          <div className="actions">
-            <button>
-              <img src={repeat} alt="x" />
-              <span className="moreInfo">Обновить данные хоста</span>
-            </button>
-            <button className="edit" onClick={editOpenModal}>
-              <img src={editImg} alt="x" />
-              <span className="moreInfo">Изменить</span>
-            </button>
-            <button
-              className="del"
-              onClick={() => dispatch(setGuidHostDel(true))}
-            >
-              <img src={delImg} alt="x" />
-              <span className="moreInfo">Удалить</span>
-            </button>
-          </div>
+          <button>
+            <img src={repeat} alt="x" />
+            <span className="moreInfo">Обновить данные хоста</span>
+          </button>
+          <button className="edit" onClick={editOpenModal}>
+            <BorderColorIcon sx={{ width: 19, height: 19, fill: "yellow" }} />
+            <span className="moreInfo">Изменить</span>
+          </button>
+          <button
+            className="del"
+            onClick={() => dispatch(setGuidHostDel(true))}
+          >
+            <img src={delImg} alt="x" />{" "}
+            <span className="moreInfo">Удалить</span>
+          </button>
         </div>
-
-        <div className="vmbrBlock">
-          {listVmbr?.map((item, index) => (
-            <div key={index}>
-              <p>vmbr {index}</p>
-              <img src={diagram} alt="0" />
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-
-        <p className="ip_host">{host_ip}</p>
-
-        <MemoryComp
-          node_cpu_usage={node_cpu_usage}
-          node_cpu={node_cpu}
-          node_ram_usage={node_ram_usage}
-          node_ram_mb={node_ram_mb}
-          array_storages={array_storages}
-        />
-
-        <p className="comment">{node_comment}</p>
       </div>
-    </>
+
+      <div className="vmbrBlock">
+        {listVmbr?.map((item, index) => (
+          <div key={index}>
+            <p>vmbr {index}</p>
+            <img src={diagram} alt="0" />
+            <span>{item}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="ip_host">{host_ip}</p>
+
+      <MemoryComp
+        node_cpu_usage={node_cpu_usage}
+        node_cpu={node_cpu}
+        node_ram_usage={node_ram_usage}
+        node_ram_mb={node_ram_mb}
+        array_storages={array_storages}
+      />
+
+      <p className="comment">{node_comment}</p>
+    </div>
   );
 };
 

@@ -12,6 +12,7 @@ import {
   clearDataTemporaryDNS,
   clearDataTemporaryHosts,
 } from "../../helpers/clear";
+import { cutNums } from "../../helpers/cutNums";
 
 const initialState = {
   listDiagrams: [], //// для диаграммы хостов на главной странице
@@ -185,11 +186,12 @@ const stateSlice = createSlice({
     },
 
     setListDiagrams: (state, action) => {
-      state.listDiagrams = action.payload?.map((item) => {
+      state.listDiagrams = action.payload?.list?.map((item) => {
         return {
           time: item?.date_system,
           CPU: item?.node_cpu_usage,
           RAM: item?.node_ram_usage,
+          node_ram_mb: cutNums(+action.payload?.node_ram_mb / 1024, 2),
         };
       });
     },

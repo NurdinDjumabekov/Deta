@@ -17,7 +17,6 @@ const MenuInner = () => {
   const dispatch = useDispatch();
 
   const { menuInner, activeHost } = useSelector((state) => state.stateSlice);
-  const { activeGroup } = useSelector((state) => state.stateSlice);
 
   const choice = (id) => dispatch(setMenuInner(id));
 
@@ -34,6 +33,8 @@ const MenuInner = () => {
 
   return (
     <div className="menuInner">
+      <Search />
+
       <div className="menuInner__inner">
         {menuInner?.map((item, index) => (
           <div key={index}>
@@ -69,7 +70,6 @@ const MenuInner = () => {
           </div>
         ))}
       </div>
-      <Search />
     </div>
   );
 };

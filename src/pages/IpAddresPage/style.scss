@@ -43,27 +43,32 @@
     position: fixed;
     left: 60px;
     min-width: 100%;
-    padding: 0 0 0 20px;
+    padding: 0 40px;
+    z-index: 10;
   }
 
   &__inner {
     width: 100%;
     display: flex;
-    gap: 5px 0px;
     padding: 42px 0 0 0;
-    min-height: 98vh;
+    height: 100%;
+    flex-wrap: wrap;
+    gap: 0px;
+    align-content: flex-start;
+    align-items: stretch;
 
     .every {
-      width: 17%;
       box-sizing: border-box;
-      min-height: 92vh;
       border-right: 1px solid #808080;
-      padding: 10px;
+      width: 450px;
+      height: auto;
+      border-bottom: 1px solid #808080; /* Для строк */
 
       .titlesAction {
         display: flex;
         align-items: center;
         gap: 20px;
+        padding: 5px 8px 0px;
 
         h5 {
           font-size: 14px;
@@ -72,17 +77,18 @@
       }
 
       &__inner {
-        margin: 0 0 30px 0;
+        margin: 0 0 10px 0;
         .titleInner {
           background: rgb(30, 31, 35);
-          padding: 8px;
-          border-radius: 5px;
+          padding: 8px 6px;
           margin: 5px 0 0 0;
+
           .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
+
             h6 {
               font-size: 14px;
               color: #a074c4;
@@ -104,20 +110,58 @@
         .listIp {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 1px;
+
+          .titles {
+            width: 100%;
+            display: flex;
+            padding: 2px 0px;
+            p:nth-child(1) {
+              width: 45px;
+              font-size: 10px;
+              text-align: left;
+              padding: 0 8px;
+              font-weight: 600;
+            }
+            p:nth-child(2) {
+              width: 60px;
+              font-size: 10px;
+              text-align: center;
+              font-weight: 600;
+            }
+            p:nth-child(3) {
+              font-size: 10px;
+              text-align: center;
+              width: 80px;
+              font-weight: 600;
+            }
+            p:nth-child(4) {
+              // width: 100%;
+              font-size: 10px;
+              font-weight: 600;
+              text-align: center;
+            }
+          }
 
           .ip__every {
             display: flex;
             flex-direction: column;
             border-bottom: 1px solid #808080;
-            padding: 0 0 5px 0;
+            padding: 0px 10px;
 
             &__inner {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              padding: 5px 3px;
+              // padding: 5px 3px;
               gap: 8px;
+
+              .btnBlink {
+                width: 7px !important;
+                min-width: 7px !important;
+                min-height: 8px !important;
+                height: 8px !important;
+              }
 
               .index {
                 display: flex;
@@ -126,91 +170,67 @@
               }
 
               b {
-                font-size: 12px;
+                font-size: 9px;
                 display: block;
                 font-weight: 500;
                 display: block;
                 width: 15px;
               }
 
-              .moreInfo {
+              .moreInfoIp {
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
+                // justify-content: space-between;
                 width: 100%;
-                padding: 0 0 0 20px;
 
                 > p {
-                  font-size: 12px;
+                  font-size: 10px;
                   display: block;
                   font-weight: 400;
                 }
 
                 span {
-                  font-size: 13px;
+                  font-size: 10px;
                   display: block;
                   color: #64a9d7;
+                  width: 80px;
+                  text-align: center;
                 }
 
-                .nums {
+                .other {
                   display: flex;
                   align-items: center;
-                  gap: 8px;
+                  justify-content: space-between;
+                  width: calc(100% - 139px);
+                  .nums {
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                    z-index: 1;
 
-                  img {
-                    width: 20px;
-                    height: 20px;
+                    img {
+                      width: 13px;
+                      height: 13px;
+                    }
+
+                    p {
+                      font-size: 9px;
+                      color: rgb(28, 194, 28);
+                    }
                   }
-
-                  p {
-                    font-size: 14px;
-                    color: rgb(28, 194, 28);
+                  .comment {
+                    font-size: 10px;
+                    display: block;
+                    font-weight: 400;
+                    font-style: normal;
+                    color: #bd7f58;
                   }
                 }
               }
             }
-
-            .comment {
-              font-size: 12px;
-              display: block;
-              font-weight: 400;
-              font-style: normal;
-              color: #bd7f58;
-              margin: 0 0 0 58px;
-            }
           }
         }
       }
-    }
-  }
-
-  &::-webkit-scrollbar {
-    min-width: 5px;
-    max-width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-    min-width: 5px;
-    max-width: 5px;
-    &:hover {
-      background-color: #050505;
-    }
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    cursor: pointer;
-    max-height: 50px;
-    min-height: 50px;
-  }
-
-  &:hover {
-    &::-webkit-scrollbar-track {
-      background-color: #050505;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #ffffff4e;
     }
   }
 }

@@ -27,22 +27,20 @@ import ModalsForContainers from "../../components/MainPage/ModalsForContainers/M
 import ModalsForHosts from "../../components/MainPage/ModalsForHosts/ModalsForHosts";
 
 /////// imgs
-import aknet from "../../assets/images/providers/aknet.jpg";
-import saima from "../../assets/images/providers/saima.jpg";
-import megaline from "../../assets/images/providers/megaline.jpg";
+import displayIcon from "../../assets/icons/display.svg";
+import displayRedIcon from "../../assets/icons/displayRed.svg";
+import boxRed from "../../assets/icons/boxRed.svg";
+import boxGreen from "../../assets/icons/boxGreen.svg";
 
 const MainPage = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const { listProviders, listHosts, listContainers } = useSelector(
-    (state) => state.requestSlice
-  );
+  const { listProviders, listHosts, listContainers, countsContainers } =
+    useSelector((state) => state.requestSlice);
   const { activeHost, activeContainer } = useSelector(
     (state) => state.stateSlice
   );
-
-  // const listImgsProv = [aknet, saima, saima, megaline];
 
   useEffect(() => {
     dispatch(getProviders());
@@ -67,6 +65,14 @@ const MainPage = () => {
   const addHost = () => dispatch(setAddHost({ bool: true }));
   //// открываю модалку для добавления хоста
 
+  console.log(countsContainers, "countsContainers");
+
+  const allCount =
+    +countsContainers?.countContainerOff +
+    +countsContainers?.countVpsOff +
+    +countsContainers?.countVpsOn +
+    +countsContainers?.countContainerOn;
+
   return (
     <>
       <div className="mainPage">
@@ -78,14 +84,11 @@ const MainPage = () => {
             <div className="providers__main__inner">
               {listProviders?.map((item, index) => (
                 <div key={index}>
-                  {/* <img src={listImgsProv?.[index]} alt="" /> */}
-                  {/* <div className="moreInfo">{item?.provider_name}</div> */}
                   <div className="title">{item?.provider_name}</div>
-                  <span>{item?.provider_pingtime}</span>
+                  <span>({item?.provider_pingtime})</span>
                   <div
-                    className={
-                      item?.provider_status == 1 ? "roundGreen" : "roundRed"
-                    }
+                    className="pingtime"
+                    style={{ background: pingtimeFN(item) }}
                   />
                 </div>
               ))}
@@ -95,7 +98,7 @@ const MainPage = () => {
 
         <div className="hostAndContainer">
           <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
-            <div className="hosts__inner">
+            <div className="hosts__inner hoverScroll">
               {listHosts?.map((item) => (
                 <Hosts key={item?.guid} item={item} />
               ))}
@@ -109,14 +112,39 @@ const MainPage = () => {
 
           <div className={`containers ${checkContainer}`}>
             <div className="containers__inner">
-              {listContainers?.map((item, index) => (
-                <Containers key={index} item={item} />
-              ))}
+              <div className="header__counts">
+                <div className="every">
+                  <p>Всего: </p>
+                  <p>{allCount}</p>
+                </div>
+                <div className="every">
+                  <img src={displayIcon} alt="" />
+                  <p>{countsContainers?.countVpsOn}</p>
+                </div>
+                <div className="every">
+                  <img src={displayRedIcon} alt="" />
+                  <p>{countsContainers?.countVpsOff}</p>
+                </div>
+                <div className="every">
+                  <img src={boxRed} alt="" />
+                  <p>{countsContainers?.countContainerOff}</p>
+                </div>
+                <div className="every">
+                  <img src={boxGreen} alt="" />
+                  <p>{countsContainers?.countContainerOn}</p>
+                </div>
+              </div>
+              <div className="list hoverScroll">
+                {listContainers?.map((item, index) => (
+                  <Containers key={index} item={item} />
+                ))}
+              </div>
             </div>
             <div className="containers__more_info">
               <GraphicContainer />
             </div>
           </div>
+
           <Volns />
         </div>
       </div>
@@ -130,3 +158,13 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const pingtimeFN = ({ provider_pingtime }) => {
+  if (+provider_pingtime < 5) {
+    return "green";
+  } else if (+provider_pingtime > 5 && +provider_pingtime < 40) {
+    return "orange";
+  } else {
+    return "red";
+  }
+};

@@ -1,57 +1,76 @@
-.dataCenters {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 10px;
-  padding-top: 100px;
-  justify-content: flex-end;
-
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    padding: 20px 15px;
-    cursor: pointer;
-
-    &:hover {
-      background: #ffffff36;
-      p {
-        display: inline-block;
-      }
-    }
-
-    p {
-      font-size: 17px;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      margin: 0;
-      color: white;
-    }
-  }
-
-  .activeDC {
-    background: #ffffff36;
-    p {
-      display: inline-block;
-    }
-  }
-}
-
 .menuBar {
-  background: rgba(30, 31, 35, 255);
+  width: 98px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  height: 100vh;
-  width: 60px;
-  padding: 100px 5px 20px 5px;
+  align-items: flex-start;
 
-  &__inner {
+  .dataCenters {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    justify-content: space-between;
+    height: 100%;
+    padding: 25px 0px 25px;
+
+    &__inner {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      // border-top: 2px solid red;
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        padding: 12px 12px;
+        cursor: pointer;
+
+        &:hover {
+          background: #ffffff36;
+          p {
+            display: inline-block;
+          }
+        }
+
+        p {
+          font-size: 17px;
+          writing-mode: vertical-rl;
+          transform: rotate(180deg);
+          margin: 0;
+          color: white;
+        }
+      }
+
+      .activeDC {
+        background: #ffffff36;
+        p {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  .menu {
+    background: rgba(30, 31, 35, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    height: 100%;
+    width: 60px;
+    padding: 100px 5px 20px 5px;
+  }
+
+  .menu__list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-start;
 
     .every {
       display: flex;
@@ -92,9 +111,17 @@
         z-index: 10;
       }
     }
+
+    .active {
+      background: #ffffff36;
+    }
   }
 
-  .active {
-    background: #ffffff36;
+  .menuItems {
+    justify-content: flex-end !important;
+    &__inner {
+      // height: 610px;
+      justify-content: flex-start !important;
+    }
   }
 }

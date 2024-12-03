@@ -18,6 +18,7 @@ import requestSlice from "./reducers/requestSlice";
 import containersSlice from "./reducers/containersSlice";
 import haProxySlice from "./reducers/haProxySlice";
 import dataCenterSlice from "./reducers/dataCenterSlice";
+import networkSlice from "./reducers/networkSlice";
 
 const reducer = combineReducers({
   requestSlice,
@@ -26,6 +27,7 @@ const reducer = combineReducers({
   containersSlice,
   haProxySlice,
   dataCenterSlice,
+  networkSlice,
 });
 
 const persistConfig = {

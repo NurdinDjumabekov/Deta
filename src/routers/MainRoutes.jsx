@@ -40,28 +40,18 @@ const MainRoutes = () => {
   return (
     <Routes>
       {/* Переадресация на первый центр данных */}
-      <Route
-        path="/"
-        element={
-          listDataCenter?.[0]?.guid ? (
-            <Navigate to={`/${listDataCenter[0].guid}`} replace />
-          ) : (
-            <div>Loading...</div>
-          )
-        }
-      />
+      <Route path="/" element={<Navigate to={`/dns`} replace />} />
       {listDataCenter?.map(({ guid }) => (
         <Route element={<MainLayouts />} key={guid}>
-          <Route path={`/${guid}`} element={<MainPage />} />
+          <Route path={`/networks`} element={<NetworksPage />} />
+          <Route path={`/ip-addres`} element={<IpAddresPage />} />
+          <Route path={`/dns`} element={<DnsPage />} />
+          <Route path={`/${guid}/hosts`} element={<MainPage />} />
           <Route path={`/${guid}/microtic`} element={<MicroticPage />} />
-          <Route path={`/${guid}/networks`} element={<NetworksPage />} />
           <Route path={`/${guid}/ha-proxy`} element={<HaProxy />} />
-          <Route path={`/${guid}/ip-addres`} element={<IpAddresPage />} />
-          <Route path={`/${guid}/dns`} element={<DnsPage />} />
           <Route path={`/${guid}/vnc/:vns_key`} element={<VncPage />} />
         </Route>
       ))}
-      {/* Обработка неверных путей */}
       {/* <Route path="*" element={<NotFoundPage />} /> */}
     </Routes>
   );

@@ -1,5 +1,6 @@
 .mainPage {
-  width: 100%;
+  width: calc(100% - 98px);
+  height: 100%;
 
   .providers {
     padding: 5px 10px;
@@ -26,7 +27,7 @@
           align-items: center;
           background: rgb(30, 31, 35);
           padding: 5px 8px;
-          gap: 10px;
+          gap: 6px;
           border-radius: 3px;
           position: relative;
           cursor: pointer;
@@ -51,29 +52,19 @@
           }
 
           .title {
-            font-size: 15px;
+            font-size: 13px;
           }
 
-          .roundGreen {
+          .pingtime {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             animation: animGreen 0.4s infinite;
-            background: green;
-          }
-
-          .roundRed {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            animation: animRed 0.4s infinite;
-            background: rgb(225, 28, 28);
           }
 
           span {
             display: block;
             font-size: 12px;
-            margin: 3px 0 0 0;
           }
         }
       }
@@ -82,11 +73,12 @@
 
   .hostAndContainer {
     display: flex;
-    min-width: 100%;
+    width: 100%;
+    height: calc(100% - 42px);
 
     .hosts {
-      height: 96vh;
-      width: 52%;
+      height: 100%;
+      width: calc(50% - 240px);
       padding: 8px;
 
       &__inner {
@@ -94,41 +86,11 @@
         flex-wrap: wrap;
         gap: 3px;
         overflow-y: scroll;
-        height: 68%;
-
-        &::-webkit-scrollbar {
-          min-width: 5px;
-          max-width: 5px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background-color: transparent;
-          min-width: 5px;
-          max-width: 5px;
-          &:hover {
-            background-color: #050505;
-          }
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background-color: transparent;
-          cursor: pointer;
-          max-height: 50px;
-          min-height: 50px;
-        }
-
-        &:hover {
-          &::-webkit-scrollbar-track {
-            background-color: #050505;
-          }
-          &::-webkit-scrollbar-thumb {
-            background-color: #ffffff4e;
-          }
-        }
+        height: calc(100% - 360px);
       }
 
       &__more_info {
-        height: 30%;
+        height: 360px;
         width: 100%;
         background: rgb(30, 31, 35);
         margin: 10px 0 0 0;
@@ -136,46 +98,36 @@
     }
 
     .containers {
-      height: 96vh;
-      width: 38%;
-      min-width: 38%;
-      max-width: 38%;
       padding: 8px 0px;
+      width: calc(50% - 225px);
+      height: 100%;
 
       &__inner {
+        height: calc(100% - 360px);
         width: 100%;
-        // padding: 10px 2px 10px 10px;
-        height: 68%;
-        overflow-y: scroll;
 
-        &::-webkit-scrollbar {
-          min-width: 5px;
-          max-width: 5px;
-        }
+        .header__counts {
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          padding: 2px 10px;
+          margin: 0 0 5px 0;
 
-        &::-webkit-scrollbar-track {
-          background-color: transparent;
-          min-width: 5px;
-          max-width: 5px;
-          &:hover {
-            background-color: #050505;
+          .every {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            p {
+              font-size: 13px;
+            }
           }
         }
 
-        &::-webkit-scrollbar-thumb {
-          background-color: transparent;
-          cursor: pointer;
-          max-height: 50px;
-          min-height: 50px;
-        }
-
-        &:hover {
-          &::-webkit-scrollbar-track {
-            background-color: #050505;
-          }
-          &::-webkit-scrollbar-thumb {
-            background-color: #ffffff4e;
-          }
+        .list {
+          height: calc(100% - 40px);
+          width: 100%;
+          overflow-y: scroll;
         }
       }
 
@@ -183,7 +135,7 @@
         width: 100%;
         background: rgb(30, 31, 35);
         margin: 10px 0 0 0;
-        height: 30%;
+        height: 360px;
       }
     }
   }
