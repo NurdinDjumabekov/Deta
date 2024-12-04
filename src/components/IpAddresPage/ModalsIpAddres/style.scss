@@ -1,0 +1,55 @@
+.modalsIpAddres {
+  .myInput {
+    margin: 20px 0 10px;
+  }
+
+  .actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .staticsModal {
+    .colors {
+      .selectBlockMain {
+        .selectBlock__activeBlock {
+          p:nth-child(1) {
+            background: #fff;
+            color: #222222d4 !important;
+            padding: 5px 10px;
+          }
+          p:nth-child(2) {
+            background: #a2c37c;
+            color: #ffffffad !important;
+            padding: 5px 10px;
+          }
+          p:nth-child(3) {
+            background: #9783f5;
+            color: #ffffffad !important;
+            padding: 5px 10px;
+          }
+          p:nth-child(4) {
+            background: #1a21cf;
+            color: #ffffffad !important;
+            padding: 5px 10px;
+          }
+          p:nth-child(5) {
+            background: #5e0e1e;
+            color: #ffffffad !important;
+            padding: 5px 10px;
+          }
+        }
+      }
+    }
+
+    .myInput {
+      .selectBlockMain {
+        .selectBlock__activeBlock {
+          p {
+            padding: 5px 10px;
+          }
+        }
+      }
+    }
+  }
+}

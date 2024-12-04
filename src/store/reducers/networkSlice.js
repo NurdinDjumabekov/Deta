@@ -12,6 +12,8 @@ const initialState = {
   listStaticsIp: [], /// список статических ip адресов
 };
 
+const url_socket = "https://dd-api.ibm.kg";
+
 ///// addNetworkReq - /// для добавления сетей
 export const addNetworkReq = createAsyncThunk(
   "addNetworkReq",
@@ -48,13 +50,79 @@ export const getStaticsIpAddresReq = createAsyncThunk(
   }
 );
 
+///// actionGroupIPreq - /// для crud групп статичекский ip адресов
+export const actionGroupIPreq = createAsyncThunk(
+  "actionGroupIPreq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}api/network/createStatic`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// actionSubGroupIPreq - /// для crud подгрупп статичекский ip адресов
+export const actionSubGroupIPreq = createAsyncThunk(
+  "actionSubGroupIPreq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}api/network/createStaticSubGroup`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// actionStaticsIPreq - /// для crud подгрупп статичекский ip адресов
+export const actionStaticsIPreq = createAsyncThunk(
+  "actionStaticsIPreq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}api/network/createStaticIp`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updatedStaticsIpSocket = () => (dispatch) => {
+  const socket = socketIOClient(url_socket);
+  socket.on("staticPingStatus", (data) => {
+    console.log(data?.data);
+    dispatch(listStaticsIpFN(data?.data));
+  });
+
+  // Функция для отключения сокета
+  return () => {
+    socket.disconnect();
+  };
+};
+
 const networkSlice = createSlice({
   name: "networkSlice",
   initialState,
   reducers: {
-    ////// modalActionsHaProxy
-    setModalActionsHaProxy: (state, action) => {
-      state.modalActionsHaProxy = action.payload;
+    listStaticsIpFN: (state, action) => {
+      state.listStaticsIp = action.payload;
     },
   },
 
@@ -89,10 +157,47 @@ const networkSlice = createSlice({
     builder.addCase(getStaticsIpAddresReq.pending, (state, action) => {
       state.preloader = true;
     });
+
+    ///////////////////////////// actionGroupIPreq
+    builder.addCase(actionGroupIPreq.fulfilled, (state, action) => {
+      state.preloader = false;
+      if (action.payload == 1) {
+        myAlert("Данные сохранены");
+      } else if (action.payload == 2) {
+        myAlert("Такая группа уже существует");
+      } else {
+        myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
+      }
+    });
+    builder.addCase(actionGroupIPreq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(actionGroupIPreq.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    ///////////////////////////// actionSubGroupIPreq
+    builder.addCase(actionSubGroupIPreq.fulfilled, (state, action) => {
+      state.preloader = false;
+      if (action.payload == 1) {
+        myAlert("Данные сохранены");
+      } else if (action.payload == 2) {
+        myAlert("Такая подгруппа уже существует");
+      } else {
+        myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
+      }
+    });
+    builder.addCase(actionSubGroupIPreq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(actionSubGroupIPreq.pending, (state, action) => {
+      state.preloader = true;
+    });
   },
 });
 
-export const { setModalActionsHaProxy, clearModalActionsHaProxy } =
-  networkSlice.actions;
+export const { listStaticsIpFN } = networkSlice.actions;
 
 export default networkSlice.reducer;

@@ -130,10 +130,6 @@ img {
     font-weight: 700;
     border-left: 1px solid #222;
   }
-
-  // .myInput input {
-  //   padding-right: 70px;
-  // }
 }
 
 @keyframes animation {
@@ -175,4 +171,15 @@ img {
       background-color: #ffffff4e;
     }
   }
+}
+
+.addActionBtn {
+  color: #fff;
+  padding: 8px 18px;
+  height: 30px;
+  border-radius: 3px;
+  margin: 5px 0 0 0;
+  background: #08920a;
+  font-size: 11px;
+  line-height: 10px;
 }

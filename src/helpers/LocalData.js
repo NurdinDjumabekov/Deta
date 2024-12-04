@@ -1083,3 +1083,33 @@ export const objTyperecordsKeys = {
   PTP: "Point to name (FQDN)",
   SPF: "SPF string",
 };
+
+///// cтатичесике ip адреса
+
+export const listColorStatics = [
+  { id: 1, name: "Белый", color: "#fff" },
+  { id: 2, name: "Зеленый", color: "#A2C37C" },
+  { id: 3, name: "Фиолетовый", color: "#9783F5" },
+  { id: 4, name: "Синий", color: "#1A21CF" },
+  { id: 5, name: "Бордовый", color: "#5E0E1E" },
+];
+
+export const listColorVitual = [
+  { id: 1, name: "Контейнер" },
+  { id: 2, name: "Виртуалка" },
+];
+
+export const objSubGroup = {
+  1: "Добавление подгруппы IP адресов",
+  2: "Редактирование  подгруппы",
+};
+
+export const objStaticsIP = {
+  1: "Создание Статического IP",
+  2: "Редактирование Статического IP",
+};
+
+export const objGroup = {
+  1: "Добавление группы IP адресов",
+  2: "Редактирование группы",
+};

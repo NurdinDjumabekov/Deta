@@ -33,8 +33,6 @@ const ModalsForAllDns = (props) => {
     (state) => state.stateSlice
   );
 
-  console.log(objEdit, "objEdit");
-
   const onChange = (e) => {
     const { name, value } = e.target;
 
