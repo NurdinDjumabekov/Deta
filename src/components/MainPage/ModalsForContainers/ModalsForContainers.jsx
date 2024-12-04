@@ -23,7 +23,10 @@ import { clearAddTempCont } from "../../../store/reducers/stateSlice";
 import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setAddTempCont } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
-import { addGroupContFN } from "../../../store/reducers/requestSlice";
+import {
+  addGroupContFN,
+  getContainers,
+} from "../../../store/reducers/requestSlice";
 import { delContainerFN } from "../../../store/reducers/requestSlice";
 import { backUpContainerFN } from "../../../store/reducers/requestSlice";
 import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
@@ -51,6 +54,7 @@ import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine
 import { listFast, listSnaps } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
 import { transformLists } from "../../../helpers/transformLists";
+import debounce from "debounce";
 const { REACT_APP_API_URL } = process.env;
 
 const ModalsForContainers = () => {
@@ -116,19 +120,17 @@ const ModalsForContainers = () => {
   //////////////////////////////////______////// добавление файлов
   const { openAddFiles } = useSelector((state) => state.stateSlice);
 
-  const handleChangeStatus = (filesList) => {
-    const guid_container = openAddFiles?.guid;
-
-    if (guid_container) {
+  const handleChangeStatus = debounce((filesList, status) => {
+    if (status === "done" && openAddFiles?.guid) {
       const data = new FormData();
       data.append("files", filesList.file);
-      data.append("guid_vm", guid_container);
+      data.append("guid_vm", openAddFiles.guid);
       data.append("status", 1); // 1 - добавление
 
-      dispatch(addDelFileInContainer({ data, guid_container }));
-      //// добавляю файлы в контейнер через зарпрос
+      const send = { data, guid_container: openAddFiles.guid };
+      dispatch(addDelFileInContainer(send));
     }
-  };
+  }, 300);
 
   const delFilesInCont = (file_guid) => {
     const data = { status: 2, file_guid }; // 2 - добавление
@@ -145,7 +147,8 @@ const ModalsForContainers = () => {
 
   const addContInGroup = (codeid) => {
     const data = { codeid_group: codeid, guid_vm: openModalAddGroup };
-    dispatch(addGroupContFN(data));
+    dispatch(getContainers(activeHost));
+    dispatch(addGroupContFN(data)); /// обновляю контейнера и кол-ва пользователей
     ///// добавление контейнера в группу
     ///// guid_vm - guid контейнера
     ///// codeid_group - guid группы(пользов-лей)
@@ -328,7 +331,7 @@ const ModalsForContainers = () => {
           <div className="listFiles">
             {openAddFiles?.files?.map((i) => (
               <div className="everyFile">
-                <a href={`${REACT_APP_API_URL}${i?.path}`} target="_blank">
+                <a href={i?.path} target="_blank">
                   {i?.original_name}
                 </a>
                 <button onClick={() => delFilesInCont(i?.guid)}>

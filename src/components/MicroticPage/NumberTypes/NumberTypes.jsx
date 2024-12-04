@@ -7,11 +7,8 @@ const NumberTypes = ({ list }) => {
   return (
     <div className="numberTypes">
       {list?.map((item, index) => (
-        <div
-          key={index}
-          style={{ background: item.color, color: getTextColor(item.color) }}
-        >
-          <p>{item?.num}</p>
+        <div key={index} style={{ background: item.color }}>
+          <p>{item?.codeid}</p>
         </div>
       ))}
     </div>

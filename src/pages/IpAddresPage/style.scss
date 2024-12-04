@@ -63,10 +63,10 @@
 
     .every {
       box-sizing: border-box;
-      border-right: 1px solid #808080;
+      border-right: 1px solid #222;
       width: 450px;
       height: auto;
-      border-bottom: 2px solid #808080; /* Для строк */
+      border-bottom: 2px solid #222; /* Для строк */
       height: 50%;
       overflow-y: scroll;
 

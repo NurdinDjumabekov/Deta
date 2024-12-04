@@ -107,7 +107,6 @@ export const actionStaticsIPreq = createAsyncThunk(
 export const updatedStaticsIpSocket = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("staticPingStatus", (data) => {
-    console.log(data?.data);
     dispatch(listStaticsIpFN(data?.data));
   });
 

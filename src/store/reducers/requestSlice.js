@@ -260,6 +260,14 @@ export const getContainers = createAsyncThunk(
         //// подставляю кол-ва вкл и откл контейнеров
 
         return response?.data;
+      } else if (response.status == 500) {
+        const objResult = { id: 2, list: tranformKey("service", []) };
+        dispatch(changeMenuInner(objResult));
+        const objRecord = { id: 3, list: tranformKey("user", []) };
+        dispatch(changeMenuInner(objRecord));
+        //// подставляю данные для меню чтобы узнать кол-во контейнеров
+        dispatch(countsContainersFN({}));
+        //// подставляю кол-ва вкл и откл контейнеров
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -276,14 +284,12 @@ export const getContainersInMenu = createAsyncThunk(
     const { guid_host, guid_service, guid_user } = props;
     const url = `${REACT_APP_API_URL}host/filterByUserService`;
     const data = { guid_host, guid_service, guid_user }; //// guid - хоста
-
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost("")); //// очищаю активный хост
         dispatch(setActiveContainer(0)); ///очищаю активный контейнер
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
-
         dispatch(countsContainersFN(response?.data?.counts));
         //// подставляю кол-ва вкл и откл контейнеров
         return response?.data?.result;
@@ -551,7 +557,7 @@ export const backUpContainerFN = createAsyncThunk(
   async function (props, { dispatch, rejectWithValue }) {
     const { fasts, guid, snaps, type } = props;
     const url = `${REACT_APP_API_URL}node/createBackUp`;
-    const data = { storage: fasts, mode: snaps, compress: type, guid };
+    const data = { storage: type, mode: snaps, compress: fasts, guid };
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -1142,6 +1148,7 @@ const requestSlice = createSlice({
     builder.addCase(getContainers.rejected, (state, action) => {
       state.error = action.payload;
       state.preloader = false;
+      state.listContainers = [];
     });
     builder.addCase(getContainers.pending, (state, action) => {
       state.preloader = true;

@@ -28,9 +28,6 @@ const MenuInner = () => {
     dispatch(setActiveGroup({ guid_service, guid_user }));
   };
 
-  // Сортировка массива menuInner по id от меньшего к большему
-  // const sortedMenuInner = menuInner?.slice()?.sort((a, b) => a?.id - b?.id);
-
   return (
     <div className="menuInner">
       <Search />

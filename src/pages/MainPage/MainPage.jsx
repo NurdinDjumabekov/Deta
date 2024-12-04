@@ -65,8 +65,6 @@ const MainPage = () => {
   const addHost = () => dispatch(setAddHost({ bool: true }));
   //// открываю модалку для добавления хоста
 
-  console.log(countsContainers, "countsContainers");
-
   const allCount =
     +countsContainers?.countContainerOff +
     +countsContainers?.countVpsOff +
@@ -115,23 +113,26 @@ const MainPage = () => {
               <div className="header__counts">
                 <div className="every">
                   <p>Всего: </p>
-                  <p>{allCount}</p>
+                  <p>{allCount || 0}</p>
                 </div>
                 <div className="every">
                   <img src={displayIcon} alt="" />
-                  <p>{countsContainers?.countVpsOn}</p>
+                  <p>{countsContainers?.countVpsOn || 0}</p>
                 </div>
                 <div className="every">
                   <img src={displayRedIcon} alt="" />
-                  <p>{countsContainers?.countVpsOff}</p>
+                  <p>{countsContainers?.countVpsOff || 0}</p>
                 </div>
                 <div className="every">
                   <img src={boxRed} alt="" />
-                  <p>{countsContainers?.countContainerOff}</p>
+                  <p>{countsContainers?.countContainerOff || 0}</p>
                 </div>
                 <div className="every">
                   <img src={boxGreen} alt="" />
-                  <p>{countsContainers?.countContainerOn}</p>
+                  <p>{countsContainers?.countContainerOn || 0}</p>
+                </div>
+                <div className="every">
+                  <p>{activeHost ? `GUID:  ${activeHost}` : ""}</p>
                 </div>
               </div>
               <div className="list hoverScroll">

@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import delImg from "../../../assets/icons/delete.svg";
 import diagram from "../../../assets/icons/diagram.svg";
 import repeat from "../../../assets/icons/repeat.svg";
-import editImg from "../../../assets/icons/edit.svg";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 ////// styles
 import "./style.scss";
@@ -26,7 +23,6 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 
 ////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
-import { cutNums } from "../../../helpers/cutNums";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr } = item;

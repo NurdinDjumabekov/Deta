@@ -24,6 +24,9 @@ import round from "../../../assets/images/OS/round.png";
 import keyIncon from "../../../assets/icons/key.svg";
 import lookEye from "../../../assets/icons/eye-look.svg";
 import noLookEye from "../../../assets/icons/eye-no-look.svg";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 
 ////// styles
 import "./style.scss";
@@ -53,6 +56,7 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
 import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
+import { Tooltip, colors } from "@mui/material";
 const { REACT_APP_API_URL } = process.env;
 
 const Containers = ({ item }) => {
@@ -157,7 +161,6 @@ const Containers = ({ item }) => {
 
   return (
     <div
-      // className={`containerMain ${active} ${objTypeData?.["virtualka"]}`}
       className={`containerMain ${active} ${objTypeData?.[nums()]}`}
       onClick={clickContainer}
     >
@@ -174,7 +177,7 @@ const Containers = ({ item }) => {
         <div className="editBlock">
           <div className="editBlock__inner">
             <button className="edit" onClick={openModalEdit}>
-              <img src={edit} alt="" />
+              <EditIcon sx={{ fill: "yellow" }} />
             </button>
             <button className="OS" onClick={openOSModal}>
               {icon_url ? (
@@ -187,7 +190,7 @@ const Containers = ({ item }) => {
           <div className="editBlock__inner">
             {!!info && (
               <button className="edit" onClick={openLookMoreInfo}>
-                <img src={!!lookMoreInfo?.guid ? noLookEye : lookEye} alt="" />
+                <VisibilityIcon sx={{ fill: "#66b4ff" }} />
               </button>
             )}
           </div>
@@ -206,9 +209,11 @@ const Containers = ({ item }) => {
         {/* ///// */}
         <div className="memory">
           <div className="memory__inner">
-            <button onClick={openAddFilesFN}>
-              <img src={skrepka} alt="#" />
-            </button>
+            <Tooltip title="Загрузить файлы" placement="top">
+              <button onClick={openAddFilesFN}>
+                <AttachFileIcon sx={{ fill: "#008000" }} />
+              </button>
+            </Tooltip>
             <MemoryComp
               node_cpu_usage={vm_cpu_usage}
               node_cpu={vm_cpu}
@@ -230,46 +235,56 @@ const Containers = ({ item }) => {
         {/* ///// */}
         <div className="actions">
           <div className="actions__inner">
-            <button onClick={openModalAddGroup}>
-              <img src={addGroup} alt="#" />
-              <span className="moreInfoLeft">Добавить в группу</span>
-            </button>
-            <button onClick={openModalFixTime}>
-              <img src={calendarX} alt="#" />
-              <span className="moreInfoLeft">Зафиксировать время создания</span>
-            </button>
-            <button onClick={openModalBackUpFN}>
-              <img src={download} alt="#" />
-              <span className="moreInfoLeft">BackUp</span>
-            </button>
-            <button onClick={openKeyInfo}>
-              <img src={keyIncon} alt="#" />
-            </button>
+            <Tooltip title="Добавить в группу" placement="top">
+              <button onClick={openModalAddGroup}>
+                <img src={addGroup} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip title="Зафиксировать время создания" placement="top">
+              <button onClick={openModalFixTime}>
+                <img src={calendarX} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip title="BackUp" placement="top">
+              <button onClick={openModalBackUpFN}>
+                <img src={download} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip title="Пользователи" placement="top">
+              <button onClick={openKeyInfo}>
+                <img src={keyIncon} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip title="Запустить сервер" placement="top">
+              <button onClick={() => handleVirtualMachine(1)}>
+                <img src={playCircle} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip title="Перезагрузить сервер" placement="top">
+              <button onClick={() => handleVirtualMachine(2)}>
+                <img src={repeat} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip title="Мягкое выключение" placement="top">
+              <button onClick={() => handleVirtualMachine(3)}>
+                <img src={stopCircle} alt="#" />
+              </button>
+            </Tooltip>
 
-            <button onClick={() => handleVirtualMachine(1)}>
-              <img src={playCircle} alt="#" />
-              <span className="moreInfoLeft">Запустить сервер</span>
-            </button>
-            <button onClick={() => handleVirtualMachine(2)}>
-              <img src={repeat} alt="#" />
-              <span className="moreInfoLeft">Перезагрузить сервер</span>
-            </button>
-            <button onClick={() => handleVirtualMachine(3)}>
-              <img src={stopCircle} alt="#" />
-              <span className="moreInfoLeft">Мягкое выключение</span>
-            </button>
-
-            <button onClick={openModalDelInGroup}>
-              <img src={minus} alt="#" />
-              <span className="moreInfoLeft">Удалить из списка</span>
-            </button>
-            <button onClick={openModalOffContainer}>
-              <img src={warning} alt="#" />
-              <span className="moreInfoLeft">
-                Жёсткое выключение (!может вызвать повреждение файлов на
-                высоконагруженных серверах!)
-              </span>
-            </button>
+            <Tooltip title="Удалить из списка" placement="top">
+              <button onClick={openModalDelInGroup}>
+                <img src={minus} alt="#" />
+              </button>
+            </Tooltip>
+            <Tooltip
+              title=" Жёсткое выключение (!может вызвать повреждение файлов на
+                высоконагруженных серверах!)"
+              placement="top"
+            >
+              <button onClick={openModalOffContainer}>
+                <img src={warning} alt="#" />
+              </button>
+            </Tooltip>
             {false && (
               <button className="deleteBtn" onClick={delContainer}>
                 Удалить
@@ -277,7 +292,9 @@ const Containers = ({ item }) => {
             )}
           </div>
           <div className={`key ${del ? "actions__key" : ""}`}>
-            <p>({secondsToDhms(vm_uptime)})</p>
+            <p>
+              {!!secondsToDhms(vm_uptime) ? `${secondsToDhms(vm_uptime)}` : ""}
+            </p>
           </div>
         </div>
       </div>

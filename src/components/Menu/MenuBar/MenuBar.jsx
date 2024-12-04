@@ -40,7 +40,6 @@ const MenuBar = () => {
             </NavLink>
           ))}
         </div>
-
         <div className="dataCenters__inner">
           {listDataCenter?.map((item, index) => (
             <a

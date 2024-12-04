@@ -9,6 +9,7 @@ import { myAlert } from "../../helpers/MyAlert";
 ////// imgs
 import delIcon from "../../assets/icons/delete.svg";
 import editIcon from "../../assets/icons/edit.svg";
+import EditIcon from "@mui/icons-material/Edit";
 
 ////// components
 import ModalsHaProxy from "../../components/HaProxyPage/ModalsHaProxy/ModalsHaProxy";
@@ -37,6 +38,7 @@ const HaProxyPage = () => {
     const res = await dispatch(getHaProxyList()).unwrap(); /// get список HaProxy
     setCounts(res?.counts);
   };
+
   useEffect(() => {
     getData();
   }, [pathname]);
@@ -121,7 +123,7 @@ const HaProxyPage = () => {
                     </div>
                     <div>
                       <button className="edit" onClick={() => editProxy(i)}>
-                        <img src={editIcon} alt="editIcon" />
+                        <EditIcon />
                       </button>
                       <button className="del" onClick={() => delProxy(i)}>
                         <img src={delIcon} alt="delIcon" />

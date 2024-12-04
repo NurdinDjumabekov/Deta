@@ -23,11 +23,9 @@ const ActionsVirtualMachine = () => {
   return (
     <div className="virtual__inner">
       <div className="listLoads">
-        {[...list, ...list, ...list, ...list, ...list, ...list, ...list]?.map(
-          (item) => (
-            <li>{item}</li>
-          )
-        )}
+        {[]?.map((item) => (
+          <li>{item}</li>
+        ))}
       </div>
       <div className="btnActions">
         <button>Да</button>

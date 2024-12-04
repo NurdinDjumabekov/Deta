@@ -9,14 +9,28 @@
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
+    width: 650px;
+
+    h3 {
+      font-size: 16px;
+      text-align: center;
+    }
 
     .list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      background: #292d32;
-      padding: 0 5px;
+      gap: 5px;
+      background: rgb(30, 31, 35);
+      padding: 15px 30px 15px 10px;
+      border-radius: 5px;
+      position: relative;
+
+      .addMicr {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+      }
 
       .every {
         display: flex;
@@ -24,8 +38,8 @@
         align-items: center;
 
         .colors {
-          width: 30px;
-          height: 25px;
+          width: 25px;
+          height: 23px;
           border: 2px solid #fff;
           border-radius: 5px;
           display: flex;
@@ -35,13 +49,13 @@
           p {
             text-align: center;
             font-size: 12px;
+            color: #fff;
           }
         }
 
         button {
           width: 25px;
           height: 25px;
-          background: rgb(30, 31, 35);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -59,44 +73,58 @@
 
           p {
             color: #64a9d7;
-            font-size: 12px;
+            font-size: 11px;
           }
 
           span {
-            font-size: 10px;
+            font-size: 9px;
           }
         }
       }
+
+      > h5 {
+        font-size: 13px;
+        text-align: center;
+        margin: 10px 0 0 0;
+      }
+
+      > ul {
+        padding: 0px 15px;
+        li {
+          font-size: 10px;
+          list-style: disc;
+        }
+      }
+
+      > p {
+        font-size: 10px;
+        padding: 0px 5px;
+      }
     }
   }
-
-  &::-webkit-scrollbar {
-    min-width: 5px;
-    max-width: 5px;
+}
+.formMicrotics {
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0 0 0;
   }
+  .listColors {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px 0px;
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-    min-width: 5px;
-    max-width: 5px;
-    &:hover {
-      background-color: #050505;
+    li {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      cursor: pointer;
     }
-  }
 
-  &::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    cursor: pointer;
-    max-height: 50px;
-    min-height: 50px;
-  }
-
-  &:hover {
-    &::-webkit-scrollbar-track {
-      background-color: #050505;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: #ffffff4e;
+    .active {
+      border: 2px solid #fff;
     }
   }
 }
