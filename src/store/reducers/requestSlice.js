@@ -28,6 +28,7 @@ import { myAlert } from "../../helpers/MyAlert";
 import { tranformKey } from "../../helpers/tranformTextInNum";
 import axiosInstance from "../../axiosInstance";
 import axios from "axios";
+import { cutNums } from "../../helpers/cutNums";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -1175,6 +1176,7 @@ const requestSlice = createSlice({
           time: item?.date_system,
           CPU: item?.vm_cpu_usage,
           RAM: item?.vm_ram_usage_mb,
+          vm_ram_mb: cutNums(+item?.vm_ram_mb / 1024, 2),
         };
       });
     });
