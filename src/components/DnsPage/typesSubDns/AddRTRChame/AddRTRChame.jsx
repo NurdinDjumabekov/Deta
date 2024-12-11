@@ -7,14 +7,13 @@ import MyInputs from "../../../../common/MyInput/MyInputs";
 
 /////// helpers
 import { myAlert } from "../../../../helpers/MyAlert";
-import { checkChangePointToName } from "../../../../helpers/checkFNS";
 import { checkChangeRecordName } from "../../../../helpers/checkFNS";
-import { checkChangeTTL, checkIP } from "../../../../helpers/checkFNS";
-import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
+import { checkChangeTTL } from "../../../../helpers/checkFNS";
+import { checkTTL } from "../../../../helpers/checkFNS";
 
 /////// fns
 import { setDnsEveryKey } from "../../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../../store/reducers/requestSlice";
+import { addSubDomen } from "../../../../store/reducers/dnsSlice";
 
 /////// style
 import "../AddSubDns/style.scss";

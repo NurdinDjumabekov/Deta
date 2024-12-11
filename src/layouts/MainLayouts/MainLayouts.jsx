@@ -6,7 +6,6 @@ import MenuBar from "../../components/Menu/MenuBar/MenuBar";
 
 ///////style
 import "./style.scss";
-import { getDataCenterReq } from "../../store/reducers/dataCenterSlice";
 
 const MainLayouts = () => {
   const navigate = useNavigate();

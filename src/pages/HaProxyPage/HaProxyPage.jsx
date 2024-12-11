@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 //////helpers
-import { objDefault } from "../../helpers/LocalData";
 import { myAlert } from "../../helpers/MyAlert";
 
 ////// imgs

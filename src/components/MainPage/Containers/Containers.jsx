@@ -64,6 +64,8 @@ const Containers = ({ item }) => {
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
   const { icon_url } = item;
 
+  console.log(item, "item");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -161,7 +163,8 @@ const Containers = ({ item }) => {
 
   return (
     <div
-      className={`containerMain ${active} ${objTypeData?.[nums()]}`}
+      // className={`containerMain ${active} ${objTypeData?.[nums()]}`}
+      className={`containerMain ${active}`}
       onClick={clickContainer}
     >
       <div className="containerMain__inner">
@@ -203,7 +206,14 @@ const Containers = ({ item }) => {
               [{host_name}] <p className="container_name"> - {vm_name}</p>
             </b>
           </div>
-          <span className="description">{vm_comment}</span>
+          <span className="description">
+            {vm_comment}
+            {item?.files?.map((i, index) => (
+              <a href={i?.path} target="_blank">
+                {i?.original_name} {index < item?.files?.length - 1 && ", "}
+              </a>
+            ))}
+          </span>
         </div>
 
         {/* ///// */}

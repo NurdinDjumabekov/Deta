@@ -9,11 +9,11 @@ import MyInputs from "../../../../common/MyInput/MyInputs";
 import { myAlert } from "../../../../helpers/MyAlert";
 import { checkChangeRecordName } from "../../../../helpers/checkFNS";
 import { checkChangeTTL, checkIP } from "../../../../helpers/checkFNS";
-import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
+import { checkTTL } from "../../../../helpers/checkFNS";
 
 /////// fns
 import { setDnsEveryKey } from "../../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../../store/reducers/requestSlice";
+import { addSubDomen } from "../../../../store/reducers/dnsSlice";
 
 /////// style
 import "../AddSubDns/style.scss";

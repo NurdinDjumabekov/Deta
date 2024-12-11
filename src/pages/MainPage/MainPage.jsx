@@ -8,13 +8,8 @@ import { useLocation } from "react-router-dom";
 import { getOS, getProviders } from "../../store/reducers/requestSlice";
 import { getGroup, getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
-import { updatedProvoders } from "../../store/reducers/requestSlice";
-
-///////style
-import "./style.scss";
-
-///////fns
 import { setAddHost } from "../../store/reducers/stateSlice";
+import { updatedProvoders } from "../../store/reducers/requestSlice";
 
 ///////components
 import MenuInner from "../../components/Menu/MenuInner/MenuInner";
@@ -31,6 +26,12 @@ import displayIcon from "../../assets/icons/display.svg";
 import displayRedIcon from "../../assets/icons/displayRed.svg";
 import boxRed from "../../assets/icons/boxRed.svg";
 import boxGreen from "../../assets/icons/boxGreen.svg";
+
+////// helpers
+import { allSumsProvidersFN, pingtimeFN } from "../../helpers/LocalData";
+
+///////style
+import "./style.scss";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -65,12 +66,6 @@ const MainPage = () => {
   const addHost = () => dispatch(setAddHost({ bool: true }));
   //// открываю модалку для добавления хоста
 
-  const allCount =
-    +countsContainers?.countContainerOff +
-    +countsContainers?.countVpsOff +
-    +countsContainers?.countVpsOn +
-    +countsContainers?.countContainerOn;
-
   return (
     <>
       <div className="mainPage">
@@ -81,7 +76,7 @@ const MainPage = () => {
             </button>
             <div className="providers__main__inner">
               {listProviders?.map((item, index) => (
-                <div key={index}>
+                <div key={index} style={{ background: item?.color }}>
                   <div className="title">{item?.provider_name}</div>
                   <span>({item?.provider_pingtime})</span>
                   <div
@@ -113,7 +108,7 @@ const MainPage = () => {
               <div className="header__counts">
                 <div className="every">
                   <p>Всего: </p>
-                  <p>{allCount || 0}</p>
+                  <p>{allSumsProvidersFN(countsContainers) || 0}</p>
                 </div>
                 <div className="every">
                   <img src={displayIcon} alt="" />
@@ -159,13 +154,3 @@ const MainPage = () => {
 };
 
 export default MainPage;
-
-const pingtimeFN = ({ provider_pingtime }) => {
-  if (+provider_pingtime < 5) {
-    return "green";
-  } else if (+provider_pingtime > 5 && +provider_pingtime < 40) {
-    return "orange";
-  } else {
-    return "red";
-  }
-};

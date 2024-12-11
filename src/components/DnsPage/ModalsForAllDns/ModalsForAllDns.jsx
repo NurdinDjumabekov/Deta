@@ -4,24 +4,25 @@ import { useDispatch, useSelector } from "react-redux";
 ////// componnets
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
-import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 
 ////// helpers
-import { checkSubDomainName, checkTTL } from "../../../helpers/checkFNS";
+import { checkTTL } from "../../../helpers/checkFNS";
 import { checkChangeRecordName } from "../../../helpers/checkFNS";
 import { checkChangeTTL } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
+import { objTyperecordsKeys } from "../../../helpers/LocalData";
 
 ////// fns
-import { distributeIpAddresFN } from "../../../store/reducers/requestSlice";
-import { deleteSubDomen } from "../../../store/reducers/requestSlice";
-import { editSubDomen } from "../../../store/reducers/requestSlice";
+import {
+  editSubDomen,
+  distributeIpAddresFN,
+  deleteSubDomen,
+} from "../../../store/reducers/dnsSlice";
 import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 import { setDistributeIpModal } from "../../../store/reducers/stateSlice";
 
 ///////style
 import "./style.scss";
-import { objTyperecordsKeys } from "../../../helpers/LocalData";
 
 const ModalsForAllDns = (props) => {
   const { guidDelete, setGuidDelete, objEdit, setObjedit } = props;

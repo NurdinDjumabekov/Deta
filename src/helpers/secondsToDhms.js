@@ -9,7 +9,7 @@ export const secondsToDhms = (seconds) => {
     var hDisplay = h > 0 ? h + (h == 1 ? "h " : "h") : "";
     var mDisplay = m > 0 ? m + (m == 1 ? "m " : "m") : "";
     var sDisplay = s > 0 ? s + (s == 1 ? "s" : "s") : "";
-    return dDisplay + hDisplay + mDisplay;
+    return `${dDisplay} - ${hDisplay} - ${mDisplay}`
   };
   
 

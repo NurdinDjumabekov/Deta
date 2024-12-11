@@ -11,16 +11,10 @@ import {
 
 /////// img
 import edit from "../../assets/icons/edit.svg";
-import AddIcon from "@mui/icons-material/Add";
 
 ///////helpers
 import { myAlert } from "../../helpers/MyAlert";
-import {
-  listColor,
-  anotherListColor,
-  colorsList,
-} from "../../helpers/LocalData";
-import { getTextColor } from "../../helpers/getBrightness";
+import { colorsList, sortMicroticNums } from "../../helpers/LocalData";
 
 ///////components
 import NumberTypes from "../../components/MicroticPage/NumberTypes/NumberTypes";
@@ -49,48 +43,37 @@ const MicroticPage = () => {
 
   const crudMicrotic = async (e) => {
     e.preventDefault();
-    if (!!!modal?.title) {
-      return myAlert("Заполните заголовок, ", "error");
-    }
-
-    if (!!!modal?.color) {
-      return myAlert("Выберите цвет", "error");
-    }
     const res = await dispatch(crudMicroticsReq(modal)).unwrap();
     if (res == 1) {
       myAlert("Успешно сохранено!");
       setModal({});
+      dispatch(getMicroticsReq());
     } else if (res == 2) {
       myAlert("Такое наименование уже существует");
+    } else {
+      myAlert("Упс, что-то пошло не так", "error");
     }
   };
 
-  const openModalAdd = (action, link) => {
-    setModal({ action, title: "", description: "", color: "", link });
-  };
-
   const actionObj = { 1: "Добавить", 2: "Изменить" };
-
-  console.log(modal, "modal");
 
   return (
     <>
       <div className="microticPage hoverScroll">
         <div className="microticPage__inner">
           <h3>Маршрутизатор</h3>
-          <NumberTypes list={listMicrotics?.routers} title={"Маршрутизатор"} />
+          <NumberTypes
+            list={sortMicroticNums(listMicrotics?.routers)}
+            title={"Маршрутизатор"}
+          />
           <h3>Входная группа</h3>
           <div className="list">
-            <button
-              className="addMicr"
-              onClick={() => openModalAdd(1, "createMikrotik")}
-            >
-              <AddIcon sx={{ fill: "green", width: 30, height: 30 }} />
-            </button>
             {listMicrotics?.routers?.map((item, index) => (
               <div className="every" key={index}>
                 <div className="colors" style={{ background: item.color }}>
-                  <p>{item?.codeid}</p>
+                  <p className={item?.color == "rgb(255, 242, 0)" ? "CW" : ""}>
+                    {item?.name}
+                  </p>
                 </div>
                 <button
                   onClick={() =>
@@ -127,19 +110,18 @@ const MicroticPage = () => {
         </div>
         <div className="microticPage__inner">
           <h3>Свитч</h3>
-          <NumberTypes list={listMicrotics?.switchs} title={"Свитч"} />
+          <NumberTypes
+            list={sortMicroticNums(listMicrotics?.switchs)}
+            title={"Свитч"}
+          />
           <h3>Входная группа</h3>
           <div className="list">
-            <button
-              className="addMicr"
-              onClick={() => openModalAdd(1, "createSwitch")}
-            >
-              <AddIcon sx={{ fill: "green", width: 30, height: 30 }} />
-            </button>
             {listMicrotics?.switchs?.map((item, index) => (
               <div className="every" key={index}>
                 <div className="colors" style={{ background: item.color }}>
-                  <p>{item?.codeid}</p>
+                  <p className={item?.color == "rgb(255, 242, 0)" ? "CW" : ""}>
+                    {item?.name}
+                  </p>
                 </div>
                 <button
                   onClick={() =>

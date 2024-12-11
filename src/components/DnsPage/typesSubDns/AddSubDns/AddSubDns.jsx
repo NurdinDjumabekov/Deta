@@ -15,7 +15,7 @@ import { checkSubDomainName, checkTTL } from "../../../../helpers/checkFNS";
 
 /////// fns
 import { setDnsEveryKey } from "../../../../store/reducers/stateSlice";
-import { addSubDomen } from "../../../../store/reducers/requestSlice";
+import { addSubDomen } from "../../../../store/reducers/dnsSlice";
 
 /////// style
 import "./style.scss";

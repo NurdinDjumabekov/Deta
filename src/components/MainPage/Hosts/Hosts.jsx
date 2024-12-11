@@ -7,7 +7,8 @@ import delImg from "../../../assets/icons/delete.svg";
 import diagram from "../../../assets/icons/diagram.svg";
 import repeat from "../../../assets/icons/repeat.svg";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-
+import editImg from "../../../assets/icons/edit.svg";
+import vncImg from "../../../assets/icons/tv.svg";
 ////// styles
 import "./style.scss";
 
@@ -58,16 +59,20 @@ const Hosts = ({ item }) => {
     <div className={`hostsMain ${err} ${active}`} onClick={clickHost}>
       <h4>{node_model}</h4>
       <div className="actions">
-        <p>
-          {host_name}(<b>{secondsToDhms(node_uptime_sec)}</b>)
-        </p>
+        <div className="hostTitle">
+          <img src={vncImg} alt="vnc" />
+          <p>
+            {host_name}(<b>{secondsToDhms(node_uptime_sec)}</b>)
+          </p>
+        </div>
         <div className="actions">
           <button>
             <img src={repeat} alt="x" />
             <span className="moreInfo">Обновить данные хоста</span>
           </button>
           <button className="edit" onClick={editOpenModal}>
-            <BorderColorIcon sx={{ width: 19, height: 19, fill: "yellow" }} />
+            {/* <BorderColorIcon sx={{ width: 19, height: 19, fill: "yellow" }} /> */}
+            <img src={editImg} alt="edit" />
             <span className="moreInfo">Изменить</span>
           </button>
           <button
@@ -79,7 +84,6 @@ const Hosts = ({ item }) => {
           </button>
         </div>
       </div>
-
       <div className="vmbrBlock">
         {listVmbr?.map((item, index) => (
           <div key={index}>
@@ -90,8 +94,9 @@ const Hosts = ({ item }) => {
         ))}
       </div>
 
-      <p className="ip_host">{host_ip}</p>
-
+      <div className="ip_address">
+        <p className="ip_host">{host_ip}</p>
+      </div>
       <MemoryComp
         node_cpu_usage={node_cpu_usage}
         node_cpu={node_cpu}

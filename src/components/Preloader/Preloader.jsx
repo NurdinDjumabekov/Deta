@@ -1,11 +1,15 @@
+///// hooks
 import React from "react";
-import "./style.scss";
 import { useSelector } from "react-redux";
+
+//// styles
+import "./style.scss";
 
 export const Preloader = () => {
   const { preloader } = useSelector((state) => state.requestSlice);
+  const { preloaderDns } = useSelector((state) => state.dnsSlice);
 
-  if (preloader) {
+  if (preloader || preloaderDns) {
     return (
       <div className="preloader">
         <div className="lds-roller">

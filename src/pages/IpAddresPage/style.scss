@@ -1,8 +1,7 @@
 .ipAddresPage {
-  padding: 10px 0px;
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
+  width: calc(100% - 100px);
+  height: 100%;
+  // overflow: scroll;
 
   ///// переиспользую снизу 2 раза
   .actions {
@@ -42,33 +41,26 @@
     align-items: center;
     background: rgb(30, 31, 35);
     height: 50px;
-    top: 0;
     gap: 10px;
-    position: fixed;
-    left: 60px;
     min-width: 100%;
-    padding: 0 40px;
+    padding: 0 8px;
     z-index: 10;
   }
 
   &__inner {
     width: 100%;
     display: flex;
-    padding: 42px 0 0 0;
-    height: 100%;
-    flex-wrap: wrap;
-    gap: 0px;
-    align-content: flex-start;
-    align-items: stretch;
+    padding: 5px 0 0 0;
+    height: calc(100% - 52px);
+    overflow: scroll;
 
     .every {
       box-sizing: border-box;
       border-right: 1px solid #222;
-      width: 450px;
-      height: auto;
-      border-bottom: 2px solid #222; /* Для строк */
-      height: 50%;
-      overflow-y: scroll;
+      width: 420px;
+      min-width: 420px;
+      border-bottom: 2px solid #222;
+      cursor: pointer;
 
       .titlesAction {
         display: flex;

@@ -6,7 +6,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 ////// fns
-import { getDnsSubDomen } from "../../../store/reducers/requestSlice";
+import { getDnsSubDomen } from "../../../store/reducers/dnsSlice";
 import { setTemporaryDNS } from "../../../store/reducers/stateSlice";
 import { setPastDnsInSubDomen } from "../../../store/reducers/stateSlice";
 
@@ -29,46 +29,32 @@ const EveryDns = ({ item, setGuidDelete }) => {
     dispatch(setTemporaryDNS({ ...temporaryDNS, ...domenInfo }));
     //// подставляю данные в stat eдля редактирования данных dns (так же подставляю данные dns)
 
-    // dispatch(setPastDnsInSubDomen(`.${domen_name}`));
+    dispatch(setPastDnsInSubDomen(`.${domen_name}`));
     // // //// подставляю домен в поля суб домена
   };
 
   const callDeleteFn = (guid) => setGuidDelete(guid);
   ///// вызов модалки для удаления данных суб домена
 
-  const active = item?.guid === activeDns?.guid ? "activeDns" : "";
+  const active = item?.guid == activeDns?.guid ? "activeDns" : "";
+
   return (
-    <TableRow
-      className={`dnsEvery ${active}`}
-      key={item?.guid}
-      onClick={() => clickDns(item)}
-    >
-      <TableCell style={{ width: "95%" }}>
+    <TableRow className={`dnsEvery ${active}`} key={item?.guid}>
+      <TableCell style={{ width: "80%" }} onClick={() => clickDns(item)}>
         <div className="content">
           <img src={diagramWhite} alt="%" />
           <p>{item?.domen_name}</p>
         </div>
       </TableCell>
-      {/* <TableCell className="dnsText expire" style={{ width: "13%" }}>
-        {item?.expire}
-      </TableCell>
-      <TableCell className="dnsText negative" style={{ width: "13%" }}>
-        {item?.negative}
-      </TableCell>
-      <TableCell className="dnsText refresh" style={{ width: "13%" }}>
-        {item?.refresh}
-      </TableCell>
-      <TableCell className="dnsText retry" style={{ width: "13%" }}>
-        {item?.retry}
-      </TableCell>
-      */}
-      <TableCell className="action" style={{ width: "5%" }}>
-        <button
-          className="actions__btns krest"
-          onClick={() => callDeleteFn(item?.guid)}
-        >
-          <img src={krestIcon} alt="x" />
-        </button>
+      <TableCell className="actions" style={{ width: "10%" }}>
+        <div>
+          <button
+            className="actions__btns krest"
+            onClick={() => callDeleteFn(item?.guid)}
+          >
+            <img src={krestIcon} alt="x" />
+          </button>
+        </div>
       </TableCell>
     </TableRow>
   );

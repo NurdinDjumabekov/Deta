@@ -16,7 +16,7 @@ import { listDnsMenu } from "../../../../helpers/LocalData";
 
 /////// fns
 import { setActiveDnsMenu } from "../../../../store/reducers/stateSlice";
-import { confirmStatusSubDomenFN } from "../../../../store/reducers/requestSlice";
+import { confirmStatusSubDomenFN } from "../../../../store/reducers/dnsSlice";
 
 /////// style
 import "./style.scss";

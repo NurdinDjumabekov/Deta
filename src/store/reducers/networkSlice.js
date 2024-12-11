@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
-import axios from "axios";
 
 import axiosInstance from "../../axiosInstance";
 import { myAlert } from "../../helpers/MyAlert";
@@ -104,6 +103,24 @@ export const actionStaticsIPreq = createAsyncThunk(
   }
 );
 
+///// actionDragonDropIPreq - /// для переменщения ip адерсов с олднйо под группы с другую
+export const actionDragonDropIPreq = createAsyncThunk(
+  "actionDragonDropIPreq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}api/network/dragonDrop`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updatedStaticsIpSocket = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("staticPingStatus", (data) => {
@@ -111,9 +128,7 @@ export const updatedStaticsIpSocket = () => (dispatch) => {
   });
 
   // Функция для отключения сокета
-  return () => {
-    socket.disconnect();
-  };
+  return () => socket.disconnect();
 };
 
 const networkSlice = createSlice({

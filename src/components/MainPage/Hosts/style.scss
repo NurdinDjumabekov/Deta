@@ -8,7 +8,7 @@
   border: 1px solid transparent;
 
   h4 {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 500;
   }
 
@@ -19,14 +19,24 @@
     padding: 4px 0px 0px;
     gap: 3px;
 
-    p {
-      font-size: 14px;
-      font-weight: 500;
-      margin-right: 5px;
+    .hostTitle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
 
-      b {
-        color: #e1e16f;
-        font-size: 11px;
+      img {
+        width: 18px;
+        height: 18px;
+      }
+      p {
+        font-size: 12px;
+        font-weight: 500;
+        margin-right: 5px;
+
+        b {
+          color: #e1e16f;
+          font-size: 11px;
+        }
       }
     }
 
@@ -54,6 +64,8 @@
 
       .edit {
         margin: 0 0 0 2px;
+        width: 19px;
+        height: 19px;
       }
 
       .del {
@@ -101,10 +113,19 @@
     }
   }
 
-  .ip_host {
-    font-size: 14px;
-    font-weight: 600;
-    margin: 2px 0px 5px;
+  .ip_address {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 5px 1px;
+    background-color: "#008000";
+    border-radius: 10px;
+
+    .ip_host {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 2px 0px 5px;
+    }
   }
 
   .comment {

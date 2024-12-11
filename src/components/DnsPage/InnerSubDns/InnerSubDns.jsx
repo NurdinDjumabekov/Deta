@@ -9,26 +9,34 @@ import { TableCell, TableContainer } from "@mui/material";
 import { TableHead, TableRow, Paper } from "@mui/material";
 import TypeAddDns from "../typesSubDns/TypeAddDns/TypeAddDns";
 import ModalsForAllDns from "../ModalsForAllDns/ModalsForAllDns";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 ////// imgs
-import editIcon from "../../../assets/icons/edit.svg";
-import krestIcon from "../../../assets/icons/krest.svg";
 import arrowSort from "../../../assets/icons/arrowSort.svg";
 
 ////// fns
-import { sortSubDomen } from "../../../store/reducers/requestSlice";
+import {
+  editStatusSubDomen,
+  sortSubDomen,
+} from "../../../store/reducers/dnsSlice";
 
 ////// style
 import "./style.scss";
 
+////// helpers
+import { objTitle } from "../../../helpers/LocalData";
+import InnerSubDnsActions from "../InnerSubDnsActions/InnerSubDnsActions";
+
 const InnerSubDns = () => {
   const dispatch = useDispatch();
 
-  const { listDnsSubDomen } = useSelector((state) => state.requestSlice);
+  const { listDnsSubDomen } = useSelector((state) => state.dnsSlice);
   const { activeDns } = useSelector((state) => state.stateSlice);
 
   const [guidEdit, setGuidEdit] = useState(""); // храню временный guid для редактирования
   const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
+  const [editStatus, setEditStatus] = useState({});
+
   const [objEdit, setObjedit] = useState({
     record_name: "",
     host_ip: "",
@@ -36,17 +44,6 @@ const InnerSubDns = () => {
     ttl_type: 1,
     comment: "",
   }); /// временные данные для редактирования
-
-  const callEditFN = (obj) => {
-    const text = obj?.record_name == obj?.domen_name ? "" : obj?.record_name;
-    const record_name = text?.replace(`.${activeDns?.name}`, "");
-    setGuidEdit(obj?.guid); //// активный guid для редактирования
-    setObjedit({ ...obj, record_name }); //// временный обьект для редактирования
-  };
-  ///// вызов модалки для релактирования данных суб домена
-
-  const callDeleteFn = (guid) => setGuidDelete(guid);
-  ///// вызов модалки для удаления данных суб домена
 
   const [sort, setSort] = useState(1); // счетчик 1 или 2
 
@@ -58,9 +55,17 @@ const InnerSubDns = () => {
     ///// сортировка данных через запрос
   };
 
+  const editStatusSubDnsFn = () => {
+    ///// изменение статуса dns через запрос
+    const { guid } = editStatus;
+    const data = { guid, protected: !!!editStatus?.protected };
+    const past = { data, setEditStatus, activeDns };
+    dispatch(editStatusSubDomen(past));
+  };
+
   return (
     <div className="blockSubDomen">
-      <TableContainer component={Paper} className="tableEditDns">
+      <TableContainer component={Paper} className="tableEditDns hoverScroll">
         <Table>
           <TableHead>
             <TableRow>
@@ -122,24 +127,13 @@ const InnerSubDns = () => {
                   )}
                 </TableCell>
                 <TableCell className="text actions" style={{ width: "8%" }}>
-                  <div className="blockActions">
-                    {row?.recordType != "SOA" ? (
-                      <button
-                        className="actions__btns"
-                        onClick={() => callEditFN(row)}
-                      >
-                        <img src={editIcon} alt="e" />
-                      </button>
-                    ) : (
-                      <button className="actions__push"></button>
-                    )}
-                    <button
-                      className="actions__btns krest"
-                      onClick={() => callDeleteFn(row?.guid)}
-                    >
-                      <img src={krestIcon} alt="x" />
-                    </button>
-                  </div>
+                  <InnerSubDnsActions
+                    row={row}
+                    setGuidEdit={setGuidEdit}
+                    setGuidDelete={setGuidDelete}
+                    setEditStatus={setEditStatus}
+                    setObjedit={setObjedit}
+                  />
                 </TableCell>
                 <TableCell className="text comment" style={{ maxWidth: "24%" }}>
                   {row?.comment}
@@ -152,6 +146,7 @@ const InnerSubDns = () => {
 
       <TypeAddDns />
 
+      {/* //// модалки для удвления и именения ыуб доменов  */}
       <ModalsForAllDns
         guidEdit={guidEdit}
         setGuidEdit={setGuidEdit}
@@ -160,7 +155,14 @@ const InnerSubDns = () => {
         objEdit={objEdit}
         setObjedit={setObjedit}
       />
-      {/* //// модалки для удвления и именения ыуб доменов  */}
+
+      {/* для редактирования статуса  */}
+      <ConfirmModal
+        state={!!editStatus?.guid}
+        title={objTitle?.[editStatus?.protected || 0]}
+        yes={editStatusSubDnsFn}
+        no={() => setEditStatus({})}
+      />
     </div>
   );
 };

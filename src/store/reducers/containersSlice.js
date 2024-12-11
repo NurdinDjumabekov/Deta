@@ -202,14 +202,6 @@ const containersSlice = createSlice({
       }));
     },
 
-    setActiveHost: (state, action) => {
-      state.activeHost = action.payload;
-    },
-
-    setActiveContainer: (state, action) => {
-      state.activeContainer = action.payload;
-    },
-
     setActiveDns: (state, action) => {
       state.activeDns = action.payload;
     },
@@ -434,8 +426,6 @@ export const {
   setMenuInner,
   changeMenuInner,
   clearMenuInner,
-  setActiveHost,
-  setActiveContainer,
   setActiveDns,
   setDnsList,
   clearDnsList,

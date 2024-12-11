@@ -11,6 +11,10 @@ import LogOut from "../../LogOut/LogOut";
 
 ////// styles
 import "./style.scss";
+import {
+  setActiveContainer,
+  setActiveHost,
+} from "../../../store/reducers/stateSlice";
 
 ////// fns
 
@@ -21,7 +25,11 @@ const MenuBar = () => {
 
   const { listDataCenter } = useSelector((state) => state.dataCenterSlice);
 
-  const clickDataCenter = ({ guid }) => navigate(`/${guid}/hosts`);
+  const clickDataCenter = ({ guid }) => {
+    navigate(`/${guid}/hosts`);
+    dispatch(setActiveHost(0));
+    dispatch(setActiveContainer(0));
+  };
 
   return (
     <div className="menuBar">
@@ -69,7 +77,6 @@ const MenuBar = () => {
               to={`/${
                 extractGuid(pathname) || "9B26D1D4-5F84-4224-9643-03E28A57F7F1"
               }${item.path}`}
-              onClick={console.log(extractGuid(pathname))}
             >
               <div>
                 <img src={item.img} alt="" />

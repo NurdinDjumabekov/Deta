@@ -34,8 +34,6 @@ const NetworksPage = () => {
     };
   }, [dispatch, pathname]);
 
-  // console.log(listNetwork);
-
   const clickNetwork = ({ guid_network, guid }) => {
     console.log(guid_network, guid);
   };
