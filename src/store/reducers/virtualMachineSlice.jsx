@@ -14,23 +14,7 @@ const initialState = {
 
 const url_socket = "https://dd-api.ibm.kg";
 
-///// start - /// для добавления сетей
-export const addNetworkReq = createAsyncThunk(
-  "addNetworkReq",
-  async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/createIp`;
-    try {
-      const response = await axiosInstance.post(url, data);
-      if (response.status >= 200 && response.status < 300) {
-        return response?.data?.res;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+
 
 //// перезагрузить ВМ
 export const restartVmSC = () => (dispatch) => {
@@ -67,23 +51,7 @@ const virtualMachineSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    // ///////////////////////// addNetworkReq
-    // builder.addCase(addNetworkReq.fulfilled, (state, action) => {
-    //   state.preloadeкNetwork = false;
-    //   if (action.payload == 1) {
-    //     myAlert("Сеть добавлена");
-    //   } else if (action.payload == 2) {
-    //     myAlert("Сеть c таким IP адресом уже существует!", "error");
-    //   }
-    // });
-    // builder.addCase(addNetworkReq.rejected, (state, action) => {
-    //   state.error = action.payload;
-    //   state.preloadeкNetwork = false;
-    //   myAlert("Упс, что-то пошло не так!", "error");
-    // });
-    // builder.addCase(addNetworkReq.pending, (state, action) => {
-    //   state.preloadeкNetwork = true;
-    // });
+   
   },
 });
 

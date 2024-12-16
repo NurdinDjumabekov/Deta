@@ -3,7 +3,9 @@ import microtic from "../assets/icons/menu/router.svg";
 import seti from "../assets/icons/menu/wifi.svg";
 import HaProxy from "../assets/icons/menu/HaProxy.svg";
 import ipAddres from "../assets/icons/menu/ipAddres.svg";
+import list from "../assets/icons/menu/list.svg";
 import dns from "../assets/icons/menu/dns.svg";
+import block from "../assets/icons/menu/box.svg";
 
 /////// os
 import windows from "../assets/images/OS/windows.png";
@@ -22,6 +24,8 @@ export const pagesAllDC = [
   { id: 6, name: "ДНС", path: "/dns", img: dns },
   { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
+  { id: 9, name: "Задачи", path: "/todos", img: list },
+  { id: 10, name: "База и хранилища", path: "/baza", img: block },
 ];
 
 export const generationNum = () => {
@@ -254,8 +258,8 @@ export const colorsList = [
 
 ////////////////////////////////////////////// dns /////////////////////////////////
 export const objTitle = {
-  0: "Разрешить вносить изменения в субдомен?",
-  1: "Запретить вносить изменения в субдомен?",
+  0: "Запретить вносить изменения в субдомен?",
+  1: "Разрешить вносить изменения в субдомен?",
 };
 
 export const allSumsProvidersFN = (props) => {

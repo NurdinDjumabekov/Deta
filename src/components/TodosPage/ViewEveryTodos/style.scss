@@ -1,0 +1,82 @@
+.viewTodos {
+  width: 700px;
+
+  .header {
+    margin: 10px 0px;
+    h5 {
+      font-size: 15px;
+      margin: 5px 0px;
+      color: #c0c0c0;
+    }
+
+    textarea {
+      height: 250px;
+    }
+  }
+
+  .viewCommentsFiles {
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+    justify-content: space-between;
+    height: 100%;
+
+    .actionsFiles {
+      .dropzone {
+        width: 350px !important;
+        height: 144px;
+
+        .dzu-dropzone {
+          min-height: 144px;
+        }
+      }
+    }
+
+    .listComments {
+      width: calc(100% - 360px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      gap: 10px;
+
+      > div:first-child {
+        max-height: 300px;
+        overflow-y: scroll;
+        > div {
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          gap: 5px;
+
+          p {
+            font-size: 13px;
+            margin: 3px 0px;
+            width: calc(100% - 25px);
+          }
+
+          button {
+            width: 15px;
+            height: 15px;
+          }
+        }
+      }
+    }
+
+    .save {
+      textarea {
+        width: 100%;
+      }
+
+      .saveStandart {
+        margin: 5px 0 0 0 !important;
+
+        button {
+          width: 110px;
+          font-size: 13px;
+          height: 32px;
+        }
+      }
+    }
+  }
+}

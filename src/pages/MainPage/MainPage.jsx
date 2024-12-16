@@ -20,6 +20,7 @@ import GraphicHosts from "../../components/MainPage/GraphicHosts/GraphicHosts";
 import GraphicContainer from "../../components/MainPage/GraphicContainer/GraphicContainer";
 import ModalsForContainers from "../../components/MainPage/ModalsForContainers/ModalsForContainers";
 import ModalsForHosts from "../../components/MainPage/ModalsForHosts/ModalsForHosts";
+import ViewProviders from "../../common/ViewProviders/ViewProviders";
 
 /////// imgs
 import displayIcon from "../../assets/icons/display.svg";
@@ -37,8 +38,9 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const { listProviders, listHosts, listContainers, countsContainers } =
-    useSelector((state) => state.requestSlice);
+  const { listHosts, listContainers, countsContainers } = useSelector(
+    (state) => state.requestSlice
+  );
   const { activeHost, activeContainer } = useSelector(
     (state) => state.stateSlice
   );
@@ -74,18 +76,7 @@ const MainPage = () => {
             <button className="addBtn" onClick={addHost}>
               +
             </button>
-            <div className="providers__main__inner">
-              {listProviders?.map((item, index) => (
-                <div key={index} style={{ background: item?.color }}>
-                  <div className="title">{item?.provider_name}</div>
-                  <span>({item?.provider_pingtime})</span>
-                  <div
-                    className="pingtime"
-                    style={{ background: pingtimeFN(item) }}
-                  />
-                </div>
-              ))}
-            </div>
+            <ViewProviders />
           </div>
         </div>
 

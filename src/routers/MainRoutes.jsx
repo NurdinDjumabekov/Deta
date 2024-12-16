@@ -26,6 +26,8 @@ import "react-toastify/dist/ReactToastify.css";
 ///// fns
 import { getDataCenterReq } from "../store/reducers/dataCenterSlice";
 import Test from "../components/Test/Test";
+import TodosPage from "../pages/TodosPage/TodosPage";
+import BazaPage from "../pages/BazaPage/BazaPage";
 
 const MainRoutes = () => {
   const dispatch = useDispatch();
@@ -47,6 +49,8 @@ const MainRoutes = () => {
           <Route path={`/networks`} element={<NetworksPage />} />
           <Route path={`/ip-addres`} element={<IpAddresPage />} />
           <Route path={`/dns`} element={<DnsPage />} />
+          <Route path={`/todos`} element={<TodosPage />} />
+          <Route path={`/baza`} element={<BazaPage />} />
           <Route path={`/${guid}/hosts`} element={<MainPage />} />
           <Route path={`/${guid}/microtic`} element={<MicroticPage />} />
           <Route path={`/${guid}/ha-proxy`} element={<HaProxy />} />

@@ -32,6 +32,7 @@
       span {
         font-size: 14px;
         color: #43a0dd;
+        padding: 0 0 2px 0px;
       }
 
       .on {
@@ -40,6 +41,23 @@
 
       .off {
         color: rgb(218, 55, 55);
+      }
+    }
+
+    .port80 {
+      display: flex;
+      align-items: center;
+
+      span {
+        width: 12px;
+        height: 12px;
+        background: rgb(126, 76, 227);
+      }
+    }
+
+    .port443 {
+      span {
+        background: #cb3ebd;
       }
     }
   }
@@ -65,6 +83,7 @@
       box-sizing: border-box;
       border-right: 1px solid #808080;
       width: 17% !important;
+      // border-left: 2px solid #cb3ebd;
 
       &__inner {
         border-bottom: 1px solid #808080;
@@ -90,11 +109,16 @@
 
             p {
               font-size: 13px;
+              color: #ffffffb3;
             }
 
             span {
               font-size: 13px;
               color: #db7632;
+            }
+
+            .port {
+              margin-left: -4px;
             }
 
             .edit {

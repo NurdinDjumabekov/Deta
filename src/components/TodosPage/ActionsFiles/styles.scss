@@ -1,0 +1,72 @@
+.actionsFiles {
+  .listMyFiles {
+    display: flex;
+    flex-direction: column;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border: 2px solid #d9d9d9;
+      border-bottom: none !important;
+      padding: 20px 10px;
+
+      p {
+        color: rgba(255, 255, 255, 0.61);
+        font-size: 13px;
+        width: calc(100% - 25px);
+      }
+
+      button {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .dropzone {
+    width: 420px !important;
+
+    .dzu-dropzone {
+      overflow: auto !important;
+      border-radius: 0px !important;
+
+      .dzu-previewContainer {
+        padding: 10px 3% !important;
+
+        .dzu-previewStatusContainer {
+          width: 23px !important;
+          height: 23px !important;
+          padding: 0 !important;
+          background-image: url("../../../assets/icons/krest.svg");
+          background-repeat: no-repeat;
+          background-size: contain;
+
+          span {
+            // display: none !important;
+            color: transparent !important;
+            background: transparent !important;
+            width: 20px !important;
+            height: 20px !important;
+            margin: 0 !important;
+          }
+        }
+
+        .dzu-previewFileName {
+          color: #ffffff9d !important;
+        }
+      }
+
+      .dzu-inputLabelWithFiles {
+        background: transparent !important;
+        padding: 20px 0px !important;
+        width: 100% !important;
+        margin: 0 !important;
+      }
+    }
+  }
+
+  .filesAdd {
+    width: 480px !important;
+  }
+}

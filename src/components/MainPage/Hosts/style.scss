@@ -134,20 +134,21 @@
 }
 
 .activeHost {
-  border: 1px solid #fff;
+  // border: 1px solid #fff;
   position: relative;
+  background: #498d7487 !important;
 
-  &::after {
-    content: "";
-    border-radius: 0 3px 0 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
-    border: 15px solid transparent;
-    border-top: 15px solid #fff;
-    border-right: 15px solid #fff;
-  }
+  // &::after {
+  //   content: "";
+  //   border-radius: 0 3px 0 0;
+  //   position: absolute;
+  //   top: 0;
+  //   right: 0;
+  //   z-index: 2;
+  //   border: 15px solid transparent;
+  //   border-top: 15px solid #fff;
+  //   border-right: 15px solid #fff;
+  // }
 }
 
 .lineError {

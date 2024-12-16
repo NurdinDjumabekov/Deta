@@ -213,3 +213,40 @@ img {
   font-size: 11px;
   line-height: 10px;
 }
+
+.saveStandart {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0 0 0;
+
+  button {
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 3px;
+    margin: 5px 0 0 0;
+    background: #08920a;
+    line-height: 10px;
+    width: 120px;
+    font-size: 14px;
+    height: 35px;
+  }
+}
+
+.standartCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 0px;
+
+  input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+  }
+
+  label {
+    font-size: 14px;
+    cursor: pointer;
+  }
+}

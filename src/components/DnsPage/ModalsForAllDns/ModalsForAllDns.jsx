@@ -75,6 +75,31 @@ const ModalsForAllDns = (props) => {
   const distributeIpAddres = () => dispatch(distributeIpAddresFN(activeDns));
   //// для подтверждения распределения нагрузки субднс
 
+  const obj = {
+    A: (
+      <div className="addSubDnsModal">
+        <MyInputs
+          title={"Record name (host) :"}
+          onChange={onChange}
+          name={"record_name"}
+          value={objEdit?.record_name}
+        />
+        <span>.{activeDns?.name}</span>
+      </div>
+    ),
+    TXT: (
+      <div className="addSubDnsModal">
+        <MyInputs
+          title={"Record name (host) :"}
+          onChange={onChange}
+          name={"record_name"}
+          value={objEdit?.record_name}
+        />
+        <span>.{activeDns?.name}</span>
+      </div>
+    ),
+  };
+
   return (
     <div>
       {/* для удаления  */}
@@ -93,17 +118,7 @@ const ModalsForAllDns = (props) => {
       >
         <div className="addDns modalEdit">
           <div className="second modalEdit__inner">
-            {objEdit?.recordType == "A" ? (
-              <div className="addSubDnsModal">
-                <MyInputs
-                  title={"Record name (host) :"}
-                  onChange={onChange}
-                  name={"record_name"}
-                  value={objEdit?.record_name}
-                />
-                <span>.{activeDns?.name}</span>
-              </div>
-            ) : (
+            {obj?.[objEdit?.recordType] || (
               <div className="addSubDnsModal">
                 <MyInputs
                   title={"Record name (host) :"}
@@ -113,7 +128,6 @@ const ModalsForAllDns = (props) => {
                 />
               </div>
             )}
-
             <MyInputs
               title={`${objTyperecordsKeys?.[objEdit?.recordType]} :`}
               onChange={onChange}

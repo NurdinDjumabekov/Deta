@@ -108,11 +108,7 @@ const InnerSubDns = () => {
                 </TableCell>
                 <TableCell
                   className="text data"
-                  style={{
-                    width: "15%",
-                    maxWidth: 400,
-                    overflow: "hidden",
-                  }}
+                  style={{ width: "15%", overflow: "hidden" }}
                 >
                   {row?.host_ip}
                 </TableCell>
@@ -146,7 +142,7 @@ const InnerSubDns = () => {
 
       <TypeAddDns />
 
-      {/* //// модалки для удвления и именения ыуб доменов  */}
+      {/* //// модалки для удвления и именения sуб доменов  */}
       <ModalsForAllDns
         guidEdit={guidEdit}
         setGuidEdit={setGuidEdit}

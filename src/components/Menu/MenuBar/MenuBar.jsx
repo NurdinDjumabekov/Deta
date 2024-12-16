@@ -44,7 +44,7 @@ const MenuBar = () => {
               <div>
                 <img src={item.img} alt="" />
               </div>
-              <p>{item.name}</p>
+              <p>{item?.name}</p>
             </NavLink>
           ))}
         </div>

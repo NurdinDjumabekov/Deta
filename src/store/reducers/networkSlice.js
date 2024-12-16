@@ -13,9 +13,9 @@ const initialState = {
 
 const url_socket = "https://dd-api.ibm.kg";
 
-///// addNetworkReq - /// для добавления сетей
-export const addNetworkReq = createAsyncThunk(
-  "addNetworkReq",
+///// addEditNetworkReq - /// для добавления и редактирования сетей
+export const addEditNetworkReq = createAsyncThunk(
+  "addEditNetworkReq",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}api/network/createIp`;
     try {
@@ -141,8 +141,8 @@ const networkSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    ///////////////////////// addNetworkReq
-    builder.addCase(addNetworkReq.fulfilled, (state, action) => {
+    ///////////////////////// addEditNetworkReq
+    builder.addCase(addEditNetworkReq.fulfilled, (state, action) => {
       state.preloadeкNetwork = false;
       if (action.payload == 1) {
         myAlert("Сеть добавлена");
@@ -150,12 +150,12 @@ const networkSlice = createSlice({
         myAlert("Сеть c таким IP адресом уже существует!", "error");
       }
     });
-    builder.addCase(addNetworkReq.rejected, (state, action) => {
+    builder.addCase(addEditNetworkReq.rejected, (state, action) => {
       state.error = action.payload;
       state.preloadeкNetwork = false;
       myAlert("Упс, что-то пошло не так!", "error");
     });
-    builder.addCase(addNetworkReq.pending, (state, action) => {
+    builder.addCase(addEditNetworkReq.pending, (state, action) => {
       state.preloadeкNetwork = true;
     });
 

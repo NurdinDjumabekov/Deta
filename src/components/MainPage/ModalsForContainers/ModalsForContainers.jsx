@@ -49,12 +49,13 @@ import Selects from "../../../common/Selects/Selects";
 import Dropzone from "react-dropzone-uploader";
 import AccessesUsers from "./AccessesUsers/AccessesUsers";
 import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
+import debounce from "debounce";
 
 ////// helpers
 import { listFast, listSnaps } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
 import { transformLists } from "../../../helpers/transformLists";
-import debounce from "debounce";
+
 const { REACT_APP_API_URL } = process.env;
 
 const ModalsForContainers = () => {

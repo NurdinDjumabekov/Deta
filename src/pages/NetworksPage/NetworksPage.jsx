@@ -8,19 +8,25 @@ import "./style.scss";
 
 //// fns
 import { getNetworks, updatedNetwork } from "../../store/reducers/requestSlice";
+import { addEditNetworkReq } from "../../store/reducers/networkSlice";
 
 //// helpers
 import { returnColorStatus } from "../../helpers/returnColorStatus";
+import { myAlert } from "../../helpers/MyAlert";
+
+////// components
 import Modals from "../../common/Modals/Modals";
 import MyInputs from "../../common/MyInput/MyInputs";
-import { myAlert } from "../../helpers/MyAlert";
-import { addNetworkReq } from "../../store/reducers/networkSlice";
+import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
+
+////// icons
+import editIcon from "../../assets/icons/edit.svg";
+import delIcon from "../../assets/icons/delete.svg";
 
 const NetworksPage = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const [modal, setModal] = useState(false);
   const [networkObj, setNetworkObj] = useState({});
 
   const { listNetwork } = useSelector((state) => state.requestSlice);
@@ -43,7 +49,7 @@ const NetworksPage = () => {
     setNetworkObj({ ...networkObj, [name]: value });
   };
 
-  const addNetworkFN = async (e) => {
+  const addEditNetworkFN = async (e) => {
     e.preventDefault();
 
     if (!validateIPAddress(networkObj?.ip_address)) {
@@ -54,18 +60,48 @@ const NetworksPage = () => {
       return myAlert("Введите комментарий", "error");
     }
 
-    const res = await dispatch(addNetworkReq(networkObj)).unwrap();
+    const send = {
+      ...networkObj,
+      get_api: !!networkObj?.get_api ? 1 : 0,
+    };
+
+    const res = await dispatch(addEditNetworkReq(send)).unwrap();
     if (res == 1) {
       setNetworkObj({});
-      setModal(false);
       dispatch(getNetworks());
+    }
+  };
+
+  const delNetworkFN = async (e) => {
+    e.preventDefault();
+
+    const res = await dispatch(addEditNetworkReq(networkObj)).unwrap();
+    if (res == 1) {
+      setNetworkObj({});
+      dispatch(getNetworks());
+    }
+  };
+
+  const openModal = (actionType, obj) => {
+    if (actionType == 1) {
+      setNetworkObj({ actionType: 1 });
+    } else if (actionType == 2) {
+      const send = {
+        ip_address: obj?.network_name,
+        comment: obj?.network_comment,
+        guid: obj?.guid,
+        get_api: !!obj?.get_api ? 1 : 0,
+      };
+      setNetworkObj({ ...send, actionType: 2 });
+    } else if (actionType == 3) {
+      setNetworkObj({ guid: obj?.guid, actionType: 3 });
     }
   };
 
   return (
     <>
       <div className="networksPage">
-        <button className="addBtn" onClick={() => setModal(true)}>
+        <button className="addBtn" onClick={() => openModal(1)}>
           +
         </button>
         <div className="listNetworks">
@@ -75,6 +111,7 @@ const NetworksPage = () => {
                 <h6>{item?.network_name}</h6>
                 <p>x</p>
               </div>
+
               <div className="grid-container">
                 {item?.ips?.map((i, index) => (
                   <div
@@ -86,16 +123,28 @@ const NetworksPage = () => {
                   </div>
                 ))}
               </div>
+
+              <div className="comment">
+                <p>{item?.network_comment}</p>
+                <div>
+                  <button onClick={() => openModal(2, item)}>
+                    <img src={editIcon} alt="" />
+                  </button>
+                  <button onClick={() => openModal(3, item)} className="del">
+                    <img src={delIcon} alt="" />
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </div>
       <Modals
-        openModal={modal}
-        setOpenModal={() => setModal(false)}
+        openModal={networkObj?.actionType == 2 || networkObj?.actionType == 1}
+        setOpenModal={() => setNetworkObj({})}
         title={"Добавление сетей"}
       >
-        <form className="inputsNetworks" onSubmit={addNetworkFN}>
+        <form className="inputsNetworks" onSubmit={addEditNetworkFN}>
           <MyInputs
             title={"Ip адрес (14.15.0.*)"}
             onChange={onChange}
@@ -111,6 +160,19 @@ const NetworksPage = () => {
             value={networkObj?.comment}
           />
 
+          <div className="checkBoxDns">
+            <input
+              type="checkbox"
+              id="check"
+              onChange={(e) =>
+                setNetworkObj({ ...networkObj, get_api: e.target?.checked })
+              }
+              name="useAll"
+              checked={!!networkObj?.get_api}
+            />
+            <label htmlFor="check"> Выдавать IP</label>
+          </div>
+
           <div className="actions">
             <button className="addAction" type="submit">
               Сохранить
@@ -118,6 +180,13 @@ const NetworksPage = () => {
           </div>
         </form>
       </Modals>
+
+      <ConfirmModal
+        state={networkObj?.actionType == 3}
+        title={"Удалить ?"}
+        yes={delNetworkFN}
+        no={() => setNetworkObj({})}
+      />
     </>
   );
 };

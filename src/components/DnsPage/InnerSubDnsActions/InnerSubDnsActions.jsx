@@ -9,7 +9,8 @@ import { Tooltip } from "@mui/material";
 import editIcon from "../../../assets/icons/edit.svg";
 import krestIcon from "../../../assets/icons/krest.svg";
 import LockIcon from "@mui/icons-material/Lock";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
+// import LockOpenIcon from "@mui/icons-material/LockOpen";
+import iconsCircle from "../../../assets/icons/circleWhite.svg";
 
 ////// fns
 
@@ -39,15 +40,16 @@ const InnerSubDnsActions = (props) => {
   const actibonStatus = {
     0: (
       <button
-        className="actions__btns krest screpka"
+        className="actions__btns krest screpka whiteCircle"
         onClick={() => setEditStatus(row)}
       >
-        <LockOpenIcon sx={{ fill: "green" }} />
+        {/* <LockOpenIcon sx={{ fill: "green" }} /> */}
+        <img src={iconsCircle} alt="()" />
       </button>
     ),
     1: (
       <button
-        className="actions__btns krest screpka"
+        className="actions__btns krest screpka "
         onClick={() => setEditStatus(row)}
       >
         <LockIcon sx={{ fill: "#9cddfd" }} />

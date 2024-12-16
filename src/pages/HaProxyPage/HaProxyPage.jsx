@@ -103,36 +103,55 @@ const HaProxyPage = () => {
           <p>Выкл:</p>
           <span className="off">{counts?.de_active}</span>
         </div>
+
+        <div className="port80">
+          <p>80 порт - </p>
+          <span></span>
+        </div>
+
+        <div className="port80 port443">
+          <p>443 порт - </p>
+          <span></span>
+        </div>
       </div>
       <div className="haProxy__inner">
         {listHaProxy?.map((item, index) => (
           <div className="every" key={index}>
-            {item?.map((i, index) => (
-              <div className="every__inner" key={index}>
-                <div
-                  className={`btnBlink ${
-                    !!i?.ping_status ? "offHaproxy" : "onHaproxy"
-                  }`}
-                ></div>
-                <div className="every__inner__data">
-                  <div className="action">
-                    <div>
-                      <p>{i?.domain}</p>
-                      <span>{i?.backend_ip}</span>
+            {item?.map((i, index) => {
+              const [ip, port] = i?.backend_ip?.split(":");
+              return (
+                <div className="every__inner" key={index}>
+                  <div
+                    className={`btnBlink ${
+                      !!i?.ping_status ? "offHaproxy" : "onHaproxy"
+                    }`}
+                  ></div>
+                  <div className="every__inner__data">
+                    <div className="action">
+                      <div>
+                        <p>{i?.domain}</p>
+                        <span>{ip}:</span>
+                        <span
+                          className="port"
+                          style={{ color: getCellColor(port) }}
+                        >
+                          {port}
+                        </span>
+                      </div>
+                      <div>
+                        <button className="edit" onClick={() => editProxy(i)}>
+                          <EditIcon />
+                        </button>
+                        <button className="del" onClick={() => delProxy(i)}>
+                          <img src={delIcon} alt="delIcon" />
+                        </button>
+                      </div>
                     </div>
-                    <div>
-                      <button className="edit" onClick={() => editProxy(i)}>
-                        <EditIcon />
-                      </button>
-                      <button className="del" onClick={() => delProxy(i)}>
-                        <img src={delIcon} alt="delIcon" />
-                      </button>
-                    </div>
+                    <b>{i?.comment || "..."}</b>
                   </div>
-                  <b>{i?.comment || "..."}</b>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ))}
       </div>
@@ -145,29 +164,7 @@ const HaProxyPage = () => {
 
 export default HaProxyPage;
 
-// const renderItem = ({ index, style }) => {
-//   const item = listHaProxy[index];
-
-//   return (
-//     <div className="every" style={style} key={index}>
-//       {item?.map((i, subIndex) => (
-//         <div className="every__inner" key={subIndex}>
-//           <div className={`btnBlink offHaproxy`}></div>
-//           <div className="every__inner__data">
-//             <div className="action">
-//               <p>{i?.name}</p>
-//               <span>{i?.host}</span>
-//               <button className="edit" onClick={() => editProxy(i)}>
-//                 <img src={editIcon} alt="editIcon" />
-//               </button>
-//               <button className="del" onClick={() => delProxy(i)}>
-//                 <img src={delIcon} alt="delIcon" />
-//               </button>
-//             </div>
-//             <b>{i?.desc}</b>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
+const getCellColor = (port) => {
+  if (port === "443") return "#cb3ebd"; // Если порт 443, то красный
+  if (port === "80") return "rgb(126, 76, 227)"; // Если порт 80, то зеленый
+};

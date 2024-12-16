@@ -1,0 +1,129 @@
+.todosPage {
+  height: 100%;
+  width: 100%;
+  .header {
+    height: 55px;
+    width: 100%;
+    background: #1e1f23;
+    padding: 0 10px 0 12px;
+    display: flex;
+    align-items: center;
+
+    .create {
+      button {
+        width: 110px;
+        height: 35px;
+        border-radius: 4px;
+        background: rgb(60, 227, 60);
+        font-size: 14px;
+      }
+    }
+  }
+
+  .list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+
+    .every {
+      width: 400px;
+      background: rgb(30, 31, 35);
+      padding: 15px 10px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      .title {
+        padding: 0 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        h3 {
+          font-size: 15px;
+          color: #ffffffc5;
+          width: calc(100% - 65px);
+        }
+
+        > div {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          width: 65px;
+
+          button {
+            width: 18px;
+            height: 18px;
+          }
+
+          button:first-child {
+            font-size: 27px;
+            line-height: 0;
+            color: green;
+          }
+
+          button:last-child {
+            width: 15px;
+            height: 17px;
+          }
+        }
+      }
+
+      .body {
+        padding: 15px 0px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .every_task {
+          background: #292d32;
+          border-radius: 5px;
+          padding: 10px;
+          cursor: pointer;
+          border: 2px solid #292d32;
+
+          &:hover {
+            border: 2px solid #fff;
+            transition: 0.5s;
+          }
+
+          .titleInner {
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+
+            h5 {
+              font-size: 15px;
+              color: #ffffffa2;
+              width: calc(100% - 65px);
+            }
+
+            .actionsInner {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              width: 65px;
+
+              button {
+                width: 18px;
+                height: 18px;
+              }
+
+              button:last-child {
+                width: 15px;
+                height: 17px;
+              }
+            }
+          }
+
+          .decr {
+            font-size: 13px;
+            color: #ffffffa2;
+          }
+        }
+      }
+    }
+  }
+}

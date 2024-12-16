@@ -327,9 +327,9 @@ const IpAddresPage = () => {
 export default IpAddresPage;
 
 const pingtimeFN = (provider_pingtime) => {
-  if (+provider_pingtime < 8 && +provider_pingtime > 0) {
+  if (+provider_pingtime < 10 && +provider_pingtime > 0) {
     return "green";
-  } else if (+provider_pingtime > 6 && +provider_pingtime < 20) {
+  } else if (+provider_pingtime > 10 && +provider_pingtime < 200) {
     return "orange";
   } else if (provider_pingtime == "" || provider_pingtime == 0) {
     return "red";
@@ -339,9 +339,9 @@ const pingtimeFN = (provider_pingtime) => {
 };
 
 const pingtimeTextFN = (provider_pingtime) => {
-  if (+provider_pingtime < 8 && +provider_pingtime > 0) {
+  if (+provider_pingtime < 10 && +provider_pingtime > 0) {
     return "#4f82ed";
-  } else if (+provider_pingtime > 6 && +provider_pingtime < 20) {
+  } else if (+provider_pingtime > 10 && +provider_pingtime < 200) {
     return "orange";
   } else if (provider_pingtime == "" || provider_pingtime == 0) {
     return "red";

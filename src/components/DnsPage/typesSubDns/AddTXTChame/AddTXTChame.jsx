@@ -61,7 +61,7 @@ const AddTXTChame = ({ obj }) => {
       ...activeDns,
       domen_guid: activeDns?.guid,
     };
-    const obj = { record_name: `${activeDns.name}` };
+    const obj = { record_name: record_name };
     dispatch(addSubDomen({ ...send, ...obj }));
   };
 
@@ -73,9 +73,8 @@ const AddTXTChame = ({ obj }) => {
             title={"Record name (host) :"}
             onChange={onChange}
             name={"record_name"}
-            value={activeDns?.name}
+            value={activeDns?.record_name}
           />
-          {/* <span>.{activeDns?.name}</span> */}
         </div>
 
         <div className="widthBig">

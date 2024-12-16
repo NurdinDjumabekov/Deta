@@ -1,0 +1,194 @@
+.bazaPage {
+  height: 100%;
+  width: 100%;
+
+  .header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+
+    .hranilishBlock {
+      display: flex;
+      align-items: center;
+      margin: 0px 0 0 10px;
+
+      p {
+        font-size: 15px;
+      }
+
+      span {
+        width: 10px;
+        height: 10px;
+        background: rgb(27, 158, 239);
+        margin: 3px 0 0 5px;
+      }
+    }
+
+    .bazaBlock {
+      span {
+        background: #cb3ebd;
+      }
+    }
+  }
+
+  .list {
+    height: calc(100% - 60px);
+    width: 100%;
+    padding: 0px 10px 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+    overflow-y: scroll;
+
+    .every {
+      width: 200px;
+      padding: 10px;
+      background: rgb(30, 31, 35);
+      border-radius: 0px 0px 5px 5px;
+      cursor: pointer;
+
+      .headerInner {
+        padding: 2px 0px 4px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 5px;
+
+        h5 {
+          font-size: 13px;
+          font-weight: 500;
+        }
+
+        .actions {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+
+          button {
+            width: 18px;
+            height: 16px;
+          }
+
+          button:last-child {
+            width: 14px;
+            height: 16px;
+          }
+        }
+      }
+
+      .body {
+        .type {
+          font-size: 12px;
+          color: #cb3ebd;
+        }
+
+        .HR {
+          color: rgb(24, 135, 204);
+        }
+
+        .login,
+        .password {
+          color: #e1e16f;
+          font-size: 11px;
+          width: 100%;
+        }
+      }
+
+      .list_ip {
+        margin: 4px 0px 5px;
+        position: relative;
+        min-height: 20px;
+
+        .btnBlink {
+          width: 7px !important;
+          height: 7px !important;
+          min-width: 7px !important;
+          min-height: 7px !important;
+          margin: 3px 0 0 0;
+        }
+
+        > div {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 5px;
+
+          p {
+            color: #66b4ff;
+            font-size: 12px;
+            width: 100%;
+            text-align: left;
+            width: calc(100% - 15px);
+          }
+
+          button {
+            width: 18px;
+            height: 18px;
+          }
+        }
+
+        .innerIP {
+          font-size: 12px;
+          background: rgb(34, 108, 7);
+          padding: 2px 7px 3px;
+          border-radius: 2px;
+          position: absolute;
+          right: 0;
+          bottom: -21px;
+        }
+      }
+
+      .main_ip {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 3px 0px 5px;
+
+        p {
+          font-size: 15px;
+          font-weight: 500;
+        }
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .comments {
+        p {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .hranilish {
+      border-top: 3px solid #d333c6;
+    }
+
+    .baza {
+      border-top: 3px solid rgb(27, 158, 239);
+    }
+
+    .active {
+      background: #498d7461;
+    }
+
+    .nonePing {
+      background: linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 0.176) 25%,
+        #1e1f23 0,
+        #1e1f23 50%,
+        rgba(255, 0, 0, 0.139) 0,
+        rgba(255, 0, 0, 0.163) 75%,
+        #1e1f23 0
+      );
+      background-size: 30px 30px;
+    }
+  }
+}
