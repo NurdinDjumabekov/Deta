@@ -74,7 +74,7 @@ const DnsPage = () => {
         <div className="dnsMain__add">
           <div className={`dnsMain__add__inner ${active}`}>
             <AddDns />
-            <div className="search">
+            <div className="searchBigData">
               <input
                 type="text"
                 placeholder="Поиск по наименованию домена"

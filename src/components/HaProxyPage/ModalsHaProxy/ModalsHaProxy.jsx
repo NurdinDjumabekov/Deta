@@ -52,7 +52,7 @@ const ModalsHaProxy = () => {
     if (res == 1) {
       const obj = { 1: "Успешно добавлено", 2: "Отредактировано" };
       myAlert(obj?.[typeAction]);
-      dispatch(getHaProxyList()); /// get список HaProxy
+      dispatch(getHaProxyList({})); /// get список HaProxy
     } else if (res == 2) {
       myAlert("Такой HaProxy уже существует");
     } else {
@@ -65,7 +65,7 @@ const ModalsHaProxy = () => {
 
     if (res == 1) {
       myAlert("Успешно удалено");
-      dispatch(getHaProxyList()); /// get список HaProxy
+      dispatch(getHaProxyList({})); /// get список HaProxy
     } else {
       myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
     }

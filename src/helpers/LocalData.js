@@ -25,7 +25,7 @@ export const pagesAllDC = [
   { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
   { id: 9, name: "Задачи", path: "/todos", img: list },
-  { id: 10, name: "База и хранилища", path: "/baza", img: block },
+  { id: 10, name: "Базы и хранилища", path: "/baza", img: block },
 ];
 
 export const generationNum = () => {

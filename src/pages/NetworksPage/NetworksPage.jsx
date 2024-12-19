@@ -20,8 +20,7 @@ import MyInputs from "../../common/MyInput/MyInputs";
 import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
 
 ////// icons
-import editIcon from "../../assets/icons/edit.svg";
-import delIcon from "../../assets/icons/delete.svg";
+import editIcon from "../../assets/icons/editWhite.svg";
 
 const NetworksPage = () => {
   const dispatch = useDispatch();
@@ -54,10 +53,6 @@ const NetworksPage = () => {
 
     if (!validateIPAddress(networkObj?.ip_address)) {
       return myAlert("Некорректный IP адрес, ", "error");
-    }
-
-    if (!!!networkObj.comment) {
-      return myAlert("Введите комментарий", "error");
     }
 
     const send = {
@@ -107,9 +102,17 @@ const NetworksPage = () => {
         <div className="listNetworks">
           {listNetwork?.map((item) => (
             <div className="every" key={item.guid}>
+              <div className="comment">
+                <p>{item?.network_comment || "..."}</p>
+                <div></div>
+              </div>
+
               <div className="title">
                 <h6>{item?.network_name}</h6>
-                <p>x</p>
+                <p onClick={() => openModal(3, item)}>x</p>
+                <button onClick={() => openModal(2, item)} className="edit">
+                  <img src={editIcon} alt="" />
+                </button>
               </div>
 
               <div className="grid-container">
@@ -122,18 +125,6 @@ const NetworksPage = () => {
                     <p>{i?.ip_number}</p>
                   </div>
                 ))}
-              </div>
-
-              <div className="comment">
-                <p>{item?.network_comment}</p>
-                <div>
-                  <button onClick={() => openModal(2, item)}>
-                    <img src={editIcon} alt="" />
-                  </button>
-                  <button onClick={() => openModal(3, item)} className="del">
-                    <img src={delIcon} alt="" />
-                  </button>
-                </div>
               </div>
             </div>
           ))}

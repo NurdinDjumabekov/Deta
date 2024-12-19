@@ -27,7 +27,9 @@ const initialState = {
 export const getHaProxyList = createAsyncThunk(
   "getHaProxyList",
   async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}proxy/getHaproxyList`;
+    const { value } = props;
+    const searchParams = !!value ? `?search=${value}` : "";
+    const url = `${REACT_APP_API_URL}proxy/getHaproxyList${searchParams}`;
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
@@ -85,9 +87,9 @@ const requestHaProxySlice = createSlice({
     /////////////////////////// getHaProxyList
     builder.addCase(getHaProxyList.fulfilled, (state, action) => {
       state.preloaderProxy = false;
-      const newList = Array.from({ length: 7 }, () => []);
+      const newList = Array.from({ length: 6 }, () => []);
       action.payload?.list?.forEach((item, index) => {
-        const targetIndex = index % 7; // определяем индекс подмассива, в который нужно поместить элемент
+        const targetIndex = index % 6; // определяем индекс подмассива, в который нужно поместить элемент
         newList[targetIndex].push(item); // добавляем элемент в соответствующий подмассив
       });
 

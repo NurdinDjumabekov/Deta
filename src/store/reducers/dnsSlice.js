@@ -46,8 +46,8 @@ export const getDnsDomen = createAsyncThunk(
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
-        const guid = response?.data?.[2]?.guid;
-        const name = response?.data?.[2]?.domen_name;
+        const guid = response?.data?.[0]?.guid;
+        const name = response?.data?.[0]?.domen_name;
         dispatch(setActiveDns({ guid, name }));
         ///// подставляю в state для активного guid
         dispatch(getDnsSubDomen({ guid, domen_name: name }));
@@ -151,8 +151,11 @@ export const editStatusSubDomen = createAsyncThunk(
 ///// getDnsSubDomen - для получения субдоменов
 export const getDnsSubDomen = createAsyncThunk(
   "getDnsSubDomen",
-  async function ({ guid, domen_name }, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}`;
+  async function (props, { dispatch, rejectWithValue }) {
+    const { guid, domen_name, searchText } = props;
+    console.log(props, "props");
+    const searchParams = !!searchText ? `?search=${searchText}` : "";
+    const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}${searchParams}`;
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
@@ -425,6 +428,7 @@ const dnsSlice = createSlice({
     builder.addCase(addDomens.rejected, (state, action) => {
       state.error = action.payload;
       state.preloaderDns = false;
+      myAlert("Упс, что-то пошло не так?, перезагрузите страницу", "error");
     });
     builder.addCase(addDomens.pending, (state, action) => {
       state.preloaderDns = true;

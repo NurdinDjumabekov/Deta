@@ -18,23 +18,25 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 2px 0px;
         cursor: pointer;
-        border: 1px solid #ffffff3c;
-        border-radius: 0 0px 3px 3px;
+        // border: 1px solid #ffffff3c;
+        border-radius: 3px 3px 0 0px;
+        background: #4982ea;
+        border-bottom: 1px solid #fff;
 
         p {
           font-size: 10px;
           padding: 0px 3px;
           color: #ffffffa8;
-          width: calc(100% - 32px);
-          max-height: 24px;
+          width: calc(100% - 16px);
+          height: 33px;
           overflow: hidden;
+          padding: 4px 3px;
         }
 
         > div {
           margin: 0 2px;
-          width: 32px;
+          width: 16px;
           justify-content: space-between;
           display: flex;
 
@@ -52,13 +54,13 @@
 
       .title {
         display: flex;
-        padding: 5px 15px;
+        padding: 3px 15px;
         background: #4982ea;
         justify-content: space-between;
         gap: 10px;
         border-left: 8px solid #4982ea;
         border-right: 8px solid #4982ea;
-        padding-top: 7px;
+        align-items: center;
 
         h6 {
           font-size: 10px;
@@ -68,6 +70,17 @@
 
         p {
           font-size: 12px;
+        }
+
+        .edit {
+          width: 12px;
+          height: 16px;
+          margin-bottom: 2px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
 
@@ -146,7 +159,7 @@
   }
 
   .blueAnimSheat {
-    animation: animBlue 0.4s infinite;
+    animation: animBlue 4s infinite;
     background-color: #87a7e1;
   }
 }
@@ -172,7 +185,7 @@
 
 @keyframes animBlue {
   0% {
-    background-color: #4371c6;
+    background-color: rgba(67, 113, 198, 0.682);
   }
   50% {
     background-color: #dcdfe4;
@@ -181,22 +194,22 @@
     background-color: #dcdfe4;
   }
   100% {
-    background-color: #2f5bad;
+    background-color: rgba(67, 113, 198, 0.682);
   }
 }
 
 @keyframes animGreen {
   0% {
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.834);
   }
   50% {
-    background-color: #1cc058;
+    background-color: #1cc058d8;
   }
   70% {
-    background-color: rgb(94, 220, 126);
+    background-color: rgba(94, 220, 125, 0.842);
   }
   100% {
-    background-color: green;
+    background-color: rgba(0, 128, 0, 0.871);
   }
 }
 

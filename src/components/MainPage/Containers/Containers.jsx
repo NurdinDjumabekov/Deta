@@ -64,8 +64,6 @@ const Containers = ({ item }) => {
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
   const { icon_url } = item;
 
-  console.log(item, "item");
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

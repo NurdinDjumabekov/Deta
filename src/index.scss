@@ -250,3 +250,39 @@ img {
     cursor: pointer;
   }
 }
+
+
+.searchBigData {
+  width: 100%;
+  padding: 5px 12px;
+  margin: 5px 0 0 0;
+  position: relative;
+
+  input {
+    border-radius: 5px;
+    border: 1px solid #737373;
+    background: #4b4b4b;
+    width: 100%;
+    padding: 0 10px;
+    font-size: 13px;
+    height: 35px;
+    color: #ffffffd0;
+    font-weight: 500;
+
+    &:focus {
+      outline: none;
+      color: #fff;
+      border: 1px solid #007fd4;
+    }
+  }
+
+  button {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 27px;
+    height: 27px;
+    cursor: pointer;
+  }
+}

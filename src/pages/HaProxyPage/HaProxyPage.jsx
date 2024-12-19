@@ -1,18 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 //////helpers
-import { myAlert } from "../../helpers/MyAlert";
 
 ////// imgs
 import delIcon from "../../assets/icons/delete.svg";
 import editIcon from "../../assets/icons/edit.svg";
-import EditIcon from "@mui/icons-material/Edit";
+import krestIcon from "../../assets/icons/krest.svg";
 
 ////// components
 import ModalsHaProxy from "../../components/HaProxyPage/ModalsHaProxy/ModalsHaProxy";
-import { FixedSizeList as List } from "react-window";
+import lodashFn from "lodash";
 
 /////// fns
 import { getHaProxyList } from "../../store/reducers/haProxySlice";
@@ -29,12 +28,13 @@ const HaProxyPage = () => {
   const [listHeight, setListHeight] = useState(window.innerHeight); // Изначальная высота экрана
   const [activeIndex, setActiveIndex] = useState(0);
   const [counts, setCounts] = useState({});
+  const [searchText, setSearchText] = useState("");
 
   const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
   const { listHaProxy } = useSelector((state) => state.haProxySlice);
 
   const getData = async () => {
-    const res = await dispatch(getHaProxyList()).unwrap(); /// get список HaProxy
+    const res = await dispatch(getHaProxyList({})).unwrap(); /// get список HaProxy
     setCounts(res?.counts);
   };
 
@@ -73,7 +73,6 @@ const HaProxyPage = () => {
     }
   }, [activeIndex]);
 
-  // Обновление высоты при изменении размера окна
   useEffect(() => {
     const handleResize = () => {
       setListHeight(window.innerHeight);
@@ -85,42 +84,89 @@ const HaProxyPage = () => {
     };
   }, []);
 
+  const onChange = (e) => {
+    const value = e.target.value;
+    setSearchText(value);
+    debouncedSearch(value);
+  };
+
+  const debouncedSearch = useCallback(
+    lodashFn.debounce(async (value) => {
+      if (!!value) {
+        const res = await dispatch(getHaProxyList({ value })).unwrap(); /// get список HaProxy
+        setCounts(res?.counts);
+      } else {
+        getData();
+      }
+    }, 1000),
+    []
+  );
+
+  const clearSearch = async () => {
+    setSearchText("");
+    const res = await dispatch(getHaProxyList({})).unwrap(); /// get список HaProxy
+    setCounts(res?.counts);
+  };
+
+  console.log(listHaProxy, "listHaProxy");
+
   return (
     <div className="haProxy">
       <div className="haProxy__menu">
-        <button className="addBtn" onClick={addProxy}>
-          +
-        </button>
-        <div>
-          <p>Всего:</p>
-          <span>{counts?.all}</span>
-        </div>
-        <div>
-          <p>Вкл:</p>
-          <span className="on">{counts?.active}</span>
-        </div>
-        <div>
-          <p>Выкл:</p>
-          <span className="off">{counts?.de_active}</span>
+        <div className="info">
+          <button className="addBtn" onClick={addProxy}>
+            +
+          </button>
+          <div>
+            <p>Всего:</p>
+            <span>{counts?.all}</span>
+          </div>
+          <div>
+            <p>Вкл:</p>
+            <span className="on">{counts?.active}</span>
+          </div>
+          <div>
+            <p>Выкл:</p>
+            <span className="off">{counts?.de_active}</span>
+          </div>
+
+          <div className="port80">
+            <p>80 порт - </p>
+            <span></span>
+          </div>
+
+          <div className="port80 port443">
+            <p>443 порт - </p>
+            <span></span>
+          </div>
         </div>
 
-        <div className="port80">
-          <p>80 порт - </p>
-          <span></span>
-        </div>
-
-        <div className="port80 port443">
-          <p>443 порт - </p>
-          <span></span>
+        <div className="searchBigData">
+          <input
+            type="text"
+            placeholder="Поиск по наименованию суб домена"
+            value={searchText}
+            onChange={onChange}
+          />
+          {!!searchText && (
+            <button onClick={clearSearch}>
+              <img src={krestIcon} alt="x" />
+            </button>
+          )}
         </div>
       </div>
+
       <div className="haProxy__inner">
         {listHaProxy?.map((item, index) => (
           <div className="every" key={index}>
             {item?.map((i, index) => {
               const [ip, port] = i?.backend_ip?.split(":");
               return (
-                <div className="every__inner" key={index}>
+                <div
+                  className="every__inner"
+                  style={{ background: getCellColor(port) }}
+                  key={index}
+                >
                   <div
                     className={`btnBlink ${
                       !!i?.ping_status ? "offHaproxy" : "onHaproxy"
@@ -130,17 +176,13 @@ const HaProxyPage = () => {
                     <div className="action">
                       <div>
                         <p>{i?.domain}</p>
-                        <span>{ip}:</span>
-                        <span
-                          className="port"
-                          style={{ color: getCellColor(port) }}
-                        >
-                          {port}
+                        <span>
+                          {ip}:{port}
                         </span>
                       </div>
                       <div>
                         <button className="edit" onClick={() => editProxy(i)}>
-                          <EditIcon />
+                          <img src={editIcon} alt="delIcon" />
                         </button>
                         <button className="del" onClick={() => delProxy(i)}>
                           <img src={delIcon} alt="delIcon" />
@@ -165,6 +207,6 @@ const HaProxyPage = () => {
 export default HaProxyPage;
 
 const getCellColor = (port) => {
-  if (port === "443") return "#cb3ebd"; // Если порт 443, то красный
-  if (port === "80") return "rgb(126, 76, 227)"; // Если порт 80, то зеленый
+  if (port === "443") return "#cb3ebd30"; // Если порт 443, то красный
+  if (port === "80") return "rgba(126, 76, 227, 0.189)"; // Если порт 80, то зеленый
 };

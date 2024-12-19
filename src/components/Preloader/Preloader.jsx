@@ -10,8 +10,15 @@ export const Preloader = () => {
   const { preloaderDns } = useSelector((state) => state.dnsSlice);
   const { preloadeкBaza } = useSelector((state) => state.bazaSaveSlice);
   const { preloadeкTodos } = useSelector((state) => state.todosSlice);
+  const { preloaderUsers } = useSelector((state) => state.todosSlice);
 
-  if (preloader || preloaderDns || preloadeкBaza || preloadeкTodos) {
+  if (
+    preloader ||
+    preloaderDns ||
+    preloadeкBaza ||
+    preloadeкTodos ||
+    preloaderUsers
+  ) {
     return (
       <div className="preloader">
         <div className="lds-roller">

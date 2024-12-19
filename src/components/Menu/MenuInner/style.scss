@@ -17,6 +17,7 @@
     .every {
       display: inline-flex;
       align-items: center;
+      justify-content: space-between;
       gap: 5px;
       cursor: pointer;
       padding: 8px 10px;
@@ -31,24 +32,29 @@
         }
       }
 
-      div {
-        width: 18px;
-        height: 18px;
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        > p {
+          color: #fff;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        > button {
+          width: 18px;
+          height: 18px;
+        }
       }
 
-      > p {
-        // display: none;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 600;
-        // position: absolute;
-        // left: 55px;
-        // top: 50%;
-        // transform: translateY(-50%);
-        // background: #fff;
-        // padding: 10px;
-        // border-radius: 5px;
-        // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      .addBtn {
+        padding: 0 6px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgb(109 222 109 / 88%);
       }
     }
 
@@ -103,25 +109,54 @@
         }
       }
 
-      div {
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 3px;
+        padding: 0 5px 0 0;
+
         &:hover {
           text-decoration: underline;
-        }
 
-        p {
-          font-size: 13px;
-          text-align: left;
+          > button {
+            display: none;
+          }
 
-          b {
-            font-size: 13px;
-            text-align: left;
-            color: #66b4ff;
+          .activeEdit {
+            display: flex;
           }
         }
 
-        span {
-          font-size: 13px;
-          text-align: left;
+        > div {
+          width: calc(100% - 18px);
+
+          p {
+            font-size: 13px;
+            text-align: left;
+
+            b {
+              font-size: 13px;
+              text-align: left;
+              color: #66b4ff;
+            }
+          }
+
+          span {
+            font-size: 13px;
+            text-align: left;
+          }
+        }
+
+        button {
+          width: 18px;
+          min-width: 18px;
+          height: 18px;
+        }
+
+        .activeEdit {
+          display: none;
         }
       }
     }

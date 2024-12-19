@@ -59,9 +59,13 @@ const InnerSubDnsActions = (props) => {
 
   return (
     <div className="blockActionsSubDns">
-      <button onClick={() => callDeleteFn(row?.guid)}>
-        <img src={krestIcon} alt="x" />
-      </button>
+      {row?.recordType == "A" ? (
+        <Tooltip title={objTitle?.[row?.protected]} placement="top">
+          {actibonStatus?.[row?.protected]}
+        </Tooltip>
+      ) : (
+        <button></button>
+      )}
       {row?.recordType != "SOA" ? (
         <button onClick={() => callEditFN(row)}>
           <img src={editIcon} alt="e" />
@@ -69,11 +73,9 @@ const InnerSubDnsActions = (props) => {
       ) : (
         <button></button>
       )}
-      {row?.recordType == "A" && (
-        <Tooltip title={objTitle?.[row?.protected]} placement="top">
-          {actibonStatus?.[row?.protected]}
-        </Tooltip>
-      )}
+      <button onClick={() => callDeleteFn(row?.guid)}>
+        <img src={krestIcon} alt="x" />
+      </button>
     </div>
   );
 };

@@ -24,6 +24,7 @@ import virtualMachineSlice from "./reducers/virtualMachineSlice";
 import dnsSlice from "./reducers/dnsSlice";
 import bazaSaveSlice from "./reducers/bazaSaveSlice";
 import todosSlice from "./reducers/todosSlice";
+import usersSlice from "./reducers/usersSlice";
 
 const reducer = combineReducers({
   requestSlice,
@@ -38,6 +39,7 @@ const reducer = combineReducers({
   dnsSlice,
   bazaSaveSlice,
   todosSlice,
+  usersSlice,
 });
 
 const persistConfig = {

@@ -145,7 +145,7 @@ const networkSlice = createSlice({
     builder.addCase(addEditNetworkReq.fulfilled, (state, action) => {
       state.preloadeкNetwork = false;
       if (action.payload == 1) {
-        myAlert("Сеть добавлена");
+        myAlert("Данные сохранены");
       } else if (action.payload == 2) {
         myAlert("Сеть c таким IP адресом уже существует!", "error");
       }
