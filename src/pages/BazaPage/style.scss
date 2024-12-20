@@ -81,9 +81,22 @@
       }
 
       .body {
-        .type {
-          font-size: 12px;
-          color: #cb3ebd;
+        .types {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin: 2px 0;
+
+          img {
+            width: 15px;
+            height: 15px;
+          }
+
+          &__text {
+            font-size: 12px;
+            font-weight: 500;
+            color: #cb3ebd;
+          }
         }
 
         .HR {
@@ -108,7 +121,7 @@
           height: 7px !important;
           min-width: 7px !important;
           min-height: 7px !important;
-          margin: 3px 0 0 0;
+          // margin: 3px 0 0 0;
         }
 
         > div {
@@ -122,7 +135,14 @@
             font-size: 12px;
             width: 100%;
             text-align: left;
-            width: calc(100% - 15px);
+            width: calc(100% - 15px - 36px);
+          }
+
+          span {
+            font-size: 11px;
+            width: 36px;
+            min-width: 36px;
+            font-weight: 500;
           }
 
           button {
@@ -149,7 +169,7 @@
         margin: 3px 0px 5px;
 
         p {
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 500;
         }
 
@@ -175,7 +195,7 @@
     }
 
     .active {
-      background: #498d7461;
+      background: #498d7461 !important;
     }
 
     .nonePing {

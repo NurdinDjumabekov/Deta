@@ -55,10 +55,10 @@ const MemoryComp = (props) => {
         <div className="blockProPercent">
           <div
             className="percent"
-            style={{
-              width: `${color_ram}%`,
-              background: percentColor(`${color_ram}%`),
-            }}
+              style={{
+                width: `${color_ram}%`,
+                background: percentColor(`${color_ram}%`),
+              }}
           />
           <p className="info">{all_node_ram}</p>
         </div>

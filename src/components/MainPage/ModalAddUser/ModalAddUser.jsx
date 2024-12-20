@@ -29,7 +29,7 @@ const ModalAddUser = (props) => {
   };
 
   const objType = { 1: "Контейнеры", 2: "Сервисы", 3: "Пользователи" };
-  const objTypeName = { 1: "Наименование", 2: "ФИО", 3: "Наименование" };
+  const objTypeName = { 1: "Наименование", 2: "Наименование", 3: "ФИО" };
 
   const addUsersFN = async (e) => {
     e.preventDefault();

@@ -17,7 +17,7 @@ export const crudUsersServiceReq = createAsyncThunk(
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        return response?.data;
+        return response?.data?.res;
       } else {
         throw Error(`Error: ${response.status}`);
       }

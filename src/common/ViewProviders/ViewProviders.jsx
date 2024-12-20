@@ -66,7 +66,7 @@ const pingtimeProviderFN = ({ provider_pingtime }) => {
   } else if (+provider_pingtime > 20 && +provider_pingtime < 60) {
     return "orange";
   } else if (provider_pingtime == "" || provider_pingtime == 0) {
-    return "red";
+    return "#ff00008c";
   } else {
     return "pink";
   }

@@ -332,9 +332,9 @@ const pingtimeFN = (provider_pingtime) => {
   } else if (+provider_pingtime > 10 && +provider_pingtime < 200) {
     return "orange";
   } else if (provider_pingtime == "" || provider_pingtime == 0) {
-    return "red";
+    return "#ff00008c";
   } else {
-    return "red";
+    return "#ff00008c";
   }
 };
 
@@ -344,8 +344,8 @@ const pingtimeTextFN = (provider_pingtime) => {
   } else if (+provider_pingtime > 10 && +provider_pingtime < 200) {
     return "orange";
   } else if (provider_pingtime == "" || provider_pingtime == 0) {
-    return "red";
+    return "#ff00008c";
   } else {
-    return "red";
+    return "#ff00008c";
   }
 };

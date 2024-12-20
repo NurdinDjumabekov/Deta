@@ -6,16 +6,18 @@
   height: 100%;
   padding: 10px 0px 10px 0px;
   position: relative;
+  height: 100%;
 
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
     min-width: 240px;
     width: 240px;
+    height: calc(100% - 70px);
 
     .every {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 5px;
@@ -23,6 +25,7 @@
       padding: 8px 10px;
       position: relative;
       width: 100%;
+      height: 37px !important;
 
       &:hover {
         background: #ffffff36;
@@ -58,6 +61,10 @@
       }
     }
 
+    .active {
+      background: #ffffff36;
+    }
+
     .listCateg {
       display: flex;
       flex-direction: column;
@@ -65,17 +72,19 @@
       cursor: pointer;
       overflow: hidden;
       transition: all 0.3s ease;
+      max-height: calc(33% - 37px);
 
       &.collapsed {
         max-height: 0;
         opacity: 0;
         margin: 0;
+        display: none;
       }
 
       &.expanded {
         max-height: 650px;
         opacity: 1;
-        margin: 5px 0 0 33px;
+        margin: 0px 0 0 33px;
         overflow-y: scroll;
 
         &::-webkit-scrollbar {
@@ -160,9 +169,5 @@
         }
       }
     }
-  }
-
-  .active {
-    background: #ffffff36;
   }
 }

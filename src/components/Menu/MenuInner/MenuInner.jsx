@@ -1,5 +1,5 @@
 /////// hooks
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 ////// styles
@@ -42,8 +42,6 @@ const MenuInner = () => {
     });
   };
 
-  console.log(addUsers, "addUsers");
-
   return (
     <>
       <div className="menuInner">
@@ -51,7 +49,7 @@ const MenuInner = () => {
 
         <div className="menuInner__inner">
           {menuInner?.map((item, index) => (
-            <div key={index}>
+            <Fragment key={index}>
               <div
                 className={`every ${item?.active ? "active" : ""}`}
                 onClick={() => choice(item?.id)}
@@ -100,7 +98,7 @@ const MenuInner = () => {
                     </div>
                   ))}
               </div>
-            </div>
+            </Fragment>
           ))}
         </div>
       </div>

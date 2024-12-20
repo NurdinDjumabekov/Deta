@@ -29,7 +29,7 @@ import boxRed from "../../assets/icons/boxRed.svg";
 import boxGreen from "../../assets/icons/boxGreen.svg";
 
 ////// helpers
-import { allSumsProvidersFN, pingtimeFN } from "../../helpers/LocalData";
+import { allSumsProvidersFN } from "../../helpers/LocalData";
 
 ///////style
 import "./style.scss";

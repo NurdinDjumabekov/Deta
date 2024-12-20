@@ -18,11 +18,14 @@ import delIcon from "../../assets/icons/delete.svg";
 import editIcon from "../../assets/icons/edit.svg";
 import vncImg from "../../assets/icons/tv.svg";
 import krest from "../../assets/icons/krest.svg";
+import bazaIcon from "../../assets/icons/menu/box.svg";
+import hranilisheIcon from "../../assets/icons/menu/dns.svg";
 
 ////// helpers
 
 ///////style
 import "./style.scss";
+import { cutNums } from "../../helpers/cutNums";
 
 const BazaPage = () => {
   const dispatch = useDispatch();
@@ -73,6 +76,8 @@ const BazaPage = () => {
     }
   };
 
+  console.log(listDataSaved, "listDataSaved");
+
   return (
     <>
       <div className="bazaPage">
@@ -115,9 +120,15 @@ const BazaPage = () => {
               </div>
 
               <div className="body">
-                <p className={`type ${item?.type == 1 ? "" : "HR"}`}>
-                  {item?.type == 1 ? "Хранилище" : "База"}
-                </p>
+                <div className="types">
+                  <img
+                    src={item?.type == 1 ? hranilisheIcon : bazaIcon}
+                    alt=""
+                  />
+                  <p className={`types__text ${item?.type == 1 ? "" : "HR"}`}>
+                    {item?.type == 1 ? "Хранилище" : "База"}
+                  </p>
+                </div>
                 <p className="login">Логин: {item?.login}</p>
                 <p className="password">Пароль: {item?.password}</p>
               </div>
@@ -133,9 +144,13 @@ const BazaPage = () => {
                           className="btnBlink"
                           style={{ background: pingtimeFN(+i?.avg_ping) }}
                         ></div>
-                        <p key={i?.guid}>
-                          vmbr{index + 1}: {i?.ip_adres}
-                        </p>
+                        <p key={i?.guid}>{i?.ip_adres}</p>
+                        <span
+                          className="ping"
+                          style={{ color: pingtimeFN(+i?.avg_ping) }}
+                        >
+                          {cutNums(+i?.avg_ping, 4)}
+                        </span>
                         <button onClick={() => openModal(4, i)}>
                           <img src={krest} alt="" />
                         </button>
@@ -155,9 +170,9 @@ const BazaPage = () => {
 
               <MemoryComp
                 node_cpu_usage={+item?.node_cpu_usage / 100}
-                node_cpu={+item?.node_cpu / 100}
+                node_cpu={+item?.node_cpu / 1}
                 node_ram_usage={+item?.node_ram_usage / 100}
-                node_ram_mb={+item?.node_ram_mb / 100}
+                node_ram_mb={+item?.node_ram_mb}
                 array_storages={[]}
               />
 
@@ -183,12 +198,12 @@ export default BazaPage;
 
 const pingtimeFN = (provider_pingtime) => {
   if (+provider_pingtime < 10 && +provider_pingtime > 0) {
-    return "green";
+    return "#008000";
   } else if (+provider_pingtime > 10 && +provider_pingtime < 200) {
     return "orange";
   } else if (provider_pingtime == "" || provider_pingtime == 0) {
-    return "red";
+    return "#ff00008c";
   } else {
-    return "red";
+    return "#ff00008c";
   }
 };

@@ -6,6 +6,7 @@ import ipAddres from "../assets/icons/menu/ipAddres.svg";
 import list from "../assets/icons/menu/list.svg";
 import dns from "../assets/icons/menu/dns.svg";
 import block from "../assets/icons/menu/box.svg";
+import history from "../assets/icons/menu/history.svg";
 
 /////// os
 import windows from "../assets/images/OS/windows.png";
@@ -18,6 +19,7 @@ export const pages = [
   { id: 1, name: "Главная", path: "/hosts", img: home },
   { id: 2, name: "Микротики", path: "/microtic", img: microtic },
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
+  { id: 5, name: "Базы и хранилища", path: "/baza", img: block },
 ];
 
 export const pagesAllDC = [
@@ -25,7 +27,7 @@ export const pagesAllDC = [
   { id: 3, name: "Сети", path: "/networks", img: seti },
   { id: 5, name: "Статические IP", path: "/ip-addres", img: ipAddres },
   { id: 9, name: "Задачи", path: "/todos", img: list },
-  { id: 10, name: "Базы и хранилища", path: "/baza", img: block },
+  { id: 9, name: "История создания", path: "/history", img: history },
 ];
 
 export const generationNum = () => {
@@ -277,7 +279,7 @@ export const pingtimeFN = ({ provider_pingtime }) => {
   } else if (+provider_pingtime > 5 && +provider_pingtime < 40) {
     return "orange";
   } else {
-    return "red";
+    return "#ff00008c";
   }
 };
 

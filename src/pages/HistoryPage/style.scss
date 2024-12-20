@@ -1,0 +1,63 @@
+.historyPage {
+  width: 100%;
+  height: 100%;
+  //   background: red;
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    background: rgb(30, 31, 35);
+    height: 60px;
+
+    .searchBigData {
+      width: 450px;
+      margin: 0px;
+      padding: 5px 2px;
+    }
+  }
+
+  .body {
+    height: calc(100% - 60px);
+    overflow-y: scroll;
+    padding: 10px;
+
+    .everyHistory {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .time {
+        font-size: 14px;
+        width: 140px;
+        color: #ffffffc1;
+      }
+
+      .editBlock {
+        .OS {
+          display: none !important;
+        }
+
+        > div:nth-child(2) {
+          display: none !important;
+        }
+      }
+
+      .containerMain {
+        padding: 0px 10px 0px 5px !important;
+
+        &__inner {
+          align-items: center;
+        }
+      }
+    }
+
+    .containerActive {
+      border: 1px solid transparent !important;
+      &::after {
+        display: none !important;
+      }
+    }
+  }
+}

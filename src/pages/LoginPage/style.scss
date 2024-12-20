@@ -1,0 +1,82 @@
+.vantaMain {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  form {
+    position: relative;
+    padding: 30px 50px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    background: #22222284;
+    border-radius: 10px;
+
+    .blockLogo {
+      width: 290px;
+      height: 30px;
+      margin: 0 0 32px 0;
+      background: transparent;
+    }
+
+    input {
+      width: 350px;
+      height: 42px;
+      border-radius: 5px;
+      padding: 2px 10px;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid #ffffffd9;
+      margin: 0 0 10px 0;
+      background: #22222291;
+
+      &::placeholder {
+        color: #a9afb8;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .actionLogin {
+      background: #222222b6;
+      width: 140px;
+      height: 35px;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: 500;
+      font-size: 15px;
+      display: block;
+      margin: 30px auto 0;
+      border: 1px solid #ffffffd9;
+    }
+
+    .links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 30px 0px;
+      p {
+        font-weight: 500;
+        font-size: 13px;
+      }
+
+      a {
+        color: #3e97ff;
+        font-weight: 500;
+        font-size: 13px;
+        text-decoration: underline;
+      }
+    }
+
+    > p {
+      text-align: left;
+      font-weight: 400;
+      font-size: 13px;
+      margin: 5px 0 0 0;
+    }
+  }
+}
