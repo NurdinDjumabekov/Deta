@@ -23,6 +23,8 @@ import TodosPage from "../pages/TodosPage/TodosPage";
 import BazaPage from "../pages/BazaPage/BazaPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import HistoryPage from "../pages/HistoryPage/HistoryPage";
+import CalendarPage from "../pages/CalendarPage/CalendarPage";
+import ComandsPage from "../pages/ComandsPage/ComandsPage";
 
 ////styles
 import "react-toastify/dist/ReactToastify.css";
@@ -57,10 +59,12 @@ const MainRoutes = () => {
               <Route path={`/dns`} element={<DnsPage />} />
               <Route path={`/todos`} element={<TodosPage />} />
               <Route path={`/history`} element={<HistoryPage />} />
+              <Route path={`/calendar`} element={<CalendarPage />} />
               <Route path={`/${guid}/hosts`} element={<MainPage />} />
               <Route path={`/${guid}/microtic`} element={<MicroticPage />} />
               <Route path={`/${guid}/ha-proxy`} element={<HaProxy />} />
               <Route path={`/${guid}/baza`} element={<BazaPage />} />
+              <Route path={`/${guid}/comands`} element={<ComandsPage />} />
               <Route path={`/${guid}/vnc/:vns_key`} element={<VncPage />} />
             </Route>
           ))}

@@ -1,0 +1,18 @@
+.calendarPage {
+  width: 100%;
+  height: 100%;
+  padding: 25px 10px 10px;
+
+  &__inner {
+    height: calc(100%);
+
+    .fc-theme-standard td,
+    .fc-theme-standard th {
+      border: 1px solid #ffffff15 !important;
+    }
+
+    .fc-theme-standard .fc-scrollgrid {
+      border: 1px solid #ffffff0f !important;
+    }
+  }
+}

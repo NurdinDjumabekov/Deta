@@ -1,54 +1,57 @@
+/////// hooks
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-//////helpers
+////// helpers
+import { listProtocols } from "../../helpers/LocalData";
 
 ////// imgs
 import delIcon from "../../assets/icons/delete.svg";
 import editIcon from "../../assets/icons/edit.svg";
 import krestIcon from "../../assets/icons/krest.svg";
+import SearchIcon from "@mui/icons-material/Search";
 
 ////// components
 import ModalsHaProxy from "../../components/HaProxyPage/ModalsHaProxy/ModalsHaProxy";
-import lodashFn from "lodash";
 
 /////// fns
 import { getHaProxyList } from "../../store/reducers/haProxySlice";
 import { setModalActionsHaProxy } from "../../store/reducers/haProxySlice";
 
-////style
+/////// style
 import "./style.scss";
 
 const HaProxyPage = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const listRef = useRef(null);
-  const [listHeight, setListHeight] = useState(window.innerHeight); // Изначальная высота экрана
-  const [activeIndex, setActiveIndex] = useState(0);
   const [counts, setCounts] = useState({});
   const [searchText, setSearchText] = useState("");
 
   const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
   const { listHaProxy } = useSelector((state) => state.haProxySlice);
 
-  const getData = async () => {
+  async function getData() {
     const res = await dispatch(getHaProxyList({})).unwrap(); /// get список HaProxy
     setCounts(res?.counts);
-  };
+  }
 
   useEffect(() => {
     getData();
   }, [pathname]);
 
-  const addProxy = () => {
+  function addProxyFN() {
     const obj = { ...modalActionsHaProxy, typeAction: 1, guid: "create" };
-    dispatch(setModalActionsHaProxy(obj));
-  };
+    dispatch(
+      setModalActionsHaProxy({ ...obj, type: { value: 1, label: "http" } })
+    );
+  }
 
-  const editProxy = async (obj) => {
-    const { guid, check, domain, comment, backend_ip } = obj;
+  async function editProxy(obj) {
+    const { guid, check, domain, comment, backend_ip, type_security } = obj;
+
+    const objType = listProtocols?.find(({ value }) => value == type_security);
 
     const send = {
       ...modalActionsHaProxy,
@@ -58,63 +61,35 @@ const HaProxyPage = () => {
       checkType: check,
       ip_addres: backend_ip,
       typeAction: 2,
+      type: { value: type_security, label: objType?.label },
     };
     dispatch(setModalActionsHaProxy(send));
-  };
+  }
 
-  const delProxy = async ({ guid, domain }) => {
+  async function delProxy({ guid, domain }) {
     const send = { guid, name: domain, typeAction: 3 };
     dispatch(setModalActionsHaProxy(send));
-  };
+  }
 
-  useEffect(() => {
-    if (listRef.current) {
-      listRef.current.scrollToItem(activeIndex, "center");
+  function onChange(e) {
+    setSearchText(e.target.value);
+  }
+
+  async function searchActionFN() {
+    if (!!searchText) {
+      const send = { value: searchText };
+      const res = await dispatch(getHaProxyList(send)).unwrap(); /// get список HaProxy
+      setCounts(res?.counts);
+    } else {
+      getData();
     }
-  }, [activeIndex]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setListHeight(window.innerHeight);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
-  const onChange = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
-    debouncedSearch(value);
-  };
-
-  const debouncedSearch = useCallback(
-    lodashFn.debounce(async (value) => {
-      if (!!value) {
-        const res = await dispatch(getHaProxyList({ value })).unwrap(); /// get список HaProxy
-        setCounts(res?.counts);
-      } else {
-        getData();
-      }
-    }, 1000),
-    []
-  );
-
-  const clearSearch = async () => {
-    setSearchText("");
-    const res = await dispatch(getHaProxyList({})).unwrap(); /// get список HaProxy
-    setCounts(res?.counts);
-  };
-
-  console.log(listHaProxy, "listHaProxy");
+  }
 
   return (
     <div className="haProxy">
       <div className="haProxy__menu">
         <div className="info">
-          <button className="addBtn" onClick={addProxy}>
+          <button className="addBtn" onClick={addProxyFN}>
             +
           </button>
           <div>
@@ -131,28 +106,34 @@ const HaProxyPage = () => {
           </div>
 
           <div className="port80">
-            <p>80 порт - </p>
             <span></span>
+            <p> - 80 порт</p>
           </div>
 
           <div className="port80 port443">
-            <p>443 порт - </p>
             <span></span>
+            <p> - 443 порт</p>
           </div>
         </div>
 
         <div className="searchBigData">
-          <input
-            type="text"
-            placeholder="Поиск по наименованию суб домена"
-            value={searchText}
-            onChange={onChange}
-          />
-          {!!searchText && (
-            <button onClick={clearSearch}>
-              <img src={krestIcon} alt="x" />
-            </button>
-          )}
+          <div>
+            <input
+              type="text"
+              placeholder="Поиск по наименованию"
+              value={searchText}
+              onChange={onChange}
+            />
+            {!!searchText && (
+              <button onClick={() => setSearchText("")} className="clear">
+                <img src={krestIcon} alt="x" />
+              </button>
+            )}
+          </div>
+          <button className="search" onClick={searchActionFN}>
+            <SearchIcon />
+            <p>Поиск</p>
+          </button>
         </div>
       </div>
 

@@ -18,7 +18,6 @@ const initialState = {
   listDiagrams: [], //// для диаграммы хостов на главной странице
 
   menuInner: [
-    { id: 1, name: "Контейнеры", img: container, active: false, list: [] },
     { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
     { id: 3, name: "Пользователи", img: users, active: false, list: [] },
   ],

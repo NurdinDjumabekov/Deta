@@ -5,6 +5,10 @@
     margin-top: 10px !important;
   }
 
+  .mySelect {
+    margin: 10px 0 0 0;
+  }
+
   h6,
   label {
     display: block;
@@ -39,5 +43,9 @@
   .bool {
     display: flex;
     padding: 10px 0px 0 0;
+
+    label {
+      margin: 3px 0 0 0 !important;
+    }
   }
 }

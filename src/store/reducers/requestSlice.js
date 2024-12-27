@@ -87,37 +87,10 @@ export const updatedProvoders = () => (dispatch) => {
 ///// getHosts - для получения провайдеров
 export const getHosts = createAsyncThunk(
   "getHosts",
-  async function (props, { dispatch, rejectWithValue }) {
+  async function (data, { dispatch, rejectWithValue }) {
     const url = `host/getHostList`;
     try {
       const response = await axiosInstance.get(url);
-      if (response.status >= 200 && response.status < 300) {
-        const first = response?.data?.[0]?.guid;
-        const chart = response?.data?.[0]?.chart;
-        const node_ram_mb = response?.data?.[0]?.node_ram_mb;
-        dispatch(setActiveHost(first));
-        dispatch(getContainers(first));
-        /// подставляю первый хост чтобы он был активный
-
-        dispatch(setListDiagrams({ list: chart, node_ram_mb }));
-        //// для диаграммы хостов
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-///// getGroup - для получения групп где хранятся контейнера
-export const getGroup = createAsyncThunk(
-  "getGroup",
-  async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}++++++++++`;
-    try {
-      const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
       } else {
@@ -716,6 +689,10 @@ const requestSlice = createSlice({
       );
     },
 
+    clearListHostsFN: (state, action) => {
+      state.listHosts = [];
+    },
+
     ///// поиск котейнеров
     setSearchContainer: (state, action) => {
       state.searchContainer = action.payload;
@@ -752,21 +729,9 @@ const requestSlice = createSlice({
     builder.addCase(getHosts.rejected, (state, action) => {
       state.error = action.payload;
       state.preloader = false;
+      state.listHosts = [];
     });
     builder.addCase(getHosts.pending, (state, action) => {
-      state.preloader = true;
-    });
-
-    ////////////////////////////// getGroup
-    builder.addCase(getGroup.fulfilled, (state, action) => {
-      state.preloader = false;
-      state.listGroupContainers = action.payload;
-    });
-    builder.addCase(getGroup.rejected, (state, action) => {
-      state.error = action.payload;
-      state.preloader = false;
-    });
-    builder.addCase(getGroup.pending, (state, action) => {
       state.preloader = true;
     });
 
@@ -935,6 +900,7 @@ export const {
   setListAccessesUsers,
   setListVolns,
   countsContainersFN,
+  clearListHostsFN,
 } = requestSlice.actions;
 
 export default requestSlice.reducer;

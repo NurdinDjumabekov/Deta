@@ -11,7 +11,7 @@ export const propsStoreFN = (oldStore) => {
 
 const axiosInstance = axios.create({
   baseURL: REACT_APP_API_URL,
-  timeout: 5000,
+  timeout: 10000,
 });
 
 axiosInstance.interceptors.request.use(

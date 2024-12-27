@@ -66,13 +66,9 @@ const InnerSubDnsActions = (props) => {
       ) : (
         <button></button>
       )}
-      {row?.recordType != "SOA" ? (
-        <button onClick={() => callEditFN(row)}>
-          <img src={editIcon} alt="e" />
-        </button>
-      ) : (
-        <button></button>
-      )}
+      <button onClick={() => callEditFN(row)}>
+        <img src={editIcon} alt="e" />
+      </button>
       <button onClick={() => callDeleteFn(row?.guid)}>
         <img src={krestIcon} alt="x" />
       </button>

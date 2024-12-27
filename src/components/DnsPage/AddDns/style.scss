@@ -1,9 +1,6 @@
 .actionDns {
   width: 100%;
   background: rgb(30, 31, 35);
-  // height: 115px;
-  // max-height: 115px;
-  // min-height: 115px;
   padding: 0px 5px;
   display: flex;
   flex-direction: column;
@@ -27,7 +24,6 @@
 
         .return {
           color: #fff;
-          // padding: 8px 10px;
           padding: 5px;
           height: 30px;
           border-radius: 3px;
@@ -36,7 +32,6 @@
           line-height: 10px;
           width: 35px;
           position: relative;
-          // margin: 10px 0 0;
 
           &:hover {
             .moreInfoLeft {
@@ -108,7 +103,7 @@
       height: 30px;
       border-radius: 3px;
       font-size: 12px;
-      padding: 0 15px 2px;
+      padding: 0 15px 0px;
       margin: 32px 0 0 0;
 
       @media (max-width: 2100px) {

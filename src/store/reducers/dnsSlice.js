@@ -153,7 +153,6 @@ export const getDnsSubDomen = createAsyncThunk(
   "getDnsSubDomen",
   async function (props, { dispatch, rejectWithValue }) {
     const { guid, domen_name, searchText } = props;
-    console.log(props, "props");
     const searchParams = !!searchText ? `?search=${searchText}` : "";
     const url = `${REACT_APP_API_URL}dns/getSubDomens/${guid}${searchParams}`;
     try {

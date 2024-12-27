@@ -39,17 +39,8 @@ const HistoryPage = () => {
   };
 
   useEffect(() => {
-    const send = {
-      elemid: "643164B2-0699-4797-8BAD-207000BFF280",
-      vawe: "1",
-    };
-    dispatch(getHistoryActionsReq(send));
-  }, []);
-
-  const formattedTime = format(new Date(), "dd.MM.yyyy HH:mm:ss");
-  //   console.log(formattedTime);
-
-  //   console.log(listHistoryAction, "listHistoryAction");
+    dispatch(getHistoryActionsReq());
+  }, [pathname]);
 
   return (
     <>
@@ -72,7 +63,7 @@ const HistoryPage = () => {
         <div className="body hoverScroll">
           {listHistoryAction?.map((item, index) => (
             <div className="everyHistory">
-              <p className="time">{formattedTime}</p>
+              <p className="time">{item?.date_system_t}</p>
               <Containers key={index} item={item} />
             </div>
           ))}

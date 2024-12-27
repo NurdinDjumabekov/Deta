@@ -14,6 +14,7 @@ import lodashFn from "lodash";
 ////// imgs
 import arrowSort from "../../../assets/icons/arrowSort.svg";
 import krestIcon from "../../../assets/icons/krest.svg";
+import SearchIcon from "@mui/icons-material/Search";
 
 ////// fns
 import {
@@ -37,8 +38,8 @@ const InnerSubDns = () => {
   const [guidEdit, setGuidEdit] = useState(""); // храню временный guid для редактирования
   const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
   const [editStatus, setEditStatus] = useState({});
-  const [searchText, setSearchText] = useState("");
   const [tableHeight, setTableHeight] = useState(window.innerHeight - 100);
+  const [searchText, setSearchText] = useState("");
 
   const [objEdit, setObjedit] = useState({
     record_name: "",
@@ -50,54 +51,40 @@ const InnerSubDns = () => {
 
   const [sort, setSort] = useState(1); // счетчик 1 или 2
 
-  const sortList = (field_name) => {
+  function sortList(field_name) {
     const newSort = sort == "1" ? "2" : "1";
     setSort(newSort);
     const data = { domen_guid: activeDns?.guid, sort: newSort };
     dispatch(sortSubDomen({ ...data, field_name }));
     ///// сортировка данных через запрос
-  };
+  }
 
-  const editStatusSubDnsFn = () => {
+  function editStatusSubDnsFn() {
     ///// изменение статуса dns через запрос
     const { guid } = editStatus;
     const data = { guid, protected: !!!editStatus?.protected };
     const past = { data, setEditStatus, activeDns };
     dispatch(editStatusSubDomen(past));
-  };
+  }
 
-  const debouncedSearch = useCallback(
-    lodashFn.debounce((value) => {
-      if (!!value) {
-        dispatch(
-          getDnsSubDomen({
-            guid: activeDns?.guid,
-            domen_name: activeDns?.name,
-            searchText: value,
-          })
-        ); //// get суб домены этого dns
-        console.log(activeDns, "activeDns");
-      } else {
-        dispatch(
-          getDnsSubDomen({ guid: activeDns?.guid, domen_name: activeDns?.name })
-        );
-      }
-    }, 1000),
-    []
-  );
+  function onChange(e) {
+    setSearchText(e.target.value);
+  }
 
-  const onChange = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
-    debouncedSearch(value);
-  };
-
-  const clearSearch = () => {
-    dispatch(
-      getDnsSubDomen({ guid: activeDns?.guid, domen_name: activeDns?.name })
-    );
-    setSearchText("");
-  };
+  function searchActionFN() {
+    const send = { guid: activeDns?.guid, domen_name: activeDns?.name };
+    if (!!searchText) {
+      dispatch(
+        getDnsSubDomen({
+          guid: activeDns?.guid,
+          domen_name: activeDns?.name,
+          searchText: searchText,
+        })
+      ); //// get суб домены этого dns
+    } else {
+      dispatch(getDnsSubDomen(send));
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -119,18 +106,21 @@ const InnerSubDns = () => {
     return (
       <div style={{ ...style, display: "flex" }} className="tableBody">
         <div className="tableCell text nameText" style={{ minWidth: "15%" }}>
-          {item.record_name}
-        </div>
-        <div className="tableCell text name" style={{ minWidth: "10%" }}>
-          {item.recordType}
+          {item?.record_name}
         </div>
         <div className="tableCell text name" style={{ minWidth: "5%" }}>
-          {item.ttl}
+          {item?.recordType}
         </div>
-        <div className="tableCell text data" style={{ width: "23%" }}>
+        <div className="tableCell text name" style={{ minWidth: "5%" }}>
+          {item?.ttl}
+        </div>
+        <div className="tableCell text data" style={{ width: "21%" }}>
           {item?.host_ip}
         </div>
-        <div className="tableCell text name" style={{ width: "15%" }}>
+        <div className="tableCell text name" style={{ width: "14%" }}>
+          {item?.host_ip_insurance || ""}
+        </div>
+        <div className="tableCell text name" style={{ width: "14%" }}>
           {!!item?.active_status ? (
             <p className="yes">Active</p>
           ) : (
@@ -146,7 +136,7 @@ const InnerSubDns = () => {
             setObjedit={setObjedit}
           />
         </div>
-        <div className="tableCell text comment" style={{ width: "24%" }}>
+        <div className="tableCell text comment" style={{ width: "18%" }}>
           {item?.comment}
         </div>
       </div>
@@ -156,17 +146,23 @@ const InnerSubDns = () => {
   return (
     <div className="blockSubDomen">
       <div className="searchBigData">
-        <input
-          type="text"
-          placeholder="Поиск по наименованию суб домена"
-          value={searchText}
-          onChange={onChange}
-        />
-        {!!searchText && (
-          <button onClick={clearSearch}>
-            <img src={krestIcon} alt="x" />
-          </button>
-        )}
+        <div>
+          <input
+            type="text"
+            placeholder="Поиск по наименованию суб домена"
+            value={searchText}
+            onChange={onChange}
+          />
+          {!!searchText && (
+            <button onClick={() => setSearchText("")} className="clear">
+              <img src={krestIcon} alt="x" />
+            </button>
+          )}
+        </div>
+        <button className="search" onClick={searchActionFN}>
+          <SearchIcon />
+          <p>Поиск</p>
+        </button>
       </div>
       <div className="tableEditDns hoverScroll">
         <div className="tableHeader">
@@ -180,7 +176,7 @@ const InnerSubDns = () => {
           </div>
           <div
             className="tableCell"
-            style={{ minWidth: "10%" }}
+            style={{ minWidth: "5%" }}
             onClick={() => sortList("recordType")}
           >
             Types
@@ -189,15 +185,18 @@ const InnerSubDns = () => {
           <div className="tableCell" style={{ minWidth: "5%" }}>
             TTL
           </div>
-          <div className="tableCell" style={{ width: "23%" }}>
+          <div className="tableCell" style={{ width: "21%" }}>
             Data
           </div>
-          <div className="tableCell" style={{ width: "15%" }}>
+          <div className="tableCell" style={{ width: "14%" }}>
             Change
+          </div>
+          <div className="tableCell" style={{ width: "14%" }}>
+            Status
           </div>
 
           <div className="tableCell" style={{ width: "8%" }}></div>
-          <div className="tableCell" style={{ width: "24%" }}>
+          <div className="tableCell" style={{ width: "18%" }}>
             Comments
           </div>
         </div>

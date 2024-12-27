@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 ///// components
 import MyInputs from "../../../common/MyInput/MyInputs";
 import MyIPInput from "../../../common/MyIPInput/MyIPInput";
-import Selects from "../../../common/Selects/Selects";
+import MySelects from "../../../common/MySelects/MySelects";
 
 /////// fns
 import { setModalActionsHaProxy } from "../../../store/reducers/haProxySlice";
@@ -26,7 +26,6 @@ const EditAddHaProxy = ({ sendData, typeAction }) => {
     const { name, value, checked } = e.target;
 
     if (name === "checkType") {
-      console.log(checked, "checked");
       const obj = { ...modalActionsHaProxy, [name]: checked ? 1 : 0 };
       dispatch(setModalActionsHaProxy(obj));
       return;
@@ -45,8 +44,8 @@ const EditAddHaProxy = ({ sendData, typeAction }) => {
     }
   };
 
-  const onChangeSelect = (nameKey, name, id) => {
-    dispatch(setModalActionsHaProxy({ ...modalActionsHaProxy, [nameKey]: id }));
+  const onChangeSelect = (item) => {
+    dispatch(setModalActionsHaProxy({ ...modalActionsHaProxy, type: item }));
   };
 
   const listHttp = typeAction == 1 ? listProtocols : listProtocols?.slice(0, 2);
@@ -69,17 +68,16 @@ const EditAddHaProxy = ({ sendData, typeAction }) => {
         required={true}
       />
 
-      <div className="protocols">
-        <h6>Тип протокола</h6>
-        <Selects
-          list={listHttp}
-          initText={"Выбрать"}
-          onChnage={onChangeSelect}
-          nameKey={"type"}
-        />
-      </div>
+      <MySelects
+        list={listHttp}
+        initText={"Выбрать"}
+        onChange={onChangeSelect}
+        nameKey={"type"}
+        value={modalActionsHaProxy?.type}
+        title={"Тип протокола"}
+      />
 
-      <MyInputs
+      <MyIPInput
         title={"IP адрес :"}
         onChange={onChange}
         name={"ip_addres"}
@@ -96,8 +94,10 @@ const EditAddHaProxy = ({ sendData, typeAction }) => {
         />
         <label htmlFor="checkbox">Check</label>
       </div>
-      <div className="btnBlock" onClick={() => sendData()}>
-        <button className="addAction">Сохранить</button>
+      <div className="btnBlock">
+        <button className="addAction" onClick={sendData}>
+          Сохранить
+        </button>
       </div>
     </div>
   );

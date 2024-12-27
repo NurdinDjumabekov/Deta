@@ -65,7 +65,7 @@ const MenuInner = () => {
                 <button
                   className="addBtn"
                   onClick={() =>
-                    setAddUsers({ actionType: 1, type: index + 1 })
+                    setAddUsers({ actionType: 1, type: index + 2 })
                   }
                 >
                   <p>+</p>

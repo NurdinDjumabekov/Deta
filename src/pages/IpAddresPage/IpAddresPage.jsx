@@ -173,9 +173,11 @@ const IpAddresPage = () => {
                     <div className="titlesAction">
                       <h5>{item?.name_group}</h5>
                       <div className="actions">
-                        {/* <button onClick={() => actionSubGroup(item, 1)}>
-                    <AddIcon sx={{ fill: "#15db15", width: 23, height: 23 }} />
-                  </button> */}
+                        <button onClick={() => actionSubGroup(item, 1)}>
+                          <AddIcon
+                            sx={{ fill: "#15db15", width: 23, height: 23 }}
+                          />
+                        </button>
                         <button
                           className="edit"
                           onClick={() => actionGroup(item, 2)}

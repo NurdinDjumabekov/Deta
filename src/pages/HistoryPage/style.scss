@@ -9,12 +9,16 @@
     gap: 20px;
     width: 100%;
     background: rgb(30, 31, 35);
-    height: 60px;
+    height: 50px;
 
     .searchBigData {
       width: 450px;
       margin: 0px;
       padding: 5px 2px;
+
+      input {
+        height: 33px !important;
+      }
     }
   }
 
@@ -49,6 +53,22 @@
 
         &__inner {
           align-items: center;
+
+          .memory {
+            .GB_dataBase {
+              display: none !important;
+            }
+          }
+
+          .actions {
+            &__inner {
+              button:nth-child(1),
+              button:nth-child(2),
+              button:nth-child(3) {
+                display: none !important;
+              }
+            }
+          }
         }
       }
     }

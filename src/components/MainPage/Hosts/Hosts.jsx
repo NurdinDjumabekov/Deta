@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import delImg from "../../../assets/icons/delete.svg";
 import diagram from "../../../assets/icons/diagram.svg";
 import repeat from "../../../assets/icons/repeat.svg";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
 import editImg from "../../../assets/icons/edit.svg";
 import vncImg from "../../../assets/icons/tv.svg";
+
 ////// styles
 import "./style.scss";
 
@@ -62,7 +62,7 @@ const Hosts = ({ item }) => {
         <div className="hostTitle">
           <img src={vncImg} alt="vnc" />
           <p>
-            {host_name}(<b>{secondsToDhms(node_uptime_sec)}</b>)
+            {host_name} (<b>{secondsToDhms(node_uptime_sec)}</b>)
           </p>
         </div>
         <div className="actions">

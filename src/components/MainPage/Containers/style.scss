@@ -21,8 +21,7 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        background: green;
-        padding: 2px 5px;
+        padding: 3px 5px;
         border-radius: 3px;
 
         img {
@@ -30,13 +29,13 @@
           height: 18px;
         }
 
+        .services {
+          height: 16px !important;
+        }
+
         p {
           font-size: 12px;
         }
-      }
-
-      .noActivce {
-        background: #514848 !important;
       }
     }
 

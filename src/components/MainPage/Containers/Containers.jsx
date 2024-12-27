@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 /////// imgs
 import container from "../../../assets/icons/menu/box2.svg";
 import virtualka from "../../../assets/icons/tv.svg";
+import services from "../../../assets/icons/menu/database.svg";
 import edit from "../../../assets/icons/edit.svg";
 import skrepka from "../../../assets/icons/skrepka.svg";
 
@@ -49,20 +50,22 @@ import { getDataAcceptUsers } from "../../../store/reducers/requestSlice";
 import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
 import { getFilesInContainer } from "../../../store/reducers/requestSlice";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
+import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
 
 ////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
+import { Tooltip } from "@mui/material";
 
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
-import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
-import { Tooltip, colors } from "@mui/material";
+
+/////// env
 const { REACT_APP_API_URL } = process.env;
 
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del, files } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
-  const { icon_url } = item;
+  const { icon_url, statusid, typeid, service_check } = item;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -145,31 +148,34 @@ const Containers = ({ item }) => {
 
   const active = activeContainer == guid ? "containerActive" : "";
 
-  const objType = { cont: container, virt: virtualka, service: container };
+  const objTypeImgs = { qemu: virtualka, lxc: container };
+  const objTypeData = { qemu: "virtualkaColor", lxc: "containerColor" };
 
-  const objTypeData = {
-    1: "containerColor",
-    2: "virtualkaColor",
-    3: "serviceColor",
+  const objStatusType = {
+    running: "rgb(70,150,45)",
+    stopped: "#514848",
+    deleted: "#514848",
   };
 
-  const haveKeyType = "yes"; /// check
-
-  function nums() {
-    return Math.floor(Math.random() * 3) + 1;
-  }
+  const checkType = !!service_check ? "serviceColor" : objTypeData?.[typeid];
 
   return (
     <div
-      // className={`containerMain ${active} ${objTypeData?.[nums()]}`}
-      className={`containerMain ${active}`}
+      className={`containerMain ${checkType} ${active}`}
       onClick={clickContainer}
     >
       <div className="containerMain__inner">
         {/* ///// */}
         <div className="bottom" onClick={clickVmId}>
-          <div className={`numIndex ${haveKeyType ? "" : "noActivce"}`}>
-            <img src={objType?.["virt"]} alt="[]" />
+          <div
+            className={`numIndex`}
+            style={{ background: objStatusType?.[statusid] }}
+          >
+            {!!service_check ? (
+              <img src={services} alt="[]" className="services" />
+            ) : (
+              <img src={objTypeImgs?.[typeid]} alt="[]" />
+            )}
             <p>{vm_id}</p>
           </div>
         </div>
@@ -178,7 +184,8 @@ const Containers = ({ item }) => {
         <div className="editBlock">
           <div className="editBlock__inner">
             <button className="edit" onClick={openModalEdit}>
-              <EditIcon sx={{ fill: "yellow" }} />
+              {/* <EditIcon sx={{ fill: "yellow" }} /> */}
+              <img src={edit} alt="edit" />
             </button>
             <button className="OS" onClick={openOSModal}>
               {icon_url ? (

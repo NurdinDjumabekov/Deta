@@ -10,6 +10,7 @@
   h4 {
     font-size: 10px;
     font-weight: 500;
+    color: #ffffffc5;
   }
 
   .actions {
@@ -28,10 +29,12 @@
         width: 18px;
         height: 18px;
       }
+
       p {
         font-size: 12px;
         font-weight: 500;
         margin-right: 5px;
+        color: #ffffffc5;
 
         b {
           color: #e1e16f;
@@ -125,30 +128,19 @@
       font-size: 14px;
       font-weight: 600;
       margin: 2px 0px 5px;
+      color: #ffffffc5;
     }
   }
 
   .comment {
     font-size: 11px;
+    color: #ffffffc5;
   }
 }
 
 .activeHost {
-  // border: 1px solid #fff;
   position: relative;
   background: #498d7487 !important;
-
-  // &::after {
-  //   content: "";
-  //   border-radius: 0 3px 0 0;
-  //   position: absolute;
-  //   top: 0;
-  //   right: 0;
-  //   z-index: 2;
-  //   border: 15px solid transparent;
-  //   border-top: 15px solid #fff;
-  //   border-right: 15px solid #fff;
-  // }
 }
 
 .lineError {

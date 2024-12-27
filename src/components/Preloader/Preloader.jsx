@@ -11,13 +11,17 @@ export const Preloader = () => {
   const { preloadeкBaza } = useSelector((state) => state.bazaSaveSlice);
   const { preloadeкTodos } = useSelector((state) => state.todosSlice);
   const { preloaderUsers } = useSelector((state) => state.todosSlice);
+  const { preloaderDC } = useSelector((state) => state.dataCenterSlice);
+  const { preloaderVM } = useSelector((state) => state.virtualMachineSlice);
 
   if (
     preloader ||
     preloaderDns ||
     preloadeкBaza ||
     preloadeкTodos ||
-    preloaderUsers
+    preloaderUsers ||
+    preloaderDC ||
+    preloaderVM
   ) {
     return (
       <div className="preloader">

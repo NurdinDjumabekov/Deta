@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 /////// componets
 import Modals from "../../../common/Modals/Modals";
-import MyInputs from "../../../common/MyInput/MyInputs";
 import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 import EditAddHaProxy from "../EditAddHaProxy/EditAddHaProxy";
 
 /////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
+import { checkIP } from "../../../helpers/checkFNS";
 
 /////// fns
 import {
@@ -29,7 +29,7 @@ const ModalsHaProxy = () => {
     (state) => state.haProxySlice?.modalActionsHaProxy
   );
 
-  const actionsCreateHaProxy = async () => {
+  async function actionsCreateHaProxy() {
     /// для удаления,редактирования и добавления Haproxy через запрос
 
     if (name == "") {
@@ -37,17 +37,17 @@ const ModalsHaProxy = () => {
       return;
     }
 
-    if (ip_addres == "") {
+    if (checkIP(ip_addres)) {
       myAlert("Заполните 'ip_addres'", "error");
       return;
     }
 
-    // if (type == 0) {
-    //   myAlert("Выберите тип протокола", "error");
-    //   return;
-    // }
+    const send = {
+      ...modalActionsHaProxy,
+      type: modalActionsHaProxy?.type?.value,
+    };
 
-    const res = await dispatch(crudHaProxyReq(modalActionsHaProxy)).unwrap();
+    const res = await dispatch(crudHaProxyReq(send)).unwrap();
 
     if (res == 1) {
       const obj = { 1: "Успешно добавлено", 2: "Отредактировано" };
@@ -58,18 +58,17 @@ const ModalsHaProxy = () => {
     } else {
       myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
     }
-  };
+  }
 
-  const delHaProxy = async () => {
+  async function delHaProxy() {
     const res = await dispatch(crudHaProxyReq(modalActionsHaProxy)).unwrap();
-
     if (res == 1) {
       myAlert("Успешно удалено");
       dispatch(getHaProxyList({})); /// get список HaProxy
     } else {
       myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
     }
-  };
+  }
 
   return (
     <div className="modalsProxy">

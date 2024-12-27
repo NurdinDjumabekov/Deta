@@ -22,10 +22,10 @@ import bazaIcon from "../../assets/icons/menu/box.svg";
 import hranilisheIcon from "../../assets/icons/menu/dns.svg";
 
 ////// helpers
+import { cutNums } from "../../helpers/cutNums";
 
 ///////style
 import "./style.scss";
-import { cutNums } from "../../helpers/cutNums";
 
 const BazaPage = () => {
   const dispatch = useDispatch();
@@ -42,9 +42,7 @@ const BazaPage = () => {
 
   useEffect(() => {
     const disconnectProv = dispatch(updatedDataBasesSIO()); /// get провайдеров
-
     getData();
-
     return () => disconnectProv();
   }, []);
 
@@ -76,8 +74,6 @@ const BazaPage = () => {
     }
   };
 
-  console.log(listDataSaved, "listDataSaved");
-
   return (
     <>
       <div className="bazaPage">
@@ -88,13 +84,13 @@ const BazaPage = () => {
           <ViewProviders />
 
           <div className="hranilishBlock">
-            <p>Базы - </p>
             <span></span>
+            <p> - Базы</p>
           </div>
 
           <div className="hranilishBlock bazaBlock">
-            <p>Хранилища - </p>
             <span></span>
+            <p> - Хранилища</p>
           </div>
         </div>
 
@@ -108,7 +104,13 @@ const BazaPage = () => {
               onClick={() => setActiveDataBases(item?.guid)}
             >
               <div className="headerInner">
-                <h5>{item?.data_base_name}</h5>
+                <div className="types">
+                  <img
+                    src={item?.type == 1 ? hranilisheIcon : bazaIcon}
+                    alt=""
+                  />
+                  <h5>{item?.data_base_name}</h5>
+                </div>
                 <div className="actions">
                   <button onClick={() => openModal(2, item)}>
                     <img src={editIcon} alt="" />
@@ -120,15 +122,6 @@ const BazaPage = () => {
               </div>
 
               <div className="body">
-                <div className="types">
-                  <img
-                    src={item?.type == 1 ? hranilisheIcon : bazaIcon}
-                    alt=""
-                  />
-                  <p className={`types__text ${item?.type == 1 ? "" : "HR"}`}>
-                    {item?.type == 1 ? "Хранилище" : "База"}
-                  </p>
-                </div>
                 <p className="login">Логин: {item?.login}</p>
                 <p className="password">Пароль: {item?.password}</p>
               </div>
@@ -139,18 +132,19 @@ const BazaPage = () => {
                 ) : (
                   <>
                     {item?.ipAddresses?.map((i, index) => (
-                      <div>
+                      <div key={index}>
                         <div
                           className="btnBlink"
                           style={{ background: pingtimeFN(+i?.avg_ping) }}
                         ></div>
                         <p key={i?.guid}>{i?.ip_adres}</p>
-                        <span
-                          className="ping"
-                          style={{ color: pingtimeFN(+i?.avg_ping) }}
-                        >
-                          {cutNums(+i?.avg_ping, 4)}
-                        </span>
+
+                        <div className="ping">
+                          <span style={{ color: pingtimeFN(+i?.avg_ping) }}>
+                            {cutNums(+i?.avg_ping, 4)}
+                          </span>
+                          <b style={{ color: pingtimeFN(+i?.avg_ping) }}>мс</b>
+                        </div>
                         <button onClick={() => openModal(4, i)}>
                           <img src={krest} alt="" />
                         </button>

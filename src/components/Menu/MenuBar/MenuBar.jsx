@@ -35,9 +35,9 @@ const MenuBar = () => {
     <div className="menuBar">
       <div className="dataCenters">
         <div className="menu__list">
-          {pagesAllDC?.map((item) => (
+          {pagesAllDC?.map((item, index) => (
             <NavLink
-              key={item.id}
+              key={index}
               className={`every ${pathname == `${item?.path}` ? "active" : ""}`}
               to={`${item.path}`}
             >
@@ -51,7 +51,7 @@ const MenuBar = () => {
         <div className="dataCenters__inner">
           {listDataCenter?.map((item, index) => (
             <a
-              key={item?.guid}
+              key={index}
               className={`every ${
                 pathname?.includes(item?.guid) ? "activeDC" : ""
               }`}
@@ -85,8 +85,8 @@ const MenuBar = () => {
             </NavLink>
           ))}
         </div>
-        <LogOut />
       </div>
+      <LogOut />
     </div>
   );
 };

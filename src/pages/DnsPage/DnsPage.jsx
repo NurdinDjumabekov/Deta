@@ -11,6 +11,7 @@ import { getProviders } from "../../store/reducers/requestSlice";
 
 ////// icons
 import krestIcon from "../../assets/icons/krest.svg";
+import SearchIcon from "@mui/icons-material/Search";
 
 ////// components
 import InnerSubDns from "../../components/DnsPage/InnerSubDns/InnerSubDns";
@@ -52,19 +53,20 @@ const DnsPage = () => {
     getData();
   }, [pathname]);
 
-  const onChangeSearch = (e) => {
+  function onChangeSearch(e) {
     setSearchText(e.target?.value);
-    if (!!!e.target?.value) {
+  }
+
+  function searchActionFN() {
+    if (!!!searchText) {
       getData();
     } else {
       const filtered = listDnsDomen?.filter((item) =>
-        item?.domen_name
-          ?.toLowerCase()
-          ?.includes(e.target?.value?.toLowerCase())
+        item?.domen_name?.toLowerCase()?.includes(searchText?.toLowerCase())
       );
       setFilteredDns(filtered);
     }
-  };
+  }
 
   const active = activeDns?.guid == "" ? "activeDns" : "";
 
@@ -75,17 +77,23 @@ const DnsPage = () => {
           <div className={`dnsMain__add__inner ${active}`}>
             <AddDns />
             <div className="searchBigData">
-              <input
-                type="text"
-                placeholder="Поиск по наименованию домена"
-                value={searchText}
-                onChange={onChangeSearch}
-              />
-              {!!searchText && (
-                <button onClick={getData}>
-                  <img src={krestIcon} alt="x" />
-                </button>
-              )}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Поиск по наименованию домена"
+                  value={searchText}
+                  onChange={onChangeSearch}
+                />
+                {!!searchText && (
+                  <button onClick={()=> setSearchText("")} className="clear">
+                    <img src={krestIcon} alt="x" />
+                  </button>
+                )}
+              </div>
+              <button className="search" onClick={searchActionFN}>
+                <SearchIcon />
+                <p>Поиск</p>
+              </button>
             </div>
             <TableContainer className="dnsMain__table hoverScroll">
               <Table>
