@@ -1,34 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import {
-  changeMenuInner,
-  clearAddHost,
   clearDnsList,
-  clearOpenModalBackUp,
-  clearTemporaryContainer,
   clearTemporaryDNS,
-  clearTemporaryHosts,
-  setActiveContainer,
   setActiveDns,
-  setActiveHost,
   setDistributeIpModal,
-  setGuidHostDel,
-  setGuidHostEdit,
-  setListDiagrams,
-  setOpenAddFiles,
-  setOpenModaDelCont,
-  setOpenModaDelGroup,
-  setOpenModalAddGroup,
-  setOpenModalKeyCont,
-  setOpenOSModal,
 } from "./stateSlice";
-import { transformListNetwork } from "../../helpers/transformListNetwork";
 import { defaultSubDomen } from "../../helpers/LocalData";
 import { myAlert } from "../../helpers/MyAlert";
-import { tranformKey } from "../../helpers/tranformTextInNum";
 import axiosInstance from "../../axiosInstance";
-import axios from "axios";
-import { cutNums } from "../../helpers/cutNums";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -46,8 +26,8 @@ export const getDnsDomen = createAsyncThunk(
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
-        const guid = response?.data?.[0]?.guid;
-        const name = response?.data?.[0]?.domen_name;
+        const guid = response?.data?.[1]?.guid;
+        const name = response?.data?.[1]?.domen_name;
         dispatch(setActiveDns({ guid, name }));
         ///// подставляю в state для активного guid
         dispatch(getDnsSubDomen({ guid, domen_name: name }));

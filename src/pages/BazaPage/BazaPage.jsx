@@ -20,12 +20,15 @@ import vncImg from "../../assets/icons/tv.svg";
 import krest from "../../assets/icons/krest.svg";
 import bazaIcon from "../../assets/icons/menu/box.svg";
 import hranilisheIcon from "../../assets/icons/menu/dns.svg";
+import proxyIcon from "../../assets/icons/menu/HaProxy.svg";
+import WarningIcon from "@mui/icons-material/WarningRounded";
 
 ////// helpers
 import { cutNums } from "../../helpers/cutNums";
 
 ///////style
 import "./style.scss";
+import { listDataBases } from "../../helpers/LocalData";
 
 const BazaPage = () => {
   const dispatch = useDispatch();
@@ -35,10 +38,10 @@ const BazaPage = () => {
 
   const { listDataSaved } = useSelector((state) => state.bazaSaveSlice);
 
-  const getData = async () => {
+  async function getData() {
     const res = await dispatch(getSaveDataReq()).unwrap();
     setActiveDataBases(res?.[0]?.guid);
-  };
+  }
 
   useEffect(() => {
     const disconnectProv = dispatch(updatedDataBasesSIO()); /// get провайдеров
@@ -46,7 +49,7 @@ const BazaPage = () => {
     return () => disconnectProv();
   }, []);
 
-  const openModal = (actionType, obj) => {
+  function openModal(actionType, obj) {
     if (actionType == 1) {
       setCrudAction({ actionType });
     } else if (actionType == 2) {
@@ -72,7 +75,11 @@ const BazaPage = () => {
         ipAddresses: obj?.ipAddresses,
       });
     }
-  };
+  }
+
+  const obkIcons = { 1: hranilisheIcon, 2: bazaIcon, 3: proxyIcon };
+
+  const objtypeActive = { 1: "nonePing", 2: "noneOnePing", 3: "" };
 
   return (
     <>
@@ -83,7 +90,7 @@ const BazaPage = () => {
           </button>
           <ViewProviders />
 
-          <div className="hranilishBlock">
+          {/* <div className="hranilishBlock">
             <span></span>
             <p> - Базы</p>
           </div>
@@ -91,25 +98,29 @@ const BazaPage = () => {
           <div className="hranilishBlock bazaBlock">
             <span></span>
             <p> - Хранилища</p>
-          </div>
+          </div> */}
         </div>
+
+        {/* ${item?.type == 1 ? "hranilish" : "baza"} */}
 
         <div className="list hoverScroll">
           {listDataSaved?.map((item) => (
             <div
-              className={`every ${item?.type == 1 ? "hranilish" : "baza"} ${
+              className={`every  ${
                 activeDataBases == item?.guid ? "active" : ""
-              } ${item?.check_status_ping == 1 ? "nonePing" : ""}`}
+              } ${objtypeActive?.[item?.check_status_ping]}`}
               key={item?.guid}
               onClick={() => setActiveDataBases(item?.guid)}
             >
               <div className="headerInner">
                 <div className="types">
-                  <img
-                    src={item?.type == 1 ? hranilisheIcon : bazaIcon}
-                    alt=""
-                  />
+                  {/* <img src={obkIcons?.[item?.type]} alt="" /> */}
                   <h5>{item?.data_base_name}</h5>
+                  {item?.check_status_ping == 1 && (
+                    <div className="warning">
+                      <WarningIcon sx={{ fill: "#f79e02" }} />
+                    </div>
+                  )}
                 </div>
                 <div className="actions">
                   <button onClick={() => openModal(2, item)}>
@@ -120,6 +131,9 @@ const BazaPage = () => {
                   </button>
                 </div>
               </div>
+              <h6>
+                {listDataBases?.find((i) => i.value == item?.type)?.label}
+              </h6>
 
               <div className="body">
                 <p className="login">Логин: {item?.login}</p>

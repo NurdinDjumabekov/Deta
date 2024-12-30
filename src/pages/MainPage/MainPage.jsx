@@ -12,11 +12,7 @@ import {
 } from "../../store/reducers/requestSlice";
 import { getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
-import {
-  setActiveHost,
-  setAddHost,
-  setListDiagrams,
-} from "../../store/reducers/stateSlice";
+import { setAddHost, setListDiagrams } from "../../store/reducers/stateSlice";
 import { updatedProvoders } from "../../store/reducers/requestSlice";
 import {
   getListBackUpReq,
@@ -82,11 +78,9 @@ const MainPage = () => {
     dispatch(getProviders());
 
     /// для получения данных для процесса бэкапа
-    const disconnectProv = dispatch(updatedProvoders()); /// get провайдеров
     const disconnectHost = dispatch(updatedHosts()); /// get хосты
 
     return () => {
-      disconnectProv();
       disconnectHost();
       // Отключение сокетов при размонтировании компонента
     };
@@ -94,8 +88,10 @@ const MainPage = () => {
 
   const checkContainer = activeContainer == 0 ? "activeContainer" : "";
 
-  const addHost = () => dispatch(setAddHost({ bool: true }));
-  //// открываю модалку для добавления хоста
+  function addHost() {
+    //// открываю модалку для добавления хоста
+    dispatch(setAddHost({ bool: true }));
+  }
 
   async function openModalCreateContainer() {
     //// открываю модалки создания контейнера

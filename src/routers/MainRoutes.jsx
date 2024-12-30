@@ -31,7 +31,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 ///// fns
 import { getDataCenterReq } from "../store/reducers/dataCenterSlice";
-import Test from "../components/Test/Test";
 
 const MainRoutes = () => {
   const dispatch = useDispatch();

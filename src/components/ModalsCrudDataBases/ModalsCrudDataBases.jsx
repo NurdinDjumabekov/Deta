@@ -19,6 +19,7 @@ import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
 ////// helpers
 import { myAlert } from "../../helpers/MyAlert";
 import { checkIP } from "../../helpers/checkFNS";
+import { listDataBases } from "../../helpers/LocalData";
 
 ///////style
 import "./style.scss";
@@ -38,11 +39,6 @@ const ModalsCrudDataBases = (props) => {
     const { name, value } = e.target;
     setCrudAction({ ...crudAction, [name]: value });
   };
-
-  const listDataBases = [
-    { label: "Хранилище", value: 1 },
-    { label: "База", value: 2 },
-  ];
 
   const crudBasesData = async (e) => {
     e.preventDefault();

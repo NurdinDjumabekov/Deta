@@ -168,6 +168,18 @@
       }
     }
 
+    .noActiveMemory {
+      width: auto !important;
+
+      .memoryBlock {
+        display: none !important;
+      }
+
+      .actions {
+        background: red !important;
+      }
+    }
+
     .actions {
       display: flex;
       flex-direction: column;
@@ -225,6 +237,10 @@
       &__key {
         justify-content: center !important;
       }
+    }
+
+    .noActions {
+      width: auto !important;
     }
   }
 }

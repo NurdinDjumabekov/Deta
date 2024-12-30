@@ -464,7 +464,7 @@ const ModalsForContainers = () => {
       <Modals
         openModal={!!openModaDelCont}
         setOpenModal={() => dispatch(setOpenModaDelCont())}
-        title={"Вы уверены, что хотите удалить виртуальную машину?"}
+        title={"Удалить виртуальную машину?"}
       >
         <div className="addDns offContainer">
           <button onClick={delContainer} className="yes">

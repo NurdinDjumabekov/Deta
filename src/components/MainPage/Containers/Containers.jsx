@@ -1,3 +1,4 @@
+//////// hooks
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,25 +8,19 @@ import container from "../../../assets/icons/menu/box2.svg";
 import virtualka from "../../../assets/icons/tv.svg";
 import services from "../../../assets/icons/menu/database.svg";
 import edit from "../../../assets/icons/edit.svg";
-import skrepka from "../../../assets/icons/skrepka.svg";
 
 //// imgs
 import calendarX from "../../../assets/icons/calendar-x.svg";
 import download from "../../../assets/icons/download.svg";
 import addGroup from "../../../assets/icons/folder-plus.svg";
-import moreInfo from "../../../assets/icons/moreInfo.svg";
 import warning from "../../../assets/icons/warning.svg";
 import playCircle from "../../../assets/icons/play-circle.svg";
 import stopCircle from "../../../assets/icons/stop-circle.svg";
 import repeat from "../../../assets/icons/repeat.svg";
-import deleteIcon from "../../../assets/icons/delete.svg";
 import minus from "../../../assets/icons/circle-minus.svg";
 import dataBaseIcon from "../../../assets/images/memoryImgs/database.png";
 import round from "../../../assets/images/OS/round.png";
 import keyIncon from "../../../assets/icons/key.svg";
-import lookEye from "../../../assets/icons/eye-look.svg";
-import noLookEye from "../../../assets/icons/eye-no-look.svg";
-import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 
@@ -33,10 +28,8 @@ import AttachFileIcon from "@mui/icons-material/AttachFile";
 import "./style.scss";
 
 ////// fns
-import { setOpenAddFiles } from "../../../store/reducers/stateSlice";
 import { setOpenModaStartCont } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
-import { setOpenModals } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
 import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
@@ -70,7 +63,6 @@ const Containers = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { lookMoreInfo } = useSelector((state) => state.containersSlice);
   const { activeContainer, openModalBackUp } = useSelector(
     (state) => state.stateSlice
   );
@@ -158,6 +150,8 @@ const Containers = ({ item }) => {
   };
 
   const checkType = !!service_check ? "serviceColor" : objTypeData?.[typeid];
+  const checkActive =
+    objStatusType?.[statusid] == "rgb(70,150,45)" ? true : false;
 
   return (
     <div
@@ -184,7 +178,6 @@ const Containers = ({ item }) => {
         <div className="editBlock">
           <div className="editBlock__inner">
             <button className="edit" onClick={openModalEdit}>
-              {/* <EditIcon sx={{ fill: "yellow" }} /> */}
               <img src={edit} alt="edit" />
             </button>
             <button className="OS" onClick={openOSModal}>
@@ -222,7 +215,7 @@ const Containers = ({ item }) => {
         </div>
 
         {/* ///// */}
-        <div className="memory">
+        <div className={`memory ${!checkActive ? "noActiveMemory" : ""}`}>
           <div className="memory__inner">
             <Tooltip title="Загрузить файлы" placement="top">
               <button onClick={openAddFilesFN}>
@@ -236,7 +229,7 @@ const Containers = ({ item }) => {
               node_ram_mb={vm_ram_mb}
               array_storages={[]}
             />
-            {info && (
+            {!!info && (
               <div className="GB_dataBase">
                 <div>
                   <img src={dataBaseIcon} alt="#" />
@@ -248,69 +241,84 @@ const Containers = ({ item }) => {
         </div>
 
         {/* ///// */}
-        <div className="actions">
+        <div className={`actions ${!checkActive ? "noActions" : ""}`}>
           <div className="actions__inner">
-            <Tooltip title="Добавить в группу" placement="top">
-              <button onClick={openModalAddGroup}>
-                <img src={addGroup} alt="#" />
-              </button>
-            </Tooltip>
-            <Tooltip title="Зафиксировать время создания" placement="top">
-              <button onClick={openModalFixTime}>
-                <img src={calendarX} alt="#" />
-              </button>
-            </Tooltip>
-            <Tooltip title="BackUp" placement="top">
-              <button onClick={openModalBackUpFN}>
-                <img src={download} alt="#" />
-              </button>
-            </Tooltip>
-            <Tooltip title="Пользователи" placement="top">
-              <button onClick={openKeyInfo}>
-                <img src={keyIncon} alt="#" />
-              </button>
-            </Tooltip>
+            {checkActive && (
+              <>
+                <Tooltip title="Добавить в группу" placement="top">
+                  <button onClick={openModalAddGroup}>
+                    <img src={addGroup} alt="#" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Зафиксировать время создания" placement="top">
+                  <button onClick={openModalFixTime}>
+                    <img src={calendarX} alt="#" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="BackUp" placement="top">
+                  <button onClick={openModalBackUpFN}>
+                    <img src={download} alt="#" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Пользователи" placement="top">
+                  <button onClick={openKeyInfo}>
+                    <img src={keyIncon} alt="#" />
+                  </button>
+                </Tooltip>
+              </>
+            )}
+
             <Tooltip title="Запустить сервер" placement="top">
               <button onClick={() => handleVirtualMachine(1)}>
                 <img src={playCircle} alt="#" />
               </button>
             </Tooltip>
-            <Tooltip title="Перезагрузить сервер" placement="top">
-              <button onClick={() => handleVirtualMachine(2)}>
-                <img src={repeat} alt="#" />
-              </button>
-            </Tooltip>
-            <Tooltip title="Мягкое выключение" placement="top">
-              <button onClick={() => handleVirtualMachine(3)}>
-                <img src={stopCircle} alt="#" />
-              </button>
-            </Tooltip>
 
-            <Tooltip title="Удалить из списка" placement="top">
-              <button onClick={openModalDelInGroup}>
-                <img src={minus} alt="#" />
-              </button>
-            </Tooltip>
-            <Tooltip
-              title=" Жёсткое выключение (!может вызвать повреждение файлов на
+            {checkActive && (
+              <>
+                <Tooltip title="Перезагрузить сервер" placement="top">
+                  <button onClick={() => handleVirtualMachine(2)}>
+                    <img src={repeat} alt="#" />
+                  </button>
+                </Tooltip>
+                <Tooltip title="Мягкое выключение" placement="top">
+                  <button onClick={() => handleVirtualMachine(3)}>
+                    <img src={stopCircle} alt="#" />
+                  </button>
+                </Tooltip>
+
+                <Tooltip title="Удалить из списка" placement="top">
+                  <button onClick={openModalDelInGroup}>
+                    <img src={minus} alt="#" />
+                  </button>
+                </Tooltip>
+                <Tooltip
+                  title=" Жёсткое выключение (!может вызвать повреждение файлов на
                 высоконагруженных серверах!)"
-              placement="top"
-            >
-              <button onClick={openModalOffContainer}>
-                <img src={warning} alt="#" />
-              </button>
-            </Tooltip>
-            {false && (
+                  placement="top"
+                >
+                  <button onClick={openModalOffContainer}>
+                    <img src={warning} alt="#" />
+                  </button>
+                </Tooltip>
+              </>
+            )}
+
+            {!checkActive && (
               <button className="deleteBtn" onClick={delContainer}>
                 Удалить
               </button>
             )}
           </div>
-          <div className={`key ${del ? "actions__key" : ""}`}>
-            <p>
-              {!!secondsToDhms(vm_uptime) ? `${secondsToDhms(vm_uptime)}` : ""}
-            </p>
-          </div>
+          {checkActive && (
+            <div className={`key ${del ? "actions__key" : ""}`}>
+              <p>
+                {!!secondsToDhms(vm_uptime)
+                  ? `${secondsToDhms(vm_uptime)}`
+                  : ""}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

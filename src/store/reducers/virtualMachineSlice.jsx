@@ -13,6 +13,8 @@ const initialState = {
   listHistoryAction: [], /// список историй действий в контейнерах
   listTypeBackUpContainers: { container: [], vm: [], hosts: [] }, /// список типов бэкапов контейнера
   listBackUpContainers: [], /// список бэкапов контейнера
+  viewListResultBackUp: { log: [], status: false },
+  /// список логирования результатов бэкапа контейнера
 };
 
 const url_socket = "https://dd-api.ibm.kg";
@@ -120,6 +122,7 @@ export const getComandsBacupVM = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("vm-backup", (data) => {
     console.log(data, "data");
+    dispatch(viewListResultBackUpFN({ log: [], status: false }));
   });
   return () => socket.disconnect();
 };
@@ -130,6 +133,10 @@ const virtualMachineSlice = createSlice({
   reducers: {
     listStatusVmFN: (state, action) => {
       state.listStatusVm = action.payload;
+    },
+
+    viewListResultBackUpFN: (state, action) => {
+      state.viewListResultBackUp = action.payload;
     },
   },
 
@@ -191,6 +198,7 @@ const virtualMachineSlice = createSlice({
   },
 });
 
-export const { listStatusVmFN } = virtualMachineSlice.actions;
+export const { listStatusVmFN, viewListResultBackUpFN } =
+  virtualMachineSlice.actions;
 
 export default virtualMachineSlice.reducer;

@@ -292,6 +292,15 @@ export const sortMicroticNums = (list) => {
     ...list?.filter((btn) => +btn?.name % 2 === 0), // Чётные
     ...list?.filter((btn) => +btn?.name % 2 !== 0), // Нечётные
   ];
-  console.log(list, "sortedList");
   return sortedList;
 };
+export const listDataBases = [
+  { label: "Хранилище", value: 1 },
+  { label: "База", value: 2 },
+  { label: "ProxmoxBackupServer", value: 3 },
+  { label: "АТС-FreePBX", value: 4 },
+  { label: "Router", value: 5 },
+  { label: "Switch", value: 6 },
+  { label: "Co-location", value: 7 },
+  { label: "VDS/VPS", value: 8 },
+];

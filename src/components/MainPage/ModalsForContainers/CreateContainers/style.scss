@@ -60,3 +60,67 @@
     margin: 10px 0 0 0;
   }
 }
+
+.viewBackUp {
+  .modal {
+    &__inner {
+      width: 1300px;
+      height: 94vh;
+
+      &__title {
+        margin-bottom: 10px;
+      }
+
+      .viewBackUp__inner {
+        height: 100%;
+
+        table {
+          border: 1px dashed rgb(90, 88, 88) !important;
+          background: transparent !important;
+          width: 800px;
+          border-radius: 3px;
+
+          thead {
+            tr {
+              th {
+                background: transparent !important;
+                padding: 5px 5px 2px !important;
+                border: none !important;
+                font-size: 12px !important;
+                line-height: 13px;
+              }
+            }
+          }
+        }
+
+        .viewLogs {
+          width: 100%;
+          height: calc(100% - 100px);
+          background: #1e1c1d;
+          padding: 10px;
+          margin: 10px 0 0 0;
+          border-radius: 5px;
+
+          p {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: 400;
+            font-family: Arial;
+          }
+        }
+
+        > button {
+          background: #8491a2;
+          color: #fff;
+          font-size: 12px;
+          padding: 5px 10px;
+          border-radius: 3px;
+          width: 100px;
+          height: 30px;
+          margin: 10px auto;
+          display: block;
+        }
+      }
+    }
+  }
+}

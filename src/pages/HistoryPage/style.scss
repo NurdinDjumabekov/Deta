@@ -60,7 +60,22 @@
             }
           }
 
+          .noActiveMemory {
+            width: 250px !important;
+
+            .memoryBlock {
+              display: block !important;
+              width: 170px !important;
+            }
+
+            .actions {
+              width: 300px !important;
+            }
+          }
+
           .actions {
+            width: 220px !important;
+
             &__inner {
               button:nth-child(1),
               button:nth-child(2),

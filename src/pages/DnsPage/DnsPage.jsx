@@ -37,17 +37,17 @@ const DnsPage = () => {
 
   const [guidDelete, setGuidDelete] = useState(""); // храню временный guid для удаления
 
-  const delDns = () => {
+  function delDns() {
     ///// удаления dns через запрос
     dispatch(deleteDomen({ guidDelete, setGuidDelete, getData }));
-  };
+  }
 
-  const getData = async () => {
+  async function getData() {
     const list = await dispatch(getDnsDomen()).unwrap();
     setFilteredDns(list);
     dispatch(getProviders());
     setSearchText("");
-  };
+  }
 
   useEffect(() => {
     getData();
@@ -85,7 +85,7 @@ const DnsPage = () => {
                   onChange={onChangeSearch}
                 />
                 {!!searchText && (
-                  <button onClick={()=> setSearchText("")} className="clear">
+                  <button onClick={() => setSearchText("")} className="clear">
                     <img src={krestIcon} alt="x" />
                   </button>
                 )}
