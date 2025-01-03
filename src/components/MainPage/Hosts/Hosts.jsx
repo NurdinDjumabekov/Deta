@@ -44,7 +44,12 @@ const Hosts = ({ item }) => {
   };
 
   const editOpenModal = () => {
-    const obj = { host_name, guid_node, node_model, array_storages };
+    const obj = {
+      host_name: node_comment,
+      guid_node,
+      node_model,
+      array_storages,
+    };
     dispatch(setTemporaryHosts({ ...obj, listVmbr }));
     /// временно хранение данных для редактирования
     dispatch(setGuidHostEdit(guid_node));
