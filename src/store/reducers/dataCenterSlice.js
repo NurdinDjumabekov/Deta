@@ -8,6 +8,8 @@ const initialState = {
   preloaderDC: false,
   listDataCenter: [], /// список дата центров
   listComands: [], /// список команд каждого ДЦ
+  listVMsInIp: [], /// список контейнеров найденных с
+  // помощью временного ввода ip при создании задач
 };
 
 ///// getDataCenterReq - get всех дата центров
@@ -82,6 +84,24 @@ export const performComandsReq = createAsyncThunk(
   }
 );
 
+///// getListVMsInIp - get list контейнеров по ip адресу
+export const getListVMsInIp = createAsyncThunk(
+  "getListVMsInIp",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}shedule/findVm?searchText=${data}`;
+    try {
+      const response = await axiosInstance(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const dataCenterSlice = createSlice({
   name: "dataCenterSlice",
   initialState,
@@ -131,6 +151,26 @@ const dataCenterSlice = createSlice({
     });
     builder.addCase(performComandsReq.pending, (state, action) => {
       state.preloaderDC = true;
+    });
+
+    //////////////////////////// getListVMsInIp
+    builder.addCase(getListVMsInIp.fulfilled, (state, action) => {
+      // state.preloaderDC = false;
+      state.listVMsInIp = action.payload?.map((item) => {
+        return {
+          ...item,
+          value: item?.guid,
+          label: `${item?.host_name}${item?.vm_name}`,
+        };
+      });
+    });
+    builder.addCase(getListVMsInIp.rejected, (state, action) => {
+      state.error = action.payload;
+      // state.preloaderDC = false;
+      state.listVMsInIp = [];
+    });
+    builder.addCase(getListVMsInIp.pending, (state, action) => {
+      // state.preloaderDC = true;
     });
   },
 });

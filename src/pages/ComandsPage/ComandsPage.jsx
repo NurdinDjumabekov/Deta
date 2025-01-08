@@ -6,12 +6,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 ////// components
 import { Tooltip } from "@mui/material";
 import ModalsComands from "../../components/ComandsPage/ModalsComands/ModalsComands";
+import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
 
 ////// helpers
+import { myAlert } from "../../helpers/MyAlert";
 
 ////// fns
 import {
   getComandsReq,
+  getListVMsInIp,
   performComandsReq,
 } from "../../store/reducers/dataCenterSlice";
 
@@ -21,11 +24,12 @@ import editIcon from "../../assets/icons/edit.svg";
 import displayIcon from "../../assets/icons/tv.svg";
 import checkCircle from "../../assets/icons/check-circle.svg";
 import delIcons from "../../assets/icons/delete.svg";
+import services from "../../assets/icons/menu/database.svg";
+import container from "../../assets/icons/menu/box2.svg";
+import virtualka from "../../assets/icons/tv.svg";
 
 /////// style
 import "./style.scss";
-import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
-import { myAlert } from "../../helpers/MyAlert";
 
 const ComandsPage = () => {
   const dispatch = useDispatch();
@@ -34,7 +38,11 @@ const ComandsPage = () => {
 
   const [searchText, setSearchText] = useState("");
   const [filteredList, setFilteredList] = useState([]);
-  const [crudComands, setCrudComands] = useState({});
+  const [crudComands, setCrudComands] = useState({
+    username: "root",
+    password: "Afina954120",
+    port: 22,
+  });
 
   const { listComands } = useSelector((state) => state.dataCenterSlice);
 
@@ -63,20 +71,45 @@ const ComandsPage = () => {
   };
 
   const editComandModal = (item, actionType) => {
-    const send = { actionType, ...item };
-    setCrudComands(send);
     // 2- редактирование , 4 - выполнение команды
+    if (actionType == 2) {
+      const vm_guid = {
+        value: item?.vm_guid,
+        label: `${item?.host_name}${item?.vm_name}`,
+      };
+      dispatch(getListVMsInIp(item?.vm_id));
+      const send = { actionType, ...item, vm_guid };
+      setCrudComands(send);
+    } else {
+      const send = { actionType, ...item };
+      setCrudComands(send);
+    }
   };
 
   const performComandsFN = async () => {
     const send = { ...crudComands };
     const res = await dispatch(performComandsReq(send)).unwrap();
-    setCrudComands({});
+    setCrudComands({
+      username: "root",
+      password: "Afina954120",
+      port: 22,
+    });
     if (res == 1) {
       myAlert("Команда выполнена успешно");
       getData();
     }
   };
+
+  const objStatusType = {
+    running: "rgb(70,150,45)",
+    stopped: "#514848",
+    deleted: "#514848",
+  };
+  const objTypeImgs = { qemu: virtualka, lxc: container };
+
+  const service_check = false;
+  const statusid = "running";
+  const typeid = "lxc";
 
   return (
     <>
@@ -85,7 +118,7 @@ const ComandsPage = () => {
           <div className="header">
             <button
               className="create"
-              onClick={() => setCrudComands({ actionType: 1 })}
+              onClick={() => setCrudComands({ ...crudComands, actionType: 1 })}
             >
               +
             </button>
@@ -107,8 +140,41 @@ const ComandsPage = () => {
             <div className="list">
               {filteredList?.map((item) => (
                 <div className="every" key={item?.guid}>
+                  <div className="main">
+                    <div className="bottom">
+                      <div
+                        className={`numIndex`}
+                        style={{ background: objStatusType?.[statusid] }}
+                      >
+                        {!!service_check ? (
+                          <img src={services} alt="[]" className="services" />
+                        ) : (
+                          <img src={objTypeImgs?.[typeid]} alt="[]" />
+                        )}
+                        <p>{item?.vm_id}</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="mainInfo">
+                        <p className="host">{item?.host_name}</p>
+                        <p className="vm">- {item?.vm_name}</p>
+                      </div>
+                      <div className="mainInfo">
+                        <p className="password">
+                          {item?.username}/{item?.password}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="moreInfoCommands">
+                      <p className="command">{item?.command}</p>
+                      <p className="description">{item?.description}</p>
+                    </div>
+                  </div>
+
                   <div className="actions">
-                    <Tooltip title="Выполнить команду" placement="right">
+                    <Tooltip title="Выполнить команду" placement="top">
                       <button
                         onClick={() => editComandModal(item, 4)}
                         className="edit"
@@ -116,7 +182,7 @@ const ComandsPage = () => {
                         <img src={checkCircle} alt="editIcon" />
                       </button>
                     </Tooltip>
-                    <Tooltip title="Редактировать" placement="right">
+                    <Tooltip title="Редактировать" placement="top">
                       <button
                         onClick={() => editComandModal(item, 2)}
                         className="edit"
@@ -124,7 +190,7 @@ const ComandsPage = () => {
                         <img src={editIcon} alt="editIcon" />
                       </button>
                     </Tooltip>
-                    <Tooltip title="Удалить" placement="right">
+                    <Tooltip title="Удалить" placement="top">
                       <button
                         onClick={() => editComandModal(item, 3)}
                         className="edit"
@@ -132,20 +198,6 @@ const ComandsPage = () => {
                         <img src={delIcons} alt="editIcon" />
                       </button>
                     </Tooltip>
-                  </div>
-                  <div className="mainInfo">
-                    <div className="ip_address">
-                      <img className="iconDisplay" src={displayIcon} alt="" />
-                      <p>{item?.ip_address}</p>
-                    </div>
-                    <p className="password">Логин: {item?.username}</p>
-                    <p className="password">Пароль: {item?.password}</p>
-                    <p className="port">Порт: {item?.port}</p>
-                  </div>
-
-                  <div className="moreInfoCommands">
-                    <p className="command">{item?.command}</p>
-                    <p className="description">{item?.description}</p>
                   </div>
                 </div>
               ))}

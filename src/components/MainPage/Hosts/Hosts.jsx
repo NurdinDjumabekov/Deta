@@ -64,12 +64,16 @@ const Hosts = ({ item }) => {
     <div className={`hostsMain ${err} ${active}`} onClick={clickHost}>
       <h4>{node_model}</h4>
       <div className="actions">
-        <div className="hostTitle">
+        <a
+          href={`http://${host_ip}:8006`}
+          target="_blank"
+          className="hostTitle"
+        >
           <img src={vncImg} alt="vnc" />
           <p>
             {host_name} (<b>{secondsToDhms(node_uptime_sec)}</b>)
           </p>
-        </div>
+        </a>
         <div className="actions">
           <button>
             <img src={repeat} alt="x" />

@@ -22,6 +22,7 @@ import bazaIcon from "../../assets/icons/menu/box.svg";
 import hranilisheIcon from "../../assets/icons/menu/dns.svg";
 import proxyIcon from "../../assets/icons/menu/HaProxy.svg";
 import WarningIcon from "@mui/icons-material/WarningRounded";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 ////// helpers
 import { cutNums } from "../../helpers/cutNums";
@@ -147,10 +148,18 @@ const BazaPage = () => {
                   <>
                     {item?.ipAddresses?.map((i, index) => (
                       <div key={index}>
-                        <div
+                        
+                        { i?.avg_ping == 0 ? (
+                          <div>
+                            <WarningIcon sx={{ fill: "#f79e02", width: 15, height: 15 }} />
+                          </div>
+                        ) : (
+                          <div
                           className="btnBlink"
                           style={{ background: pingtimeFN(+i?.avg_ping) }}
-                        ></div>
+                        ></div> 
+                        )
+                        }
                         <p key={i?.guid}>{i?.ip_adres}</p>
 
                         <div className="ping">

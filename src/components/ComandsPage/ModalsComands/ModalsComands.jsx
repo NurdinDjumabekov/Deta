@@ -1,55 +1,81 @@
 /////// hooks
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
 
 ////// components
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
 import MyTextArea from "../../../common/MyTextArea/MyTextArea";
 import MyIPInput from "../../../common/MyIPInput/MyIPInput";
+import MySelects from "../../../common/MySelects/MySelects";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 ////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
+import { checkIP } from "../../../helpers/checkFNS";
+import debounce from "debounce";
 
 ////// fns
-import { editComandsReq } from "../../../store/reducers/dataCenterSlice";
+import {
+  editComandsReq,
+  getListVMsInIp,
+} from "../../../store/reducers/dataCenterSlice";
 
 ////// icons
 
 /////// style
 import "./style.scss";
-import { checkIP } from "../../../helpers/checkFNS";
-import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 const ModalsComands = (props) => {
   const { crudComands, setCrudComands, getData } = props;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
 
-  const onChange = (e) => {
+  const { listVMsInIp } = useSelector((state) => state.dataCenterSlice);
+
+  function onChange(e) {
     const { name, value } = e.target;
     setCrudComands({ ...crudComands, [name]: value });
-  };
 
-  const createEditCommandFN = async (e) => {
+    if (name == "vm_id") {
+      searchData(value, dispatch);
+    }
+  }
+
+  function searchData(value, dispatch) {
+    const debouncedSearch = debounce((val) => {
+      if (val?.length > 1) {
+        dispatch(getListVMsInIp(val));
+      }
+    }, 800);
+    debouncedSearch(value);
+  }
+
+  async function createEditCommandFN(e) {
     e.preventDefault();
     if (checkIP(crudComands?.ip_address)) {
       return myAlert("Заполните правильно 'IP адрес'", "error");
     }
 
-    const send = { ...crudComands, port: crudComands?.port || 22 };
+    if (!!!crudComands?.vm_guid) {
+      return myAlert("Выберите контейнер", "error");
+    }
+
+    const send = {
+      ...crudComands,
+      port: crudComands?.port || 22,
+      vm_guid: crudComands?.vm_guid?.value,
+    };
+
     const res = await dispatch(editComandsReq(send)).unwrap();
     if (res == 1) {
       myAlert("Данные успешно сохранены");
       setCrudComands({});
       getData();
     }
-  };
+  }
 
-  const delCommandFN = async (e) => {
+  async function delCommandFN(e) {
     e.preventDefault();
     const res = await dispatch(editComandsReq(crudComands)).unwrap();
     if (res == 1) {
@@ -57,17 +83,53 @@ const ModalsComands = (props) => {
       setCrudComands({});
       getData();
     }
-  };
+  }
+
+  function onChangeSelect(item) {
+    setCrudComands({ ...crudComands, vm_guid: item, vm_id: item?.vm_id });
+  }
 
   const objTitle = { 1: "Добавить", 2: "Редактировать" };
+
   if (crudComands?.actionType == 1 || crudComands?.actionType == 2) {
     return (
       <Modals
         openModal={true}
-        setOpenModal={() => setCrudComands({})}
+        setOpenModal={() =>
+          setCrudComands({
+            username: "root",
+            password: "Afina954120",
+            port: 22,
+          })
+        }
         title={objTitle?.[crudComands?.actionType]}
       >
         <form className="addEditCommand" onSubmit={createEditCommandFN}>
+          <MyIPInput
+            title={`IP адрес`}
+            onChange={onChange}
+            name={"ip_address"}
+            value={crudComands?.ip_address}
+            required={true}
+          />
+
+          <MyInputs
+            title={`Номер контейнера`}
+            onChange={onChange}
+            name={"vm_id"}
+            value={crudComands?.vm_id}
+            required={true}
+          />
+
+          <MySelects
+            list={listVMsInIp}
+            initText={"Выбрать"}
+            onChange={onChangeSelect}
+            nameKey={"vm_guid"}
+            value={crudComands?.vm_guid}
+            title={"Список контейнеров"}
+          />
+
           <MyInputs
             title={`Логин`}
             onChange={onChange}
@@ -82,13 +144,6 @@ const ModalsComands = (props) => {
             value={crudComands?.password}
             required={true}
           />
-          <MyIPInput
-            title={`IP адрес`}
-            onChange={onChange}
-            name={"ip_address"}
-            value={crudComands?.ip_address}
-            required={true}
-          />
           <MyInputs
             title={`Порт`}
             onChange={onChange}
@@ -96,7 +151,7 @@ const ModalsComands = (props) => {
             value={crudComands?.port}
           />
           <MyTextArea
-            title={`Текст команды`}
+            title={`Bash команда`}
             onChange={onChange}
             name={"command"}
             value={crudComands?.command}
@@ -124,7 +179,13 @@ const ModalsComands = (props) => {
         state={crudComands?.actionType == 3}
         title={"Удалить ?"}
         yes={delCommandFN}
-        no={() => setCrudComands({})}
+        no={() =>
+          setCrudComands({
+            username: "root",
+            password: "Afina954120",
+            port: 22,
+          })
+        }
       />
     );
   }
