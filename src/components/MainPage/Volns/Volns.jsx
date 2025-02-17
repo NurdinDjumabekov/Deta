@@ -1,13 +1,10 @@
 //////// hooks
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 ////// style
 import "./style.scss";
-
-/////// helpers
-import { mylistVolns } from "../../../helpers/LocalData";
 
 //////// fns
 import { setListVolns } from "../../../store/reducers/requestSlice";
@@ -15,12 +12,9 @@ import EveryVolns from "../EveryVolns/EveryVolns";
 
 const Volns = () => {
   const dispatch = useDispatch();
+  const [selectedColumn, setSelectedColumn] = useState(null);
 
   const { listVolns } = useSelector((state) => state.requestSlice);
-
-  useEffect(() => {
-    dispatch(setListVolns(mylistVolns));
-  }, [dispatch]);
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
@@ -67,31 +61,35 @@ const Volns = () => {
   // console.log(listVolns, "listVolns");
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="statusContainers">
-        {lists?.map((list) => (
-          <Droppable key={list?.key} droppableId={list?.key}>
-            {(provided) => (
-              <div
-                {...provided?.droppableProps}
-                ref={provided?.innerRef}
-                className={`droppable ${list?.key}`}
-                key={provided?.guid}
-              >
-                <EveryVolns
-                  list={listVolns?.[list?.key]}
-                  title={list?.title}
-                  onAddItem={(item) => handleAddItem(item, list?.key)}
-                  guid={list?.guid}
-                  num={list?.num}
-                />
-                {provided?.placeholder}
-              </div>
-            )}
-          </Droppable>
-        ))}
-      </div>
-    </DragDropContext>
+    <div className="volnsMain">
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="statusContainers">
+          {lists?.map((list) => (
+            <Droppable key={list?.key} droppableId={list?.key} style={{}}>
+              {(provided) => (
+                <div
+                  {...provided?.droppableProps}
+                  ref={provided?.innerRef}
+                  className={`droppable ${list?.key} hoverScroll`}
+                  key={provided?.guid}
+                  onClick={() => setSelectedColumn(list?.guid)}
+                >
+                  <EveryVolns
+                    list={listVolns?.[list?.key]}
+                    title={list?.title}
+                    onAddItem={(item) => handleAddItem(item, list?.key)}
+                    guid={list?.guid}
+                    num={list?.num}
+                    selectedColumn={selectedColumn}
+                  />
+                  {provided?.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))}
+        </div>
+      </DragDropContext>
+    </div>
   );
 };
 export default Volns;

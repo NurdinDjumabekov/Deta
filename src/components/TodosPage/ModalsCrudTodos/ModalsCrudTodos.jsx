@@ -65,6 +65,7 @@ const ModalsCrudTodos = (props) => {
     formData.append(`folder_guid`, crudTodos?.folder_guid);
     formData.append(`description`, crudTodos?.description);
     formData.append(`actionType`, crudTodos?.actionType);
+    formData.append(`guid`, crudTodos?.guid);
 
     const res = await dispatch(crudTodosReq(formData)).unwrap();
 
@@ -100,7 +101,7 @@ const ModalsCrudTodos = (props) => {
         title={"Добавление задачи"}
       >
         <div className="modalsCrudTodos">
-          <MySelects
+          {/* <MySelects
             list={listUsers}
             initText={"Выбрать"}
             onChange={onChangeSelect}
@@ -116,7 +117,7 @@ const ModalsCrudTodos = (props) => {
             nameKey={"status"}
             value={crudTodos?.status}
             title={"Выберите статус задачи"}
-          />
+          /> */}
 
           <MyInputs
             title={"Наименование"}

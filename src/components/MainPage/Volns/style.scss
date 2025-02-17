@@ -1,82 +1,87 @@
-.statusContainers {
-  width: 290px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+.volnsMain {
+  .statusContainers {
+    width: 298px;
+    min-width: 298px;
+    max-width: 298px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 100%;
 
-  > div {
-    width: 33%;
-    border-left: 2px solid rgb(30, 31, 35);
-    height: 96vh;
+    > div {
+      width: 33%;
+      border-left: 2px solid rgb(30, 31, 35);
+      position: relative;
+      padding-bottom: 10px;
+      height: 100%;
+
+      p {
+        padding: 5px 2px 6px;
+        font-size: 10px;
+        text-align: center;
+        border-radius: 5px;
+        font-weight: 600;
+        margin: 3px 0px;
+        cursor: pointer;
+      }
+    }
+
+    .clear {
+      h6 {
+        text-align: center;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 8px 0px 0 0;
+        color: red;
+      }
+    }
+
+    .active {
+      background: transparent !important;
+      h6 {
+        text-align: center;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 8px 0px 0 0;
+        color: green;
+      }
+    }
+    .diactive {
+      h6 {
+        text-align: center;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 8px 0px 0 0;
+        color: #dd8537;
+      }
+    }
+  }
+
+  .load {
     position: relative;
-    padding-bottom: 50px;
+    width: 12px;
+    height: 12px;
+  }
 
-    p {
-      padding: 5px 2px 6px;
-      font-size: 10px;
-      text-align: center;
-      border-radius: 5px;
-      font-weight: 600;
-      margin: 3px 0px;
-      cursor: pointer;
+  .load::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 8px;
+    height: 8px;
+    border: 2px solid #3498db;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
     }
-  }
-
-  .clear {
-    h6 {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 8px 0px 0 0;
-      color: red;
+    100% {
+      transform: rotate(360deg);
     }
-  }
-
-  .active {
-    background: transparent !important;
-    h6 {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 8px 0px 0 0;
-      color: green;
-    }
-  }
-  .diactive {
-    h6 {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 8px 0px 0 0;
-      color: #dd8537;
-    }
-  }
-}
-
-.load {
-  position: relative;
-  width: 12px;
-  height: 12px;
-}
-
-.load::before {
-  content: "";
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 8px;
-  height: 8px;
-  border: 2px solid #3498db;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

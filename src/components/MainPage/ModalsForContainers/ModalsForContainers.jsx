@@ -109,12 +109,12 @@ const ModalsForContainers = () => {
   ///// добавляю контейнер через запрос
 
   //////////////////////////////////______////// операционные системы
-  const { openOSModal, activeGroup } = useSelector((state) => state.stateSlice);
+  const { openOSModal } = useSelector((state) => state.stateSlice);
   const { listOS } = useSelector((state) => state.requestSlice);
 
   const choiceOS = (oc_guid) => {
     ///// выбираю ОС через запрос
-    const data = { oc_guid, guid_vm: openOSModal, activeHost, activeGroup };
+    const data = { oc_guid, guid_vm: openOSModal, activeHost };
     dispatch(editContainerOS(data));
   };
 
@@ -356,7 +356,6 @@ const ModalsForContainers = () => {
               <button
                 key={item?.codeid}
                 onClick={() => addContInGroup(item?.codeid)}
-                className={item?.checked ? "activeGroup" : ""}
               >
                 {item?.name}
               </button>

@@ -31,6 +31,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 ///// fns
 import { getDataCenterReq } from "../store/reducers/dataCenterSlice";
+import CloneLogsPage from "../pages/CloneLogsPage/CloneLogsPage";
 
 const MainRoutes = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const MainRoutes = () => {
               <Route path={`/${guid}/microtic`} element={<MicroticPage />} />
               <Route path={`/${guid}/ha-proxy`} element={<HaProxy />} />
               <Route path={`/${guid}/baza`} element={<BazaPage />} />
+              <Route path={`/${guid}/logs`} element={<CloneLogsPage />} />
               <Route path={`/${guid}/comands`} element={<ComandsPage />} />
               <Route path={`/${guid}/vnc/:vns_key`} element={<VncPage />} />
             </Route>

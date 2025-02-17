@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-////// imgs
-import container from "../../assets/icons/menu/box.svg";
-import servers from "../../assets/icons/menu/database.svg";
-import users from "../../assets/icons/menu/users.svg";
 import { dnsListDefault } from "../../helpers/LocalData";
 import {
   clearAddTempContData,
@@ -17,12 +13,11 @@ import { cutNums } from "../../helpers/cutNums";
 const initialState = {
   listDiagrams: [], //// для диаграммы хостов на главной странице
 
+  ///// Сервисы & Пользователи
   menuInner: [
-    { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
-    { id: 3, name: "Пользователи", img: users, active: false, list: [] },
+    { id: 2, name: "Сервисы", list: [] },
+    { id: 3, name: "Пользователи", list: [] },
   ],
-  activeGroup: {}, //// активная группа на главной стр (сервисы, пользователи)
-  /// подставляю guid_service или guid_user
 
   activeHost: 0, //// активный временный хост
   activeContainer: 0, //// активный временный контейнер
@@ -168,8 +163,48 @@ const initialState = {
     snaps: 0,
   },
 
+  openModalAddProvider: {
+    name: "",
+    ip_address: "",
+    color: "",
+    sort: 1,
+    actionType: 0,
+  },
+  cloneModal: false,
+
+  cloneContainerData: {
+    target_storage_backup: "",
+    guid_vm: "",
+    target_storage_vm: { label: "local_lvm", value: "local_lvm" },
+
+    target_node_guid: {},
+    description: "",
+    container_name: "",
+    ip_adress: "",
+    mask: { label: "/16", value: "/16" },
+    gateway: "",
+  },
+
+  migrateContainerData: {
+    guid_vm: "",
+    target_storage_vm: { label: "local_lvm", value: "local_lvm" },
+    target_node_guid: {},
+    migration_type: { label: "", value: "" },
+  },
+
+  listCloneLogs: [],
   distributeIpModal: false,
-  //// для подтверждения распределения нагрузки субднс
+  migrateModal: false,
+
+  migrateHostContainersModal: false,
+
+  migrateHostContainersData: {
+    guid_vm_list: [],
+    target_storage_vm: { label: "local_lvm", value: "local_lvm" },
+    target_node_guid: {},
+    migration_type: { label: "", value: "" },
+    backup_type: { label: "", value: "" },
+  },
 };
 
 const stateSlice = createSlice({
@@ -197,29 +232,15 @@ const stateSlice = createSlice({
 
     setMenuInner: (state, action) => {
       const newMenu = state.menuInner?.map((item) => {
-        if (item.id === action.payload) {
+        if (item.id === action.payload)
           return { ...item, active: !item.active };
-        } else {
-          return { ...item, active: false };
-        }
+        else return { ...item, active: false };
       });
       state.menuInner = newMenu;
     },
 
     changeMenuInner: (state, action) => {
-      const { id } = action.payload;
-      const obj = state.menuInner?.find((item) => item?.id == id);
-      const updatedMenu = state.menuInner?.filter((item) => item?.id !== id);
-      //// ищу по id и возвращаю обьект который хочу поменять
-      state.menuInner = [...updatedMenu, { ...obj, ...action.payload }];
-    },
-
-    clearMenuInner: (state, action) => {
-      ///// очищаю активный state
-      state.menuInner = state.menuInner?.map((item) => ({
-        ...item,
-        active: false,
-      }));
+      state.menuInner = action.payload;
     },
 
     setActiveHost: (state, action) => {
@@ -414,9 +435,58 @@ const stateSlice = createSlice({
       state.distributeIpModal = action.payload;
     },
 
-    setActiveGroup: (state, action) => {
-      state.activeGroup = action.payload;
+    setOpenAddProvider: (state, action) => {
+      state.openModalAddProvider = action.payload;
     },
+
+    setCloneModal: (state, action) => {
+      state.cloneModal = action.payload;
+    },
+
+    setMigrateModal: (state, action) => {
+      state.migrateModal = action.payload;
+    },
+
+    setCloneContainerData: (state, action) => {
+      state.cloneContainerData = action.payload;
+    },
+
+    clearCloneContainerData: (state, action) => {
+      state.cloneContainerData = {
+        target_storage_backup: "",
+        guid_vm: "",
+        target_storage_vm: { label: "local-lvm", value: "local-lvm" },
+
+        target_node_guid: {},
+        description: "",
+        container_name: "",
+        ip_adress: "",
+        mask: { id: 1, label: "/16", value: "/16" },
+        gateway: "",
+      };
+    },
+
+    setMigrateContainerData: (state, action) => {
+      state.migrateContainerData = action.payload;
+    },
+
+    clearMigrateContainerData: (state, action) => {
+      state.migrateContainerData = {
+        guid_vm: "",
+        target_storage_vm: { label: "local_lvm", value: "local_lvm" },
+        target_node_guid: {},
+      };
+    },
+
+    setMigrateHostModal: (state, action) => {
+      state.migrateHostContainersModal = action.payload;
+    },
+
+    setMigrateHostContainersData: (state, action) => {
+      state.migrateHostContainersData = action.payload;
+    },
+
+    clearMigrateHostData: (state, action) => {},
   },
 });
 
@@ -426,7 +496,6 @@ export const {
   setListDiagrams,
   setMenuInner,
   changeMenuInner,
-  clearMenuInner,
   setActiveHost,
   setActiveContainer,
   setActiveDns,
@@ -463,7 +532,16 @@ export const {
   setOpenModaStartCont,
   closeModalStartCont,
   setDistributeIpModal,
-  setActiveGroup,
+  setOpenAddProvider,
+  setCloneModal,
+  setCloneContainerData,
+  clearCloneContainerData,
+  setMigrateModal,
+  clearMigrateContainerData,
+  setMigrateContainerData,
+  clearMigrateHostData,
+  setMigrateHostContainersData,
+  setMigrateHostModal,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

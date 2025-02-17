@@ -71,9 +71,8 @@
           }
 
           h5 {
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 500;
-            color: #ffffffb1;
           }
 
           .warning {
@@ -116,6 +115,13 @@
           }
         }
       }
+
+      p {
+        font-size: 12px;
+        font-weight: 500;
+        color: #ffffffb1;
+      }
+
       h6 {
         font-size: 14px;
         font-weight: 500;
@@ -215,7 +221,8 @@
       .comments {
         p {
           font-size: 11px;
-          font-weight: 400;
+          font-weight: 500;
+          color: #ffffffb1;
         }
       }
     }

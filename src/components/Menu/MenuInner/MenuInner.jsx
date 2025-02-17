@@ -7,102 +7,130 @@ import "./style.scss";
 
 ///////// fns
 import { setMenuInner } from "../../../store/reducers/stateSlice";
-import { setActiveGroup } from "../../../store/reducers/stateSlice";
-import { getContainersInMenu } from "../../../store/reducers/requestSlice";
+import {
+  getContainersInMenu,
+  setListVolns,
+} from "../../../store/reducers/requestSlice";
+import {
+  crudUsersServiceReq,
+  getUsersServiceReq,
+} from "../../../store/reducers/usersSlice";
 
-/////// img
-import editIcon from "../../../assets/icons/edit.svg";
+/////// imgs
+import servers from "../../../assets/icons/menu/database.svg";
+import users from "../../../assets/icons/menu/users.svg";
+import EditIcon from "../../../assets/MyIcons/EditIcon";
+import DeleteIcon from "../../../assets/MyIcons/DeleteIcon";
 
 /////// components
-import Search from "../../MainPage/Search/Search";
+// import Search from "../../MainPage/Search/Search";
 import ModalAddUser from "../../MainPage/ModalAddUser/ModalAddUser";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
+
+/////// helpers
+import { myAlert } from "../../../helpers/MyAlert";
 
 const MenuInner = () => {
   const dispatch = useDispatch();
 
-  const { menuInner, activeHost } = useSelector((state) => state.stateSlice);
+  const { listUserService } = useSelector((state) => state.usersSlice);
 
   const choice = (id) => dispatch(setMenuInner(id));
   const [addUsers, setAddUsers] = useState({});
 
-  const getContainer = (guid, id) => {
-    const guid_service = id == 2 ? guid : undefined;
-    const guid_user = id == 3 ? guid : undefined;
-    const obj = { guid_host: activeHost, guid_service, guid_user };
-    dispatch(getContainersInMenu(obj));
-    dispatch(setActiveGroup({ guid_service, guid_user }));
+  const getContainer = ({ guid, codeid }, { id }) => {
+    dispatch(setListVolns({}));
+    if (id == 2) {
+      const send = { guid_host: "", guid_service: codeid };
+      dispatch(getContainersInMenu(send));
+    } else if (id == 3) {
+      const send = { guid_host: "", guid_user: guid };
+      dispatch(getContainersInMenu(send));
+    }
   };
 
-  const openModalEditUsers = (item, index) => {
-    setAddUsers({
-      actionType: 2,
-      type: index + 1,
-      name: item?.name,
-      guid: item?.guid,
-    });
+  const editFN = (item, type) => {
+    setAddUsers({ actionType: 2, type, name: item?.name, guid: item?.guid });
   };
+
+  const deleteFN = (item, type) => {
+    setAddUsers({ actionType: 3, type, guid: item?.guid, name: item?.name });
+  };
+
+  const deleteUser = async () => {
+    const res = await dispatch(crudUsersServiceReq(addUsers)).unwrap();
+    if (res == 1) {
+      myAlert("Успешно удалено");
+      dispatch(getUsersServiceReq({}));
+      setAddUsers({});
+    } else if (res == 2) myAlert("Произошла ошибка", "error");
+  };
+
+  const imgList = [servers, users];
+
+  const objType = { 2: "сервис", 3: "пользователя" };
 
   return (
     <>
       <div className="menuInner">
-        <Search />
+        {/* <Search /> потом надо удалить */}
 
         <div className="menuInner__inner">
-          {menuInner?.map((item, index) => (
+          {listUserService?.map((item, index) => (
             <Fragment key={index}>
-              <div
-                className={`every ${item?.active ? "active" : ""}`}
-                onClick={() => choice(item?.id)}
-              >
+              <div className="title" onClick={() => choice(item?.id)}>
                 <div>
-                  <button>
-                    <img src={item?.img} alt="" />
-                  </button>
+                  <img src={imgList?.[index]} alt="" />
                   <p>
-                    {item?.name} [{item?.list?.length || 0}]
+                    {item?.name} [{item?.list?.length || 0}]{" "}
                   </p>
                 </div>
                 <button
                   className="addBtn"
-                  onClick={() =>
-                    setAddUsers({ actionType: 1, type: index + 2 })
-                  }
+                  onClick={() => setAddUsers({ actionType: 1, type: item?.id })}
                 >
                   <p>+</p>
                 </button>
               </div>
-              <div
-                className={`listCateg ${
-                  item?.list?.length ? "expanded" : "collapsed"
-                }`}
-              >
-                {item?.id !== 1 && /// не отображаю контейнера
-                  item?.list?.map((subItem, ind) => (
-                    <div key={ind}>
-                      <div
-                        onClick={() => getContainer(subItem?.guid, item?.id)}
-                      >
-                        <p>
-                          {subItem?.name} {<b>[{subItem?.count}]</b>}
-                        </p>
-                        <span>{subItem?.desc}</span>
-                      </div>
-
-                      <button
-                        className="activeEdit"
-                        onClick={() => openModalEditUsers(subItem, index)}
-                      >
-                        <img src={editIcon} alt="" />
-                      </button>
-                      <button></button>
+              <div className={`listCateg expanded miniScroll`}>
+                {item?.list?.map((subItem, ind) => (
+                  <div key={ind} className="every">
+                    <div onClick={() => getContainer(subItem, item)}>
+                      <p>
+                        {subItem?.name} {<b>[{subItem?.vmCount}]</b>}
+                      </p>
+                      <span>{subItem?.desc}</span>
                     </div>
-                  ))}
+
+                    <button
+                      className="actions"
+                      onClick={() => editFN(subItem, item?.id)}
+                    >
+                      <EditIcon />
+                    </button>
+
+                    <button
+                      className="actions"
+                      onClick={() => deleteFN(subItem, item?.id)}
+                    >
+                      <DeleteIcon />
+                    </button>
+                  </div>
+                ))}
               </div>
             </Fragment>
           ))}
         </div>
       </div>
+
       <ModalAddUser addUsers={addUsers} setAddUsers={setAddUsers} />
+
+      <ConfirmModal
+        state={addUsers?.actionType == 3}
+        title={`Удалить ${objType?.[addUsers.type]} "${addUsers?.name}"`}
+        yes={deleteUser}
+        no={() => setAddUsers({})}
+      />
     </>
   );
 };

@@ -14,6 +14,8 @@ const initialState = {
   listTypeBackUpContainers: { container: [], vm: [], hosts: [] }, /// список типов бэкапов контейнера
   listBackUpContainers: [], /// список бэкапов контейнера
   viewListResultBackUp: { log: [], status: false },
+  listCloneLogs: [],
+  listCallStack: [],
   /// список логирования результатов бэкапа контейнера
 };
 
@@ -117,6 +119,109 @@ export const createBackUpContainerReq = createAsyncThunk(
   }
 );
 
+export const getCloneLogs = createAsyncThunk(
+  "getCloneLogs",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getCloneLogs`;
+    try {
+      const response = await axiosInstance.get(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+/////
+export const createContainerClone = createAsyncThunk(
+  "createContainerClone",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/cloneContainer`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const createMigrationContainer = createAsyncThunk(
+  "createMigrationContainer",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/migrateContainer`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const createHostMigration = createAsyncThunk(
+  "createHostMigration",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}voln/migrateAll`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const startContainersAction = createAsyncThunk(
+  "startContainersAction",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}voln/startAll`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const stopContainersAction = createAsyncThunk(
+  "stopContainersAction",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}voln/stopAll`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 //// get команды бэкапа для контейнеров
 export const getComandsBacupVM = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
@@ -137,6 +242,13 @@ const virtualMachineSlice = createSlice({
 
     viewListResultBackUpFN: (state, action) => {
       state.viewListResultBackUp = action.payload;
+    },
+
+    setCloneLogs: (state, action) => {
+      state.listCloneLogs = action.payload;
+    },
+    setCollStackData: (state, action) => {
+      state.listCallStack = action.payload;
     },
   },
 
@@ -182,7 +294,7 @@ const virtualMachineSlice = createSlice({
       state.preloaderVM = true;
     });
 
-    //////////////////////////////// getListBackUpReq
+    //////////////////////////////// getCloneLogs
     builder.addCase(getListBackUpReq.fulfilled, (state, action) => {
       state.preloaderVM = false;
       state.listBackUpContainers = action.payload?.slice(1, 150);
@@ -195,10 +307,29 @@ const virtualMachineSlice = createSlice({
     builder.addCase(getListBackUpReq.pending, (state, action) => {
       state.preloaderVM = true;
     });
+
+    ////////getCloneLogs
+    builder.addCase(getCloneLogs.fulfilled, (state, action) => {
+      state.preloaderVM = false;
+      state.listCloneLogs = action.payload?.logs?.slice(1, 150);
+      state.listCallStack = action.payload?.callStack?.slice(1, 150);
+    });
+    builder.addCase(getCloneLogs.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloaderVM = false;
+      state.listCloneLogs = [];
+    });
+    builder.addCase(getCloneLogs.pending, (state, action) => {
+      state.preloaderVM = true;
+    });
   },
 });
 
-export const { listStatusVmFN, viewListResultBackUpFN } =
-  virtualMachineSlice.actions;
+export const {
+  listStatusVmFN,
+  viewListResultBackUpFN,
+  setCloneLogs,
+  setCollStackData,
+} = virtualMachineSlice.actions;
 
 export default virtualMachineSlice.reducer;

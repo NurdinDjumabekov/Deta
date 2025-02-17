@@ -8,6 +8,7 @@ import container from "../../../assets/icons/menu/box2.svg";
 import virtualka from "../../../assets/icons/tv.svg";
 import services from "../../../assets/icons/menu/database.svg";
 import edit from "../../../assets/icons/edit.svg";
+import migrate from "../../../assets/icons/migrateLogo.png";
 
 //// imgs
 import calendarX from "../../../assets/icons/calendar-x.svg";
@@ -23,12 +24,19 @@ import round from "../../../assets/images/OS/round.png";
 import keyIncon from "../../../assets/icons/key.svg";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 
 ////// styles
 import "./style.scss";
 
 ////// fns
-import { setOpenModaStartCont } from "../../../store/reducers/stateSlice";
+import {
+  setCloneContainerData,
+  setCloneModal,
+  setMigrateContainerData,
+  setMigrateModal,
+  setOpenModaStartCont,
+} from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
@@ -51,6 +59,7 @@ import { Tooltip } from "@mui/material";
 
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
+import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 
 /////// env
 const { REACT_APP_API_URL } = process.env;
@@ -58,14 +67,18 @@ const { REACT_APP_API_URL } = process.env;
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del, files } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
+  const { guid_node, node_name, guid_host } = item;
   const { icon_url, statusid, typeid, service_check } = item;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { activeContainer, openModalBackUp } = useSelector(
-    (state) => state.stateSlice
-  );
+  const {
+    activeContainer,
+    openModalBackUp,
+    cloneContainerData,
+    migrateContainerData,
+  } = useSelector((state) => state.stateSlice);
 
   const clickVmId = () => {
     ///// перекидываю на другую (постороннюю) ссылку
@@ -138,10 +151,32 @@ const Containers = ({ item }) => {
   const openLookMoreInfo = () => dispatch(setLookMoreInfo(item));
   //// открытие модалки для просмотра болеее подробной информации
 
+  const openCloneContainerModel = async () => {
+    await dispatch(getTypesBackUpReq(guid_node)).unwrap();
+    dispatch(setCloneModal(true));
+    const past = {
+      ...cloneContainerData,
+      guid_vm: guid,
+      target_node_guid: { label: node_name, value: guid_host },
+      typeid: typeid,
+    };
+    dispatch(setCloneContainerData(past));
+  };
+
+  const openMigrateModal = async () => {
+    await dispatch(getTypesBackUpReq(guid_node)).unwrap();
+    dispatch(setMigrateModal(true));
+    const past = {
+      ...migrateContainerData,
+      guid_vm: guid,
+      target_node_guid: { label: node_name, value: guid_host },
+    };
+    dispatch(setMigrateContainerData(past));
+  };
+
   const active = activeContainer == guid ? "containerActive" : "";
 
   const objTypeImgs = { qemu: virtualka, lxc: container };
-  const objTypeData = { qemu: "virtualkaColor", lxc: "containerColor" };
 
   const objStatusType = {
     running: "rgb(70,150,45)",
@@ -149,15 +184,11 @@ const Containers = ({ item }) => {
     deleted: "#514848",
   };
 
-  const checkType = !!service_check ? "serviceColor" : objTypeData?.[typeid];
   const checkActive =
     objStatusType?.[statusid] == "rgb(70,150,45)" ? true : false;
 
   return (
-    <div
-      className={`containerMain ${checkType} ${active}`}
-      onClick={clickContainer}
-    >
+    <div className={`containerMain  ${active}`} onClick={clickContainer}>
       <div className="containerMain__inner">
         {/* ///// */}
         <div className="bottom" onClick={clickVmId}>
@@ -240,58 +271,75 @@ const Containers = ({ item }) => {
           </div>
         </div>
 
-        {/* ///// */}
-        <div className={`actions ${!checkActive ? "noActions" : ""}`}>
+        {/* /////  checkActive */}
+        <div className={`actions noActions`}>
           <div className="actions__inner">
-            {checkActive && (
-              <>
-                <Tooltip title="Добавить в группу" placement="top">
-                  <button onClick={openModalAddGroup}>
-                    <img src={addGroup} alt="#" />
-                  </button>
-                </Tooltip>
-                <Tooltip title="Зафиксировать время создания" placement="top">
-                  <button onClick={openModalFixTime}>
-                    <img src={calendarX} alt="#" />
-                  </button>
-                </Tooltip>
-                <Tooltip title="BackUp" placement="top">
-                  <button onClick={openModalBackUpFN}>
-                    <img src={download} alt="#" />
-                  </button>
-                </Tooltip>
-                <Tooltip title="Пользователи" placement="top">
-                  <button onClick={openKeyInfo}>
-                    <img src={keyIncon} alt="#" />
-                  </button>
-                </Tooltip>
-              </>
-            )}
+            <>
+              <Tooltip title="Мигрировать" placement="top">
+                <button onClick={openMigrateModal}>
+                  <img src={migrate} alt="#" />
+                </button>
+              </Tooltip>
 
-            <Tooltip title="Запустить сервер" placement="top">
-              <button onClick={() => handleVirtualMachine(1)}>
-                <img src={playCircle} alt="#" />
+              <Tooltip title="Клонировать" placement="top">
+                <button onClick={openCloneContainerModel}>
+                  <FileCopyOutlinedIcon sx={{ width: 22, height: 22 }} />
+                </button>
+              </Tooltip>
+
+              <Tooltip title="Добавить в группу" placement="top">
+                <button onClick={openModalAddGroup}>
+                  <img src={addGroup} alt="#" />
+                </button>
+              </Tooltip>
+
+              {checkActive && (
+                <>
+                  <Tooltip title="Зафиксировать время создания" placement="top">
+                    <button onClick={openModalFixTime}>
+                      <img src={calendarX} alt="#" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="Перезагрузить сервер" placement="top">
+                    <button onClick={() => handleVirtualMachine(2)}>
+                      <img src={repeat} alt="#" />
+                    </button>
+                  </Tooltip>
+                  <Tooltip title="Мягкое выключение" placement="top">
+                    <button onClick={() => handleVirtualMachine(3)}>
+                      <img src={stopCircle} alt="#" />
+                    </button>
+                  </Tooltip>
+                </>
+              )}
+              <Tooltip title="BackUp" placement="top">
+                <button onClick={openModalBackUpFN}>
+                  <img src={download} alt="#" />
+                </button>
+              </Tooltip>
+              <Tooltip title="Пользователи" placement="top">
+                <button onClick={openKeyInfo}>
+                  <img src={keyIncon} alt="#" />
+                </button>
+              </Tooltip>
+
+              {!checkActive && (
+                <Tooltip title="Запустить сервер" placement="top">
+                  <button onClick={() => handleVirtualMachine(1)}>
+                    <img src={playCircle} alt="#" />
+                  </button>
+                </Tooltip>
+              )}
+            </>
+
+            <Tooltip title="Удалить из списка" placement="top">
+              <button onClick={openModalDelInGroup}>
+                <img src={minus} alt="#" />
               </button>
             </Tooltip>
 
             {checkActive && (
               <>
-                <Tooltip title="Перезагрузить сервер" placement="top">
-                  <button onClick={() => handleVirtualMachine(2)}>
-                    <img src={repeat} alt="#" />
-                  </button>
-                </Tooltip>
-                <Tooltip title="Мягкое выключение" placement="top">
-                  <button onClick={() => handleVirtualMachine(3)}>
-                    <img src={stopCircle} alt="#" />
-                  </button>
-                </Tooltip>
-
-                <Tooltip title="Удалить из списка" placement="top">
-                  <button onClick={openModalDelInGroup}>
-                    <img src={minus} alt="#" />
-                  </button>
-                </Tooltip>
                 <Tooltip
                   title=" Жёсткое выключение (!может вызвать повреждение файлов на
                 высоконагруженных серверах!)"
@@ -303,12 +351,9 @@ const Containers = ({ item }) => {
                 </Tooltip>
               </>
             )}
-
-            {!checkActive && (
-              <button className="deleteBtn" onClick={delContainer}>
-                Удалить
-              </button>
-            )}
+            <button className="deleteBtn" onClick={delContainer}>
+              Удалить
+            </button>
           </div>
           {checkActive && (
             <div className={`key ${del ? "actions__key" : ""}`}>

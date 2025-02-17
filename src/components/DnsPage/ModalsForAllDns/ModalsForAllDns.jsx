@@ -34,6 +34,8 @@ const ModalsForAllDns = (props) => {
     (state) => state.stateSlice
   );
 
+  console.log(activeDns, "activeDns");
+
   const onChange = (e) => {
     const { name, value } = e.target;
 
@@ -41,7 +43,10 @@ const ModalsForAllDns = (props) => {
       if (checkChangeTTL(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
-    } else if (name === "record_name" || name === "host_ip") {
+    } else if (
+      (name === "record_name" || name === "host_ip") &&
+      objEdit?.recordType != "SPF"
+    ) {
       if (checkChangeRecordName(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
@@ -73,7 +78,6 @@ const ModalsForAllDns = (props) => {
   };
 
   const distributeIpAddres = () => dispatch(distributeIpAddresFN(activeDns));
-  //// для подтверждения распределения нагрузки субднс
 
   const obj = {
     A: (

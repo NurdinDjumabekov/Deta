@@ -9,6 +9,7 @@ import block from "../assets/icons/menu/box.svg";
 import history from "../assets/icons/menu/history.svg";
 import calendar from "../assets/icons/menu/calendar-week.svg";
 import comands from "../assets/icons/menu/comands.svg";
+import logs from "../assets/icons/menu/logs.svg";
 
 /////// os
 import windows from "../assets/images/OS/windows.png";
@@ -23,6 +24,7 @@ export const pages = [
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
   { id: 5, name: "Базы и хранилища", path: "/baza", img: block },
   { id: 11, name: "Команды", path: "/comands", img: comands },
+  { id: 12, name: "Логи", path: "/logs", img: logs },
 ];
 
 export const pagesAllDC = [
@@ -157,36 +159,7 @@ export const listSnaps = [
   { id: "stop", name: "Stop" },
 ];
 
-export const mylistVolns = {
-  active: [
-    { guid: "32121341c134v12sd3v412", vm_id: "4211" },
-    { guid: "3241c131214v12sd3v412", vm_id: "4211" },
-    { guid: "3241c134v123v4sd11231232", vm_id: "92121" },
-    { guid: "3241c134v1523sdfsdfv412", vm_id: "4291" },
-    { guid: "3241c134v1312sd323v412", vm_id: "4911" },
-    { guid: "3241c131234vsdf123v412", vm_id: "42211" },
-    { guid: "3241c134v546dfsdf5123v412", vm_id: "421511" },
-    { guid: "3241c134546vafa123v412", vm_id: "54211" },
-    { guid: "3241c13474vadf123v412", vm_id: "42311" },
-  ],
 
-  diactive: [
-    { guid: "3241c13483sdf63v123v412", vm_id: "42811" },
-    { guid: "3241c1367fsd3sdfg4v123v412", vm_id: "42711" },
-    { guid: "3241c13833sdf4v123v412", vm_id: "92511" },
-    { guid: "3241c1315gsg14v123v412", vm_id: "43291" },
-    { guid: "3241c1315fds5y54b45154v123v412", vm_id: "491211" },
-    { guid: "3241c131554sdfv123v412", vm_id: "412211" },
-    { guid: "3241c1143gsdf4v123v412", vm_id: "4215511" },
-    { guid: "3241c134v1sdbsd23v412", vm_id: "5484211" },
-    { guid: "3241c131341sd4v123v412", vm_id: "425311" },
-  ],
-
-  clear: [
-    { guid: "3241asdfac134v1fdsfa23v412", vm_id: "42871" },
-    { guid: "3241sdfc134vafdadf123v412", vm_id: "42261" },
-  ],
-};
 
 export const listProtocols = [
   { value: 1, label: "http" },

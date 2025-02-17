@@ -170,6 +170,7 @@
 
     .noActiveMemory {
       width: auto !important;
+      display: none;
 
       .memoryBlock {
         display: none !important;
@@ -264,14 +265,40 @@
   }
 }
 
-.containerColor {
-  border-left: 4px solid #66b4ff;
-}
+.miniScroll {
+  &::-webkit-scrollbar {
+    min-width: 8px;
+    max-width: 8px;
+  }
 
-.virtualkaColor {
-  border-left: 4px solid #ce723b;
-}
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+    min-width: 8px;
+    max-width: 8px;
+    width: 8px;
 
-.serviceColor {
-  border-left: 4px solid #e1e16f;
+    &:hover {
+      background-color: #050505;
+      width: 15px;
+    }
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    cursor: pointer;
+    max-height: 50px;
+    width: 10px;
+    min-height: 50px;
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-track {
+      background-color: #050505;
+      width: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #ffffff4e;
+      width: 10px;
+    }
+  }
 }

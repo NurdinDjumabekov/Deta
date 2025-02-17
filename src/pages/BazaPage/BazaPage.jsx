@@ -22,7 +22,7 @@ import bazaIcon from "../../assets/icons/menu/box.svg";
 import hranilisheIcon from "../../assets/icons/menu/dns.svg";
 import proxyIcon from "../../assets/icons/menu/HaProxy.svg";
 import WarningIcon from "@mui/icons-material/WarningRounded";
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 ////// helpers
 import { cutNums } from "../../helpers/cutNums";
@@ -132,9 +132,7 @@ const BazaPage = () => {
                   </button>
                 </div>
               </div>
-              <h6>
-                {listDataBases?.find((i) => i.value == item?.type)?.label}
-              </h6>
+              <p>{listDataBases?.find((i) => i.value == item?.type)?.label}</p>
 
               <div className="body">
                 <p className="login">Логин: {item?.login}</p>
@@ -148,18 +146,18 @@ const BazaPage = () => {
                   <>
                     {item?.ipAddresses?.map((i, index) => (
                       <div key={index}>
-                        
-                        { i?.avg_ping == 0 ? (
+                        {i?.avg_ping == 0 ? (
                           <div>
-                            <WarningIcon sx={{ fill: "#f79e02", width: 15, height: 15 }} />
+                            <WarningIcon
+                              sx={{ fill: "#f79e02", width: 15, height: 15 }}
+                            />
                           </div>
                         ) : (
                           <div
-                          className="btnBlink"
-                          style={{ background: pingtimeFN(+i?.avg_ping) }}
-                        ></div> 
-                        )
-                        }
+                            className="btnBlink"
+                            style={{ background: pingtimeFN(+i?.avg_ping) }}
+                          ></div>
+                        )}
                         <p key={i?.guid}>{i?.ip_adres}</p>
 
                         <div className="ping">
@@ -188,7 +186,7 @@ const BazaPage = () => {
               <MemoryComp
                 node_cpu_usage={+item?.node_cpu_usage / 100}
                 node_cpu={+item?.node_cpu / 1}
-                node_ram_usage={+item?.node_ram_usage / 100}
+                node_ram_usage={+item?.node_ram_usage / 10}
                 node_ram_mb={+item?.node_ram_mb}
                 array_storages={[]}
               />

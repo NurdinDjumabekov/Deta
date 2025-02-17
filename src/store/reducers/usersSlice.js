@@ -7,6 +7,7 @@ const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
   preloaderUsers: false,
+  listUserService: [],
 };
 
 //// crudUsersServiceReq - crud данных пользователей и сервисов
@@ -18,6 +19,24 @@ export const crudUsersServiceReq = createAsyncThunk(
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// getUsersServiceReq - get данных пользователей и сервисов
+export const getUsersServiceReq = createAsyncThunk(
+  "getUsersServiceReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}users_service/get_us`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -44,6 +63,20 @@ const usersSlice = createSlice({
       state.listTodos = [];
     });
     builder.addCase(crudUsersServiceReq.pending, (state, action) => {
+      state.preloaderUsers = true;
+    });
+
+    //////////////////////////////// getUsersServiceReq
+    builder.addCase(getUsersServiceReq.fulfilled, (state, action) => {
+      state.preloaderUsers = false;
+      state.listUserService = action.payload;
+    });
+    builder.addCase(getUsersServiceReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloaderUsers = false;
+      state.listUserService = [];
+    });
+    builder.addCase(getUsersServiceReq.pending, (state, action) => {
       state.preloaderUsers = true;
     });
   },

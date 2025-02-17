@@ -9,7 +9,6 @@ import "./style.scss";
 
 //////// fns
 import {
-  clearMenuInner,
   setActiveContainer,
   setActiveHost,
   setAddTempCont,
@@ -33,7 +32,6 @@ const Search = () => {
         dispatch(searchContainers(text));
         // Выполнение поиска с заданными параметрами
 
-        dispatch(clearMenuInner()); /// активное меню
         dispatch(setActiveHost(0)); //// активный хост
         dispatch(setActiveContainer(0)); //// активный контейнер
         /////// сброс все автивных состояний

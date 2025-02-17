@@ -57,9 +57,9 @@ const ModalsComands = (props) => {
       return myAlert("Заполните правильно 'IP адрес'", "error");
     }
 
-    if (!!!crudComands?.vm_guid) {
-      return myAlert("Выберите контейнер", "error");
-    }
+    // if (!!!crudComands?.vm_guid) {
+    //   return myAlert("Выберите контейнер", "error");
+    // }
 
     const send = {
       ...crudComands,
@@ -118,7 +118,7 @@ const ModalsComands = (props) => {
             onChange={onChange}
             name={"vm_id"}
             value={crudComands?.vm_id}
-            required={true}
+            required={false}
           />
 
           <MySelects

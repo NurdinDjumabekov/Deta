@@ -30,7 +30,7 @@ const AddSPFChame = ({ obj }) => {
       if (checkChangeTTL(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
-    } else if (name === "record_name" || name === "sdf_string") {
+    } else if (name === "record_name") {
       if (checkChangeRecordName(value)) {
         dispatch(setDnsEveryKey({ obj, everyObj: { [name]: value } }));
       }
@@ -60,6 +60,7 @@ const AddSPFChame = ({ obj }) => {
       ...dnsList?.seven,
       ...activeDns,
       domen_guid: activeDns?.guid,
+      is_check_my_ip: false,
     };
     const obj = { record_name: `${activeDns.name}` };
     dispatch(addSubDomen({ ...send, ...obj }));

@@ -7,13 +7,12 @@ import { useLocation } from "react-router-dom";
 /////// fns
 import {
   clearListHostsFN,
-  getContainers,
+  clearMainPage,
   getProviders,
 } from "../../store/reducers/requestSlice";
 import { getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
-import { setAddHost, setListDiagrams } from "../../store/reducers/stateSlice";
-import { updatedProvoders } from "../../store/reducers/requestSlice";
+import { setAddHost } from "../../store/reducers/stateSlice";
 import {
   getListBackUpReq,
   getTypesBackUpReq,
@@ -31,6 +30,10 @@ import ModalsForHosts from "../../components/MainPage/ModalsForHosts/ModalsForHo
 import ViewProviders from "../../common/ViewProviders/ViewProviders";
 import CreateContainers from "../../components/MainPage/ModalsForContainers/CreateContainers/CreateContainers";
 import { Tooltip } from "@mui/material";
+import ModalForProviders from "../../components/ModalForProviders/ModalForProviders";
+import CloneModal from "../../components/CloneModal/CloneModal";
+import MigrateModal from "../../components/MigrateModal/MigrateModal";
+import MigrateHostModal from "../../components/MigrateHostModal/MigrateHostModal";
 
 /////// imgs
 import displayIcon from "../../assets/icons/display.svg";
@@ -62,15 +65,15 @@ const MainPage = () => {
   async function getData() {
     dispatch(clearListHostsFN([]));
     const res = await dispatch(getHosts()).unwrap();
-    if (res?.length > 0) {
-      const guid_host = res?.data?.[0]?.guid;
-      const chart = res?.data?.[0]?.chart;
-      const node_ram_mb = res?.data?.[0]?.node_ram_mb;
-      dispatch(getContainers(guid_host));
-      /// подставляю первый хост чтобы он был активный
-      dispatch(setListDiagrams({ list: chart, node_ram_mb }));
-      //// для диаграммы хостов
-    }
+    // if (res?.length > 0) {
+    //   const guid_host = res?.data?.[2]?.guid;
+    //   const chart = res?.data?.[2]?.chart;
+    //   const node_ram_mb = res?.data?.[0]?.node_ram_mb;
+    //   dispatch(getContainers(guid_host));
+    //   /// подставляю первый хост чтобы он был активный
+    //   dispatch(setListDiagrams({ list: chart, node_ram_mb }));
+    //   //// для диаграммы хостов
+    // }
   }
 
   useEffect(() => {
@@ -83,6 +86,7 @@ const MainPage = () => {
     return () => {
       disconnectHost();
       // Отключение сокетов при размонтировании компонента
+      dispatch(clearMainPage());
     };
   }, [pathname]);
 
@@ -194,6 +198,11 @@ const MainPage = () => {
         modalCreate={modalCreate}
         setModalCreate={setModalCreate}
       />
+
+      <MigrateModal />
+      <CloneModal />
+      <MigrateHostModal />
+      <ModalForProviders />
       {/* ///// модалки контейнеров перезагрузка, удаление откл и т.д. */}
     </>
   );

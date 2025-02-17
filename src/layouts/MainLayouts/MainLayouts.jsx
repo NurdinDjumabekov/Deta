@@ -9,6 +9,7 @@ import "./style.scss";
 
 /////// fns
 import { getOS } from "../../store/reducers/requestSlice";
+import { getUsersServiceReq } from "../../store/reducers/usersSlice";
 
 const MainLayouts = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const MainLayouts = () => {
 
   useEffect(() => {
     dispatch(getOS());
+    dispatch(getUsersServiceReq({}));
   }, []);
 
   return (

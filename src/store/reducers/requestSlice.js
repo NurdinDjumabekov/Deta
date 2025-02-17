@@ -3,19 +3,15 @@ import socketIOClient from "socket.io-client";
 import {
   changeMenuInner,
   clearAddHost,
-  clearDnsList,
   clearOpenModalBackUp,
   clearTemporaryContainer,
-  clearTemporaryDNS,
   clearTemporaryHosts,
   setActiveContainer,
-  setActiveDns,
   setActiveHost,
-  setDistributeIpModal,
   setGuidHostDel,
   setGuidHostEdit,
-  setListDiagrams,
   setOpenAddFiles,
+  setOpenAddProvider,
   setOpenModaDelCont,
   setOpenModaDelGroup,
   setOpenModalAddGroup,
@@ -23,11 +19,10 @@ import {
   setOpenOSModal,
 } from "./stateSlice";
 import { transformListNetwork } from "../../helpers/transformListNetwork";
-import { defaultSubDomen } from "../../helpers/LocalData";
 import { myAlert } from "../../helpers/MyAlert";
-import { tranformKey } from "../../helpers/tranformTextInNum";
 import axiosInstance from "../../axiosInstance";
 import { cutNums } from "../../helpers/cutNums";
+import { setCloneLogs, setCollStackData } from "./virtualMachineSlice";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -46,7 +41,6 @@ const initialState = {
   listProviders: [],
   listGroupContainers: [], //// группы контейнеров
   listUsers: [],
-
   listAccessesUsers: [], //// список клиентов, которым надо дать доступы
 
   listVolns: {}, //// список волн
@@ -76,6 +70,19 @@ export const updatedProvoders = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("updateProviders", ({ data }) => {
     dispatch(setUpdatedProvider(data));
+  });
+  return () => {
+    socket.disconnect();
+  };
+};
+
+export const updatedCloneLogs = () => (dispatch) => {
+  const socket = socketIOClient(url_socket);
+  socket.on("updateCloneLogs", ({ data, callStack }) => {
+    console.log(data, "setCloneLogs");
+
+    dispatch(setCloneLogs(data));
+    dispatch(setCollStackData(callStack));
   });
   return () => {
     socket.disconnect();
@@ -203,6 +210,52 @@ export const editHost = createAsyncThunk(
   }
 );
 
+export const addProvider = createAsyncThunk(
+  "addProvider",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}data/addProvider`;
+    ///  data - данные провайдера
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        if (response?.data?.res == 1) {
+          myAlert("Данные сохранены");
+          dispatch(setOpenAddProvider({})); //// закрываю модалку
+          dispatch(getProviders());
+        }
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const crudProvider = createAsyncThunk(
+  "crudProvider",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}api/network/crudProvider`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        if (response?.data?.res == 1) {
+          const obj = { 2: "Данные сохранены", 3: "Данные удалены" };
+          myAlert(obj?.[data?.actionType]);
+          dispatch(setOpenAddProvider({})); //// закрываю модалку
+          dispatch(getProviders());
+        }
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 ////////////////////////////////////////////////////////// containers //////////////
 
 ///// getContainers - для получения контейнеров c помощью хостов
@@ -216,29 +269,18 @@ export const getContainers = createAsyncThunk(
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost(guid));
-
-        const record = response?.data?.usersAndService?.record;
-        const result = response?.data?.usersAndService?.result;
-
-        const objResult = { id: 2, list: tranformKey("service", result) };
-        dispatch(changeMenuInner(objResult));
-
-        const objRecord = { id: 3, list: tranformKey("user", record) };
+        const service_list = response?.data?.usersAndService?.service_list;
+        const users_list = response?.data?.usersAndService?.users_list;
+        const objRecord = [
+          { id: 2, name: "Сервисы", list: service_list },
+          { id: 3, name: "Пользователи", list: users_list },
+        ];
         dispatch(changeMenuInner(objRecord));
         //// подставляю данные для меню чтобы узнать кол-во контейнеров
 
         dispatch(countsContainersFN(response?.data?.counts));
         //// подставляю кол-ва вкл и откл контейнеров
-
         return response?.data;
-      } else if (response.status == 500) {
-        const objResult = { id: 2, list: tranformKey("service", []) };
-        dispatch(changeMenuInner(objResult));
-        const objRecord = { id: 3, list: tranformKey("user", []) };
-        dispatch(changeMenuInner(objRecord));
-        //// подставляю данные для меню чтобы узнать кол-во контейнеров
-        dispatch(countsContainersFN({}));
-        //// подставляю кол-ва вкл и откл контейнеров
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -369,7 +411,7 @@ export const editContainerOS = createAsyncThunk(
         if (!!data?.activeHost) {
           dispatch(getContainers(data?.activeHost)); //// guid - хоста
         } else {
-          const obj = { guid_host: data?.activeHost, ...data?.activeGroup };
+          const obj = { guid_host: data?.activeHost };
           dispatch(getContainersInMenu(obj)); /// guid групп (сервера и поль-тели)
         }
         return response?.data;
@@ -705,6 +747,14 @@ const requestSlice = createSlice({
     setListVolns: (state, action) => {
       state.listVolns = action.payload;
     },
+
+    clearMainPage: (state, action) => {
+      state.listHosts = [];
+      state.listContainers = [];
+      state.countsContainers = {};
+      state.diagramsContainer = [];
+      state.dataForBackUp = {};
+    },
   },
 
   extraReducers: (builder) => {
@@ -767,6 +817,11 @@ const requestSlice = createSlice({
     ///////////////////////////// getContainers
     builder.addCase(getContainers.fulfilled, (state, action) => {
       state.preloader = false;
+      state.listVolns = {
+        clear: [],
+        active: action.payload?.active,
+        diactive: action.payload?.diactive,
+      };
       state.listContainers = action.payload?.result;
     });
     builder.addCase(getContainers.rejected, (state, action) => {
@@ -901,6 +956,7 @@ export const {
   setListVolns,
   countsContainersFN,
   clearListHostsFN,
+  clearMainPage,
 } = requestSlice.actions;
 
 export default requestSlice.reducer;

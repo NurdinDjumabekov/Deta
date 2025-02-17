@@ -9,6 +9,8 @@ import repeat from "../../../assets/icons/repeat.svg";
 import editImg from "../../../assets/icons/edit.svg";
 import vncImg from "../../../assets/icons/tv.svg";
 
+import proxmoxImg from "../../../assets/images/proxmox.png";
+
 ////// styles
 import "./style.scss";
 
@@ -24,9 +26,10 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 
 ////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
+import { cutNums } from "../../../helpers/cutNums";
 
 const Hosts = ({ item }) => {
-  const { host_ip, node_comment, host_status, vmbr } = item;
+  const { host_ip, node_comment, host_status, vmbr, ping_avg } = item;
   const { host_name, node_uptime_sec, guid, guid_node } = item;
   const { array_storages, node_model, node_cpu_usage } = item;
   const { node_cpu, node_ram_usage, node_ram_mb, chart } = item;
@@ -65,11 +68,11 @@ const Hosts = ({ item }) => {
       <h4>{node_model}</h4>
       <div className="actions">
         <a
-          href={`http://${host_ip}:8006`}
+          href={`https://${host_ip}:8006`}
           target="_blank"
           className="hostTitle"
         >
-          <img src={vncImg} alt="vnc" />
+          <img src={proxmoxImg} alt="vnc" />
           <p>
             {host_name} (<b>{secondsToDhms(node_uptime_sec)}</b>)
           </p>
@@ -105,6 +108,11 @@ const Hosts = ({ item }) => {
 
       <div className="ip_address">
         <p className="ip_host">{host_ip}</p>
+
+        <div className="ping">
+          <span style={{ color: pingtimeFN(ping_avg) }}>({ping_avg})</span>
+          <b style={{ color: pingtimeFN(ping_avg) }}>мс</b>
+        </div>
       </div>
       <MemoryComp
         node_cpu_usage={node_cpu_usage}
@@ -120,3 +128,15 @@ const Hosts = ({ item }) => {
 };
 
 export default Hosts;
+
+const pingtimeFN = (provider_pingtime) => {
+  if (+provider_pingtime < 10 && +provider_pingtime > 0) {
+    return "#008000";
+  } else if (+provider_pingtime > 10 && +provider_pingtime < 200) {
+    return "orange";
+  } else if (provider_pingtime == "" || provider_pingtime == 0) {
+    return "#ff00008c";
+  } else {
+    return "#ff00008c";
+  }
+};

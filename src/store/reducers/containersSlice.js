@@ -194,14 +194,6 @@ const containersSlice = createSlice({
       state.menuInner = [...updatedMenu, { ...obj, ...action.payload }];
     },
 
-    clearMenuInner: (state, action) => {
-      ///// очищаю активный state
-      state.menuInner = state.menuInner?.map((item) => ({
-        ...item,
-        active: false,
-      }));
-    },
-
     setActiveDns: (state, action) => {
       state.activeDns = action.payload;
     },
@@ -425,7 +417,6 @@ export const {
   closeModals,
   setMenuInner,
   changeMenuInner,
-  clearMenuInner,
   setActiveDns,
   setDnsList,
   clearDnsList,

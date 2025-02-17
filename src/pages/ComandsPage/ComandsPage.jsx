@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
 import ModalsComands from "../../components/ComandsPage/ModalsComands/ModalsComands";
 import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
+import playCircle from "../../assets/icons/play-circle.svg";
 
 ////// helpers
 import { myAlert } from "../../helpers/MyAlert";
@@ -142,23 +143,39 @@ const ComandsPage = () => {
                 <div className="every" key={item?.guid}>
                   <div className="main">
                     <div className="bottom">
-                      <div
-                        className={`numIndex`}
-                        style={{ background: objStatusType?.[statusid] }}
-                      >
-                        {!!service_check ? (
-                          <img src={services} alt="[]" className="services" />
-                        ) : (
-                          <img src={objTypeImgs?.[typeid]} alt="[]" />
-                        )}
-                        <p>{item?.vm_id}</p>
-                      </div>
+                      {item.vm_id ? (
+                        <div
+                          className={`numIndex`}
+                          style={{ background: objStatusType?.[statusid] }}
+                        >
+                          {!!service_check ? (
+                            <img src={services} alt="[]" className="services" />
+                          ) : (
+                            <img src={objTypeImgs?.[typeid]} alt="[]" />
+                          )}
+                          <p>{item?.vm_id}</p>
+                        </div>
+                      ) : (
+                        <div
+                          className={`numIndex`}
+                          style={{
+                            background: objStatusType?.[statusid],
+                            textAlign: "center",
+                          }}
+                        >
+                          <p>{item?.ip_address}</p>
+                        </div>
+                      )}
                     </div>
 
                     <div>
                       <div className="mainInfo">
                         <p className="host">{item?.host_name}</p>
-                        <p className="vm">- {item?.vm_name}</p>
+                        {item.vm_id ? (
+                          <p className="vm"> - {item?.vm_name}</p>
+                        ) : (
+                          <p>--</p>
+                        )}
                       </div>
                       <div className="mainInfo">
                         <p className="password">
@@ -179,7 +196,7 @@ const ComandsPage = () => {
                         onClick={() => editComandModal(item, 4)}
                         className="edit"
                       >
-                        <img src={checkCircle} alt="editIcon" />
+                        <img src={playCircle} alt="editIcon" />
                       </button>
                     </Tooltip>
                     <Tooltip title="Редактировать" placement="top">

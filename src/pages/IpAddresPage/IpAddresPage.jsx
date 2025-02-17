@@ -162,7 +162,7 @@ const IpAddresPage = () => {
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="ipAddresPage__inner hoverScroll hoverScroll-X">
-            {listStaticsIp?.slice(0, 6)?.map((item) => (
+            {listStaticsIp?.map((item) => (
               <Droppable key={item?.guid} droppableId={item.guid}>
                 {(provided) => (
                   <div

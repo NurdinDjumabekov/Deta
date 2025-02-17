@@ -115,8 +115,6 @@ const CreateContainers = (props) => {
     }
   }
 
-  console.log(viewListResultBackUp, "viewListResultBackUp");
-
   return (
     <>
       <div className="modalBackUp">
