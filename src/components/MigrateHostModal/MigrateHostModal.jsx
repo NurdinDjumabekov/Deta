@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
-  clearMigrateHostData,
   setMigrateHostContainersData,
   setMigrateHostModal,
 } from "../../store/reducers/stateSlice";
@@ -31,7 +30,6 @@ const MigrateHostModal = () => {
 
   const handleCloseModal = () => {
     dispatch(setMigrateHostModal(false));
-    dispatch(clearMigrateHostData());
   };
 
   async function onChangeSelect(item) {

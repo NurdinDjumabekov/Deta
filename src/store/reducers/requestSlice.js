@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import {
-  changeMenuInner,
   clearAddHost,
   clearOpenModalBackUp,
   clearTemporaryContainer,
@@ -264,20 +263,10 @@ export const getContainers = createAsyncThunk(
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/getHostContainerList`;
     const data = { vawe: "1", elemid: guid }; //// guid - хоста
-
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         dispatch(setActiveHost(guid));
-        const service_list = response?.data?.usersAndService?.service_list;
-        const users_list = response?.data?.usersAndService?.users_list;
-        const objRecord = [
-          { id: 2, name: "Сервисы", list: service_list },
-          { id: 3, name: "Пользователи", list: users_list },
-        ];
-        dispatch(changeMenuInner(objRecord));
-        //// подставляю данные для меню чтобы узнать кол-во контейнеров
-
         dispatch(countsContainersFN(response?.data?.counts));
         //// подставляю кол-ва вкл и откл контейнеров
         return response?.data;
@@ -385,7 +374,6 @@ export const editContainers = createAsyncThunk(
       if (response.status >= 200 && response.status < 300) {
         dispatch(getContainers(activeHost));
         //// guid активного хоста
-
         dispatch(clearTemporaryContainer());
         ///// очищаю временное хранение данных контейнеров
         return response?.data;

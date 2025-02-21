@@ -31,7 +31,7 @@ import {
 } from "../../../store/reducers/virtualMachineSlice";
 
 const EveryVolns = ({ list, title, onAddItem, guid, num, selectedColumn }) => {
-  console.log(selectedColumn, "guid");
+  // console.log(selectedColumn, "guid");
 
   const [action_type, setActionType] = useState(0);
   const [titleModal, setTitleModal] = useState("");
@@ -81,7 +81,7 @@ const EveryVolns = ({ list, title, onAddItem, guid, num, selectedColumn }) => {
     );
   };
 
-  console.log(selectedItems, "selectedItems");
+  // console.log(selectedItems, "selectedItems");
 
   const startVoln = async (type) => {
     if (type == 3) {

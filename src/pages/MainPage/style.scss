@@ -57,7 +57,7 @@
       height: 100%;
 
       &__inner {
-        height: calc(100% - 360px);
+        height: calc(100% - 350px);
         width: 100%;
 
         .header__counts {
@@ -96,7 +96,9 @@
       &__more_info {
         width: 100%;
         margin: 10px 0 0 0;
-        height: 360px;
+        height: 345px;
+        max-height: 345px;
+        min-height: 345px;
         padding: 0 10px;
       }
     }

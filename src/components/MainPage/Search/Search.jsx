@@ -11,51 +11,58 @@ import "./style.scss";
 import {
   setActiveContainer,
   setActiveHost,
-  setAddTempCont,
 } from "../../../store/reducers/stateSlice";
 import { searchContainers } from "../../../store/reducers/requestSlice";
 import { getHosts } from "../../../store/reducers/requestSlice";
 
 ////// imgs
 import loop from "../../../assets/icons/loop.svg";
+import SearchIcon from "@mui/icons-material/Search";
+import { myAlert } from "../../../helpers/MyAlert";
 
 const Search = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
 
-  const openAddCont = () => dispatch(setAddTempCont({ bool: true }));
-  ///// открываю модалку для добавоения контейнеров
+  // const searchData = useCallback();
+  // debounce((text) => {
+  //   if (text?.length > 1) {
+  //     dispatch(searchContainers(text));
+  //     // Выполнение поиска с заданными параметрами
 
-  const searchData = useCallback(
-    debounce((text) => {
-      if (text?.length > 1) {
-        dispatch(searchContainers(text));
-        // Выполнение поиска с заданными параметрами
+  //     dispatch(setActiveHost(0)); //// активный хост
+  //     dispatch(setActiveContainer(0)); //// активный контейнер
+  //     /////// сброс все автивных состояний
+  //   }
+  // }, 500),
+  // []
 
-        dispatch(setActiveHost(0)); //// активный хост
-        dispatch(setActiveContainer(0)); //// активный контейнер
-        /////// сброс все автивных состояний
-      }
-    }, 500),
-    []
-  );
+  const searchData = (e) => {
+    e.preventDefault();
+    const error = "Введите текст в поисковую строку";
+    if (input == "") return myAlert(error, "error");
+    dispatch(searchContainers(input));
+    dispatch(setActiveHost(0)); //// активный хост
+    dispatch(setActiveContainer(0)); // активный контейнер
+    /////// сброс все автивных состояний
+  };
 
   const onChange = (e) => {
     ///// поиск контейнеров
     const text = e?.target?.value;
     setInput(text);
-    searchData(text);
-    text?.length === 0 ? dispatch(getHosts()) : searchData(text);
+    // text?.length == 0 && dispatch(getHosts());
   };
 
   return (
-    <div className="mainAction">
-      {/* <button onClick={openAddCont}>+</button> */}
+    <form className="mainAction" onSubmit={searchData}>
       <div className="mainSearch">
-        <img src={loop} alt="" />
-        <input type="search" onChange={onChange} value={input} />
+        <input onChange={onChange} value={input} />
       </div>
-    </div>
+      <button type="submit">
+        <img src={loop} alt="" />
+      </button>
+    </form>
   );
 };
 

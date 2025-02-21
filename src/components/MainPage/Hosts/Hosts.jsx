@@ -7,7 +7,6 @@ import delImg from "../../../assets/icons/delete.svg";
 import diagram from "../../../assets/icons/diagram.svg";
 import repeat from "../../../assets/icons/repeat.svg";
 import editImg from "../../../assets/icons/edit.svg";
-import vncImg from "../../../assets/icons/tv.svg";
 
 import proxmoxImg from "../../../assets/images/proxmox.png";
 
@@ -26,13 +25,13 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 
 ////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
-import { cutNums } from "../../../helpers/cutNums";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr, ping_avg } = item;
   const { host_name, node_uptime_sec, guid, guid_node } = item;
   const { array_storages, node_model, node_cpu_usage } = item;
   const { node_cpu, node_ram_usage, node_ram_mb, chart } = item;
+  const { node_name } = item;
 
   const dispatch = useDispatch();
 
@@ -48,10 +47,11 @@ const Hosts = ({ item }) => {
 
   const editOpenModal = () => {
     const obj = {
-      host_name: node_comment,
+      host_name: node_name,
       guid_node,
       node_model,
       array_storages,
+      node_comment,
     };
     dispatch(setTemporaryHosts({ ...obj, listVmbr }));
     /// временно хранение данных для редактирования
@@ -74,7 +74,7 @@ const Hosts = ({ item }) => {
         >
           <img src={proxmoxImg} alt="vnc" />
           <p>
-            {host_name} (<b>{secondsToDhms(node_uptime_sec)}</b>)
+            {node_name} (<b>{secondsToDhms(node_uptime_sec)}</b>)
           </p>
         </a>
         <div className="actions">
@@ -111,7 +111,7 @@ const Hosts = ({ item }) => {
 
         <div className="ping">
           <span style={{ color: pingtimeFN(ping_avg) }}>({ping_avg})</span>
-          <b style={{ color: pingtimeFN(ping_avg) }}>мс</b>
+          <b style={{ color: pingtimeFN(ping_avg) }}> мс</b>
         </div>
       </div>
       <MemoryComp

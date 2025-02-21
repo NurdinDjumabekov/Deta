@@ -129,6 +129,7 @@
 .moreEdit {
   .second {
     flex-direction: row;
+    gap: 10px !important;
 
     .myInput {
       width: 50% !important;

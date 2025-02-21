@@ -28,6 +28,7 @@ import "./style.scss";
 ////// helpers
 import { checkIP } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
+import MyTextArea from "../../../common/MyTextArea/MyTextArea";
 
 const ModalsForHosts = () => {
   const [input, setInput] = useState("");
@@ -54,7 +55,15 @@ const ModalsForHosts = () => {
   const editHostFN = () => {
     // редактирование хоста через запрос
     const vmbr = temporaryHosts?.listVmbr?.join(",");
-    dispatch(editHost({ ...temporaryHosts, vmbr }));
+
+    const send = {
+      host_name: temporaryHosts?.host_name,
+      guid_node: temporaryHosts?.guid_node,
+      vmbr: temporaryHosts?.vmbr,
+      node_model: temporaryHosts?.node_model,
+      node_comment: temporaryHosts?.node_comment,
+    };
+    dispatch(editHost({ ...send, vmbr }));
   };
 
   const onChange = (e) => {
@@ -75,6 +84,7 @@ const ModalsForHosts = () => {
   };
 
   const addTextVkmr = () => {
+    console.log(input, "input");
     dispatch(addVmbr(input)); //// добавляю с список vmbr
     setInput(""); /// очищаю state
   };
@@ -162,7 +172,7 @@ const ModalsForHosts = () => {
         <div className="addDns hostsEdit moreEdit">
           <div className="second">
             <MyInputs
-              title={"Информация :"}
+              title={"Наименование :"}
               onChange={onChange}
               name={"host_name"}
               value={temporaryHosts?.host_name}
@@ -175,6 +185,14 @@ const ModalsForHosts = () => {
               value={temporaryHosts?.node_model}
             />
           </div>
+
+          <MyTextArea
+            title={`Описание`}
+            onChange={onChange}
+            name={"node_comment"}
+            value={temporaryHosts?.node_comment}
+            required={true}
+          />
 
           <div className="titleVmbr">
             <h6>vmbr</h6>

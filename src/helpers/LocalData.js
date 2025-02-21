@@ -159,8 +159,6 @@ export const listSnaps = [
   { id: "stop", name: "Stop" },
 ];
 
-
-
 export const listProtocols = [
   { value: 1, label: "http" },
   { value: 2, label: "https" },
@@ -175,6 +173,7 @@ export const objTyperecordsKeys = {
   TXT: "Text strings",
   PTP: "Point to name (FQDN)",
   SPF: "SPF string",
+  SOA: "String",
 };
 
 ///// cтатичесике ip адреса

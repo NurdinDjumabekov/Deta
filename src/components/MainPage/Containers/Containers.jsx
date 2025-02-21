@@ -238,7 +238,7 @@ const Containers = ({ item }) => {
           <span className="description">
             {vm_comment}
             {item?.files?.map((i, index) => (
-              <a href={i?.path} target="_blank">
+              <a href={i?.path} target="_blank" key={index}>
                 {i?.original_name} {index < item?.files?.length - 1 && ", "}
               </a>
             ))}

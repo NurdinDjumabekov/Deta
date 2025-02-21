@@ -294,8 +294,8 @@ const CreateContainers = (props) => {
                 { t: "asdsadasas12312312dasdas" },
                 { t: "asdadasdasdsdasdas" },
                 { t: "asddasdasas12312312dasdas" },
-              ]?.map((item) => (
-                <p>{item?.t}</p>
+              ]?.map((item, index) => (
+                <p key={index}>{item?.t}</p>
               ))}
             </div>
 

@@ -11,14 +11,6 @@ const initialState = {
 
   listDiagrams: [], //// для диаграммы хостов на главной странице
 
-  menuInner: [
-    { id: 1, name: "Контейнеры", img: container, active: false, list: [] },
-    { id: 2, name: "Сервисы", img: servers, active: false, list: [] },
-    { id: 3, name: "Пользователи", img: users, active: false, list: [] },
-  ],
-
-  ///// активный host на главной странице
-
   activeHost: 0, //// активный временный хост
   activeContainer: 0, //// активный временный контейнер
   activeDns: { guid: "", name: "" }, //// активный временный dns
@@ -173,25 +165,6 @@ const containersSlice = createSlice({
 
     closeModals: (state, action) => {
       state.modal = 0;
-    },
-
-    setMenuInner: (state, action) => {
-      const newMenu = state.menuInner?.map((item) => {
-        if (item.id === action.payload) {
-          return { ...item, active: !item.active };
-        } else {
-          return { ...item, active: false };
-        }
-      });
-      state.menuInner = newMenu;
-    },
-
-    changeMenuInner: (state, action) => {
-      const { id } = action.payload;
-      const obj = state.menuInner?.find((item) => item?.id == id);
-      const updatedMenu = state.menuInner?.filter((item) => item?.id !== id);
-      //// ищу по id и возвращаю обьект который хочу поменять
-      state.menuInner = [...updatedMenu, { ...obj, ...action.payload }];
     },
 
     setActiveDns: (state, action) => {
@@ -415,8 +388,6 @@ const containersSlice = createSlice({
 export const {
   setOpenModals,
   closeModals,
-  setMenuInner,
-  changeMenuInner,
   setActiveDns,
   setDnsList,
   clearDnsList,

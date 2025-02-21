@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import "./style.scss";
 
 ///////// fns
-import { setMenuInner } from "../../../store/reducers/stateSlice";
 import {
   getContainersInMenu,
   setListVolns,
@@ -23,7 +22,7 @@ import EditIcon from "../../../assets/MyIcons/EditIcon";
 import DeleteIcon from "../../../assets/MyIcons/DeleteIcon";
 
 /////// components
-// import Search from "../../MainPage/Search/Search";
+import Search from "../../MainPage/Search/Search";
 import ModalAddUser from "../../MainPage/ModalAddUser/ModalAddUser";
 import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
@@ -34,8 +33,6 @@ const MenuInner = () => {
   const dispatch = useDispatch();
 
   const { listUserService } = useSelector((state) => state.usersSlice);
-
-  const choice = (id) => dispatch(setMenuInner(id));
   const [addUsers, setAddUsers] = useState({});
 
   const getContainer = ({ guid, codeid }, { id }) => {
@@ -73,12 +70,12 @@ const MenuInner = () => {
   return (
     <>
       <div className="menuInner">
-        {/* <Search /> потом надо удалить */}
+        <Search />
 
         <div className="menuInner__inner">
           {listUserService?.map((item, index) => (
             <Fragment key={index}>
-              <div className="title" onClick={() => choice(item?.id)}>
+              <div className="title">
                 <div>
                   <img src={imgList?.[index]} alt="" />
                   <p>

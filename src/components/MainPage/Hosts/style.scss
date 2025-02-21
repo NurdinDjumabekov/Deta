@@ -121,15 +121,25 @@
   .ip_address {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 10px;
-    padding: 5px 1px;
+    padding: 5px 3px;
     background-color: "#008000";
     border-radius: 10px;
+
+    .ping {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      b {
+        margin-left: 2px;
+      }
+    }
 
     .ip_host {
       font-size: 14px;
       font-weight: 600;
-      margin: 2px 0px 5px;
       color: #ffffffc5;
     }
 

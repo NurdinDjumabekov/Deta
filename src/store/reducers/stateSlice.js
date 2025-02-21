@@ -12,13 +12,6 @@ import { cutNums } from "../../helpers/cutNums";
 
 const initialState = {
   listDiagrams: [], //// для диаграммы хостов на главной странице
-
-  ///// Сервисы & Пользователи
-  menuInner: [
-    { id: 2, name: "Сервисы", list: [] },
-    { id: 3, name: "Пользователи", list: [] },
-  ],
-
   activeHost: 0, //// активный временный хост
   activeContainer: 0, //// активный временный контейнер
   activeDns: { guid: "", name: "" }, //// активный временный dns
@@ -228,19 +221,6 @@ const stateSlice = createSlice({
           node_ram_mb: cutNums(+action.payload?.node_ram_mb / 1024, 2),
         };
       });
-    },
-
-    setMenuInner: (state, action) => {
-      const newMenu = state.menuInner?.map((item) => {
-        if (item.id === action.payload)
-          return { ...item, active: !item.active };
-        else return { ...item, active: false };
-      });
-      state.menuInner = newMenu;
-    },
-
-    changeMenuInner: (state, action) => {
-      state.menuInner = action.payload;
     },
 
     setActiveHost: (state, action) => {
@@ -485,8 +465,6 @@ const stateSlice = createSlice({
     setMigrateHostContainersData: (state, action) => {
       state.migrateHostContainersData = action.payload;
     },
-
-    clearMigrateHostData: (state, action) => {},
   },
 });
 
@@ -494,8 +472,6 @@ export const {
   setOpenModals,
   closeModals,
   setListDiagrams,
-  setMenuInner,
-  changeMenuInner,
   setActiveHost,
   setActiveContainer,
   setActiveDns,
@@ -539,7 +515,6 @@ export const {
   setMigrateModal,
   clearMigrateContainerData,
   setMigrateContainerData,
-  clearMigrateHostData,
   setMigrateHostContainersData,
   setMigrateHostModal,
 } = stateSlice.actions;

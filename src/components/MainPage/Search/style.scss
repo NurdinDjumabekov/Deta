@@ -1,27 +1,20 @@
 .mainAction {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 5px;
   align-items: center;
   min-width: 100%;
-
-  button {
-    background: rgb(60, 227, 60);
-    border-radius: 5px;
-    font-size: 20px;
-    width: 35px;
-    padding: 3px 10px;
-  }
+  padding: 10px 10px 0px;
+  position: relative;
 
   .mainSearch {
     position: relative;
     height: 30px;
-    width: 94%;
-    margin: 10px 0 0 0;
+    width: 100%;
 
     input {
       width: 100%;
-      padding: 0px 10px 0px 40px;
+      padding: 0px 40px 0px 10px;
       height: 30px;
       background: rgb(30, 31, 35);
       border: 1px solid #ffffff83;
@@ -42,5 +35,19 @@
       top: 50%;
       transform: translateY(-50%);
     }
+  }
+
+  > button {
+    background: rgba(109, 222, 109, 0.88);
+    border-radius: 0px 3px 3px 0;
+    width: 33px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    justify-content: center;
+    position: absolute;
+    right: 10px;
+    top: 10px;
   }
 }

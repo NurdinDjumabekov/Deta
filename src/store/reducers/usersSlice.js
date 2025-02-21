@@ -7,6 +7,7 @@ const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
   preloaderUsers: false,
+  ///// Сервисы & Пользователи
   listUserService: [],
 };
 

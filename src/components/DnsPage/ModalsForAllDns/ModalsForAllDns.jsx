@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 ////// componnets
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 ////// helpers
 import { checkTTL } from "../../../helpers/checkFNS";
@@ -18,7 +19,6 @@ import {
   distributeIpAddresFN,
   deleteSubDomen,
 } from "../../../store/reducers/dnsSlice";
-import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 import { setDistributeIpModal } from "../../../store/reducers/stateSlice";
 
 ///////style
@@ -34,8 +34,6 @@ const ModalsForAllDns = (props) => {
     (state) => state.stateSlice
   );
 
-  console.log(activeDns, "activeDns");
-
   const onChange = (e) => {
     const { name, value } = e.target;
 
@@ -43,10 +41,7 @@ const ModalsForAllDns = (props) => {
       if (checkChangeTTL(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
-    } else if (
-      (name === "record_name" || name === "host_ip") &&
-      objEdit?.recordType != "SPF"
-    ) {
+    } else if (name === "record_name" && objEdit?.recordType != "SPF") {
       if (checkChangeRecordName(value)) {
         setObjedit({ ...objEdit, [name]: value });
       }
@@ -103,6 +98,9 @@ const ModalsForAllDns = (props) => {
       </div>
     ),
   };
+
+  // console.log(objTyperecordsKeys, "objTyperecordsKeys");
+  // console.log(objEdit?.recordType, "objEdit?.recordType");
 
   return (
     <div>
