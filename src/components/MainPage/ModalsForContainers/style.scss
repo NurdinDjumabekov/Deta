@@ -204,59 +204,6 @@
   }
 }
 
-.backUp {
-  h6 {
-    width: 90% !important;
-  }
-
-  &__inner {
-    width: 100% !important;
-    margin: 20px 0px 10px;
-  }
-
-  &__main {
-    .selectBlockMain {
-      width: 100%;
-      margin-bottom: 10px;
-
-      .selectBlock__inner {
-        height: 40px;
-
-        p,
-        .activeText {
-          font-size: 16px;
-        }
-
-        img {
-          width: 22px;
-          height: 22px;
-        }
-      }
-
-      .selectBlock__activeBlock {
-        top: 45px;
-        padding: 5px 0px;
-        box-shadow: 0 1px 5px 0 rgba(65, 69, 88, 0.1),
-          0 3px 6px 0 rgba(0, 0, 0, 0.07);
-
-        p {
-          font-size: 16px;
-          padding: 5px 10px;
-        }
-      }
-    }
-  }
-
-  .actionsBackUp {
-    display: flex;
-    justify-content: flex-end !important;
-
-    button {
-      padding: 10px 25px;
-    }
-  }
-}
-
 .moreText {
   margin: 20px 0 0 0;
 

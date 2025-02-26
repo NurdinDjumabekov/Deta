@@ -1,0 +1,10 @@
+.logsModal {
+  position: absolute;
+
+  .modal {
+    &__inner {
+      width: 50vw;
+      height: 80vh;
+    }
+  }
+}

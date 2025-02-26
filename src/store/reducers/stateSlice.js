@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { dnsListDefault } from "../../helpers/LocalData";
 import {
   clearAddTempContData,
-  clearBackUp,
   clearDataAddHost,
   clearDataTemporaryDNS,
   clearDataTemporaryHosts,
@@ -147,14 +146,6 @@ const initialState = {
   openModalKeyCont: "", ////guid  для доступов отображения контейнеров клиентам
 
   openModaStartCont: { guid: "", vm_id: "" }, ////guid для модалки запуска контейнера
-
-  openModalBackUp: {
-    name: "", /// тут буду хрпнить данные о контейнере и хостедля простого отображения
-    guid: "", /// guid - контейнера
-    fasts: 0,
-    type: 0,
-    snaps: 0,
-  },
 
   openModalAddProvider: {
     name: "",
@@ -383,14 +374,6 @@ const stateSlice = createSlice({
       state.openModaDelGroup = action.payload;
     },
 
-    setOpenModalBackUp: (state, action) => {
-      state.openModalBackUp = action.payload;
-    },
-
-    clearOpenModalBackUp: (state, action) => {
-      state.openModalBackUp = clearBackUp;
-    },
-
     setOpenModaStoppedCont: (state, action) => {
       state.openModaStoppedCont = action.payload;
     },
@@ -500,8 +483,6 @@ export const {
   clearOpenAddFiles,
   setOpenModalAddGroup,
   setOpenModaDelGroup,
-  setOpenModalBackUp,
-  clearOpenModalBackUp,
   setOpenModaStoppedCont,
   setOpenModaDelCont,
   setOpenModalKeyCont,

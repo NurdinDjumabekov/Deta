@@ -12,7 +12,6 @@ import migrate from "../../../assets/icons/migrateLogo.png";
 
 //// imgs
 import calendarX from "../../../assets/icons/calendar-x.svg";
-import download from "../../../assets/icons/download.svg";
 import addGroup from "../../../assets/icons/folder-plus.svg";
 import warning from "../../../assets/icons/warning.svg";
 import playCircle from "../../../assets/icons/play-circle.svg";
@@ -42,11 +41,9 @@ import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
 import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
 import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
-import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
-import { getDataForBackUp } from "../../../store/reducers/requestSlice";
 import { getDataAcceptUsers } from "../../../store/reducers/requestSlice";
 import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
 import { getFilesInContainer } from "../../../store/reducers/requestSlice";
@@ -60,6 +57,7 @@ import { Tooltip } from "@mui/material";
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
 import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
+import BackUp from "../ActionsContainer/BackUp/BackUp";
 
 /////// env
 const { REACT_APP_API_URL } = process.env;
@@ -73,12 +71,8 @@ const Containers = ({ item }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {
-    activeContainer,
-    openModalBackUp,
-    cloneContainerData,
-    migrateContainerData,
-  } = useSelector((state) => state.stateSlice);
+  const { activeContainer, cloneContainerData, migrateContainerData } =
+    useSelector((state) => state.stateSlice);
 
   const clickVmId = () => {
     ///// перекидываю на другую (постороннюю) ссылку
@@ -91,6 +85,7 @@ const Containers = ({ item }) => {
   };
 
   const clickContainer = () => {
+    if (guid == activeContainer) return;
     dispatch(setActiveContainer(guid)); //// делаю активным нажатый контейнер
     dispatch(getDiagramsContainers(guid)); //// для get диграмм контейнеров
   };
@@ -116,14 +111,6 @@ const Containers = ({ item }) => {
 
   const openModalFixTime = () => dispatch(fixTimeCreateCont({ guid_vm: guid }));
   ////  фиксирование времени создания контейнера
-
-  const openModalBackUpFN = () => {
-    ////  BackUp контейнера через запрос
-    const obj = { name: `${vm_id} - ${vm_name} ${host_name}`, guid };
-    dispatch(setOpenModalBackUp({ ...openModalBackUp, ...obj }));
-    dispatch(getDataForBackUp(guid));
-    //// get данные для бэкапа
-  };
 
   const openModalDelInGroup = () => dispatch(setOpenModaDelGroup(guid));
   //// модалка для удаления контейнера с группы
@@ -312,11 +299,9 @@ const Containers = ({ item }) => {
                   </Tooltip>
                 </>
               )}
-              <Tooltip title="BackUp" placement="top">
-                <button onClick={openModalBackUpFN}>
-                  <img src={download} alt="#" />
-                </button>
-              </Tooltip>
+
+              <BackUp guid={guid} vm_id={vm_id} vm_name={vm_name} />
+
               <Tooltip title="Пользователи" placement="top">
                 <button onClick={openKeyInfo}>
                   <img src={keyIncon} alt="#" />

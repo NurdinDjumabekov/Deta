@@ -35,6 +35,7 @@ const HaProxyPage = () => {
   async function getData() {
     const res = await dispatch(getHaProxyList({})).unwrap(); /// get список HaProxy
     setCounts(res?.counts);
+    setSearchText("");
   }
 
   useEffect(() => {
@@ -75,7 +76,8 @@ const HaProxyPage = () => {
     setSearchText(e.target.value);
   }
 
-  async function searchActionFN() {
+  async function searchActionFN(e) {
+    e.preventDefault();
     if (!!searchText) {
       const send = { value: searchText };
       const res = await dispatch(getHaProxyList(send)).unwrap(); /// get список HaProxy
@@ -96,10 +98,12 @@ const HaProxyPage = () => {
             <p>Всего:</p>
             <span>{counts?.all}</span>
           </div>
+
           <div>
             <p>Вкл:</p>
             <span className="on">{counts?.active}</span>
           </div>
+
           <div>
             <p>Выкл:</p>
             <span className="off">{counts?.de_active}</span>
@@ -117,7 +121,7 @@ const HaProxyPage = () => {
         </div>
 
         <div className="searchBigData">
-          <div>
+          <form onSubmit={searchActionFN}>
             <input
               type="text"
               placeholder="Поиск по наименованию"
@@ -125,15 +129,15 @@ const HaProxyPage = () => {
               onChange={onChange}
             />
             {!!searchText && (
-              <button onClick={() => setSearchText("")} className="clear">
+              <div onClick={getData} className="clear">
                 <img src={krestIcon} alt="x" />
-              </button>
+              </div>
             )}
-          </div>
-          <button className="search" onClick={searchActionFN}>
-            <SearchIcon />
-            <p>Поиск</p>
-          </button>
+            <button className="search" type="submit">
+              <SearchIcon />
+              <p>Поиск</p>
+            </button>
+          </form>
         </div>
       </div>
 

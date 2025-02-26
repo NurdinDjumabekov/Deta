@@ -7,10 +7,7 @@ import {
   setCloneModal,
 } from "../../store/reducers/stateSlice";
 import MySelects from "../../common/MySelects/MySelects";
-import {
-  transformLists,
-  transformListsForHost,
-} from "../../helpers/transformLists";
+import { transformListsForHost } from "../../helpers/transformLists";
 import MyIPInput from "../../common/MyIPInput/MyIPInput";
 import MyInputs from "../../common/MyInput/MyInputs";
 import {
@@ -82,7 +79,6 @@ const CloneModal = () => {
     }
   };
 
-
   const updatedHostList = listHosts.filter((host) => host?.host_status == 1);
 
   const listTypes = transformListsForHost(updatedHostList, "guid", "host_name");
@@ -144,6 +140,7 @@ const CloneModal = () => {
         />
 
         <br />
+
         <MySelects
           list={listTargetStorage}
           initText={"Выбрать"}

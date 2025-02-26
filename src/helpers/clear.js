@@ -9,13 +9,7 @@ export const clearHaPrioxy = {
   typeAction: 0, //// 1 - создание, 2 - редактирование, 3 удаление
 };
 
-export const clearBackUp = {
-  name: "",
-  guid: "",
-  fasts: 0,
-  type: 0,
-  snaps: 0,
-};
+
 
 export const clearAddTempContData = {
   container_name: "",

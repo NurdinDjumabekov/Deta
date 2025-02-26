@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import {
   clearAddHost,
-  clearOpenModalBackUp,
   clearTemporaryContainer,
   clearTemporaryHosts,
   setActiveContainer,
@@ -33,7 +32,6 @@ const initialState = {
   countsContainers: {}, //// кол-во вкл, откл. контейнеров
   searchContainer: "",
   diagramsContainer: [], //// для диаграммы хостов на главной странице
-  dataForBackUp: {}, //// выборка данных для бэкапа (3 селекта)
 
   listNetwork: [],
   listOS: [],
@@ -533,48 +531,6 @@ export const offContainerFN = createAsyncThunk(
   }
 );
 
-///// getDataForBackUp - для получения данных для бэкапа
-export const getDataForBackUp = createAsyncThunk(
-  "getDataForBackUp",
-  async function (guid_vm, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/getBackUpData`;
-    const data = { guid_vm };
-    try {
-      const response = await axiosInstance.post(url, data);
-      if (response.status >= 200 && response.status < 300) {
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-//// backUpContainerFN - бэкап контейнера
-export const backUpContainerFN = createAsyncThunk(
-  "backUpContainerFN",
-  async function (props, { dispatch, rejectWithValue }) {
-    const { fasts, guid, snaps, type } = props;
-    const url = `${REACT_APP_API_URL}node/createBackUp`;
-    const data = { storage: type, mode: snaps, compress: fasts, guid };
-    try {
-      const response = await axiosInstance.post(url, data);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(clearOpenModalBackUp());
-        /// закрываю модалку и очищаю данные для временного хранения данных бэкапа
-        myAlert("'Backup' успешно был выполнен!");
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 ///// getDataAcceptUsers - get данные доступов для пользователей и обычный список польз-лей
 export const getDataAcceptUsers = createAsyncThunk(
   "getDataAcceptUsers",
@@ -741,7 +697,7 @@ const requestSlice = createSlice({
       state.listContainers = [];
       state.countsContainers = {};
       state.diagramsContainer = [];
-      state.dataForBackUp = {};
+      state.dataForBackUp = [];
     },
   },
 
@@ -851,19 +807,6 @@ const requestSlice = createSlice({
       state.preloader = false;
     });
     builder.addCase(getDiagramsContainers.pending, (state, action) => {
-      state.preloader = true;
-    });
-
-    ///////////////////////////// getDataForBackUp
-    builder.addCase(getDataForBackUp.fulfilled, (state, action) => {
-      state.preloader = false;
-      state.dataForBackUp = action.payload;
-    });
-    builder.addCase(getDataForBackUp.rejected, (state, action) => {
-      state.error = action.payload;
-      state.preloader = false;
-    });
-    builder.addCase(getDataForBackUp.pending, (state, action) => {
       state.preloader = true;
     });
 

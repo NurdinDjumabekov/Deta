@@ -13,6 +13,9 @@ export const Preloader = () => {
   const { preloaderUsers } = useSelector((state) => state.todosSlice);
   const { preloaderDC } = useSelector((state) => state.dataCenterSlice);
   const { preloaderVM } = useSelector((state) => state.virtualMachineSlice);
+  const { preloaderContainer } = useSelector(
+    (state) => state.actionsContaiersSlice
+  );
 
   if (
     preloader ||
@@ -21,7 +24,8 @@ export const Preloader = () => {
     preloadeкTodos ||
     preloaderUsers ||
     preloaderDC ||
-    preloaderVM
+    preloaderVM ||
+    preloaderContainer
   ) {
     return (
       <div className="preloader">

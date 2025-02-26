@@ -1,0 +1,38 @@
+.backUpActions {
+  width: 0;
+  height: 0;
+  position: absolute;
+
+  h6 {
+    width: calc(100% - 60px) !important;
+  }
+  .modal {
+    &__inner {
+      width: 500px;
+      .hostsEdit {
+        width: 100%;
+        margin: 20px 0 0 0;
+      }
+
+      .mySelect {
+        .selectBlock__inner {
+          img {
+            width: 22px;
+            height: 22px;
+          }
+        }
+      }
+
+      .backUp__inner {
+        button {
+          padding: 0px;
+          float: right;
+          font-size: 14px;
+          width: 140px !important;
+          margin-top: 10px;
+          height: 35px !important;
+        }
+      }
+    }
+  }
+}

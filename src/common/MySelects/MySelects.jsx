@@ -3,8 +3,8 @@ import React, { useRef, useState } from "react";
 ///// styles
 import "./style.scss";
 
-///// только для сортировки на главной странице
-import aroow from "../../assets/icons/arrowWhite.svg";
+///// icons
+import arrow from "../../assets/icons/arrowWhite.svg";
 
 const MySelects = (props) => {
   const { list, initText, title } = props;
@@ -46,7 +46,7 @@ const MySelects = (props) => {
           <p className={textSelect ? "activeText" : ""}>
             {textSelect ? textSelect?.label : initText}
           </p>
-          <img src={aroow} alt="<" className={active ? "" : "rotate180"} />
+          <img src={arrow} alt="<" className={active ? "" : "rotate180"} />
         </div>
         {active && (
           <div className="selectBlock__activeBlock">

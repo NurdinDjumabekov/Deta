@@ -16,8 +16,6 @@ import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
 import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
-import { setOpenModalBackUp } from "../../../store/reducers/stateSlice";
-import { clearOpenModalBackUp } from "../../../store/reducers/stateSlice";
 import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
 import { clearAddTempCont } from "../../../store/reducers/stateSlice";
 import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
@@ -28,7 +26,6 @@ import {
   getContainers,
 } from "../../../store/reducers/requestSlice";
 import { delContainerFN } from "../../../store/reducers/requestSlice";
-import { backUpContainerFN } from "../../../store/reducers/requestSlice";
 import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainers } from "../../../store/reducers/requestSlice";
 import { offContainerFN } from "../../../store/reducers/requestSlice";
@@ -54,7 +51,8 @@ import debounce from "debounce";
 ////// helpers
 import { listFast, listSnaps } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
-import { transformLists } from "../../../helpers/transformLists";
+import { getUsersServiceReq } from "../../../store/reducers/usersSlice";
+import MySelects from "../../../common/MySelects/MySelects";
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -150,6 +148,7 @@ const ModalsForContainers = () => {
     const data = { codeid_group: codeid, guid_vm: openModalAddGroup };
     dispatch(getContainers(activeHost));
     dispatch(addGroupContFN(data)); /// обновляю контейнера и кол-ва пользователей
+    dispatch(getUsersServiceReq({}));
     ///// добавление контейнера в группу
     ///// guid_vm - guid контейнера
     ///// codeid_group - guid группы(пользов-лей)
@@ -160,36 +159,6 @@ const ModalsForContainers = () => {
 
   const delContInGroup = () => dispatch(delGroupContainerFN(openModaDelGroup));
   ///// удаление контейнера с группы через запрос (openModaDelGroup - guid контейнера)
-
-  //////////////////////////////////______////// backUp контейнера
-  const { openModalBackUp } = useSelector((state) => state.stateSlice);
-  const { dataForBackUp } = useSelector((state) => state.requestSlice);
-
-  const listTypes = transformLists(
-    dataForBackUp?.storage,
-    "guid",
-    "storage_name"
-  );
-
-  //// и еще 2 таких же селекта
-
-  const onChangeSelect = (nameKey, name, id) => {
-    dispatch(setOpenModalBackUp({ ...openModalBackUp, [nameKey]: id }));
-  };
-
-  const backUpContainer = () => {
-    //////// backUp контейнера через запрос
-    if (!!!openModalBackUp?.fasts) {
-      return myAlert("Выберите первое", "error");
-    }
-    if (!!!openModalBackUp?.type) {
-      return myAlert("Выберите второе", "error");
-    }
-    if (!!!openModalBackUp?.snaps) {
-      return myAlert("Выберите третье", "error");
-    }
-    dispatch(backUpContainerFN(openModalBackUp));
-  };
 
   //////////////////////////////////______////// для доступов отображения контейнеров клиентам
   const { openModalKeyCont } = useSelector((state) => state.stateSlice);
@@ -382,43 +351,6 @@ const ModalsForContainers = () => {
           </button>
         </div>
       </Modals>
-
-      {/*/////////______//////______////// backUp контейнера  */}
-      <div className="backUp">
-        <Modals
-          openModal={!!openModalBackUp?.guid}
-          setOpenModal={() => dispatch(clearOpenModalBackUp())}
-          title={`Бэкап сервера ${openModalBackUp?.name}`}
-        >
-          <div className="addDns hostsEdit backUp__inner">
-            <div className="backUp__main">
-              <Selects
-                list={listFast}
-                initText={"Выбрать"}
-                onChnage={onChangeSelect}
-                nameKey={"fasts"}
-              />
-              <Selects
-                list={listTypes}
-                initText={"Выбрать"}
-                onChnage={onChangeSelect}
-                nameKey={"type"}
-              />
-              <Selects
-                list={listSnaps}
-                initText={"Выбрать"}
-                onChnage={onChangeSelect}
-                nameKey={"snaps"}
-              />
-            </div>
-            <div className="actionsBackUp">
-              <button className="addAction" onClick={backUpContainer}>
-                ОК
-              </button>
-            </div>
-          </div>
-        </Modals>
-      </div>
 
       {/*/////////______//////______////// для доступов отображения контейнеров клиентам  */}
       <Modals

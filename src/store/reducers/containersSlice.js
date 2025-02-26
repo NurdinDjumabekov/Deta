@@ -144,14 +144,6 @@ const initialState = {
 
   openModaStartCont: { guid: "", vm_id: "" }, ////guid для модалки запуска контейнера
 
-  openModalBackUp: {
-    name: "", /// тут буду хрпнить данные о контейнере и хостедля простого отображения
-    guid: "", /// guid - контейнера
-    fasts: 0,
-    type: 0,
-    snaps: 0,
-  },
-
   lookMoreInfo: {}, //// state для хранения более подрьнйо инфы о контейнере
 };
 
@@ -341,20 +333,6 @@ const containersSlice = createSlice({
       state.openModaDelGroup = action.payload;
     },
 
-    setOpenModalBackUp: (state, action) => {
-      state.openModalBackUp = action.payload;
-    },
-
-    clearOpenModalBackUp: (state, action) => {
-      state.openModalBackUp = {
-        name: "",
-        guid: "",
-        fasts: 0,
-        type: 0,
-        snaps: 0,
-      };
-    },
-
     setOpenModaStoppedCont: (state, action) => {
       state.openModaStoppedCont = action.payload;
     },
@@ -413,8 +391,6 @@ export const {
   setOpenAddFiles,
   setOpenModalAddGroup,
   setOpenModaDelGroup,
-  setOpenModalBackUp,
-  clearOpenModalBackUp,
   setOpenModaStoppedCont,
   setOpenModaDelCont,
   setOpenModalKeyCont,

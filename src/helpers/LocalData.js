@@ -139,10 +139,10 @@ export const listOS = [
 ];
 
 export const listFast = [
-  { id: "0", name: "none" },
-  { id: "lzo", name: "LZO (fast)" },
-  { id: "gzip", name: "GZIP (good)" },
-  { id: "zstd", name: "ZSTD (fast and good)" },
+  // { value: "0", label: "none" },
+  // { value: "lzo", label: "LZO (fast)" },
+  // { value: "gzip", label: "GZIP (good)" },
+  { value: "zstd", label: "ZSTD (fast and good)" },
 ];
 
 export const listTypes = [
@@ -151,12 +151,12 @@ export const listTypes = [
   { id: 3, name: "pxmb105-6 (3736.70 гб)" },
   { id: 4, name: "local (85.22 гб)" },
   { id: 5, name: "pxmb105-5 (538.02 гб)" },
-];
+]; /// delete
 
 export const listSnaps = [
-  { id: "snapshot", name: "Snapshot" },
-  { id: "suspend", name: "Suspend" },
-  { id: "stop", name: "Stop" },
+  { value: "snapshot", label: "Snapshot" },
+  { value: "suspend", label: "Suspend" },
+  { value: "stop", label: "Stop" },
 ];
 
 export const listProtocols = [

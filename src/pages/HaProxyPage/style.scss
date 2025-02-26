@@ -69,7 +69,19 @@
     .searchBigData {
       width: 50%;
       margin: 0;
-      width: 600px;
+      width: 500px;
+
+      form {
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .clear {
+        right: 115px !important;
+      }
     }
   }
 
