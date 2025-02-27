@@ -9,7 +9,6 @@ import ModalsForAllDns from "../ModalsForAllDns/ModalsForAllDns";
 import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 import InnerSubDnsActions from "../InnerSubDnsActions/InnerSubDnsActions";
 import { FixedSizeList } from "react-window";
-import lodashFn from "lodash";
 
 ////// imgs
 import arrowSort from "../../../assets/icons/arrowSort.svg";

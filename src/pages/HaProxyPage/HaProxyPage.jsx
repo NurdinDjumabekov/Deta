@@ -10,7 +10,9 @@ import { listProtocols } from "../../helpers/LocalData";
 import delIcon from "../../assets/icons/delete.svg";
 import editIcon from "../../assets/icons/edit.svg";
 import krestIcon from "../../assets/icons/krest.svg";
+import redirectIcon from "../../assets/icons/haproxy/redirect.svg";
 import SearchIcon from "@mui/icons-material/Search";
+import LockIcon from "@mui/icons-material/HttpsTwoTone";
 
 ////// components
 import ModalsHaProxy from "../../components/HaProxyPage/ModalsHaProxy/ModalsHaProxy";
@@ -21,6 +23,7 @@ import { setModalActionsHaProxy } from "../../store/reducers/haProxySlice";
 
 /////// style
 import "./style.scss";
+import { Tooltip } from "@mui/material";
 
 const HaProxyPage = () => {
   const dispatch = useDispatch();
@@ -49,7 +52,7 @@ const HaProxyPage = () => {
     );
   }
 
-  async function editProxy(obj) {
+  function editProxy(obj) {
     const { guid, check, domain, comment, backend_ip, type_security } = obj;
 
     const objType = listProtocols?.find(({ value }) => value == type_security);
@@ -67,8 +70,18 @@ const HaProxyPage = () => {
     dispatch(setModalActionsHaProxy(send));
   }
 
-  async function delProxy({ guid, domain }) {
+  function delProxy({ guid, domain }) {
     const send = { guid, name: domain, typeAction: 3 };
+    dispatch(setModalActionsHaProxy(send));
+  }
+
+  function redirectProxy({ guid, domain, backend_ip, type_security }) {
+    const send = { guid, name: domain, ip_addres: backend_ip, typeAction: 4 };
+    dispatch(setModalActionsHaProxy({ ...send, type_security }));
+  }
+
+  function blockProxy({ guid, domain, backend_ip }) {
+    const send = { guid, name: domain, ip_addres: backend_ip, typeAction: 5 };
     dispatch(setModalActionsHaProxy(send));
   }
 
@@ -174,7 +187,31 @@ const HaProxyPage = () => {
                         </button>
                       </div>
                     </div>
-                    <b>{i?.comment || "..."}</b>
+                    <div className="action">
+                      <div>
+                        <b>{i?.comment || "..."}</b>
+                      </div>
+                      <div>
+                        <Tooltip title="Перенаправление" placement="top">
+                          <button
+                            className="redirect"
+                            onClick={() => redirectProxy(i)}
+                          >
+                            <img src={redirectIcon} alt="delIcon" />
+                          </button>
+                        </Tooltip>
+                        <Tooltip title="Блокировка" placement="top">
+                          <button
+                            className="redirect"
+                            onClick={() => blockProxy(i)}
+                          >
+                            <LockIcon
+                              sx={{ fill: "#9cddfd", width: 19, height: 19 }}
+                            />
+                          </button>
+                        </Tooltip>
+                      </div>
+                    </div>
                   </div>
                 </div>
               );

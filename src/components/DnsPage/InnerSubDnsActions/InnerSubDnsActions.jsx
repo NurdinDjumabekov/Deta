@@ -61,7 +61,7 @@ const InnerSubDnsActions = (props) => {
     <div className="blockActionsSubDns">
       {row?.recordType == "A" ? (
         <Tooltip title={objTitle?.[row?.protected]} placement="top">
-          {actibonStatus?.[row?.protected]}
+          {actibonStatus?.[0]}
         </Tooltip>
       ) : (
         <button></button>

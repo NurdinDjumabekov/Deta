@@ -50,11 +50,11 @@ export const getHaProxyList = createAsyncThunk(
   }
 );
 
-///// crudHaProxyReq - /// для удаления,редактирования и добавления Haproxy
+///// crudHaProxyReq - /// для всех действий Haproxy
 export const crudHaProxyReq = createAsyncThunk(
   "crudHaProxyReq",
   async function (data, { dispatch, rejectWithValue }) {
-    /// typeAction (для удаления(3),редактирования(2) и добавления(1) Haproxy)
+    /// typeAction (блокировка(3),перенапраление(4), удаления(3),редактирования(2), добавления(1) Haproxy)
     const url = `${REACT_APP_API_URL}proxy/actionsHaproxy`;
     try {
       const response = await axiosInstance.post(url, data);

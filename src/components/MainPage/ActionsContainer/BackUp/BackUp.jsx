@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Modals from "../../../../common/Modals/Modals";
-
 import download from "../../../../assets/icons/download.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { myAlert } from "../../../../helpers/MyAlert";
@@ -10,12 +9,10 @@ import { listFast, listSnaps } from "../../../../helpers/LocalData";
 import {
   backUpContainerFN,
   getDataForBackUp,
+  getLogBackUp,
 } from "../../../../store/reducers/actionsContaiersSlice";
-
-//// styles
-import "./style.scss";
 import LogsModal from "../../../../common/LogsModal/LogsModal";
-import io from "socket.io-client"; // Подключаем socket.io-client
+import socketIOClient from "socket.io-client";
 
 const url_socket = "https://dd-api.ibm.kg";
 
@@ -25,66 +22,64 @@ const BackUp = ({ guid, vm_id, vm_name }) => {
   const [dataBackUp, setDataBackUp] = useState({});
   const [viewLog, setViewLog] = useState(false);
   const [logs, setLogs] = useState([]);
-  const [socket, setSocket] = useState(null);
+  const socketRef = useRef(null);
 
   useEffect(() => {
-    if (!viewLog) return; // Если окно закрыто, не подключаем сокет
+    if (!viewLog) return;
 
-    const newSocket = io(url_socket);
-    setSocket(newSocket);
+    console.log("🟢 Подключаемся к WebSocket...", url_socket);
+    const socket = socketIOClient(url_socket);
+    socketRef.current = socket;
 
-    const room = `vm-${guid}-backup`; // Генерируем имя комнаты WebSocket
-
-    newSocket.emit("join_room", room); // Присоединяемся к комнате
-
-    newSocket.on("backup_update", (data) => {
-      console.log("🔄 Лог обновления:", data);
-      setLogs((prevLogs) => [...prevLogs, data]); // Добавляем новые логи
+    socket.on(`vm-${guid}-backup`, (data) => {
+      console.log("🔥 Пришли данные из WebSocket:", data);
+      if (data.logs?.length) {
+        setLogs((prevLogs) => [...prevLogs, ...data.logs]);
+      }
     });
 
     return () => {
-      newSocket.emit("leave_room", room); // Отключаемся от комнаты
-      newSocket.disconnect();
-      setSocket(null);
+      console.log("🔴 Отключаем WebSocket...");
+      socket.disconnect();
+      socketRef.current = null;
     };
-  }, [viewLog]);
+  }, [viewLog, guid]);
 
-  const openModalBackUpFN = async () => {
+  const openModalBackUpFN = useCallback(async () => {
     const res = await dispatch(getDataForBackUp({ guid_vm: guid })).unwrap();
     if (!!res?.[0]?.guid) {
-      const obj = {
+      setDataBackUp({
         name: `${vm_id} - ${vm_name}`,
         type: { value: res?.[0]?.guid, label: res?.[0]?.storage_name },
         fasts: { value: "zstd", label: "ZSTD (fast and good)" },
         snaps: { value: "snapshot", label: "Snapshot" },
         guid,
-      };
-      setDataBackUp(obj);
+      });
     }
-  };
+  }, [dispatch, guid, vm_id, vm_name]);
 
-  const onChangeSelect = (item) => {
-    setDataBackUp({ ...dataBackUp, [item?.name]: item });
-  };
+  const onChangeSelect = useCallback(
+    (item) => setDataBackUp((prev) => ({ ...prev, [item.name]: item })),
+    []
+  );
 
-  const backUpContainer = async () => {
-    if (!!!dataBackUp?.type?.value) {
-      return myAlert("Выберите хранилище", "error");
-    }
+  const backUpContainer = useCallback(async () => {
+    if (!dataBackUp?.type?.value) return myAlert("Выберите хранилище", "error");
+
     const send = {
-      guid_vm: dataBackUp?.guid,
-      storage: dataBackUp?.type?.value,
-      compress: dataBackUp?.fasts?.value,
-      mode: dataBackUp?.snaps?.value,
+      guid_vm: dataBackUp.guid,
+      storage: dataBackUp.type.value,
+      compress: dataBackUp.fasts.value,
+      mode: dataBackUp.snaps.value,
     };
 
     const res = await dispatch(backUpContainerFN(send)).unwrap();
 
-    if (res == 1) {
-      setLogs([]); // Очищаем старые логи
-      setViewLog(true); // Открываем модалку логов
+    if (res === 1) {
+      setLogs([]); // Очистка логов перед новым бэкапом
+      setViewLog(true); // Открываем лог-модалку
     }
-  };
+  }, [dispatch, dataBackUp]);
 
   return (
     <>
@@ -96,37 +91,35 @@ const BackUp = ({ guid, vm_id, vm_name }) => {
 
       <div className="backUpActions">
         <Modals
-          openModal={!!dataBackUp?.guid}
+          openModal={!!dataBackUp.guid}
           setOpenModal={() => setDataBackUp({})}
-          title={`Бэкап сервера ${dataBackUp?.name}`}
+          title={`Бэкап сервера ${dataBackUp.name}`}
         >
           <div className="addDns hostsEdit backUp__inner">
             <div className="backUp__main">
               <MySelects
                 list={listFast}
-                initText={"Выбрать"}
+                initText="Выбрать"
                 onChange={onChangeSelect}
-                nameKey={"fasts"}
-                value={dataBackUp?.fasts}
-                title={"Выберите режим"}
+                nameKey="fasts"
+                value={dataBackUp.fasts}
+                title="Выберите режим"
               />
-
               <MySelects
                 list={dataForBackUp}
-                initText={"Выбрать"}
+                initText="Выбрать"
                 onChange={onChangeSelect}
-                nameKey={"type"}
-                value={dataBackUp?.type}
-                title={"Выберите хранилище"}
+                nameKey="type"
+                value={dataBackUp.type}
+                title="Выберите хранилище"
               />
-
               <MySelects
                 list={listSnaps}
-                initText={"Выбрать"}
+                initText="Выбрать"
                 onChange={onChangeSelect}
-                nameKey={"snaps"}
-                value={dataBackUp?.snaps}
-                title={"Выберите режим"}
+                nameKey="snaps"
+                value={dataBackUp.snaps}
+                title="Выберите режим"
               />
             </div>
             <button className="addAction" onClick={backUpContainer}>
@@ -136,13 +129,13 @@ const BackUp = ({ guid, vm_id, vm_name }) => {
         </Modals>
       </div>
 
-      {/* ЛОГИ БЭКАПА */}
-      <LogsModal
-        guid={guid}
-        setViewLog={setViewLog}
-        viewLog={viewLog}
-        logs={logs}
-      />
+      {viewLog && (
+        <LogsModal
+          open={viewLog}
+          onClose={() => setViewLog(false)}
+          logs={logs}
+        />
+      )}
     </>
   );
 };

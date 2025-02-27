@@ -109,26 +109,29 @@
 
       &__inner {
         border-bottom: 1px solid #808080;
-        padding: 2px 15px;
+        padding: 5px 10px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
 
         &__data {
-          width: calc(100% - 12px);
+          width: calc(100% - 0px);
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
 
           .action {
             display: flex;
             align-items: center;
             gap: 8px;
             justify-content: space-between;
-            width: 100%;
+            width: calc(100% - 0px);
 
             > div:nth-child(1) {
               display: flex;
               align-items: center;
-              gap: 5px;
+              gap: 3px;
               width: calc(100% - 48px);
               flex-wrap: wrap;
             }
@@ -148,8 +151,12 @@
             span {
               font-size: 13px;
               color: #ffffffd4;
-              padding: 3px 5px 2px;
               border-radius: 3px;
+            }
+
+            b {
+              font-size: 12px;
+              color: #ffffffb3;
             }
 
             .port {
@@ -182,11 +189,11 @@
                 padding: 2px;
               }
             }
-          }
 
-          b {
-            font-size: 12px;
-            color: #ffffffb3;
+            .redirect {
+              width: 22px;
+              height: 22px;
+            }
           }
         }
 
