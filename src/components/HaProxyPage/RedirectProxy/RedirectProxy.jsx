@@ -40,22 +40,22 @@ const RedirectProxy = ({ sendData }) => {
 
   return (
     <div className="addEditProxy">
-      {/* <MyInputs
+      <MyInputs
         title={"Наименование"}
         onChange={onChange}
         name={"name"}
         value={modalActionsHaProxy?.name}
         required={true}
-      /> */}
+      />
 
-      <MySelects
+      {/* <MySelects
         list={listTypes}
         initText={"Выбрать"}
         onChange={onChangeSelect}
         nameKey={"dataCenter"}
         value={modalActionsHaProxy?.dataCenter}
         title={"Выберите дата центр"}
-      />
+      /> */}
 
       <div className="btnBlock">
         <button className="addAction" onClick={sendData}>

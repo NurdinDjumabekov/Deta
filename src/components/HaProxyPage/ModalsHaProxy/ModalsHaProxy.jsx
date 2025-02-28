@@ -26,7 +26,7 @@ const ModalsHaProxy = () => {
 
   const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
 
-  const { guid, name, typeAction, ip_addres } = useSelector(
+  const { guid, name, typeAction, ip_addres, block } = useSelector(
     (state) => state.haProxySlice?.modalActionsHaProxy
   );
 
@@ -39,6 +39,7 @@ const ModalsHaProxy = () => {
       type: modalActionsHaProxy?.type?.value,
     };
     const res = await dispatch(crudHaProxyReq(send)).unwrap();
+    console.log(send, "edit");
     if (res == 1) {
       const obj = { 1: "Успешно добавлено", 2: "Отредактировано" };
       myAlert(obj?.[typeAction]);
@@ -53,28 +54,27 @@ const ModalsHaProxy = () => {
   async function redirectHaProxy() {
     /// для блокировки Haproxy через запрос
     if (name == "") return myAlert("Заполните наименование домена", "error");
-    if (!!!modalActionsHaProxy?.dataCenter?.guid) {
-      return myAlert("Выберите дата центр", "error");
-    }
     const send = {
       ...modalActionsHaProxy,
       dataCenterRedirect: modalActionsHaProxy?.dataCenter?.guid,
     };
-    console.log(send, "send");
-    // const res = await dispatch(crudHaProxyReq(send)).unwrap();
-
-    // if (res == 1) {
-    //   myAlert("Домен перенаправлен");
-    //   dispatch(getHaProxyList({})); /// get список HaProxy
-    // } else {
-    //   myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
-    // }
+    const res = await dispatch(crudHaProxyReq(send)).unwrap();
+    if (res == 1) {
+      myAlert("Домен перенаправлен");
+      dispatch(getHaProxyList({})); /// get список HaProxy
+    } else {
+      myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
+    }
   }
 
-  async function delHaProxy() {
+  async function delBlockHaProxy() {
     const res = await dispatch(crudHaProxyReq(modalActionsHaProxy)).unwrap();
     if (res == 1) {
-      const objText = { 3: "Успешно удалено", 5: "Успешно заблокировано" };
+      const objText = {
+        3: "Успешно удалено",
+        5: "Успешно заблокировано",
+        6: "Перенаправление отменено",
+      };
       myAlert(objText?.[modalActionsHaProxy?.typeAction]);
       dispatch(getHaProxyList({})); /// get список HaProxy
     } else {
@@ -112,7 +112,7 @@ const ModalsHaProxy = () => {
       <ConfirmModal
         state={!!guid && typeAction == 3}
         title={`Удалить ${modalActionsHaProxy?.name} ?`}
-        yes={delHaProxy}
+        yes={delBlockHaProxy}
         no={() => dispatch(clearModalActionsHaProxy())}
       />
 
@@ -128,8 +128,18 @@ const ModalsHaProxy = () => {
       {/* для блокирования  */}
       <ConfirmModal
         state={!!guid && typeAction == 5}
-        title={`Заблокировать ${modalActionsHaProxy?.name} ?`}
-        yes={delHaProxy}
+        title={`${!!!block ? "Разблокировать" : "Заблокировать"} ${
+          modalActionsHaProxy?.name
+        } ?`}
+        yes={delBlockHaProxy}
+        no={() => dispatch(clearModalActionsHaProxy())}
+      />
+
+      {/* для удаления перенаправлениЯ */}
+      <ConfirmModal
+        state={!!guid && typeAction == 6}
+        title={`Удалить перенаправление домена ?`}
+        yes={delBlockHaProxy}
         no={() => dispatch(clearModalActionsHaProxy())}
       />
     </div>

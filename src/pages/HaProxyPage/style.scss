@@ -109,7 +109,7 @@
 
       &__inner {
         border-bottom: 1px solid #808080;
-        padding: 5px 10px;
+        padding: 2px 5px 2px 10px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -119,7 +119,7 @@
           width: calc(100% - 0px);
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 3px;
 
           .action {
             display: flex;
@@ -132,15 +132,16 @@
               display: flex;
               align-items: center;
               gap: 3px;
-              width: calc(100% - 48px);
+              width: calc(100% - 72px);
               flex-wrap: wrap;
             }
 
             > div:nth-child(2) {
               display: flex;
               align-items: center;
+              justify-content: flex-end;
               gap: 5px;
-              width: 48px;
+              width: 72px;
             }
 
             p {
@@ -194,6 +195,32 @@
               width: 22px;
               height: 22px;
             }
+
+            .block {
+              width: 22px;
+              height: 22px;
+              margin: 2px 0 0 0;
+            }
+
+            .blockOpen {
+              width: 20px;
+              height: 20px;
+              margin: 2px 0 0 0;
+              padding: 1px;
+            }
+
+            .reload {
+              display: flex;
+              align-items: center;
+            }
+          }
+
+          
+
+          .redirectArrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
 
@@ -204,6 +231,19 @@
         .onHaproxy {
           background: rgb(204, 25, 25);
         }
+      }
+
+      .blockProxy {
+        background: linear-gradient(
+          45deg,
+          rgba(255, 0, 0, 0.365) 25%,
+          #5148488b 0,
+          #5148489e 50%,
+          rgba(255, 0, 0, 0.304) 0,
+          rgba(255, 0, 0, 0.335) 75%,
+          #514848a7 0
+        ) !important;
+        background-size: 30px 30px !important;
       }
     }
 
