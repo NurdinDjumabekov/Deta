@@ -70,6 +70,24 @@ export const crudHaProxyReq = createAsyncThunk(
   }
 );
 
+///// saveHaProxyReq -
+export const saveHaProxyReq = createAsyncThunk(
+  "saveHaProxyReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}proxy/save_haproxy_config`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data.result;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const requestHaProxySlice = createSlice({
   name: "requestHaProxySlice",
   initialState,

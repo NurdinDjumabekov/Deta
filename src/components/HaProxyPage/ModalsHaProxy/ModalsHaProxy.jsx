@@ -20,6 +20,7 @@ import { crudHaProxyReq } from "../../../store/reducers/haProxySlice";
 
 /////// style
 import "./style.scss";
+import BlockProxy from "../BlockProxy/BlockProxy";
 
 const ModalsHaProxy = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,22 @@ const ModalsHaProxy = () => {
 
   async function redirectHaProxy() {
     /// для блокировки Haproxy через запрос
-    if (name == "") return myAlert("Заполните наименование домена", "error");
+    // if (name == "") return myAlert("Заполните наименование домена", "error");
+    const send = {
+      ...modalActionsHaProxy,
+      dataCenterRedirect: modalActionsHaProxy?.dataCenter?.guid,
+    };
+    const res = await dispatch(crudHaProxyReq(send)).unwrap();
+    if (res == 1) {
+      myAlert("Домен перенаправлен");
+      dispatch(getHaProxyList({})); /// get список HaProxy
+    } else {
+      myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
+    }
+  }
+
+  async function blockHaProxy() {
+    /// для блокировки Haproxy через запрос
     const send = {
       ...modalActionsHaProxy,
       dataCenterRedirect: modalActionsHaProxy?.dataCenter?.guid,
@@ -95,7 +111,6 @@ const ModalsHaProxy = () => {
           typeAction={typeAction}
         />
       </Modals>
-
       {/* для редактирования  */}
       <Modals
         openModal={!!guid && typeAction == 2}
@@ -107,7 +122,6 @@ const ModalsHaProxy = () => {
           typeAction={typeAction}
         />
       </Modals>
-
       {/* для удаления  */}
       <ConfirmModal
         state={!!guid && typeAction == 3}
@@ -115,7 +129,6 @@ const ModalsHaProxy = () => {
         yes={delBlockHaProxy}
         no={() => dispatch(clearModalActionsHaProxy())}
       />
-
       {/* для перенаправление  */}
       <Modals
         openModal={!!guid && typeAction == 4}
@@ -124,17 +137,22 @@ const ModalsHaProxy = () => {
       >
         <RedirectProxy sendData={redirectHaProxy} />
       </Modals>
+      {/* для блокирования  */}
+      <Modals
+        openModal={!!guid && typeAction == 5 && block == 1}
+        setOpenModal={() => dispatch(clearModalActionsHaProxy())}
+        title={`Блокировака`}
+      >
+        <BlockProxy sendData={blockHaProxy} />
+      </Modals>
 
       {/* для блокирования  */}
       <ConfirmModal
-        state={!!guid && typeAction == 5}
-        title={`${!!!block ? "Разблокировать" : "Заблокировать"} ${
-          modalActionsHaProxy?.name
-        } ?`}
+        state={!!guid && typeAction == 5 && block == 0}
+        title={`${!!!block ? "Разблокировать" : "Заблокировать"} ?`}
         yes={delBlockHaProxy}
         no={() => dispatch(clearModalActionsHaProxy())}
       />
-
       {/* для удаления перенаправлениЯ */}
       <ConfirmModal
         state={!!guid && typeAction == 6}

@@ -83,6 +83,23 @@
         right: 115px !important;
       }
     }
+
+    .saveSettings {
+      background: #1976d2;
+      height: 35px;
+      border-radius: 5px;
+      font-size: 12px;
+      padding: 0 20px;
+      width: auto;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 0 !important;
+
+      P {
+        font-size: 13px;
+      }
+    }
   }
 
   &__inner {
@@ -215,12 +232,29 @@
             }
           }
 
-          
-
           .redirectArrow {
             display: flex;
             align-items: center;
             justify-content: center;
+          }
+
+          .redirectMain {
+            justify-content: flex-start !important;
+            padding-bottom: 0 !important;
+            padding-right: 3px !important;
+
+            > div:nth-child(1) {
+              display: flex;
+              align-items: center;
+              gap: 3px;
+              flex-wrap: wrap;
+              width: 72px;
+            }
+
+            > div:nth-child(2) {
+              justify-content: flex-start;
+              width: calc(100% - 25px);
+            }
           }
         }
 

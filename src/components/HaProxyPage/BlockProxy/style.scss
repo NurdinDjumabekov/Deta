@@ -1,0 +1,56 @@
+.addEditProxy {
+  padding: 10px 0 0 0;
+
+  .myInput {
+    margin-top: 10px !important;
+  }
+
+  .mySelect {
+    margin: 10px 0 0 0;
+  }
+
+  h6,
+  label {
+    display: block;
+    font-size: 12px;
+    line-height: 13px;
+    text-align: left;
+    font-weight: 500;
+    color: #c0c0c0;
+    margin: 10px 0px 5px !important;
+  }
+
+  .btnBlock {
+    margin: 5px 0 0 0;
+    display: flex;
+    justify-content: flex-end;
+    .addAction {
+      height: 35px;
+      padding: 0 25px;
+      font-size: 14px;
+    }
+  }
+
+  .bool,
+  label {
+    cursor: pointer;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin: 0 !important;
+    input {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .bool {
+    display: flex;
+    padding: 10px 0px 0 0;
+
+    label {
+      margin: 3px 0 0 0 !important;
+    }
+  }
+}

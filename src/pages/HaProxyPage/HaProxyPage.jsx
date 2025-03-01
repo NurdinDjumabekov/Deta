@@ -26,11 +26,14 @@ import { Tooltip } from "@mui/material";
 import {
   crudHaProxyReq,
   getHaProxyList,
+  saveHaProxyReq,
 } from "../../store/reducers/haProxySlice";
 import { setModalActionsHaProxy } from "../../store/reducers/haProxySlice";
 
 /////// style
 import "./style.scss";
+import { myAlert } from "../../helpers/MyAlert";
+import ConfirmModal from "../../common/ConfirmModal/ConfirmModal";
 
 const HaProxyPage = () => {
   const dispatch = useDispatch();
@@ -41,6 +44,9 @@ const HaProxyPage = () => {
 
   const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
   const { listHaProxy } = useSelector((state) => state.haProxySlice);
+
+  const [saveHaProxy, setSaveHaProxy] = useState(false);
+  const [confirmSave, setConfirmSave] = useState(false);
 
   async function getData() {
     const res = await dispatch(getHaProxyList({})).unwrap(); /// get список HaProxy
@@ -57,6 +63,7 @@ const HaProxyPage = () => {
     dispatch(
       setModalActionsHaProxy({ ...obj, type: { value: 1, label: "http" } })
     );
+    setSaveHaProxy(true);
   }
 
   function editProxy(obj) {
@@ -75,11 +82,13 @@ const HaProxyPage = () => {
       type: { value: type_security, label: objType?.label },
     };
     dispatch(setModalActionsHaProxy(send));
+    setSaveHaProxy(true);
   }
 
   function delProxy({ guid, domain }) {
     const send = { guid, name: domain, typeAction: 3 };
     dispatch(setModalActionsHaProxy(send));
+    setSaveHaProxy(true);
   }
 
   function redirectProxy({ guid, redirect_domen, backend_ip, type_security }) {
@@ -90,22 +99,25 @@ const HaProxyPage = () => {
       typeAction: 4,
     };
     dispatch(setModalActionsHaProxy({ ...send, type_security }));
+    setSaveHaProxy(true);
   }
 
-  function blockProxy({ guid, domain, backend_ip, block }) {
+  function blockProxy({ guid, domain, redirect_ip, block }, mainNum) {
     const send = {
       guid,
       name: domain,
-      ip_addres: backend_ip,
+      ip_addres: redirect_ip,
       typeAction: 5,
-      block: block == 1 ? 0 : 1,
+      block: mainNum == 1 ? 1 : block == 1 ? 0 : 1,
     };
     dispatch(setModalActionsHaProxy(send));
+    setSaveHaProxy(true);
   }
 
   function delRedirecProxy({ guid, backend_ip }) {
     const send = { guid, name: "", ip_addres: backend_ip, typeAction: 6 };
     dispatch(setModalActionsHaProxy(send));
+    setSaveHaProxy(true);
   }
 
   function onChange(e) {
@@ -137,6 +149,16 @@ const HaProxyPage = () => {
 
     const res = await dispatch(crudHaProxyReq(send)).unwrap();
     if (res == 1) getData();
+  }
+
+  async function saveSettingsFN() {
+    dispatch(saveHaProxyReq({}));
+    const res = await dispatch(saveHaProxyReq({})).unwrap();
+    if (res == 1) {
+      setSaveHaProxy(false);
+      myAlert("Настройки сохранены");
+      setConfirmSave(false);
+    }
   }
 
   return (
@@ -171,6 +193,15 @@ const HaProxyPage = () => {
             <p> - 443 порт</p>
           </div>
         </div>
+
+        {true && (
+          <button
+            className="btnAction saveSettings"
+            onClick={() => setConfirmSave(true)}
+          >
+            <p>Сохранить настройки</p>
+          </button>
+        )}
 
         <div className="searchBigData">
           <form onSubmit={searchActionFN}>
@@ -218,7 +249,7 @@ const HaProxyPage = () => {
                         </span>
                       </div>
                       <div>
-                        <Tooltip title="Обновить" placement="top">
+                        {/* <Tooltip title="Обновить" placement="top">
                           <button
                             className="reload"
                             onClick={() => reloadHaProxy(i)}
@@ -227,7 +258,7 @@ const HaProxyPage = () => {
                               sx={{ fill: "#fff", width: 20, height: 20 }}
                             />
                           </button>
-                        </Tooltip>
+                        </Tooltip> */}
                         <Tooltip title="Редактировать" placement="top">
                           <button className="edit" onClick={() => editProxy(i)}>
                             <img src={editIcon} alt="delIcon" />
@@ -253,18 +284,7 @@ const HaProxyPage = () => {
                             <img src={redirectIcon} alt="delIcon" />
                           </button>
                         </Tooltip>
-                        {!!!i?.block ? (
-                          <Tooltip title="Блокировка" placement="top">
-                            <button
-                              className="block"
-                              onClick={() => blockProxy(i)}
-                            >
-                              <LockIcon
-                                sx={{ fill: "#9cddfd", width: 19, height: 19 }}
-                              />
-                            </button>
-                          </Tooltip>
-                        ) : (
+                        {/* {!!i?.block && (
                           <Tooltip title="Разблокировка" placement="top">
                             <button
                               className="blockOpen"
@@ -273,37 +293,78 @@ const HaProxyPage = () => {
                               <img src={iconsCircle} alt="iconsCircle" />
                             </button>
                           </Tooltip>
-                        )}
+                        )} */}
+                        <Tooltip title="Блокировка" placement="top">
+                          <button
+                            className="block"
+                            onClick={() => blockProxy(i, 1)}
+                          >
+                            <LockIcon
+                              sx={{
+                                fill: "#9cddfd",
+                                width: 19,
+                                height: 19,
+                              }}
+                            />
+                          </button>
+                        </Tooltip>
                       </div>
                     </div>
                     {i?.redirect_domen && (
-                      <>
-                        <div className="redirectArrow">
-                          <ArrowDownwardIcon sx={{ width: 20, height: 20 }} />
-                        </div>
-                        <div
-                          className="action"
-                          style={{ paddingRight: 5, paddingBottom: 5 }}
+                      <div
+                        className="action redirectMain"
+                        style={{ paddingRight: 5, paddingBottom: 5 }}
+                      >
+                        <button
+                          className="redirect"
+                          // onClick={() => redirectProxy(i)}
                         >
-                          <div>
-                            <p>{i?.redirect_domen}</p>
-                            <span>{i?.redirect_ip}</span>
-                          </div>
-                          <Tooltip
-                            title="Отменить перенаправление"
-                            placement="top"
-                          >
-                            <button
-                              className="del"
-                              onClick={() => delRedirecProxy(i)}
-                            >
-                              <ClearIcon
-                                sx={{ width: 20, height: 20, fill: "red" }}
-                              />
-                            </button>
-                          </Tooltip>
+                          <img src={redirectIcon} alt="delIcon" />
+                        </button>
+                        <div>
+                          <p>{i?.redirect_domen}</p>
                         </div>
-                      </>
+                        <Tooltip
+                          title="Отменить перенаправление"
+                          placement="top"
+                        >
+                          <button
+                            className="del"
+                            onClick={() => delRedirecProxy(i)}
+                          >
+                            <ClearIcon
+                              sx={{ width: 20, height: 20, fill: "red" }}
+                            />
+                          </button>
+                        </Tooltip>
+                      </div>
+                    )}
+                    {i?.redirect_ip && (
+                      <div
+                        className="action redirectMain"
+                        style={{ paddingRight: 5, paddingBottom: 5 }}
+                      >
+                        <LockIcon
+                          sx={{
+                            fill: "#9cddfd",
+                            width: 19,
+                            height: 19,
+                          }}
+                        />
+                        <div>
+                          <span>{i?.redirect_ip}</span>
+                        </div>
+                        <Tooltip title="Отменить блокировку" placement="top">
+                          <button
+                            className="blockOpen"
+                            onClick={() => blockProxy(i)}
+                          >
+                            <ClearIcon
+                              sx={{ width: 20, height: 20, fill: "red" }}
+                            />
+                          </button>
+                        </Tooltip>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -315,6 +376,14 @@ const HaProxyPage = () => {
 
       <ModalsHaProxy />
       {/* ///// модалки ha-proxy */}
+
+      {/* для удаления перенаправлениЯ */}
+      <ConfirmModal
+        state={confirmSave}
+        title={`Сохранить настройки ?`}
+        yes={saveSettingsFN}
+        no={() => setConfirmSave(false)}
+      />
     </div>
   );
 };

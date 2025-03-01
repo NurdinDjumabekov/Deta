@@ -12,7 +12,7 @@ import { setModalActionsHaProxy } from "../../../store/reducers/haProxySlice";
 /////// style
 import "./style.scss";
 
-const RedirectProxy = ({ sendData }) => {
+const BlockProxy = ({ sendData }) => {
   const dispatch = useDispatch();
 
   const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
@@ -26,10 +26,10 @@ const RedirectProxy = ({ sendData }) => {
   return (
     <div className="addEditProxy">
       <MyInputs
-        title={"Наименование"}
+        title={"Введите IP"}
         onChange={onChange}
-        name={"name"}
-        value={modalActionsHaProxy?.name}
+        name={"ip_addres"}
+        value={modalActionsHaProxy?.ip_addres}
         required={true}
       />
 
@@ -42,4 +42,4 @@ const RedirectProxy = ({ sendData }) => {
   );
 };
 
-export default RedirectProxy;
+export default BlockProxy;
