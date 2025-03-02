@@ -7,6 +7,7 @@ import "./style.scss";
 
 export const Preloader = () => {
   const { preloader } = useSelector((state) => state.requestSlice);
+  const { preloaderProxy } = useSelector((state) => state.haProxySlice);
   const { preloaderDns } = useSelector((state) => state.dnsSlice);
   const { preloadeкBaza } = useSelector((state) => state.bazaSaveSlice);
   const { preloadeкTodos } = useSelector((state) => state.todosSlice);
@@ -25,7 +26,8 @@ export const Preloader = () => {
     preloaderUsers ||
     preloaderDC ||
     preloaderVM ||
-    preloaderContainer
+    preloaderContainer ||
+    preloaderProxy
   ) {
     return (
       <div className="preloader">

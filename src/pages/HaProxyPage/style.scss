@@ -77,6 +77,10 @@
         display: flex;
         align-items: center;
         gap: 10px;
+
+        input {
+          padding-right: 40px;
+        }
       }
 
       .clear {
@@ -103,215 +107,62 @@
   }
 
   &__inner {
-    width: 100%;
+    height: calc(100vh - 52px);
+    overflow-y: hidden;
     display: flex;
-    gap: 5px 2px;
-    padding: 5px 0 0 0;
-    height: calc(100% - 50px);
-    overflow: scroll;
+    gap: 10px;
+    position: relative;
 
-    > div {
-      width: 100% !important;
+    &__data {
+      // position: absolute;
+      // z-index: 2;
+      // left: 0;
+      // top: 0;
+      width: 100%;
+      height: 100%;
+      background: #292d32;
 
       > div {
-        display: flex !important;
-        flex-direction: row !important;
-      }
-    }
+        &::-webkit-scrollbar {
+          width: 12px;
+          cursor: pointer;
+          padding: 10px;
+          background: #424242;
+        }
 
-    .every {
-      box-sizing: border-box;
-      // border-right: 1px solid #808080;
-      width: 17% !important;
+        &::-webkit-scrollbar-track {
+          background: #424242;
+        }
 
-      &__inner {
-        border-bottom: 1px solid #808080;
-        padding: 2px 5px 2px 10px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 10px;
+        &::-webkit-scrollbar-thumb {
+          background: #686868;
+        }
 
-        &__data {
-          width: calc(100% - 0px);
-          display: flex;
-          flex-direction: column;
-          gap: 3px;
+        &::-webkit-scrollbar-thumb:hover {
+          background: #777777ce;
+          cursor: pointer;
+        }
 
-          .action {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            justify-content: space-between;
-            width: calc(100% - 0px);
+        > div {
+          table {
+            width: 100%;
 
-            > div:nth-child(1) {
-              display: flex;
-              align-items: center;
-              gap: 3px;
-              width: calc(100% - 72px);
-              flex-wrap: wrap;
-            }
-
-            > div:nth-child(2) {
-              display: flex;
-              align-items: center;
-              justify-content: flex-end;
-              gap: 5px;
-              width: 72px;
-            }
-
-            p {
-              font-size: 13px;
-              color: #ffffffb3;
-            }
-
-            span {
-              font-size: 13px;
-              color: #ffffffd4;
-              border-radius: 3px;
-            }
-
-            b {
-              font-size: 12px;
-              color: #ffffffb3;
-            }
-
-            .port {
-              margin-left: -4px;
-            }
-
-            .edit {
-              width: 20px;
-              height: 20px;
-
-              svg {
-                width: 100%;
-                height: 100%;
-                fill: yellow;
+            tr {
+              td {
+                // background: #292d32;
+                width: 16%;
+                max-width: 17%;
+                min-width: 16%;
               }
             }
-
-            .del {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 20px;
-              min-width: 20px;
-              height: 20px;
-              border-radius: 5px;
-
-              img {
-                width: 100%;
-                height: 100%;
-                padding: 2px;
-              }
-            }
-
-            .redirect {
-              width: 22px;
-              height: 22px;
-            }
-
-            .block {
-              width: 22px;
-              height: 22px;
-              margin: 2px 0 0 0;
-            }
-
-            .blockOpen {
-              width: 20px;
-              height: 20px;
-              margin: 2px 0 0 0;
-              padding: 1px;
-            }
-
-            .reload {
-              display: flex;
-              align-items: center;
-            }
-          }
-
-          .redirectArrow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .redirectMain {
-            justify-content: flex-start !important;
-            padding-bottom: 0 !important;
-            padding-right: 3px !important;
-
-            > div:nth-child(1) {
-              display: flex;
-              align-items: center;
-              gap: 3px;
-              flex-wrap: wrap;
-              width: 72px;
-            }
-
-            > div:nth-child(2) {
-              justify-content: flex-start;
-              width: calc(100% - 25px);
-            }
           }
         }
-
-        .offHaproxy {
-          background: rgba(20, 221, 20, 0.789);
-        }
-
-        .onHaproxy {
-          background: rgb(204, 25, 25);
-        }
-      }
-
-      .blockProxy {
-        background: linear-gradient(
-          45deg,
-          rgba(255, 0, 0, 0.365) 25%,
-          #5148488b 0,
-          #5148489e 50%,
-          rgba(255, 0, 0, 0.304) 0,
-          rgba(255, 0, 0, 0.335) 75%,
-          #514848a7 0
-        ) !important;
-        background-size: 30px 30px !important;
       }
     }
 
-    &::-webkit-scrollbar {
-      width: 14px; // Установим ширину полосы прокрутки
-      height: 14px; // Для горизонтальной прокрутки, если нужно
-    }
-
-    // Трек (фоновая область полосы прокрутки)
-    &::-webkit-scrollbar-track {
-      background-color: #f1f1f1; // Цвет фона для трека
-      border-radius: 3px; // Скругленные углы
-    }
-
-    // Ползунок прокрутки
-    &::-webkit-scrollbar-thumb {
-      background-color: #888; // Цвет ползунка
-      border-radius: 3px; // Скругленные углы
-      border: 2px solid #fff; // Белая граница вокруг ползунка
-    }
-
-    // Эффект на ползунок при наведении
-    &::-webkit-scrollbar-thumb:hover {
-      background-color: #555; // Цвет ползунка при наведении
-    }
-
-    // Эффект на трек при наведении
-    &:hover {
-      &::-webkit-scrollbar-track {
-        background-color: #e0e0e0; // Цвет фона для трека при наведении
-      }
-      &::-webkit-scrollbar-thumb {
-        background-color: #333; // Цвет ползунка при наведении
-      }
+    .laoder {
+      position: relative;
+      z-index: 1;
     }
   }
 }

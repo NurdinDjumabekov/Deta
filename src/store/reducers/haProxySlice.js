@@ -99,17 +99,27 @@ const requestHaProxySlice = createSlice({
     clearModalActionsHaProxy: (state, action) => {
       state.modalActionsHaProxy = clearHaPrioxy;
     },
+    clearListHaProxy: (state, action) => {
+      state.listHaProxy = clearHaPrioxy;
+    },
   },
 
   extraReducers: (builder) => {
     /////////////////////////// getHaProxyList
     builder.addCase(getHaProxyList.fulfilled, (state, action) => {
       state.preloaderProxy = false;
-      const newList = Array.from({ length: 6 }, () => []);
-      action.payload?.list?.forEach((item, index) => {
-        const targetIndex = index % 6; // определяем индекс подмассива, в который нужно поместить элемент
-        newList[targetIndex].push(item); // добавляем элемент в соответствующий подмассив
-      });
+      const newList = [];
+      const arr = action.payload?.list?.slice(0, 250);
+      for (let i = 0; i < arr.length; i += 6) {
+        newList.push({
+          one: arr[i],
+          two: arr[i + 1],
+          three: arr[i + 2],
+          four: arr[i + 3],
+          five: arr[i + 4],
+          six: arr[i + 5],
+        });
+      }
 
       state.listHaProxy = newList;
     });
@@ -135,7 +145,10 @@ const requestHaProxySlice = createSlice({
   },
 });
 
-export const { setModalActionsHaProxy, clearModalActionsHaProxy } =
-  requestHaProxySlice.actions;
+export const {
+  setModalActionsHaProxy,
+  clearModalActionsHaProxy,
+  clearListHaProxy,
+} = requestHaProxySlice.actions;
 
 export default requestHaProxySlice.reducer;

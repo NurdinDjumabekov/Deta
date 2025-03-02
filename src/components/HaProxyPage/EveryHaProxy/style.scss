@@ -1,0 +1,157 @@
+.everyHaProxy {
+  padding: 2px 5px 2px 0px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  width: calc(100% - 0px);
+  padding-left: 10px !important;
+  height: 100%;
+
+  &__data {
+    width: calc(100% - 0px);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .action {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+      width: calc(100% - 0px);
+
+      > div:nth-child(1) {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        width: calc(100% - 72px);
+        flex-wrap: wrap;
+      }
+
+      > div:nth-child(2) {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 5px;
+        width: 72px;
+      }
+
+      p {
+        font-size: 13px;
+        color: #ffffffb3;
+      }
+
+      span {
+        font-size: 13px;
+        color: #ffffffd4;
+        border-radius: 3px;
+      }
+
+      b {
+        font-size: 12px;
+        color: #ffffffb3;
+      }
+
+      .port {
+        margin-left: -4px;
+      }
+
+      .edit {
+        width: 20px;
+        height: 20px;
+
+        svg {
+          width: 100%;
+          height: 100%;
+          fill: yellow;
+        }
+      }
+
+      .del {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        min-width: 20px;
+        height: 20px;
+        border-radius: 5px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          padding: 2px;
+        }
+      }
+
+      .redirect {
+        width: 22px;
+        height: 22px;
+      }
+
+      .block {
+        width: 22px;
+        height: 22px;
+        margin: 2px 0 0 0;
+      }
+
+      .blockOpen {
+        width: 20px;
+        height: 20px;
+        margin: 2px 0 0 0;
+        padding: 1px;
+      }
+
+      .reload {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .redirectArrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .redirectMain {
+      justify-content: flex-start !important;
+      padding-bottom: 0 !important;
+      padding-right: 3px !important;
+
+      > div:nth-child(1) {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        flex-wrap: wrap;
+        width: 72px;
+      }
+
+      > div:nth-child(2) {
+        justify-content: flex-start;
+        width: calc(100% - 25px);
+      }
+    }
+  }
+
+  .offHaproxy {
+    background: rgba(20, 221, 20, 0.789);
+  }
+
+  .onHaproxy {
+    background: rgb(204, 25, 25);
+  }
+}
+
+.blockProxy {
+  background: linear-gradient(
+    45deg,
+    rgba(255, 0, 0, 0.365) 25%,
+    #5148488b 0,
+    #5148489e 50%,
+    rgba(255, 0, 0, 0.304) 0,
+    rgba(255, 0, 0, 0.335) 75%,
+    #514848a7 0
+  ) !important;
+  background-size: 30px 30px !important;
+}

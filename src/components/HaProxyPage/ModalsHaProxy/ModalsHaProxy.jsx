@@ -15,6 +15,7 @@ import { checkIP } from "../../../helpers/checkFNS";
 import {
   clearModalActionsHaProxy,
   getHaProxyList,
+  saveHaProxyReq,
 } from "../../../store/reducers/haProxySlice";
 import { crudHaProxyReq } from "../../../store/reducers/haProxySlice";
 
@@ -22,9 +23,10 @@ import { crudHaProxyReq } from "../../../store/reducers/haProxySlice";
 import "./style.scss";
 import BlockProxy from "../BlockProxy/BlockProxy";
 
-const ModalsHaProxy = () => {
-  const dispatch = useDispatch();
+const ModalsHaProxy = (props) => {
+  const { confirmSave, setConfirmSave, getData, searchText } = props;
 
+  const dispatch = useDispatch();
   const { modalActionsHaProxy } = useSelector((state) => state.haProxySlice);
 
   const { guid, name, typeAction, ip_addres, block } = useSelector(
@@ -44,7 +46,7 @@ const ModalsHaProxy = () => {
     if (res == 1) {
       const obj = { 1: "Успешно добавлено", 2: "Отредактировано" };
       myAlert(obj?.[typeAction]);
-      dispatch(getHaProxyList({})); /// get список HaProxy
+      getData(searchText);
     } else if (res == 2) {
       myAlert("Такой HaProxy уже существует");
     } else {
@@ -62,7 +64,7 @@ const ModalsHaProxy = () => {
     const res = await dispatch(crudHaProxyReq(send)).unwrap();
     if (res == 1) {
       myAlert("Домен перенаправлен");
-      dispatch(getHaProxyList({})); /// get список HaProxy
+      getData(searchText);
     } else {
       myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
     }
@@ -77,7 +79,7 @@ const ModalsHaProxy = () => {
     const res = await dispatch(crudHaProxyReq(send)).unwrap();
     if (res == 1) {
       myAlert("Домен перенаправлен");
-      dispatch(getHaProxyList({})); /// get список HaProxy
+      getData(searchText); /// get список HaProxy
     } else {
       myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
     }
@@ -92,9 +94,19 @@ const ModalsHaProxy = () => {
         6: "Перенаправление отменено",
       };
       myAlert(objText?.[modalActionsHaProxy?.typeAction]);
-      dispatch(getHaProxyList({})); /// get список HaProxy
+      getData(searchText); /// get список HaProxy
     } else {
       myAlert("Упс, что-то пошло не так, попробуйте перезагрузить страницу!");
+    }
+  }
+
+  async function saveSettingsFN() {
+    /// специально вызываю его два раза
+    dispatch(saveHaProxyReq({}));
+    const res = await dispatch(saveHaProxyReq({})).unwrap();
+    if (res == 1) {
+      myAlert("Настройки сохранены");
+      setConfirmSave(false);
     }
   }
 
@@ -159,6 +171,14 @@ const ModalsHaProxy = () => {
         title={`Удалить перенаправление домена ?`}
         yes={delBlockHaProxy}
         no={() => dispatch(clearModalActionsHaProxy())}
+      />
+
+      {/* для удаления перенаправлениЯ */}
+      <ConfirmModal
+        state={confirmSave}
+        title={`Сохранить настройки ?`}
+        yes={saveSettingsFN}
+        no={() => setConfirmSave(false)}
       />
     </div>
   );

@@ -323,3 +323,25 @@ img {
   font-size: 14px;
   float: right;
 }
+
+.myScroll {
+  &::-webkit-scrollbar {
+    width: 12px;
+    cursor: pointer;
+    padding: 10px;
+    background: #424242;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #424242;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #686868;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #777777ce;
+    cursor: pointer;
+  }
+}
