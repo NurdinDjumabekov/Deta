@@ -28,6 +28,7 @@ import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 /////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
+import { activeUserServiceFN } from "../../../store/reducers/actionsContaiersSlice";
 
 const MenuInner = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,11 @@ const MenuInner = () => {
     if (id == 2) {
       const send = { guid_host: "", guid_service: codeid };
       dispatch(getContainersInMenu(send));
+      dispatch(activeUserServiceFN({ type: id, guid: codeid }));
     } else if (id == 3) {
       const send = { guid_host: "", guid_user: guid };
       dispatch(getContainersInMenu(send));
+      dispatch(activeUserServiceFN({ type: id, guid }));
     }
   };
 

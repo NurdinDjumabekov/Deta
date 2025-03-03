@@ -25,7 +25,6 @@ import {
   addGroupContFN,
   getContainers,
 } from "../../../store/reducers/requestSlice";
-import { delContainerFN } from "../../../store/reducers/requestSlice";
 import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainers } from "../../../store/reducers/requestSlice";
 import { offContainerFN } from "../../../store/reducers/requestSlice";
@@ -178,9 +177,6 @@ const ModalsForContainers = () => {
 
   //////////////////////////////////______////// удаление контейнера
   const { openModaDelCont } = useSelector((state) => state.stateSlice);
-
-  const delContainer = () => dispatch(delContainerFN(openModaDelCont));
-  //////// удаление контейнера через запрос
 
   //////////////////////////////////______////// для просмотра более подробной инфы контейнера
   const { lookMoreInfo } = useSelector((state) => state.containersSlice);
@@ -385,25 +381,6 @@ const ModalsForContainers = () => {
           <button
             className="no"
             onClick={() => dispatch(setOpenModaStoppedCont(""))}
-          >
-            Нет
-          </button>
-        </div>
-      </Modals>
-
-      {/*/////////______//////______////// удаление контейнера  */}
-      <Modals
-        openModal={!!openModaDelCont}
-        setOpenModal={() => dispatch(setOpenModaDelCont())}
-        title={"Удалить виртуальную машину?"}
-      >
-        <div className="addDns offContainer">
-          <button onClick={delContainer} className="yes">
-            Да
-          </button>
-          <button
-            className="no"
-            onClick={() => dispatch(setOpenModaDelCont(""))}
           >
             Нет
           </button>

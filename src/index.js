@@ -27,7 +27,9 @@ root.render(
           theme="light"
           transition={"Bounce"}
         />
-        <App />
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
         <ToastContainer />
       </PersistGate>
     </Provider>

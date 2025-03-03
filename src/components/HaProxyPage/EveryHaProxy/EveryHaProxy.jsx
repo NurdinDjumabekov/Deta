@@ -1,7 +1,6 @@
 /////// hooks
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
 ////// helpers
 import { listProtocols } from "../../../helpers/LocalData";
@@ -70,12 +69,22 @@ const EveryHaProxy = ({ i }) => {
     dispatch(setModalActionsHaProxy(send));
   }
 
-  function delRedirecProxy({ guid, backend_ip }) {
-    const send = { guid, name: "", ip_addres: backend_ip, typeAction: 6 };
+  function delRedirecProxy({ guid }) {
+    const send = { guid, name: "", ip_addres: "", typeAction: 6 };
     dispatch(setModalActionsHaProxy(send));
   }
 
   const [ip, port] = i?.backend_ip?.split(":");
+
+  const objIcon = {
+    1: (
+      <button className="redirect">
+        <img src={redirectIcon} alt="delIcon" />
+      </button>
+    ),
+    2: <LockIcon sx={blueStyle} />,
+  };
+
   return (
     <td
       style={{
@@ -84,7 +93,9 @@ const EveryHaProxy = ({ i }) => {
         borderRight: "1px solid gray",
       }}
     >
-      <div className={`everyHaProxy ${!!i?.block ? "blockProxy" : ""}`}>
+      <div
+        className={`everyHaProxy ${i?.is_redirect == 2 ? "blockProxy" : ""}`}
+      >
         <div
           className={`btnBlink ${
             !!i?.ping_status ? "offHaproxy" : "onHaproxy"
@@ -133,20 +144,18 @@ const EveryHaProxy = ({ i }) => {
               className="action redirectMain"
               style={{ paddingRight: 5, paddingBottom: 5 }}
             >
-              <button className="redirect">
-                <img src={redirectIcon} alt="delIcon" />
-              </button>
+              {objIcon?.[i?.is_redirect]}
               <div>
                 <p>{i?.redirect_domen}</p>
               </div>
-              <Tooltip title="Отменить перенаправление" placement="top-end">
+              <Tooltip title="Отменить " placement="top-end">
                 <button className="del" onClick={() => delRedirecProxy(i)}>
                   <ClearIcon sx={{ width: 20, height: 20, fill: "red" }} />
                 </button>
               </Tooltip>
             </div>
           )}
-          {i?.redirect_ip && (
+          {/* {i?.redirect_ip && (
             <div
               className="action redirectMain"
               style={{ paddingRight: 5, paddingBottom: 5 }}
@@ -156,12 +165,15 @@ const EveryHaProxy = ({ i }) => {
                 <span>{i?.redirect_ip}</span>
               </div>
               <Tooltip title="Отменить блокировку" placement="top-end">
-                <button className="blockOpen" onClick={() => blockProxy(i)}>
+                <button
+                  className="blockOpen"
+                  onClick={() => delRedirecProxy(i)}
+                >
                   <ClearIcon sx={{ width: 20, height: 20, fill: "red" }} />
                 </button>
               </Tooltip>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </td>

@@ -168,7 +168,7 @@ const ModalsHaProxy = (props) => {
       {/* для удаления перенаправлениЯ */}
       <ConfirmModal
         state={!!guid && typeAction == 6}
-        title={`Удалить перенаправление домена ?`}
+        title={`Отменить ?`}
         yes={delBlockHaProxy}
         no={() => dispatch(clearModalActionsHaProxy())}
       />

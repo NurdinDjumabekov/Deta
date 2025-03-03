@@ -42,6 +42,7 @@
     "react-toastify": "^10.0.5",
     "react-virtuoso": "^4.12.5",
     "react-vnc": "^2.0.2",
+    "react-window": "^1.8.11",
     "recharts": "^2.12.7",
     "redux-persist": "^6.0.0",
     "sass": "^1.69.5",

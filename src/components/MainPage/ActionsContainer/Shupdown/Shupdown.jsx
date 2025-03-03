@@ -1,18 +1,23 @@
+/////// hooks
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import Modals from "../../../../common/Modals/Modals";
-import download from "../../../../assets/icons/download.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { myAlert } from "../../../../helpers/MyAlert";
+
+////// imgs
+import stopCircle from "../../../../assets/icons/stop-circle.svg";
+
+////// components
 import { Tooltip } from "@mui/material";
-import MySelects from "../../../../common/MySelects/MySelects";
-import { listFast, listSnaps } from "../../../../helpers/LocalData";
+import Modals from "../../../../common/Modals/Modals";
+import ConfirmModal from "../../../../common/ConfirmModal/ConfirmModal";
+
+////// helpers
+
+////// fns
 import {
-  backUpContainerFN,
-  getDataForBackUp,
   getStatusVMReq,
   logsActionsVM_FN,
+  shutdownContainerFN,
   updateStatusActionVM_Req,
-  viewLogsFN,
 } from "../../../../store/reducers/actionsContaiersSlice";
 import {
   getContainers,
@@ -22,50 +27,28 @@ import {
 /////// style
 import "./style.scss";
 
-const BackUp = ({ item }) => {
-  const { guid, vm_id, vm_name, status_action_backup } = item;
+const Shupdown = ({ item }) => {
+  const { guid, vm_id, vm_name, status_action_shupdown } = item;
 
   const dispatch = useDispatch();
   const intervalRef = useRef(null);
 
-  const { dataForBackUp, logsActionsVM } = useSelector(
-    (state) => state.actionsContaiersSlice
-  );
+  const { logsActionsVM } = useSelector((state) => state.actionsContaiersSlice);
   const { activeUserService } = useSelector(
     (state) => state.actionsContaiersSlice
   );
   const { activeHost } = useSelector((state) => state.stateSlice);
-  const [dataBackUp, setDataBackUp] = useState({});
+  const [dataShupdown, setDataShupdown] = useState({});
   const [viewLogs, setViewLogs] = useState({});
 
   const openModalBackUpFN = async () => {
-    const res = await dispatch(getDataForBackUp({ guid_vm: guid })).unwrap();
-    if (!!res?.[0]?.guid) {
-      setDataBackUp({
-        name: `${vm_id} - ${vm_name}`,
-        type: { value: res?.[0]?.guid, label: res?.[0]?.storage_name },
-        fasts: { value: "zstd", label: "ZSTD (fast and good)" },
-        snaps: { value: "snapshot", label: "Snapshot" },
-        guid,
-      });
-    }
-    if (!!status_action_backup) setViewLogs(true);
+    setDataShupdown({ name: `${vm_id} - ${vm_name}`, guid });
+    if (!!status_action_shupdown) setViewLogs(true);
     else setViewLogs(false);
   };
 
-  const onChangeSelect = (item) => {
-    setDataBackUp((prev) => ({ ...prev, [item.name]: item }));
-  };
-
-  const backUpContainer = async () => {
-    if (!dataBackUp?.type?.value) return myAlert("Выберите хранилище", "error");
-    const send = {
-      guid_vm: dataBackUp.guid,
-      storage: dataBackUp.type.value,
-      compress: dataBackUp.fasts.value,
-      mode: dataBackUp.snaps.value,
-    };
-    const res = await dispatch(backUpContainerFN(send)).unwrap();
+  const shutdownContainer = async () => {
+    const res = await dispatch(shutdownContainerFN(dataShupdown)).unwrap();
     if (res?.res == 1) {
       setViewLogs(true);
       if (!!activeHost) dispatch(getContainers(activeHost));
@@ -83,14 +66,14 @@ const BackUp = ({ item }) => {
 
   useEffect(() => {
     const load = async () => {
-      if (!!dataBackUp.guid && !!status_action_backup) {
+      if (!!dataShupdown.guid && !!status_action_shupdown) {
         if (intervalRef.current) return; // Если интервал уже запущен, не запускаем новый
         intervalRef.current = setInterval(async () => {
           try {
-            const sendData = { upid: item?.backup_upid, guid: item?.guid };
+            const sendData = { upid: item?.shupdown_upid, guid: item?.guid };
             const res = await dispatch(getStatusVMReq(sendData)).unwrap();
             if (res.data.exitstatus == "OK" || res.data.status == "stopped") {
-              const name = "status_action_backup";
+              const name = "status_action_shupdown";
               const result = await dispatch(
                 updateStatusActionVM_Req({ guid, name })
               ).unwrap();
@@ -114,7 +97,7 @@ const BackUp = ({ item }) => {
               }
             }
           } catch (error) {
-            console.error(" Ошибка в getStatusVMReq:", error);
+            console.error("❌ Ошибка в getStatusVMReq:", error);
           }
         }, 3000);
       } else {
@@ -127,62 +110,31 @@ const BackUp = ({ item }) => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     };
-  }, [dataBackUp.guid, dispatch, item]);
+  }, [dataShupdown.guid, dispatch, item]);
 
   const closeModal = () => {
     dispatch(logsActionsVM_FN([]));
-    setDataBackUp({});
+    setDataShupdown({});
   };
 
   return (
-    <div className="backUpActions">
-      <div className="backUpActions__action">
-        <Tooltip title="BackUp" placement="top">
+    <div className="shupdownActions">
+      <div className="shupdownActions__action">
+        <Tooltip title="Мягкое выключение" placement="top">
           <button onClick={openModalBackUpFN}>
-            <img src={download} alt="#" />
+            <img src={stopCircle} alt="#" />
           </button>
         </Tooltip>
-        <Modals
-          openModal={!!dataBackUp.guid && !!!status_action_backup && !viewLogs}
-          setOpenModal={closeModal}
-          title={`Бэкап сервера ${dataBackUp.name}`}
-        >
-          <div className="backUpActions__inner">
-            <div className="backUp__main">
-              <MySelects
-                list={listFast}
-                initText="Выбрать"
-                onChange={onChangeSelect}
-                nameKey="fasts"
-                value={dataBackUp.fasts}
-                title="Выберите режим"
-              />
-              <MySelects
-                list={dataForBackUp}
-                initText="Выбрать"
-                onChange={onChangeSelect}
-                nameKey="type"
-                value={dataBackUp.type}
-                title="Выберите хранилище"
-              />
-              <MySelects
-                list={listSnaps}
-                initText="Выбрать"
-                onChange={onChangeSelect}
-                nameKey="snaps"
-                value={dataBackUp.snaps}
-                title="Выберите режим"
-              />
-            </div>
-            <button className="btnAction btnAction2" onClick={backUpContainer}>
-              Подтвердить
-            </button>
-          </div>
-        </Modals>
+        <ConfirmModal
+          state={!!dataShupdown.guid && !!!status_action_shupdown && !viewLogs}
+          title={`Отключение ${dataShupdown.name}`}
+          yes={shutdownContainer}
+          no={closeModal}
+        />
       </div>
-      <div className="backUpActions__logs">
+      <div className="shupdownActions__logs">
         <Modals
-          openModal={!!dataBackUp.guid && viewLogs}
+          openModal={!!dataShupdown.guid && viewLogs}
           setOpenModal={closeModal}
           title={`Лог бэкапа '${vm_name}'`}
         >
@@ -206,16 +158,8 @@ const BackUp = ({ item }) => {
           </div>
         </Modals>
       </div>
-
-      {/* {viewLog && (
-        <LogsModal
-          open={viewLog}
-          onClose={() => setViewLog(false)}
-          logs={logs}
-        />
-      )} */}
     </div>
   );
 };
 
-export default BackUp;
+export default Shupdown;

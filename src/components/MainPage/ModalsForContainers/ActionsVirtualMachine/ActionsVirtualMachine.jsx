@@ -4,6 +4,7 @@ import { closeModalStartCont } from "../../../../store/reducers/stateSlice";
 import { useDispatch } from "react-redux";
 
 const ActionsVirtualMachine = () => {
+  ///// delete
   const dispatch = useDispatch();
   const obj = { 1: "Запустить ", 2: "Перезагрузить", 3: "Выключить " };
 

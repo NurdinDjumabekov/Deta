@@ -14,9 +14,6 @@ import migrate from "../../../assets/icons/migrateLogo.png";
 import calendarX from "../../../assets/icons/calendar-x.svg";
 import addGroup from "../../../assets/icons/folder-plus.svg";
 import warning from "../../../assets/icons/warning.svg";
-import playCircle from "../../../assets/icons/play-circle.svg";
-import stopCircle from "../../../assets/icons/stop-circle.svg";
-import repeat from "../../../assets/icons/repeat.svg";
 import minus from "../../../assets/icons/circle-minus.svg";
 import dataBaseIcon from "../../../assets/images/memoryImgs/database.png";
 import round from "../../../assets/images/OS/round.png";
@@ -58,6 +55,9 @@ import { Tooltip } from "@mui/material";
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
 import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 import BackUp from "../ActionsContainer/BackUp/BackUp";
+import Shupdown from "../ActionsContainer/Shupdown/Shupdown";
+import ReloadVM from "../ActionsContainer/ReloadVM/ReloadVM";
+import StartVM from "../ActionsContainer/StartVM/StartVM";
 
 /////// env
 const { REACT_APP_API_URL } = process.env;
@@ -287,20 +287,17 @@ const Containers = ({ item }) => {
                       <img src={calendarX} alt="#" />
                     </button>
                   </Tooltip>
-                  <Tooltip title="Перезагрузить сервер" placement="top">
-                    <button onClick={() => handleVirtualMachine(2)}>
+                  {/* <Tooltip title="Перезагрузить сервер" placement="top">
+                    <button onClick={() => handleVirtualMachine(2)}> //// delete
                       <img src={repeat} alt="#" />
                     </button>
-                  </Tooltip>
-                  <Tooltip title="Мягкое выключение" placement="top">
-                    <button onClick={() => handleVirtualMachine(3)}>
-                      <img src={stopCircle} alt="#" />
-                    </button>
-                  </Tooltip>
+                  </Tooltip> */}
+                  <ReloadVM item={item} />
+                  <Shupdown item={item} />
                 </>
               )}
 
-              <BackUp guid={guid} vm_id={vm_id} vm_name={vm_name} />
+              <BackUp item={item} />
 
               <Tooltip title="Пользователи" placement="top">
                 <button onClick={openKeyInfo}>
@@ -308,13 +305,7 @@ const Containers = ({ item }) => {
                 </button>
               </Tooltip>
 
-              {!checkActive && (
-                <Tooltip title="Запустить сервер" placement="top">
-                  <button onClick={() => handleVirtualMachine(1)}>
-                    <img src={playCircle} alt="#" />
-                  </button>
-                </Tooltip>
-              )}
+              {!checkActive && <StartVM item={item} />}
             </>
 
             <Tooltip title="Удалить из списка" placement="top">
@@ -325,7 +316,7 @@ const Containers = ({ item }) => {
 
             {checkActive && (
               <>
-                <Tooltip
+                {/* <Tooltip
                   title=" Жёсткое выключение (!может вызвать повреждение файлов на
                 высоконагруженных серверах!)"
                   placement="top"
@@ -333,7 +324,7 @@ const Containers = ({ item }) => {
                   <button onClick={openModalOffContainer}>
                     <img src={warning} alt="#" />
                   </button>
-                </Tooltip>
+                </Tooltip> */}
               </>
             )}
             <button className="deleteBtn" onClick={delContainer}>

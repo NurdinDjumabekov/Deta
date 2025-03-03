@@ -569,27 +569,6 @@ export const editAccessesUsersFN = createAsyncThunk(
   }
 );
 
-//// delContainerFN - удаление контейнера
-export const delContainerFN = createAsyncThunk(
-  "delContainerFN",
-  async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/shutdown`;
-    const data = { guid };
-    try {
-      const response = await axiosInstance.post(url, data);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModaDelCont("")); /// закрываю модалку
-        myAlert("Виртуальная машина удалена!");
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 ////////////////////////////////////////////////////////// volns //////////////
 
 ///// getVolns - для получения волн определенного хоста

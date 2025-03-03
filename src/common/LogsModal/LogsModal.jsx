@@ -5,7 +5,6 @@ import Modals from "../Modals/Modals";
 
 //// styles
 import "./style.scss";
-import { getLogBackUp } from "../../store/reducers/actionsContaiersSlice";
 
 const url_socket = "https://dd-api.ibm.kg";
 
