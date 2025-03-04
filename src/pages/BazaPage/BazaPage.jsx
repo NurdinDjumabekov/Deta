@@ -45,9 +45,9 @@ const BazaPage = () => {
   }
 
   useEffect(() => {
-    const disconnectProv = dispatch(updatedDataBasesSIO()); /// get провайдеров
+    // const disconnectProv = dispatch(updatedDataBasesSIO()); /// get провайдеров
     getData();
-    return () => disconnectProv();
+    // return () => disconnectProv();
   }, []);
 
   function openModal(actionType, obj) {

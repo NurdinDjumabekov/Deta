@@ -136,8 +136,6 @@ const initialState = {
 
   openModaDelGroup: "", ////guid для модалки удаления контейнера с группы
 
-  openModaStoppedCont: "", ////guid для модалки выключения контейнера
-
   openModaDelCont: "", ////guid для модалки удаления контейнера
 
   openModalKeyCont: "", ////guid  для доступов отображения контейнеров клиентам
@@ -329,24 +327,8 @@ const containersSlice = createSlice({
       state.openModalAddGroup = action.payload;
     },
 
-    setOpenModaDelGroup: (state, action) => {
-      state.openModaDelGroup = action.payload;
-    },
-
-    setOpenModaStoppedCont: (state, action) => {
-      state.openModaStoppedCont = action.payload;
-    },
-
-    setOpenModaDelCont: (state, action) => {
-      state.openModaDelCont = action.payload;
-    },
-
     setOpenModalKeyCont: (state, action) => {
       state.openModalKeyCont = action.payload;
-    },
-
-    setOpenModaStartCont: (state, action) => {
-      state.openModaStartCont = action.payload;
     },
 
     closeModalStartCont: (state, action) => {
@@ -390,11 +372,7 @@ export const {
   setOpenOSModal,
   setOpenAddFiles,
   setOpenModalAddGroup,
-  setOpenModaDelGroup,
-  setOpenModaStoppedCont,
-  setOpenModaDelCont,
   setOpenModalKeyCont,
-  setOpenModaStartCont,
   closeModalStartCont,
   setLookMoreInfo,
   closeLookMoreInfo,

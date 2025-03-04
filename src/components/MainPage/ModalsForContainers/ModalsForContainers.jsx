@@ -11,23 +11,13 @@ import krest from "../../../assets/icons/krest.svg";
 ////// fns
 import { closeModalStartCont } from "../../../store/reducers/stateSlice";
 import { clearOpenAddFiles } from "../../../store/reducers/stateSlice";
-import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
-import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
-import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
-import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
 import { clearAddTempCont } from "../../../store/reducers/stateSlice";
 import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setAddTempCont } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
-import {
-  addGroupContFN,
-  getContainers,
-} from "../../../store/reducers/requestSlice";
-import { delGroupContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainers } from "../../../store/reducers/requestSlice";
-import { offContainerFN } from "../../../store/reducers/requestSlice";
 import { editContainerOS } from "../../../store/reducers/requestSlice";
 import { addDelFileInContainer } from "../../../store/reducers/requestSlice";
 import { addContainersFN } from "../../../store/reducers/requestSlice";
@@ -41,17 +31,13 @@ import "./style.scss";
 import SliderScroll from "../../../common/SliderScroll/SliderScroll";
 import Modals from "../../../common/Modals/Modals";
 import MyInputs from "../../../common/MyInput/MyInputs";
-import Selects from "../../../common/Selects/Selects";
 import Dropzone from "react-dropzone-uploader";
 import AccessesUsers from "./AccessesUsers/AccessesUsers";
 import ActionsVirtualMachine from "./ActionsVirtualMachine/ActionsVirtualMachine";
 import debounce from "debounce";
 
 ////// helpers
-import { listFast, listSnaps } from "../../../helpers/LocalData";
 import { myAlert } from "../../../helpers/MyAlert";
-import { getUsersServiceReq } from "../../../store/reducers/usersSlice";
-import MySelects from "../../../common/MySelects/MySelects";
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -139,44 +125,12 @@ const ModalsForContainers = () => {
     ///// удаление файлов с контейнера
   };
 
-  //////////////////////////////////______////// добавление контейнера в группу
-  const { openModalAddGroup } = useSelector((state) => state.stateSlice);
-  const { listUsers } = useSelector((state) => state.requestSlice);
-
-  const addContInGroup = (codeid) => {
-    const data = { codeid_group: codeid, guid_vm: openModalAddGroup };
-    dispatch(getContainers(activeHost));
-    dispatch(addGroupContFN(data)); /// обновляю контейнера и кол-ва пользователей
-    dispatch(getUsersServiceReq({}));
-    ///// добавление контейнера в группу
-    ///// guid_vm - guid контейнера
-    ///// codeid_group - guid группы(пользов-лей)
-  };
-
-  //////////////////////////////////______////// удаление контейнера c группы
-  const { openModaDelGroup } = useSelector((state) => state.stateSlice);
-
-  const delContInGroup = () => dispatch(delGroupContainerFN(openModaDelGroup));
-  ///// удаление контейнера с группы через запрос (openModaDelGroup - guid контейнера)
-
   //////////////////////////////////______////// для доступов отображения контейнеров клиентам
   const { openModalKeyCont } = useSelector((state) => state.stateSlice);
   //// остальные действия в компоненте
 
   //////////////////////////////////______////// запуск контейнера
   const { openModaStartCont } = useSelector((state) => state.stateSlice);
-  // setOpenModaStartCont
-  // const offContainer = () => dispatch(offContainerFN(openModaStoppedCont));
-  //////// запуск контейнера через запрос
-
-  //////////////////////////////////______////// выключения контейнера
-  const { openModaStoppedCont } = useSelector((state) => state.stateSlice);
-
-  const offContainer = () => dispatch(offContainerFN(openModaStoppedCont));
-  //////// выключения контейнера через запрос
-
-  //////////////////////////////////______////// удаление контейнера
-  const { openModaDelCont } = useSelector((state) => state.stateSlice);
 
   //////////////////////////////////______////// для просмотра более подробной инфы контейнера
   const { lookMoreInfo } = useSelector((state) => state.containersSlice);
@@ -309,45 +263,6 @@ const ModalsForContainers = () => {
         </div>
       </Modals>
 
-      {/*/////////______//////______////// добавление контейнера в группу  */}
-      <Modals
-        openModal={!!openModalAddGroup}
-        setOpenModal={() => dispatch(setOpenModalAddGroup())}
-        title={"Выберите группу"}
-      >
-        <div className="addDns choiceGroup">
-          <div className="choiceGroup__inner">
-            {listUsers?.map((item) => (
-              <button
-                key={item?.codeid}
-                onClick={() => addContInGroup(item?.codeid)}
-              >
-                {item?.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </Modals>
-
-      {/*/////////______//////______////// удалить контейнер с группы через запрос  */}
-      <Modals
-        openModal={!!openModaDelGroup}
-        setOpenModal={() => dispatch(setOpenModaDelGroup())}
-        title={"Вы уверены, что хотите удалить?"}
-      >
-        <div className="addDns offContainer">
-          <button onClick={delContInGroup} className="yes">
-            Да
-          </button>
-          <button
-            className="no"
-            onClick={() => dispatch(setOpenModaDelGroup(""))}
-          >
-            Нет
-          </button>
-        </div>
-      </Modals>
-
       {/*/////////______//////______////// для доступов отображения контейнеров клиентам  */}
       <Modals
         openModal={!!openModalKeyCont}
@@ -367,25 +282,6 @@ const ModalsForContainers = () => {
           <ActionsVirtualMachine />
         </Modals>
       </div>
-
-      {/*/////////______//////______////// выключение контейнера  */}
-      <Modals
-        openModal={!!openModaStoppedCont}
-        setOpenModal={() => dispatch(setOpenModaStoppedCont())}
-        title={"Вы уверены, что хотите остановить виртуальную машину?"}
-      >
-        <div className="addDns offContainer">
-          <button onClick={offContainer} className="yes">
-            Да
-          </button>
-          <button
-            className="no"
-            onClick={() => dispatch(setOpenModaStoppedCont(""))}
-          >
-            Нет
-          </button>
-        </div>
-      </Modals>
 
       {/*/////////______//////______////// просмотр подробной инфы(глазик)  */}
       <Modals

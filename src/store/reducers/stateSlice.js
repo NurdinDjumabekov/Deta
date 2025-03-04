@@ -139,8 +139,6 @@ const initialState = {
 
   openModaDelGroup: "", ////guid для модалки удаления контейнера с группы
 
-  openModaStoppedCont: "", ////guid для модалки выключения контейнера
-
   openModaDelCont: "", ////guid для модалки удаления контейнера
 
   openModalKeyCont: "", ////guid  для доступов отображения контейнеров клиентам
@@ -370,24 +368,8 @@ const stateSlice = createSlice({
       state.openModalAddGroup = action.payload;
     },
 
-    setOpenModaDelGroup: (state, action) => {
-      state.openModaDelGroup = action.payload;
-    },
-
-    setOpenModaStoppedCont: (state, action) => {
-      state.openModaStoppedCont = action.payload;
-    },
-
-    setOpenModaDelCont: (state, action) => {
-      state.openModaDelCont = action.payload;
-    },
-
     setOpenModalKeyCont: (state, action) => {
       state.openModalKeyCont = action.payload;
-    },
-
-    setOpenModaStartCont: (state, action) => {
-      state.openModaStartCont = action.payload;
     },
 
     closeModalStartCont: (state, action) => {
@@ -482,11 +464,7 @@ export const {
   setOpenAddFiles,
   clearOpenAddFiles,
   setOpenModalAddGroup,
-  setOpenModaDelGroup,
-  setOpenModaStoppedCont,
-  setOpenModaDelCont,
   setOpenModalKeyCont,
-  setOpenModaStartCont,
   closeModalStartCont,
   setDistributeIpModal,
   setOpenAddProvider,

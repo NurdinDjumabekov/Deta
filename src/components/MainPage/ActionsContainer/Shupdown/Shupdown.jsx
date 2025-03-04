@@ -19,13 +19,10 @@ import {
   shutdownContainerFN,
   updateStatusActionVM_Req,
 } from "../../../../store/reducers/actionsContaiersSlice";
-import {
-  getContainers,
-  getContainersInMenu,
-} from "../../../../store/reducers/requestSlice";
 
 /////// style
 import "./style.scss";
+import { getDataVM } from "../../../../helpers/getDataVM";
 
 const Shupdown = ({ item }) => {
   const { guid, vm_id, vm_name, status_action_shupdown } = item;
@@ -51,16 +48,7 @@ const Shupdown = ({ item }) => {
     const res = await dispatch(shutdownContainerFN(dataShupdown)).unwrap();
     if (res?.res == 1) {
       setViewLogs(true);
-      if (!!activeHost) dispatch(getContainers(activeHost));
-      else {
-        if (activeUserService?.type == 2) {
-          const send = { guid_host: "", guid_service: activeUserService?.guid };
-          dispatch(getContainersInMenu(send));
-        } else if (activeUserService?.type == 3) {
-          const send = { guid_host: "", guid_user: activeUserService?.guid };
-          dispatch(getContainersInMenu(send));
-        }
-      }
+      getDataVM({ dispatch, activeHost, activeUserService });
     }
   };
 
@@ -78,26 +66,11 @@ const Shupdown = ({ item }) => {
                 updateStatusActionVM_Req({ guid, name })
               ).unwrap();
               if (result?.res == 1) {
-                if (!!activeHost) dispatch(getContainers(activeHost));
-                else {
-                  if (activeUserService?.type == 2) {
-                    const send = {
-                      guid_host: "",
-                      guid_service: activeUserService?.guid,
-                    };
-                    dispatch(getContainersInMenu(send));
-                  } else if (activeUserService?.type == 3) {
-                    const send = {
-                      guid_host: "",
-                      guid_user: activeUserService?.guid,
-                    };
-                    dispatch(getContainersInMenu(send));
-                  }
-                }
+                getDataVM({ dispatch, activeHost, activeUserService });
               }
             }
           } catch (error) {
-            console.error("❌ Ошибка в getStatusVMReq:", error);
+            console.error("Ошибка в getStatusVMReq:", error);
           }
         }, 3000);
       } else {

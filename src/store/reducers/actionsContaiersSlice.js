@@ -160,6 +160,42 @@ export const reloadContainerFN = createAsyncThunk(
   }
 );
 
+//// delGroupContainerReq - удалить группу контейнера
+export const delGroupContainerReq = createAsyncThunk(
+  "delGroupContainerReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/delGroupVM`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// addGroupVmReq - добавить в группу контейнер
+export const addGroupVmReq = createAsyncThunk(
+  "addGroupVmReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/updateUserOrGroupPermissions`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const actionsContaiersSlice = createSlice({
   name: "actionsContaiersSlice",
   initialState,
@@ -227,6 +263,18 @@ const actionsContaiersSlice = createSlice({
       state.preloader = false;
     });
     builder.addCase(updateStatusActionVM_Req.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    ///////////////////////////////////// delGroupContainerReq
+    builder.addCase(delGroupContainerReq.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(delGroupContainerReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(delGroupContainerReq.pending, (state, action) => {
       state.preloader = true;
     });
   },

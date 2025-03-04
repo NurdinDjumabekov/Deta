@@ -10,8 +10,6 @@ import {
   setGuidHostEdit,
   setOpenAddFiles,
   setOpenAddProvider,
-  setOpenModaDelCont,
-  setOpenModaDelGroup,
   setOpenModalAddGroup,
   setOpenModalKeyCont,
   setOpenOSModal,
@@ -473,26 +471,6 @@ export const addGroupContFN = createAsyncThunk(
   }
 );
 
-//// delGroupContainerFN - удаление контейнера с группы
-export const delGroupContainerFN = createAsyncThunk(
-  "delGroupContainerFN",
-  async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/delInGroup?guid=${guid}`;
-    try {
-      const response = await axiosInstance(url);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModaDelGroup("")); /// закрываю модалку
-        myAlert("Виртуальная машина удалена с группы!");
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 ///// fixTimeCreateCont - фиксирование времени создания контейнера
 export const fixTimeCreateCont = createAsyncThunk(
   "fixTimeCreateCont",
@@ -502,25 +480,6 @@ export const fixTimeCreateCont = createAsyncThunk(
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         myAlert("Время зафиксировано");
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-//// offContainerFN - выключения контейнера
-export const offContainerFN = createAsyncThunk(
-  "offContainerFN",
-  async function (guid, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}+++++++++++++++${guid}`;
-    try {
-      const response = await axiosInstance(url);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenModaDelGroup("")); /// закрываю модалку
         return response?.data;
       } else {
         throw Error(`Error: ${response.status}`);

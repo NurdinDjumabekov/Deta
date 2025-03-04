@@ -12,9 +12,7 @@ import migrate from "../../../assets/icons/migrateLogo.png";
 
 //// imgs
 import calendarX from "../../../assets/icons/calendar-x.svg";
-import addGroup from "../../../assets/icons/folder-plus.svg";
 import warning from "../../../assets/icons/warning.svg";
-import minus from "../../../assets/icons/circle-minus.svg";
 import dataBaseIcon from "../../../assets/images/memoryImgs/database.png";
 import round from "../../../assets/images/OS/round.png";
 import keyIncon from "../../../assets/icons/key.svg";
@@ -31,13 +29,8 @@ import {
   setCloneModal,
   setMigrateContainerData,
   setMigrateModal,
-  setOpenModaStartCont,
 } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
-import { setOpenModaDelCont } from "../../../store/reducers/stateSlice";
-import { setOpenModaDelGroup } from "../../../store/reducers/stateSlice";
-import { setOpenModaStoppedCont } from "../../../store/reducers/stateSlice";
-import { setOpenModalAddGroup } from "../../../store/reducers/stateSlice";
 import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
@@ -58,6 +51,7 @@ import BackUp from "../ActionsContainer/BackUp/BackUp";
 import Shupdown from "../ActionsContainer/Shupdown/Shupdown";
 import ReloadVM from "../ActionsContainer/ReloadVM/ReloadVM";
 import StartVM from "../ActionsContainer/StartVM/StartVM";
+import AddDelGroup from "../ActionsContainer/AddDelGroup/AddDelGroup";
 
 /////// env
 const { REACT_APP_API_URL } = process.env;
@@ -74,15 +68,7 @@ const Containers = ({ item }) => {
   const { activeContainer, cloneContainerData, migrateContainerData } =
     useSelector((state) => state.stateSlice);
 
-  const clickVmId = () => {
-    ///// перекидываю на другую (постороннюю) ссылку
-    // window.open(
-    //   `http://localhost:3000/vnc?vnc_key=${guid}`,
-    //   "_blank",
-    //   "noopener,noreferrer"
-    // );
-    navigate(`/vnc/${guid}`);
-  };
+  const clickVmId = () => navigate(`/vnc/${guid}`);
 
   const clickContainer = () => {
     if (guid == activeContainer) return;
@@ -102,37 +88,14 @@ const Containers = ({ item }) => {
   ///// get файлы каждого контейнера
   //// внутри него открываю модалку для добавления файлов в контейнер
 
-  const openModalAddGroup = () => {
-    dispatch(setOpenModalAddGroup(guid)); // (guid - guid контейнера)
-    //// открываю модалку для добавления контейнера в группу
-    dispatch(getDataAcceptUsers(guid)); // (guid - guid контейнера)
-    //// запрос на получения списка для доступов пользователей и для получения обычных user
-  };
-
   const openModalFixTime = () => dispatch(fixTimeCreateCont({ guid_vm: guid }));
   ////  фиксирование времени создания контейнера
-
-  const openModalDelInGroup = () => dispatch(setOpenModaDelGroup(guid));
-  //// модалка для удаления контейнера с группы
-
-  const openModalOffContainer = () => dispatch(setOpenModaStoppedCont(guid));
-  //// модалка для выключения контейнера
-
-  const delContainer = () => dispatch(setOpenModaDelCont(guid));
-  //// модалка для удаления контейнера
 
   const openKeyInfo = () => {
     dispatch(setOpenModalKeyCont(guid));
     //// модалка для доступов отображения контейнеров клиентам
     dispatch(getDataAcceptUsers(guid)); // (guid - guid контейнера)
     //// запрос на получения списка для доступов пользователей и для получения обычных user
-  };
-
-  const handleVirtualMachine = (type) => {
-    const obj = { 1: "Запустить ", 2: "Перезагрузить", 3: "Выключить " };
-    const text = `${obj?.[type]} виртуальную машину ${vm_id} ?`;
-    dispatch(setOpenModaStartCont({ guid, vm_id: text }));
-    //// для модалки запуска, обновления и остановки запуска контейнера
   };
 
   const openLookMoreInfo = () => dispatch(setLookMoreInfo(item));
@@ -274,11 +237,7 @@ const Containers = ({ item }) => {
                 </button>
               </Tooltip>
 
-              <Tooltip title="Добавить в группу" placement="top">
-                <button onClick={openModalAddGroup}>
-                  <img src={addGroup} alt="#" />
-                </button>
-              </Tooltip>
+              <AddDelGroup item={item} />
 
               {checkActive && (
                 <>
@@ -287,11 +246,6 @@ const Containers = ({ item }) => {
                       <img src={calendarX} alt="#" />
                     </button>
                   </Tooltip>
-                  {/* <Tooltip title="Перезагрузить сервер" placement="top">
-                    <button onClick={() => handleVirtualMachine(2)}> //// delete
-                      <img src={repeat} alt="#" />
-                    </button>
-                  </Tooltip> */}
                   <ReloadVM item={item} />
                   <Shupdown item={item} />
                 </>
@@ -308,28 +262,20 @@ const Containers = ({ item }) => {
               {!checkActive && <StartVM item={item} />}
             </>
 
-            <Tooltip title="Удалить из списка" placement="top">
-              <button onClick={openModalDelInGroup}>
-                <img src={minus} alt="#" />
-              </button>
-            </Tooltip>
-
             {checkActive && (
               <>
-                {/* <Tooltip
-                  title=" Жёсткое выключение (!может вызвать повреждение файлов на
+                <Tooltip
+                  title="Жёсткое выключение (!может вызвать повреждение файлов на
                 высоконагруженных серверах!)"
                   placement="top"
                 >
-                  <button onClick={openModalOffContainer}>
+                  <button>
                     <img src={warning} alt="#" />
                   </button>
-                </Tooltip> */}
+                </Tooltip>
               </>
             )}
-            <button className="deleteBtn" onClick={delContainer}>
-              Удалить
-            </button>
+            <button className="deleteBtn">Удалить</button>
           </div>
           {checkActive && (
             <div className={`key ${del ? "actions__key" : ""}`}>
