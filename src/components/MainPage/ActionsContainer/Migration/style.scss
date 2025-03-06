@@ -1,0 +1,19 @@
+.migration {
+  .modal {
+    &__inner {
+      min-width: 450px;
+      width: 450px;
+      max-width: 450px;
+
+      .description {
+        font-size: 13px;
+        margin: 10px 0 0 0;
+      }
+
+      .btnAction {
+        width: 160px !important;
+        height: auto !important;
+      }
+    }
+  }
+}

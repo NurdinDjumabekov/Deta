@@ -258,7 +258,7 @@ export const getContainers = createAsyncThunk(
   "getContainers",
   async function (guid, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}host/getHostContainerList`;
-    const data = { vawe: "1", elemid: guid }; //// guid - хоста
+    const data = { elemid: guid }; //// guid - хоста
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -359,46 +359,15 @@ export const addContainersFN = createAsyncThunk(
   }
 );
 
-///// editContainers - редактирование контейнеров
-export const editContainers = createAsyncThunk(
-  "editContainers",
-  async function ({ activeHost, data }, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/editContainer`;
-    ///  data - изменяемы данные хоста
-    try {
-      const response = await axiosInstance.post(url, data);
-      if (response.status >= 200 && response.status < 300) {
-        dispatch(getContainers(activeHost));
-        //// guid активного хоста
-        dispatch(clearTemporaryContainer());
-        ///// очищаю временное хранение данных контейнеров
-        return response?.data;
-      } else {
-        throw Error(`Error: ${response.status}`);
-      }
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-///// editContainerOS - добавление ОС контейнеров
-export const editContainerOS = createAsyncThunk(
-  "editContainerOS",
+///// editVmOS_req - добавление ОС контейнеров
+export const editVmOS_req = createAsyncThunk(
+  "editVmOS_req",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/updateVmOc`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        dispatch(setOpenOSModal("")); ///// очищаю временное хранение данных ОС
-
-        if (!!data?.activeHost) {
-          dispatch(getContainers(data?.activeHost)); //// guid - хоста
-        } else {
-          const obj = { guid_host: data?.activeHost };
-          dispatch(getContainersInMenu(obj)); /// guid групп (сервера и поль-тели)
-        }
-        return response?.data;
+        return response?.data?.res;
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -710,6 +679,7 @@ const requestSlice = createSlice({
       state.error = action.payload;
       state.preloader = false;
       state.listContainers = [];
+      myAlert("Ошибка, не удалось загрузить данные!", "error");
     });
     builder.addCase(getContainers.pending, (state, action) => {
       state.preloader = true;

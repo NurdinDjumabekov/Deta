@@ -12,8 +12,10 @@ import hostingIcon from "../../../assets/images/memoryImgs/hosting.png";
 
 ////// helpers
 import { percentColor } from "../../../helpers/percentColor";
-import DataBases from "../../../iconsComponents/DataBases/DataBases";
 import { cutNums } from "../../../helpers/cutNums";
+
+////// components
+import DataBases from "../../../iconsComponents/DataBases/DataBases";
 
 const MemoryComp = (props) => {
   const { node_cpu_usage, node_cpu } = props;
@@ -55,10 +57,10 @@ const MemoryComp = (props) => {
         <div className="blockProPercent">
           <div
             className="percent"
-              style={{
-                width: `${color_ram}%`,
-                background: percentColor(`${color_ram}%`),
-              }}
+            style={{
+              width: `${color_ram}%`,
+              background: percentColor(`${color_ram}%`),
+            }}
           />
           <p className="info">{all_node_ram}</p>
         </div>
@@ -69,7 +71,7 @@ const MemoryComp = (props) => {
           {array_storages?.map((item) => (
             <DataBases
               percent={`${+item?.storage_used_fraction * 100}%`}
-              img={objImgs?.[item?.tipe_id]}
+              imgIcon={objImgs?.[item?.tipe_id] || dataBaseIcon}
               more={item?.storage_name}
               key={item?.guid}
             />

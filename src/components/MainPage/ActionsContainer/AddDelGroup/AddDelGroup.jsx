@@ -1,26 +1,30 @@
-import { Tooltip } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 //// imgs
 import addGroupIcon from "../../../../assets/icons/folder-plus.svg";
 import minus from "../../../../assets/icons/circle-minus.svg";
-import { setOpenModalAddGroup } from "../../../../store/reducers/stateSlice"; /// delete
-import { getDataAcceptUsers } from "../../../../store/reducers/requestSlice"; /// delete
-import { useDispatch } from "react-redux";
 
 /////// styles
 import "./style.scss";
+
+////// components
+import { Tooltip } from "@mui/material";
 import Modals from "../../../../common/Modals/Modals";
 import ConfirmModal from "../../../../common/ConfirmModal/ConfirmModal";
-import { useState } from "react";
-import {
-  addGroupVmReq,
-  delGroupContainerReq,
-} from "../../../../store/reducers/actionsContaiersSlice";
-import { getDataVM } from "../../../../helpers/getDataVM";
-import { useSelector } from "react-redux";
-import { myAlert } from "../../../../helpers/MyAlert";
+
+///// fns
+import { setOpenModalAddGroup } from "../../../../store/reducers/stateSlice"; /// delete
+import { getDataAcceptUsers } from "../../../../store/reducers/requestSlice"; /// delete
+import { addGroupVmReq } from "../../../../store/reducers/actionsContaiersSlice";
+import { delGroupContainerReq } from "../../../../store/reducers/actionsContaiersSlice";
 import { getUsersServiceReq } from "../../../../store/reducers/usersSlice";
+
+/////// helpers
+import { getDataVM } from "../../../../helpers/getDataVM";
+import { myAlert } from "../../../../helpers/MyAlert";
 
 const AddDelGroup = ({ item }) => {
   const { guid } = item;

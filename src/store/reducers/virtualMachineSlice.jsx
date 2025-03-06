@@ -247,8 +247,13 @@ const virtualMachineSlice = createSlice({
     setCloneLogs: (state, action) => {
       state.listCloneLogs = action.payload;
     },
+
     setCollStackData: (state, action) => {
       state.listCallStack = action.payload;
+    },
+
+    clearListTypeBackUpContainersFN: (state, action) => {
+      state.listTypeBackUpContainers = {};
     },
   },
 
@@ -330,6 +335,7 @@ export const {
   viewListResultBackUpFN,
   setCloneLogs,
   setCollStackData,
+  clearListTypeBackUpContainersFN,
 } = virtualMachineSlice.actions;
 
 export default virtualMachineSlice.reducer;

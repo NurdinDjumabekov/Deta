@@ -276,3 +276,19 @@ export const listDataBases = [
   { label: "Co-location", value: 7 },
   { label: "VDS/VPS", value: 8 },
 ];
+
+export const listTypeMigrations = [
+  {
+    type: 1,
+    label: "Тип 1",
+    value: 1,
+    discription:
+      "Мы не выключаем делаем перенос, включаем на целевом хосте, выключаем на исходном хосте",
+  },
+  {
+    type: 2,
+    label: "Тип 2",
+    value: 2,
+    discription: "Мы выключаем на исходном, переносим и включаем на целевом",
+  },
+];

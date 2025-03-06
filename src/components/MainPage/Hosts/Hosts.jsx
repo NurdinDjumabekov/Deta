@@ -28,7 +28,7 @@ import { secondsToDhms } from "../../../helpers/secondsToDhms";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr, ping_avg } = item;
-  const { host_name, node_uptime_sec, guid, guid_node } = item;
+  const { node_uptime_sec, guid, guid_node } = item;
   const { array_storages, node_model, node_cpu_usage } = item;
   const { node_cpu, node_ram_usage, node_ram_mb, chart } = item;
   const { node_name } = item;
@@ -44,6 +44,7 @@ const Hosts = ({ item }) => {
     dispatch(setListDiagrams({ list: chart, node_ram_mb }));
     //// выбор хоста для получения контейнеров связанных с этим хостом
   };
+  //// aab9db43-21b9-4224-addb-3a031a242dad
 
   const editOpenModal = () => {
     const obj = {
@@ -73,9 +74,10 @@ const Hosts = ({ item }) => {
           className="hostTitle"
         >
           <img src={proxmoxImg} alt="vnc" />
-          <p>
-            {node_name} (<b>{secondsToDhms(node_uptime_sec)}</b>)
-          </p>
+          <div className="hostTitle__main">
+            <p>{node_name}</p>
+            <b>({secondsToDhms(node_uptime_sec)})</b>
+          </div>
         </a>
         <div className="actions">
           <button>

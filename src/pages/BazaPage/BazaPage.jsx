@@ -30,6 +30,7 @@ import { cutNums } from "../../helpers/cutNums";
 ///////style
 import "./style.scss";
 import { listDataBases } from "../../helpers/LocalData";
+import ModalForProviders from "../../components/ModalForProviders/ModalForProviders";
 
 const BazaPage = () => {
   const dispatch = useDispatch();
@@ -107,7 +108,7 @@ const BazaPage = () => {
         <div className="list hoverScroll">
           {listDataSaved?.map((item) => (
             <div
-              className={`every  ${
+              className={`every ${
                 activeDataBases == item?.guid ? "active" : ""
               } ${objtypeActive?.[item?.check_status_ping]}`}
               key={item?.guid}
@@ -115,7 +116,6 @@ const BazaPage = () => {
             >
               <div className="headerInner">
                 <div className="types">
-                  {/* <img src={obkIcons?.[item?.type]} alt="" /> */}
                   <h5>{item?.data_base_name}</h5>
                   {item?.check_status_ping == 1 && (
                     <div className="warning">
@@ -140,11 +140,9 @@ const BazaPage = () => {
               </div>
 
               <div className="list_ip">
-                {item?.ipAddresses?.length == 0 ? (
-                  "..."
-                ) : (
-                  <>
-                    {item?.ipAddresses?.map((i, index) => (
+                {item?.ipAddresses?.length == 0
+                  ? "..."
+                  : item?.ipAddresses?.map((i, index) => (
                       <div key={index}>
                         {i?.avg_ping == 0 ? (
                           <div>
@@ -171,8 +169,6 @@ const BazaPage = () => {
                         </button>
                       </div>
                     ))}
-                  </>
-                )}
                 <button className="innerIP" onClick={() => openModal(5, item)}>
                   +
                 </button>
@@ -183,13 +179,13 @@ const BazaPage = () => {
                 <p> {item?.main_ip}</p>
               </h6>
 
-              <MemoryComp
+              {/* <MemoryComp
                 node_cpu_usage={+item?.node_cpu_usage / 100}
                 node_cpu={+item?.node_cpu / 1}
                 node_ram_usage={+item?.node_ram_usage / 10}
                 node_ram_mb={+item?.node_ram_mb}
                 array_storages={[]}
-              />
+              /> */}
 
               <div className="comments">
                 <p>{item?.descr || "..."}</p>
@@ -205,6 +201,8 @@ const BazaPage = () => {
         getData={getData}
         openModal={openModal}
       />
+
+      <ModalForProviders />
     </>
   );
 };

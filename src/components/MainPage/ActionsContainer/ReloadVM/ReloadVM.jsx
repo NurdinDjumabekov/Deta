@@ -9,23 +9,25 @@ import repeat from "../../../../assets/icons/repeat.svg";
 import { Tooltip } from "@mui/material";
 import Modals from "../../../../common/Modals/Modals";
 import ConfirmModal from "../../../../common/ConfirmModal/ConfirmModal";
+import MiniLoader from "../../../../common/MiniLoader/MiniLoader";
 
 ////// fns
 import {
   getStatusVMReq,
   logsActionsVM_FN,
   reloadContainerFN,
-  updateStatusActionVM_Req,
+  updateStatusVmReq,
 } from "../../../../store/reducers/actionsContaiersSlice";
-import {
-  getContainers,
-  getContainersInMenu,
-} from "../../../../store/reducers/requestSlice";
+
+/////// helpers
+import { getDataVM } from "../../../../helpers/getDataVM";
+import { textActionVM } from "../../../../helpers/returnColorStatus";
+import { myAlert } from "../../../../helpers/MyAlert";
 
 /////// style
 import "./style.scss";
 
-const ReloadVM = ({ item }) => {
+const ReloadVM = React.memo(({ item }) => {
   const { guid, vm_id, vm_name, status_action_reload } = item;
 
   const dispatch = useDispatch();
@@ -36,68 +38,83 @@ const ReloadVM = ({ item }) => {
     (state) => state.actionsContaiersSlice
   );
   const { activeHost } = useSelector((state) => state.stateSlice);
-  const [dataShupdown, setDataShupdown] = useState({});
-  const [viewLogs, setViewLogs] = useState({});
+  const [dataReload, setDataReload] = useState({});
+  const [viewLogs, setViewLogs] = useState(false);
 
   const openModalBackUpFN = async () => {
-    setDataShupdown({ name: `${vm_id} - ${vm_name}`, guid });
+    setDataReload({ name: `${vm_id} - ${vm_name}`, guid });
     if (!!status_action_reload) setViewLogs(true);
     else setViewLogs(false);
+    dispatch(logsActionsVM_FN([]));
   };
 
   const shutdownContainer = async () => {
-    const res = await dispatch(reloadContainerFN(dataShupdown)).unwrap();
+    const res = await dispatch(reloadContainerFN(dataReload)).unwrap();
     if (res?.res == 1) {
       setViewLogs(true);
-      if (!!activeHost) dispatch(getContainers(activeHost));
-      else {
-        if (activeUserService?.type == 2) {
-          const send = { guid_host: "", guid_service: activeUserService?.guid };
-          dispatch(getContainersInMenu(send));
-        } else if (activeUserService?.type == 3) {
-          const send = { guid_host: "", guid_user: activeUserService?.guid };
-          dispatch(getContainersInMenu(send));
-        }
-      }
+      getDataVM({ dispatch, activeHost, activeUserService });
     }
   };
 
+  const sendType = { guid, name: "status_action_reload" };
+
   useEffect(() => {
-    const load = async () => {
-      if (!!dataShupdown.guid && !!status_action_reload) {
-        if (intervalRef.current) return; // Если интервал уже запущен, не запускаем новый
-        intervalRef.current = setInterval(async () => {
-          try {
-            const sendData = { upid: item?.reload_upid, guid: item?.guid };
-            const res = await dispatch(getStatusVMReq(sendData)).unwrap();
-            if (res.data.exitstatus == "OK" || res.data.status == "stopped") {
-              const name = "status_action_reload";
-              const result = await dispatch(
-                updateStatusActionVM_Req({ guid, name })
-              ).unwrap();
-              if (result?.res == 1) {
-                if (!!activeHost) dispatch(getContainers(activeHost));
-                else {
-                  if (activeUserService?.type == 2) {
-                    const send = {
-                      guid_host: "",
-                      guid_service: activeUserService?.guid,
-                    };
-                    dispatch(getContainersInMenu(send));
-                  } else if (activeUserService?.type == 3) {
-                    const send = {
-                      guid_host: "",
-                      guid_user: activeUserService?.guid,
-                    };
-                    dispatch(getContainersInMenu(send));
-                  }
-                }
-              }
+    const MAX_RETRIES = 5; // Максимальное количество попыток
+    let count = 0;
+
+    const checkStatusVP = async () => {
+      while (count < MAX_RETRIES) {
+        try {
+          const sendData = { upid: item?.reload_upid, guid: item?.guid };
+          const res = await dispatch(getStatusVMReq(sendData)).unwrap();
+
+          if (res.data.exitstatus === "OK" && res.data.status === "stopped") {
+            // Успешный ответ - обновляем статус и выходим из цикла
+            const result = await dispatch(updateStatusVmReq(sendType)).unwrap();
+
+            if (result?.res === 1) {
+              getDataVM({ dispatch, activeHost, activeUserService });
             }
-          } catch (error) {
-            console.error(" Ошибка в getStatusVMReq:", error);
+            return;
+          } else if (res.data.status === "running") {
+            // продолжаем отправлять запрос каждые 5 сек
+            if (intervalRef.current) return;
+            intervalRef.current = setInterval(checkStatusVP, 5000);
+            return;
+          } else if (
+            res.data.exitstatus !== "OK" &&
+            res.data.status === "stopped"
+          ) {
+            // делаем еще 3 попытки
+            count++;
+            if (count >= MAX_RETRIES) {
+              console.warn("Статус VM не изменился после 3 попыток");
+              const sendData = { ...sendType, errorStatus: true };
+              const result = await dispatch(
+                updateStatusVmReq(sendData)
+              ).unwrap();
+
+              if (result?.res === 1) {
+                getDataVM({ dispatch, activeHost, activeUserService });
+              }
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
           }
-        }, 3000);
+        } catch (error) {
+          const er = `Ошибка при запросе статуса VM (попытка ${count + 1}):`;
+          myAlert(er, "error");
+          console.error(er, error);
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 3000)); // Ожидание 2 сек перед повтором
+      }
+    };
+
+    const load = async () => {
+      if (!!dataReload.guid && !!status_action_reload) {
+        if (intervalRef.current) return; // Если интервал уже запущен, не запускаем новый
+        intervalRef.current = setInterval(checkStatusVP, 3000);
       } else {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -108,11 +125,11 @@ const ReloadVM = ({ item }) => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     };
-  }, [dataShupdown.guid, dispatch, item]);
+  }, [dataReload.guid, dispatch, item]);
 
   const closeModal = () => {
     dispatch(logsActionsVM_FN([]));
-    setDataShupdown({});
+    setDataReload({});
   };
 
   return (
@@ -124,17 +141,17 @@ const ReloadVM = ({ item }) => {
           </button>
         </Tooltip>
         <ConfirmModal
-          state={!!dataShupdown.guid && !!!status_action_reload && !viewLogs}
-          title={`Перезагрузить ${dataShupdown.name}`}
+          state={!!dataReload.guid && !!!status_action_reload && !viewLogs}
+          title={`Перезагрузить ${dataReload.name}`}
           yes={shutdownContainer}
           no={closeModal}
         />
       </div>
       <div className="shupdownActions__logs">
         <Modals
-          openModal={!!dataShupdown.guid && viewLogs}
+          openModal={!!dataReload.guid && viewLogs}
           setOpenModal={closeModal}
-          title={`Лог перезагрузки '${vm_name}'`}
+          title={`Логи '${vm_name}'`}
         >
           <div className="logsContainer myScroll">
             {logsActionsVM.length > 0 ? (
@@ -142,22 +159,22 @@ const ReloadVM = ({ item }) => {
                 <p
                   key={index}
                   style={{
-                    color: log.t == "TASK OK" ? "green" : "",
-                    fontWeight: log.t == "TASK OK" ? "500" : "",
-                    fontSize: log.t == "TASK OK" ? 18 : 14,
+                    color: textActionVM(log.t)?.color,
+                    fontWeight: textActionVM(log.t)?.fontWeight,
+                    fontSize: textActionVM(log.t)?.size,
                   }}
                 >
                   {log?.t}
                 </p>
               ))
             ) : (
-              <p>Логи загружаются...</p>
+              <MiniLoader />
             )}
           </div>
         </Modals>
       </div>
     </div>
   );
-};
+});
 
 export default ReloadVM;

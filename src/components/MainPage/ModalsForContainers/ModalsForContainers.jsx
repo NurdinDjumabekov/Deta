@@ -12,13 +12,8 @@ import krest from "../../../assets/icons/krest.svg";
 import { closeModalStartCont } from "../../../store/reducers/stateSlice";
 import { clearOpenAddFiles } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
-import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { clearAddTempCont } from "../../../store/reducers/stateSlice";
-import { clearTemporaryContainer } from "../../../store/reducers/stateSlice";
 import { setAddTempCont } from "../../../store/reducers/stateSlice";
-import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
-import { editContainers } from "../../../store/reducers/requestSlice";
-import { editContainerOS } from "../../../store/reducers/requestSlice";
 import { addDelFileInContainer } from "../../../store/reducers/requestSlice";
 import { addContainersFN } from "../../../store/reducers/requestSlice";
 import { closeLookMoreInfo } from "../../../store/reducers/containersSlice";
@@ -44,21 +39,7 @@ const { REACT_APP_API_URL } = process.env;
 const ModalsForContainers = () => {
   const dispatch = useDispatch();
 
-  //////////////////////////////////______////// редактирование
-  const { temporaryContainer, activeHost } = useSelector(
-    (state) => state.stateSlice
-  );
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(setTemporaryContainer({ ...temporaryContainer, [name]: value }));
-  };
-
-  const editContainer = () => {
-    dispatch(editContainers({ activeHost, data: temporaryContainer }));
-  };
-
-  ///// редактирую через ззапрос контейнерм (инфу о контейнере)
+  const { activeHost } = useSelector((state) => state.stateSlice);
 
   //////////////////////////////////______////// добавление
   const { addTempCont } = useSelector((state) => state.stateSlice);
@@ -91,16 +72,6 @@ const ModalsForContainers = () => {
   };
   ///// добавляю контейнер через запрос
 
-  //////////////////////////////////______////// операционные системы
-  const { openOSModal } = useSelector((state) => state.stateSlice);
-  const { listOS } = useSelector((state) => state.requestSlice);
-
-  const choiceOS = (oc_guid) => {
-    ///// выбираю ОС через запрос
-    const data = { oc_guid, guid_vm: openOSModal, activeHost };
-    dispatch(editContainerOS(data));
-  };
-
   //////////////////////////////////______////// добавление файлов
   const { openAddFiles } = useSelector((state) => state.stateSlice);
 
@@ -110,7 +81,6 @@ const ModalsForContainers = () => {
       data.append("files", filesList.file);
       data.append("guid_vm", openAddFiles.guid);
       data.append("status", 1); // 1 - добавление
-
       const send = { data, guid_container: openAddFiles.guid };
       dispatch(addDelFileInContainer(send));
     }
@@ -137,31 +107,6 @@ const ModalsForContainers = () => {
 
   return (
     <>
-      {/*/////////______//////______////// редактирование  */}
-      <Modals
-        openModal={!!temporaryContainer?.guid}
-        setOpenModal={() => dispatch(clearTemporaryContainer())}
-        title={"Редактирование"}
-      >
-        <div className="addDns hostsEdit contEdit">
-          <div className="second">
-            <div className="myInput">
-              <h5>Информация</h5>
-              <textarea
-                name={"vm_comment"}
-                onChange={onChange}
-                value={temporaryContainer?.vm_comment}
-              />
-            </div>
-          </div>
-          <div className="second actions">
-            <button className="addAction" onClick={editContainer}>
-              Сохранить
-            </button>
-          </div>
-        </div>
-      </Modals>
-
       {/*/////////______//////______////// добавления контенера  */}
       <Modals
         openModal={addTempCont?.bool}
@@ -213,23 +158,6 @@ const ModalsForContainers = () => {
             <button className="addAction" onClick={addContainer}>
               Добавить
             </button>
-          </div>
-        </div>
-      </Modals>
-
-      {/*/////////______//////______////// выбор операционной системы*/}
-      <Modals
-        openModal={!!openOSModal}
-        setOpenModal={() => dispatch(setOpenOSModal())}
-        title={"Выбрать операционную систему"}
-      >
-        <div className="addDns hostsEdit osModal">
-          <div className="listOS">
-            {listOS?.map((i) => (
-              <button key={i?.guid} onClick={() => choiceOS(i?.guid)}>
-                <img src={`${REACT_APP_API_URL}${i?.icon_url}`} alt="os" />
-              </button>
-            ))}
           </div>
         </div>
       </Modals>

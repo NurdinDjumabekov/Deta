@@ -13,10 +13,6 @@ import {
 import { getHosts } from "../../store/reducers/requestSlice";
 import { updatedHosts } from "../../store/reducers/requestSlice";
 import { setAddHost } from "../../store/reducers/stateSlice";
-import {
-  getListBackUpReq,
-  getTypesBackUpReq,
-} from "../../store/reducers/virtualMachineSlice";
 
 ///////components
 import MenuInner from "../../components/Menu/MenuInner/MenuInner";
@@ -29,25 +25,14 @@ import ModalsForContainers from "../../components/MainPage/ModalsForContainers/M
 import ModalsForHosts from "../../components/MainPage/ModalsForHosts/ModalsForHosts";
 import ViewProviders from "../../common/ViewProviders/ViewProviders";
 import CreateContainers from "../../components/MainPage/ModalsForContainers/CreateContainers/CreateContainers";
-import { Tooltip } from "@mui/material";
 import ModalForProviders from "../../components/ModalForProviders/ModalForProviders";
 import CloneModal from "../../components/CloneModal/CloneModal";
-import MigrateModal from "../../components/MigrateModal/MigrateModal";
 import MigrateHostModal from "../../components/MigrateHostModal/MigrateHostModal";
-
-/////// imgs
-import displayIcon from "../../assets/icons/display.svg";
-import addContainer from "../../assets/icons/addContainer.svg";
-import displayRedIcon from "../../assets/icons/displayRed.svg";
-import boxRed from "../../assets/icons/boxRed.svg";
-import boxGreen from "../../assets/icons/boxGreen.svg";
-
-////// helpers
-import { allSumsProvidersFN } from "../../helpers/LocalData";
-import { myAlert } from "../../helpers/MyAlert";
+import CountsVM from "../../components/MainPage/CountsVM/CountsVM";
 
 ///////style
 import "./style.scss";
+import { Tooltip } from "@mui/material";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -55,7 +40,7 @@ const MainPage = () => {
 
   const [modalCreate, setModalCreate] = useState({}); /// для модалки создания контейнера
 
-  const { listHosts, listContainers, countsContainers } = useSelector(
+  const { listHosts, listContainers } = useSelector(
     (state) => state.requestSlice
   );
   const { activeHost, activeContainer } = useSelector(
@@ -97,30 +82,17 @@ const MainPage = () => {
     dispatch(setAddHost({ bool: true }));
   }
 
-  async function openModalCreateContainer() {
-    //// открываю модалки создания контейнера
-    if (!!!activeHost) {
-      return myAlert("Выберите хост", "error");
-    }
-    const { guid_node } = listHosts?.find((item) => activeHost == item?.guid);
-    const res = await dispatch(getTypesBackUpReq(guid_node)).unwrap();
-    if (res?.res == 1) {
-      const item = res?.hosts?.[0];
-      const send = { guid_storage: item?.guid, guid_node };
-      await dispatch(getListBackUpReq(send)).unwrap();
-      setModalCreate({ actionType: 1 });
-    }
-  }
-
   return (
     <>
       <div className="mainPage">
         <div className="providers">
           <div className="providers__main">
-            <button className="addBtn" onClick={addHost}>
-              +
-            </button>
-            <ViewProviders />
+            <Tooltip title="Добавить хост" placement="right">
+              <button className="addBtn" onClick={addHost}>
+                +
+              </button>
+            </Tooltip>
+            <ViewProviders setModalCreate={setModalCreate} />
           </div>
         </div>
 
@@ -140,39 +112,7 @@ const MainPage = () => {
 
           <div className={`containers ${checkContainer}`}>
             <div className="containers__inner">
-              <div className="header__counts">
-                <div
-                  className="every addContainer"
-                  onClick={openModalCreateContainer}
-                >
-                  <Tooltip title="Создать контейнер" placement="top">
-                    <img src={addContainer} alt="add" />
-                  </Tooltip>
-                </div>
-                <div className="every">
-                  <p>Всего: </p>
-                  <p>{allSumsProvidersFN(countsContainers) || 0}</p>
-                </div>
-                <div className="every">
-                  <img src={displayIcon} alt="" />
-                  <p>{countsContainers?.countVpsOn || 0}</p>
-                </div>
-                <div className="every">
-                  <img src={displayRedIcon} alt="" />
-                  <p>{countsContainers?.countVpsOff || 0}</p>
-                </div>
-                <div className="every">
-                  <img src={boxRed} alt="" />
-                  <p>{countsContainers?.countContainerOff || 0}</p>
-                </div>
-                <div className="every">
-                  <img src={boxGreen} alt="" />
-                  <p>{countsContainers?.countContainerOn || 0}</p>
-                </div>
-                <div className="every">
-                  <p>{activeHost ? `GUID:  ${activeHost}` : ""}</p>
-                </div>
-              </div>
+              <CountsVM />
               <div className="list hoverScroll">
                 {listContainers?.map((item, index) => (
                   <Containers key={index} item={item} />
@@ -199,7 +139,6 @@ const MainPage = () => {
         setModalCreate={setModalCreate}
       />
 
-      <MigrateModal />
       <CloneModal />
       <MigrateHostModal />
       <ModalForProviders />

@@ -7,7 +7,7 @@ import { percentColor } from "../../helpers/percentColor";
 ////// style
 import "./style.scss";
 
-const DataBases = ({ percent, img, more }) => {
+const DataBases = ({ percent, imgIcon, more }) => {
   const ledtoversPercent = 100 - +tranformTextInNum(percent);
 
   return (
@@ -22,7 +22,7 @@ const DataBases = ({ percent, img, more }) => {
           )}%, rgba(255,255,255,1) ${+ledtoversPercent}%)`,
           width: "90%",
         }}
-        src={img}
+        src={imgIcon}
         alt="#"
         className="imgMemory"
       />

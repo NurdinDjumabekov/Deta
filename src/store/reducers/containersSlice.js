@@ -283,11 +283,7 @@ const containersSlice = createSlice({
       //// удаляю со списка  vmbr
     },
 
-    ////////////////////////////////////////////////// containers
-    setTemporaryContainer: (state, action) => {
-      state.temporaryContainer = action.payload;
-    },
-
+    
     clearTemporaryContainer: (state, action) => {
       state.temporaryContainer = { vm_comment: "", guid: "", listVmbr: [] };
       //// state для временного хранения данных хоста
@@ -364,7 +360,6 @@ export const {
   delVmbr,
   setTemporaryHosts,
   clearTemporaryHosts,
-  setTemporaryContainer,
   clearTemporaryContainer,
   delVmbrContainer,
   setAddTempCont,

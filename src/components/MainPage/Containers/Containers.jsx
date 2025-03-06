@@ -7,66 +7,60 @@ import { useNavigate } from "react-router-dom";
 import container from "../../../assets/icons/menu/box2.svg";
 import virtualka from "../../../assets/icons/tv.svg";
 import services from "../../../assets/icons/menu/database.svg";
-import edit from "../../../assets/icons/edit.svg";
-import migrate from "../../../assets/icons/migrateLogo.png";
 
 //// imgs
 import calendarX from "../../../assets/icons/calendar-x.svg";
 import warning from "../../../assets/icons/warning.svg";
 import dataBaseIcon from "../../../assets/images/memoryImgs/database.png";
-import round from "../../../assets/images/OS/round.png";
 import keyIncon from "../../../assets/icons/key.svg";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 
+/////// components
+import BackUp from "../ActionsContainer/BackUp/BackUp";
+import Shupdown from "../ActionsContainer/Shupdown/Shupdown";
+import ReloadVM from "../ActionsContainer/ReloadVM/ReloadVM";
+import StartVM from "../ActionsContainer/StartVM/StartVM";
+import AddDelGroup from "../ActionsContainer/AddDelGroup/AddDelGroup";
+import MemoryComp from "../MemoryComp/MemoryComp";
+import { Tooltip } from "@mui/material";
+
 ////// styles
 import "./style.scss";
 
 ////// fns
-import {
-  setCloneContainerData,
-  setCloneModal,
-  setMigrateContainerData,
-  setMigrateModal,
-} from "../../../store/reducers/stateSlice";
+import { setCloneContainerData } from "../../../store/reducers/stateSlice";
+import { setCloneModal } from "../../../store/reducers/stateSlice";
 import { setOpenModalKeyCont } from "../../../store/reducers/stateSlice";
-import { setTemporaryContainer } from "../../../store/reducers/stateSlice";
-import { setOpenOSModal } from "../../../store/reducers/stateSlice";
 import { setActiveContainer } from "../../../store/reducers/stateSlice";
 import { getDataAcceptUsers } from "../../../store/reducers/requestSlice";
 import { getDiagramsContainers } from "../../../store/reducers/requestSlice";
 import { getFilesInContainer } from "../../../store/reducers/requestSlice";
 import { fixTimeCreateCont } from "../../../store/reducers/requestSlice";
 import { setLookMoreInfo } from "../../../store/reducers/containersSlice";
-
-////// components
-import MemoryComp from "../MemoryComp/MemoryComp";
-import { Tooltip } from "@mui/material";
+import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
-import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
-import BackUp from "../ActionsContainer/BackUp/BackUp";
-import Shupdown from "../ActionsContainer/Shupdown/Shupdown";
-import ReloadVM from "../ActionsContainer/ReloadVM/ReloadVM";
-import StartVM from "../ActionsContainer/StartVM/StartVM";
-import AddDelGroup from "../ActionsContainer/AddDelGroup/AddDelGroup";
-
-/////// env
-const { REACT_APP_API_URL } = process.env;
+import EditVM from "../ActionsContainer/EditVM/EditVM";
+import OsEdit_VM from "../ActionsContainer/OsEdit_VM/OsEdit_VM";
+import Migration from "../ActionsContainer/Migration/Migration";
+import StopVm from "../ActionsContainer/StopVm/StopVm";
+import DeleteVm from "../ActionsContainer/DeleteVm/DeleteVm";
 
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del, files } = item;
   const { vm_cpu_usage, vm_cpu, vm_ram_usage_mb, vm_ram_mb, guid, info } = item;
   const { guid_node, node_name, guid_host } = item;
-  const { icon_url, statusid, typeid, service_check } = item;
+  const { statusid, typeid, service_check } = item;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { activeContainer, cloneContainerData, migrateContainerData } =
-    useSelector((state) => state.stateSlice);
+  const { activeContainer, cloneContainerData } = useSelector(
+    (state) => state.stateSlice
+  );
 
   const clickVmId = () => navigate(`/vnc/${guid}`);
 
@@ -75,14 +69,6 @@ const Containers = ({ item }) => {
     dispatch(setActiveContainer(guid)); //// делаю активным нажатый контейнер
     dispatch(getDiagramsContainers(guid)); //// для get диграмм контейнеров
   };
-
-  const openModalEdit = () => {
-    dispatch(setTemporaryContainer({ guid, vm_comment }));
-    //// открываю модалку для редактирования и подставля. во временный state данные
-  };
-
-  const openOSModal = () => dispatch(setOpenOSModal(guid));
-  //// открываю модалку выбора операц. системы
 
   const openAddFilesFN = () => dispatch(getFilesInContainer(guid));
   ///// get файлы каждого контейнера
@@ -113,18 +99,7 @@ const Containers = ({ item }) => {
     dispatch(setCloneContainerData(past));
   };
 
-  const openMigrateModal = async () => {
-    await dispatch(getTypesBackUpReq(guid_node)).unwrap();
-    dispatch(setMigrateModal(true));
-    const past = {
-      ...migrateContainerData,
-      guid_vm: guid,
-      target_node_guid: { label: node_name, value: guid_host },
-    };
-    dispatch(setMigrateContainerData(past));
-  };
-
-  const active = activeContainer == guid ? "containerActive" : "";
+  const activeVM = activeContainer == guid ? "containerActive" : "";
 
   const objTypeImgs = { qemu: virtualka, lxc: container };
 
@@ -138,7 +113,7 @@ const Containers = ({ item }) => {
     objStatusType?.[statusid] == "rgb(70,150,45)" ? true : false;
 
   return (
-    <div className={`containerMain  ${active}`} onClick={clickContainer}>
+    <div className={`containerMain  ${activeVM}`} onClick={clickContainer}>
       <div className="containerMain__inner">
         {/* ///// */}
         <div className="bottom" onClick={clickVmId}>
@@ -158,16 +133,8 @@ const Containers = ({ item }) => {
         {/* ///// */}
         <div className="editBlock">
           <div className="editBlock__inner">
-            <button className="edit" onClick={openModalEdit}>
-              <img src={edit} alt="edit" />
-            </button>
-            <button className="OS" onClick={openOSModal}>
-              {icon_url ? (
-                <img src={`${REACT_APP_API_URL}${icon_url}`} alt="os" />
-              ) : (
-                <img src={round} alt="os" />
-              )}
-            </button>
+            <EditVM item={item} />
+            <OsEdit_VM item={item} />
           </div>
           <div className="editBlock__inner">
             {!!info && (
@@ -225,17 +192,13 @@ const Containers = ({ item }) => {
         <div className={`actions noActions`}>
           <div className="actions__inner">
             <>
-              <Tooltip title="Мигрировать" placement="top">
-                <button onClick={openMigrateModal}>
-                  <img src={migrate} alt="#" />
-                </button>
-              </Tooltip>
+              <Migration item={item} />
 
-              <Tooltip title="Клонировать" placement="top">
+              {/* <Tooltip title="Клонировать" placement="top">
                 <button onClick={openCloneContainerModel}>
                   <FileCopyOutlinedIcon sx={{ width: 22, height: 22 }} />
                 </button>
-              </Tooltip>
+              </Tooltip> */}
 
               <AddDelGroup item={item} />
 
@@ -262,20 +225,8 @@ const Containers = ({ item }) => {
               {!checkActive && <StartVM item={item} />}
             </>
 
-            {checkActive && (
-              <>
-                <Tooltip
-                  title="Жёсткое выключение (!может вызвать повреждение файлов на
-                высоконагруженных серверах!)"
-                  placement="top"
-                >
-                  <button>
-                    <img src={warning} alt="#" />
-                  </button>
-                </Tooltip>
-              </>
-            )}
-            <button className="deleteBtn">Удалить</button>
+            {checkActive && <StopVm item={item} />}
+            {!checkActive && <DeleteVm item={item} />}
           </div>
           {checkActive && (
             <div className={`key ${del ? "actions__key" : ""}`}>
@@ -299,3 +250,9 @@ const getConfigValue = (configString, key) => {
   const match = configString?.match(regex);
   return match ? match[1] : null;
 };
+
+//// status_action_start dataStart start_upid
+
+// color: textActionVM(log.t)?.color,
+// fontWeight: textActionVM(log.t)?.fontWeight,
+// fontSize: textActionVM(log.t)?.size,

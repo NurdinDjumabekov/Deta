@@ -11,6 +11,11 @@ const initialState = {
   activeUserService: { type: 0, guid: "" }, /// активный user или сервис (2 - сервис? 3 - user)
   logsActionsVM: [], /// логи всех действий в VM
   viewLogs: false,
+  listOs: [], // список операционных систем
+
+  ///// состояния для модалок VM
+  // viewLogsStartVM: false,
+  // dataActionVm: {},
 };
 
 const url_socket = "https://dd-api.ibm.kg";
@@ -24,6 +29,24 @@ export const getDataForBackUp = createAsyncThunk(
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data?.storage;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// editVmReq - редактирование контейнеров
+export const editVmReq = createAsyncThunk(
+  "editVmReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/editContainer`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
       } else {
         throw Error(`Error: ${response.status}`);
       }
@@ -88,9 +111,9 @@ export const getLogBackUpReq = createAsyncThunk(
   }
 );
 
-//// updateStatusActionVM_Req - поучить логи бэкап контейнера
-export const updateStatusActionVM_Req = createAsyncThunk(
-  "updateStatusActionVM_Req",
+//// updateStatusVmReq - поучить логи бэкап контейнера
+export const updateStatusVmReq = createAsyncThunk(
+  "updateStatusVmReq",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/updateStatusActionVM`;
     try {
@@ -106,7 +129,7 @@ export const updateStatusActionVM_Req = createAsyncThunk(
   }
 );
 
-//// shutdownContainerFN - отключение контейнера
+//// shutdownContainerFN - отключение контейнера (мягкое и жёсткое)
 export const shutdownContainerFN = createAsyncThunk(
   "shutdownContainerFN",
   async function (data, { dispatch, rejectWithValue }) {
@@ -196,6 +219,42 @@ export const addGroupVmReq = createAsyncThunk(
   }
 );
 
+//// getListOsReq - поучить cписок оп. систем
+export const getListOsReq = createAsyncThunk(
+  "getListOsReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getOS`;
+    try {
+      const response = await axiosInstance(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// delVmReq - удаление контейнера
+export const delVmReq = createAsyncThunk(
+  "delVmReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/deleteVM`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const actionsContaiersSlice = createSlice({
   name: "actionsContaiersSlice",
   initialState,
@@ -206,9 +265,12 @@ const actionsContaiersSlice = createSlice({
     logsActionsVM_FN: (state, action) => {
       state.logsActionsVM = action.payload;
     },
-    viewLogsFN: (state, action) => {
-      state.viewLogs = action.payload;
-    },
+    // viewLogsStartVmFN: (state, action) => {
+    //   state.viewLogsStartVM = action.payload;
+    // },
+    // dataActionVmFN: (state, action) => {
+    //   state.dataActionVm = action.payload;
+    // },
   },
 
   extraReducers: (builder) => {
@@ -254,15 +316,15 @@ const actionsContaiersSlice = createSlice({
       // state.preloader = true;
     });
 
-    ///////////////////////////////// updateStatusActionVM_Req
-    builder.addCase(updateStatusActionVM_Req.fulfilled, (state, action) => {
+    ///////////////////////////////// updateStatusVmReq
+    builder.addCase(updateStatusVmReq.fulfilled, (state, action) => {
       state.preloader = false;
     });
-    builder.addCase(updateStatusActionVM_Req.rejected, (state, action) => {
+    builder.addCase(updateStatusVmReq.rejected, (state, action) => {
       state.error = action.payload;
       state.preloader = false;
     });
-    builder.addCase(updateStatusActionVM_Req.pending, (state, action) => {
+    builder.addCase(updateStatusVmReq.pending, (state, action) => {
       state.preloader = true;
     });
 
@@ -277,10 +339,38 @@ const actionsContaiersSlice = createSlice({
     builder.addCase(delGroupContainerReq.pending, (state, action) => {
       state.preloader = true;
     });
+
+    /////////////////////////////////////// getListOsReq
+    builder.addCase(getListOsReq.fulfilled, (state, action) => {
+      state.preloader = false;
+      state.listOs = action.payload;
+    });
+    builder.addCase(getListOsReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+      state.listOs = [];
+      myAlert("Не удалось загрузить список операционных систем", "error");
+    });
+    builder.addCase(getListOsReq.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    ///////////////////////////////////////// delVmReq
+    builder.addCase(delVmReq.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(delVmReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+      myAlert("Не удалось удалить", "error");
+    });
+    builder.addCase(delVmReq.pending, (state, action) => {
+      state.preloader = true;
+    });
   },
 });
 
-export const { activeUserServiceFN, logsActionsVM_FN, viewLogsFN } =
+export const { activeUserServiceFN, logsActionsVM_FN } =
   actionsContaiersSlice.actions;
 
 export default actionsContaiersSlice.reducer;

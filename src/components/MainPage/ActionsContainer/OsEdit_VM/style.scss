@@ -1,0 +1,12 @@
+.os_vm {
+  .OS {
+    width: 20px !important;
+    min-width: 20px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+
+    img {
+      object-fit: cover;
+    }
+  }
+}

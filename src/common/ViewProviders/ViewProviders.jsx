@@ -14,6 +14,9 @@ import { setOpenAddProvider } from "../../store/reducers/stateSlice";
 ///////style
 import "./style.scss";
 
+/////// components
+import { Tooltip } from "@mui/material";
+
 const ViewProviders = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -63,9 +66,11 @@ const ViewProviders = () => {
       ))}
 
       <div>
-        <button className="addBtn" onClick={addProvider}>
-          +
-        </button>
+        <Tooltip title="Добавить провайдер" placement="right">
+          <button className="addBtn" onClick={addProvider}>
+            +
+          </button>
+        </Tooltip>
       </div>
     </div>
   );
