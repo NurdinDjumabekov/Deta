@@ -209,6 +209,7 @@ const Containers = ({ item }) => {
                       <img src={calendarX} alt="#" />
                     </button>
                   </Tooltip>
+
                   <ReloadVM item={item} />
                   <Shupdown item={item} />
                 </>
@@ -228,13 +229,10 @@ const Containers = ({ item }) => {
             {checkActive && <StopVm item={item} />}
             {!checkActive && <DeleteVm item={item} />}
           </div>
+
           {checkActive && (
             <div className={`key ${del ? "actions__key" : ""}`}>
-              <p>
-                {!!secondsToDhms(vm_uptime)
-                  ? `${secondsToDhms(vm_uptime)}`
-                  : ""}
-              </p>
+              <p>{secondsToDhms(vm_uptime) || ""}</p>
             </div>
           )}
         </div>
@@ -250,9 +248,3 @@ const getConfigValue = (configString, key) => {
   const match = configString?.match(regex);
   return match ? match[1] : null;
 };
-
-//// status_action_start dataStart start_upid
-
-// color: textActionVM(log.t)?.color,
-// fontWeight: textActionVM(log.t)?.fontWeight,
-// fontSize: textActionVM(log.t)?.size,

@@ -39,8 +39,8 @@ const DeleteVm = React.memo(({ item }) => {
 
   const openModalDelFN = async () => {
     setDataDel({ name: `${vm_id} - ${vm_name}`, guid });
-    if (!!status_action_del) setViewLogs(true);
-    else setViewLogs(false);
+    setViewLogs(!!status_action_del);
+    dispatch(logsActionsVM_FN([]));
   };
 
   const delContainer = async () => {
@@ -54,7 +54,7 @@ const DeleteVm = React.memo(({ item }) => {
   const sendType = { guid, name: "status_action_del" };
 
   useEffect(() => {
-    const MAX_RETRIES = 5; // Максимальное количество попыток
+    const MAX_RETRIES = 3; // Максимальное количество попыток
     let count = 0;
 
     const checkStatusVP = async () => {

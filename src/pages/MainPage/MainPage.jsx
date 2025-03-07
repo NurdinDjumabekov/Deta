@@ -82,6 +82,12 @@ const MainPage = () => {
     dispatch(setAddHost({ bool: true }));
   }
 
+  const fliter = listHosts?.filter((i) => {
+    if (i?.host_ip == "10.10.10.158" || i?.host_ip == "11.12.100.3") {
+      return i;
+    }
+  });
+
   return (
     <>
       <div className="mainPage">
@@ -99,7 +105,7 @@ const MainPage = () => {
         <div className="hostAndContainer">
           <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
             <div className="hosts__inner hoverScroll">
-              {listHosts?.map((item) => (
+              {fliter?.map((item) => (
                 <Hosts key={item?.guid} item={item} />
               ))}
             </div>

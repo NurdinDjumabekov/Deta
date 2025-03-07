@@ -71,13 +71,11 @@ const AddDelGroup = ({ item }) => {
         </button>
       </Tooltip>
 
-      {!!item?.codeid_group && (
-        <Tooltip title="Удалить из списка" placement="top">
-          <button onClick={() => setDelGroup(item)}>
-            <img src={minus} alt="#" />
-          </button>
-        </Tooltip>
-      )}
+      <Tooltip title="Удалить из списка" placement="top">
+        <button onClick={() => setDelGroup(item)}>
+          <img src={minus} alt="#" />
+        </button>
+      </Tooltip>
 
       {/*// добавление контейнера в группу  */}
       <Modals

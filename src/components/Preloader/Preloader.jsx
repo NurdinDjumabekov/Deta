@@ -10,7 +10,7 @@ export const Preloader = () => {
   const { preloaderProxy } = useSelector((state) => state.haProxySlice);
   const { preloaderDns } = useSelector((state) => state.dnsSlice);
   const { preloadeкBaza } = useSelector((state) => state.bazaSaveSlice);
-  const { preloadeкTodos } = useSelector((state) => state.todosSlice);
+  const { preloaderTodos } = useSelector((state) => state.todosSlice);
   const { preloaderUsers } = useSelector((state) => state.todosSlice);
   const { preloaderDC } = useSelector((state) => state.dataCenterSlice);
   const { preloaderVM } = useSelector((state) => state.virtualMachineSlice);
@@ -22,7 +22,7 @@ export const Preloader = () => {
     preloader ||
     preloaderDns ||
     preloadeкBaza ||
-    preloadeкTodos ||
+    preloaderTodos ||
     preloaderUsers ||
     preloaderDC ||
     preloaderVM ||

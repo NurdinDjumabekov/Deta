@@ -51,9 +51,9 @@ const MySelects = (props) => {
         {active && (
           <div className="selectBlock__activeBlock">
             {list?.map((i) => (
-              <p onClick={() => clickSelect(i)} key={i.value}>
-                {i?.label}
-              </p>
+              <div onClick={() => clickSelect(i)} key={i.value}>
+                <p>{i?.label}</p>
+              </div>
             ))}
           </div>
         )}

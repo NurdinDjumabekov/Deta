@@ -58,7 +58,7 @@ const StartVM = React.memo(({ item }) => {
   const sendType = { guid, name: "status_action_start" };
 
   useEffect(() => {
-    const MAX_RETRIES = 5; // Максимальное количество попыток
+    const MAX_RETRIES = 3; // Максимальное количество попыток
     let count = 0;
 
     const checkStatusVP = async () => {

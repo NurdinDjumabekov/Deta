@@ -43,8 +43,7 @@ const ReloadVM = React.memo(({ item }) => {
 
   const openModalBackUpFN = async () => {
     setDataReload({ name: `${vm_id} - ${vm_name}`, guid });
-    if (!!status_action_reload) setViewLogs(true);
-    else setViewLogs(false);
+    setViewLogs(!!status_action_reload);
     dispatch(logsActionsVM_FN([]));
   };
 
@@ -59,7 +58,7 @@ const ReloadVM = React.memo(({ item }) => {
   const sendType = { guid, name: "status_action_reload" };
 
   useEffect(() => {
-    const MAX_RETRIES = 5; // Максимальное количество попыток
+    const MAX_RETRIES = 3; // Максимальное количество попыток
     let count = 0;
 
     const checkStatusVP = async () => {

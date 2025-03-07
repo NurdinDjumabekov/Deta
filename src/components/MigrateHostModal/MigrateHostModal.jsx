@@ -7,7 +7,6 @@ import {
 import { transformListsForHost } from "../../helpers/transformLists";
 import {
   createHostMigration,
-  createMigrationContainer,
   getTypesBackUpReq,
 } from "../../store/reducers/virtualMachineSlice";
 import MySelects from "../../common/MySelects/MySelects";

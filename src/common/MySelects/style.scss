@@ -77,26 +77,37 @@
         width: 0px;
       }
 
-      p {
-        color: #000;
-        font-weight: 500;
-        cursor: pointer;
-        font-size: 14px;
-        padding: 1px 10px;
-        height: 35px;
-        line-height: 30px;
+      > div {
+        min-height: 35px;
+        max-height: 62px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 3px 10px;
         border-bottom: 1px solid #222;
-      }
+        cursor: pointer;
 
-      p:hover {
-        background-color: #5e6e8257;
-        color: #fff;
-      }
-      p:first-child {
-        border-radius: 3px 3px 0 0;
-      }
-      p:last-child {
-        border-radius: 0 0 3px 3px;
+        &:hover {
+          background-color: #5e6e8257;
+          p {
+            color: #fff;
+          }
+        }
+
+        &:first-child {
+          border-radius: 3px 3px 0 0;
+        }
+        &:last-child {
+          border-radius: 0 0 3px 3px;
+        }
+
+        p {
+          width: 100%;
+          color: #000;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 18px;
+        }
       }
     }
   }

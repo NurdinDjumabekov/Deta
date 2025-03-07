@@ -41,10 +41,10 @@ const Shupdown = React.memo(({ item }) => {
   const [dataShupdown, setDataShupdown] = useState({});
   const [viewLogs, setViewLogs] = useState(false);
 
-  const openModalBackUpFN = async () => {
+  const openModalShutdownFN = () => {
     setDataShupdown({ name: `${vm_id} - ${vm_name}`, guid, type: 1 });
-    if (!!status_action_shupdown) setViewLogs(true);
-    else setViewLogs(false);
+    setViewLogs(!!status_action_shupdown);
+    dispatch(logsActionsVM_FN([]));
   };
 
   const shutdownContainer = async () => {
@@ -58,7 +58,7 @@ const Shupdown = React.memo(({ item }) => {
   const sendType = { guid, name: "status_action_shupdown" };
 
   useEffect(() => {
-    const MAX_RETRIES = 5; // Максимальное количество попыток
+    const MAX_RETRIES = 3; // Максимальное количество попыток
     let count = 0;
 
     const checkStatusVP = async () => {
@@ -135,7 +135,7 @@ const Shupdown = React.memo(({ item }) => {
     <div className="shupdownActions">
       <div className="shupdownActions__action">
         <Tooltip title="Мягкое выключение" placement="top">
-          <button onClick={openModalBackUpFN}>
+          <button onClick={openModalShutdownFN}>
             <img src={stopCircle} alt="#" />
           </button>
         </Tooltip>

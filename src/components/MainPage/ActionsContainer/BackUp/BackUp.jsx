@@ -55,8 +55,8 @@ const BackUp = ({ item }) => {
         guid,
       });
     }
-    if (!!status_action_backup) setViewLogs(true);
-    else setViewLogs(false);
+    setViewLogs(!!status_action_backup);
+    dispatch(logsActionsVM_FN([]));
   };
 
   const onChangeSelect = (item) => {
@@ -81,7 +81,7 @@ const BackUp = ({ item }) => {
   const sendType = { guid, name: "status_action_backup" };
 
   useEffect(() => {
-    const MAX_RETRIES = 5; // Максимальное количество попыток
+    const MAX_RETRIES = 3; // Максимальное количество попыток
     let count = 0;
 
     const checkStatusVP = async () => {

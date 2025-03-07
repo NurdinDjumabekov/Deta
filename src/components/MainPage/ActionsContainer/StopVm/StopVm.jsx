@@ -41,10 +41,10 @@ const StopVm = React.memo(({ item }) => {
   const [dataStop, setDataStop] = useState({});
   const [viewLogs, setViewLogs] = useState(false);
 
-  const openModalStopFN = async () => {
+  const openModalStopFN = () => {
     setDataStop({ name: `${vm_id} - ${vm_name}`, guid, type: 2 });
-    if (!!status_action_stop) setViewLogs(true);
-    else setViewLogs(false);
+    setViewLogs(!!status_action_stop);
+    dispatch(logsActionsVM_FN([]));
   };
 
   const stopContainer = async () => {
@@ -58,7 +58,7 @@ const StopVm = React.memo(({ item }) => {
   const sendType = { guid, name: "status_action_stop" };
 
   useEffect(() => {
-    const MAX_RETRIES = 5; // Максимальное количество попыток
+    const MAX_RETRIES = 3; // Максимальное количество попыток
     let count = 0;
 
     const checkStatusVP = async () => {

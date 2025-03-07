@@ -1,0 +1,26 @@
+.addTasks {
+  .modal {
+    &__inner {
+      min-width: 450px;
+      max-width: 450px;
+      width: 450px;
+
+      .krest {
+        top: -1px !important;
+        width: 30px !important;
+        height: 30px !important;
+      }
+    }
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 10px 0;
+
+    textarea {
+      height: 150px !important;
+    }
+  }
+}

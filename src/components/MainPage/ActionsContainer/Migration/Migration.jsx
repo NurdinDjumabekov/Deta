@@ -71,16 +71,14 @@ const Migration = ({ item }) => {
       migration_type: migrationData?.migration_type?.value,
     };
 
-    console.log(send, "send");
+    const response = await dispatch(createMigrationContainer(send)).unwrap();
 
-    // const response = await dispatch(createMigrationContainer(send)).unwrap();
-
-    // if (response?.res == 1) {
-    //   myAlert("Миграция контейнера начато, следите в странице логов");
-    //   handleCloseModal();
-    // } else {
-    //   myAlert("Не удалось отправить в очередь на миграцию");
-    // }
+    if (response?.res == 1) {
+      myAlert("Миграция контейнера начато, следите в странице логов");
+      // setMigrationData({});
+    } else {
+      myAlert("Не удалось отправить в очередь на миграцию");
+    }
   };
 
   const clsoeModal = () => {
