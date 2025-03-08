@@ -9,24 +9,25 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import ruLocale from "@fullcalendar/core/locales/ru";
+import ViewEveryTasks from "../../components/CalendarPage/ViewEveryTasks/ViewEveryTasks";
+import ModalTasks from "../../components/CalendarPage/ModalTasks/ModalTasks";
 
 ////// helpers
+import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 
 ////// fns
+import {
+  activeDatesFN,
+  activeTimeFN,
+  getListAllComandsReq,
+  getListTasksCalendareReq,
+} from "../../store/reducers/todosSlice";
 
 ////// icons
 
 /////// style
 import "./style.scss";
-import ViewEveryTasks from "../../components/CalendarPage/ViewEveryTasks/ViewEveryTasks";
-import { format } from "date-fns";
-import {
-  activeTimeFN,
-  getListAllComandsReq,
-  getListTasksCalendareReq,
-} from "../../store/reducers/todosSlice";
-import ModalTasks from "../../components/CalendarPage/ModalTasks/ModalTasks";
 
 const CalendarPage = () => {
   const dispatch = useDispatch();
@@ -43,38 +44,41 @@ const CalendarPage = () => {
   const addTasks = async (selectInfo) => {
     const res = await dispatch(getListAllComandsReq()).unwrap();
     if (res?.length > 0) {
-      const time = format(selectInfo?.start, "yyyy-MM-dd HH:mm", {
-        locale: ru,
-      });
-      console.log(time, "time");
+      const t = selectInfo?.start;
+      const time = format(t, "yyyy-MM-dd HH:mm", { locale: ru });
       dispatch(activeTimeFN({ time, action_type: 1 }));
     }
   };
 
-  const handleEventDrop = (content) => {};
+  const handleEventDrop = (content) => {
+    console.log(content, "content");
+  };
 
   // для диапазон для месяца или недели
   const updateDateRange = () => {
     if (calendarRef?.current) {
-      const calendarApi = calendarRef.current?.getApi();
-      const currentDate = calendarApi?.getDate(); // Получаем активную дату календаря
-      const currentView = calendarApi?.view?.type; // Получаем текущее представление (день, неделя, месяц и т.д.)
+      const cur = calendarRef?.current;
 
-      // console.log(calendarApi, "calendarApi");
-      // console.log(currentDate, "currentDate");
-      // console.log(currentView, "currentView");
-      if (currentView === "dayGridMonth") {
-        // Если текущее представление - это месяц
-      } else {
-        // Иначе - неделя
-      }
+      const start = cur?.calendar?.currentData?.dateProfile?.renderRange?.start;
+      const end = cur?.calendar?.currentData?.dateProfile?.renderRange?.end;
+
+      const partStart = format(start, "yyyy-MM-dd HH:mm", {
+        locale: ru,
+      });
+      const partEnd = format(end, "yyyy-MM-dd HH:mm", {
+        locale: ru,
+      });
+
+      dispatch(activeDatesFN({ start: partStart, end: partEnd }));
     }
   };
 
+  const getData = async (date) => dispatch(getListTasksCalendareReq(date));
+
   useEffect(() => {
-    dispatch(getListTasksCalendareReq(activeDates));
+    getData(activeDates);
     return () => dispatch(activeTimeFN({}));
-  }, []);
+  }, [activeDates?.start]);
 
   return (
     <>
@@ -85,7 +89,7 @@ const CalendarPage = () => {
             height="100%"
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
-              left: "dayGridMonth,timeGridWeek,prev,next today",
+              left: "timeGridWeek,prev,next today",
               center: "title",
               right: "",
             }}

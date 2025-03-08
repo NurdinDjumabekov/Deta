@@ -15,7 +15,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./style.scss";
 
 const ViewEveryTasks = ({ content }) => {
-  console.log(content, "content");
+  // console.log(content, "content");
 
   const objClass = { 0: "pending", 1: "accessTodos", 2: "rejectTodos" };
 
