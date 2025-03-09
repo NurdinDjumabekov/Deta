@@ -4,25 +4,25 @@ import React, { useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 ////// components
+import Modals from "../../../common/Modals/Modals";
+import MySelects from "../../../common/MySelects/MySelects";
+import MyTextArea from "../../../common/MyTextArea/MyTextArea";
 
 ////// helpers
-import { ru } from "date-fns/locale";
+import { myAlert } from "../../../helpers/MyAlert";
+import { listActionTime } from "../../../helpers/LocalData";
 
 ////// fns
-
-////// icons
-
-/////// style
-import "./style.scss";
-import Modals from "../../../common/Modals/Modals";
 import {
   activeTimeFN,
   crudComandsTimer,
   getListTasksCalendareReq,
 } from "../../../store/reducers/todosSlice";
-import MySelects from "../../../common/MySelects/MySelects";
-import MyTextArea from "../../../common/MyTextArea/MyTextArea";
-import { myAlert } from "../../../helpers/MyAlert";
+
+////// icons
+
+/////// style
+import "./style.scss";
 
 const ModalTasks = () => {
   const dispatch = useDispatch();
@@ -30,16 +30,6 @@ const ModalTasks = () => {
   const { activeTime } = useSelector((state) => state.todosSlice);
   const { lisAllComands } = useSelector((state) => state.todosSlice);
   const { activeDates } = useSelector((state) => state.todosSlice);
-
-  //   console.log(lisAllComands, "lisAllComands");
-
-  const listActionTime = [
-    { label: "Каждый день", value: "day", type: 1 },
-    { label: "Каждую неделю", value: "week", type: 1 },
-    { label: "Каждые 15 дней", value: "15days", type: 1 },
-    { label: "Каждый месяц", value: "month", type: 1 },
-    { label: "Каждые 2 месяца", value: "2months", type: 1 },
-  ];
 
   const crudComands = async (e) => {
     e.preventDefault();
@@ -51,12 +41,16 @@ const ModalTasks = () => {
     }
 
     const send = {
+      guid: !!activeTime?.guid ? activeTime?.guid : "",
       action_type: activeTime?.action_type,
       guid_task: activeTime?.comand?.value,
       interval_type: activeTime?.interval_type?.value,
       next_run: activeTime?.time,
       comment: activeTime?.comment,
     };
+
+    console.log(send, "send");
+
     const res = await dispatch(crudComandsTimer(send)).unwrap();
     if (res == 1) {
       myAlert("Данные успешно сохранены");
@@ -75,7 +69,7 @@ const ModalTasks = () => {
     dispatch(activeTimeFN({ ...activeTime, [name]: value }));
   }
 
-  if (activeTime?.action_type == 1) {
+  if ([1, 2, 3]?.includes(activeTime?.action_type)) {
     return (
       <div className="addTasks">
         <Modals

@@ -292,3 +292,11 @@ export const listTypeMigrations = [
     discription: "Мы выключаем на исходном, переносим и включаем на целевом",
   },
 ];
+
+export const listActionTime = [
+  { label: "Каждый день", value: "day", type: 1 },
+  { label: "Каждую неделю", value: "week", type: 1 },
+  { label: "Каждые 15 дней", value: "15days", type: 1 },
+  { label: "Каждый месяц", value: "month", type: 1 },
+  { label: "Каждые 2 месяца", value: "2months", type: 1 },
+];

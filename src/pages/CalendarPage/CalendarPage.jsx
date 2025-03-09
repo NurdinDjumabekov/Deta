@@ -35,9 +35,8 @@ const CalendarPage = () => {
   const location = useLocation();
 
   const { activeDates } = useSelector((state) => state.todosSlice);
+  const { activeTime } = useSelector((state) => state.todosSlice);
   const { listTasksCalendar } = useSelector((state) => state.todosSlice);
-
-  // console.log(listTasksCalendar, "listTasksCalendar");
 
   const calendarRef = useRef(null);
 
@@ -88,11 +87,7 @@ const CalendarPage = () => {
             ref={calendarRef}
             height="100%"
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-            headerToolbar={{
-              left: "timeGridWeek,prev,next today",
-              center: "title",
-              right: "",
-            }}
+            headerToolbar={calT}
             initialView="timeGridWeek"
             editable={true}
             selectable={true}
@@ -132,3 +127,9 @@ const CalendarPage = () => {
 };
 
 export default CalendarPage;
+
+const calT = {
+  left: "timeGridWeek,prev,next today",
+  center: "title",
+  right: "",
+};
