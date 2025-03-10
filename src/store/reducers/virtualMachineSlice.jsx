@@ -19,7 +19,7 @@ const initialState = {
   /// список логирования результатов бэкапа контейнера
 };
 
-const url_socket = "https://dd-api.ibm.kg";
+const url_socket = "https://dd-api.ibm.kg/ws";
 
 //// перезагрузить ВМ
 export const restartVmSC = () => (dispatch) => {

@@ -11,13 +11,13 @@ const initialState = {
   listStaticsIp: [], /// список статических ip адресов
 };
 
-const url_socket = "https://dd-api.ibm.kg";
+const url_socket = "https://dd-api.ibm.kg/ws";
 
 ///// addEditNetworkReq - /// для добавления и редактирования сетей
 export const addEditNetworkReq = createAsyncThunk(
   "addEditNetworkReq",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/createIp`;
+    const url = `https://dd-api.ibm.kg/api/network/createIp`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -35,7 +35,7 @@ export const addEditNetworkReq = createAsyncThunk(
 export const getStaticsIpAddresReq = createAsyncThunk(
   "getStaticsIpAddresReq",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/getStaticsList`;
+    const url = `https://dd-api.ibm.kg/api/network/getStaticsList`;
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
@@ -53,7 +53,7 @@ export const getStaticsIpAddresReq = createAsyncThunk(
 export const actionGroupIPreq = createAsyncThunk(
   "actionGroupIPreq",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/createStatic`;
+    const url = `https://dd-api.ibm.kg/api/network/createStatic`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -71,7 +71,7 @@ export const actionGroupIPreq = createAsyncThunk(
 export const actionSubGroupIPreq = createAsyncThunk(
   "actionSubGroupIPreq",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/createStaticSubGroup`;
+    const url = `https://dd-api.ibm.kg/api/network/createStaticSubGroup`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -89,7 +89,7 @@ export const actionSubGroupIPreq = createAsyncThunk(
 export const actionStaticsIPreq = createAsyncThunk(
   "actionStaticsIPreq",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/createStaticIp`;
+    const url = `https://dd-api.ibm.kg/api/network/createStaticIp`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -107,7 +107,7 @@ export const actionStaticsIPreq = createAsyncThunk(
 export const actionDragonDropIPreq = createAsyncThunk(
   "actionDragonDropIPreq",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/dragonDrop`;
+    const url = `https://dd-api.ibm.kg/api/network/dragonDrop`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {

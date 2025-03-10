@@ -41,13 +41,13 @@ const initialState = {
   listVolns: {}, //// список волн
 };
 
-const url_socket = "https://dd-api.ibm.kg";
+const url_socket = "https://dd-api.ibm.kg/ws";
 
 ///// getProviders - для получения провайдеров
 export const getProviders = createAsyncThunk(
   "getProviders",
   async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/getProviders`;
+    const url = `${REACT_APP_API_URL}network/getProviders`;
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {
@@ -231,7 +231,7 @@ export const addProvider = createAsyncThunk(
 export const crudProvider = createAsyncThunk(
   "crudProvider",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/crudProvider`;
+    const url = `${REACT_APP_API_URL}network/crudProvider`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -526,7 +526,7 @@ export const getVolns = createAsyncThunk(
 export const getNetworks = createAsyncThunk(
   "getNetworks",
   async function (props, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}api/network/getallIpList`;
+    const url = `${REACT_APP_API_URL}network/getallIpList`;
     try {
       const response = await axiosInstance(url);
       if (response.status >= 200 && response.status < 300) {

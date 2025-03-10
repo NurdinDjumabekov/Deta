@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 ////// components
 
 ////// helpers
+import { listActionTime } from "../../../helpers/LocalData";
 
 ////// fns
 import {
@@ -17,17 +18,13 @@ import {
 
 /////// style
 import "./style.scss";
-import { listActionTime } from "../../../helpers/LocalData";
 
 const ViewEveryTasks = ({ content }) => {
   const dispatch = useDispatch();
 
-  // console.log(content, "content");
-
   const objClass = { 0: "pending", 1: "accessTodos", 2: "rejectTodos" };
 
   const editFN = async () => {
-    console.log(content, "content");
     const res = await dispatch(getListAllComandsReq()).unwrap();
 
     const interval_type = listActionTime?.find(
@@ -36,6 +33,7 @@ const ViewEveryTasks = ({ content }) => {
     const comandObj = res?.find((i) => i?.guid == content?.guid_shedule_task);
     if (res?.length > 0) {
       const past = {
+        guid: content?.guid,
         guid_task: content?.guid_shedule_task,
         time: content?.last_run_,
         action_type: 2,

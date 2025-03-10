@@ -4,6 +4,9 @@
   padding: 1px 5px;
   border-radius: 3px;
   overflow: hidden;
+  border-left: 3px solid #fff !important;
+  margin-left: 2px;
+  cursor: pointer;
 
   p,
   b,
@@ -26,8 +29,8 @@
 }
 
 .pending {
-  border: 1px solid #3498dbc0;
-  background: #3498dbb3;
+  border: 1px solid #4c95c6;
+  background: #4c95c6;
 }
 
 .fc-timegrid-event-harness-inset .fc-timegrid-event,

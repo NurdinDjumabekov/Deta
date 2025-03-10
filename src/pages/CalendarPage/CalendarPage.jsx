@@ -89,12 +89,11 @@ const CalendarPage = () => {
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={calT}
             initialView="timeGridWeek"
-            editable={true}
+            editable={false} // Отключает возможность редактирования всех событий
             selectable={true}
             selectMirror={true}
             dayMaxEvents={true}
             select={addTasks}
-            // dateClick={addTasks}
             weekends={true}
             initialEvents={listTasksCalendar}
             events={listTasksCalendar}
@@ -116,8 +115,10 @@ const CalendarPage = () => {
             expandRows={true}
             allDaySlot={false}
             titleFormat={{ month: "long" }}
-            eventResizableFromStart={false} // Отключаю возможность изменения размера с начала
-            eventDurationEditable={false}
+            eventResizableFromStart={false} // Запрещает изменение размера с начала
+            eventDurationEditable={false} // Запрещает изменение продолжительности
+            eventStartEditable={false} // Запрещает перемещение событий
+            droppable={false} // Запрещает перенос событий
           />
         </div>
       </div>

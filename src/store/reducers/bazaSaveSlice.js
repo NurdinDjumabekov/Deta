@@ -10,7 +10,7 @@ const initialState = {
   listDataSaved: [], /// список баз и хранилищ
 };
 
-const url_socket = "https://dd-api.ibm.kg";
+const url_socket = "https://dd-api.ibm.kg/ws";
 
 ///// getSaveDataReq - get базы и хранилища
 export const getSaveDataReq = createAsyncThunk(

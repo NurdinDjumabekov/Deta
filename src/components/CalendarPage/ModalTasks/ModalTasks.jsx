@@ -1,12 +1,13 @@
 /////// hooks
 import { useDispatch, useSelector } from "react-redux";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 ////// components
 import Modals from "../../../common/Modals/Modals";
 import MySelects from "../../../common/MySelects/MySelects";
 import MyTextArea from "../../../common/MyTextArea/MyTextArea";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 ////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
@@ -19,8 +20,6 @@ import {
   getListTasksCalendareReq,
 } from "../../../store/reducers/todosSlice";
 
-////// icons
-
 /////// style
 import "./style.scss";
 
@@ -30,6 +29,8 @@ const ModalTasks = () => {
   const { activeTime } = useSelector((state) => state.todosSlice);
   const { lisAllComands } = useSelector((state) => state.todosSlice);
   const { activeDates } = useSelector((state) => state.todosSlice);
+
+  const [del, setDel] = useState(false);
 
   const crudComands = async (e) => {
     e.preventDefault();
@@ -49,8 +50,6 @@ const ModalTasks = () => {
       comment: activeTime?.comment,
     };
 
-    console.log(send, "send");
-
     const res = await dispatch(crudComandsTimer(send)).unwrap();
     if (res == 1) {
       myAlert("Данные успешно сохранены");
@@ -69,7 +68,39 @@ const ModalTasks = () => {
     dispatch(activeTimeFN({ ...activeTime, [name]: value }));
   }
 
-  if ([1, 2, 3]?.includes(activeTime?.action_type)) {
+  const delComands = async (e) => {
+    e.preventDefault();
+
+    const send = {
+      guid: !!activeTime?.guid ? activeTime?.guid : "",
+      action_type: 3,
+      guid_task: activeTime?.comand?.value,
+      interval_type: activeTime?.interval_type?.value,
+      next_run: activeTime?.time,
+      comment: activeTime?.comment,
+    };
+
+    const res = await dispatch(crudComandsTimer(send)).unwrap();
+    if (res == 1) {
+      myAlert("Данные успешно сохранены");
+      dispatch(activeTimeFN({}));
+      dispatch(getListTasksCalendareReq(activeDates));
+      setDel(false);
+    }
+  };
+
+  if (del) {
+    return (
+      <ConfirmModal
+        state={true}
+        title={"Удалить команды ?"}
+        yes={delComands}
+        no={() => setDel(false)}
+      />
+    );
+  }
+
+  if ([1, 2]?.includes(activeTime?.action_type)) {
     return (
       <div className="addTasks">
         <Modals
@@ -77,7 +108,7 @@ const ModalTasks = () => {
           setOpenModal={() => dispatch(activeTimeFN({}))}
           title="Задачи"
         >
-          <form onSubmit={crudComands} className="addTasks__inner">
+          <div onSubmit={crudComands} className="addTasks__inner">
             <MySelects
               list={listActionTime}
               initText={"Выбрать"}
@@ -102,12 +133,19 @@ const ModalTasks = () => {
               required={false}
             />
 
-            <div>
-              <button type="submit" className="btnAction">
+            <div className="action">
+              {activeTime?.action_type == 2 ? (
+                <button className="del btnAction" onClick={() => setDel(true)}>
+                  Удалить
+                </button>
+              ) : (
+                <div />
+              )}
+              <button className="btnAction" onClick={crudComands}>
                 Сохранить
               </button>
             </div>
-          </form>
+          </div>
         </Modals>
       </div>
     );

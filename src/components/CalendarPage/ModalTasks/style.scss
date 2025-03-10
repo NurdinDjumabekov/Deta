@@ -22,5 +22,15 @@
     textarea {
       height: 150px !important;
     }
+
+    .action {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+
+      .del {
+        background: rgba(255, 0, 0, 0.596);
+      }
+    }
   }
 }
