@@ -19,6 +19,7 @@ import { myAlert } from "../../helpers/MyAlert";
 import axiosInstance from "../../axiosInstance";
 import { cutNums } from "../../helpers/cutNums";
 import { setCloneLogs, setCollStackData } from "./virtualMachineSlice";
+import { url_socket } from "../../helpers/LocalData";
 const { REACT_APP_API_URL } = process.env;
 
 const initialState = {
@@ -40,8 +41,6 @@ const initialState = {
 
   listVolns: {}, //// список волн
 };
-
-const url_socket = "https://dd-api.ibm.kg/ws";
 
 ///// getProviders - для получения провайдеров
 export const getProviders = createAsyncThunk(

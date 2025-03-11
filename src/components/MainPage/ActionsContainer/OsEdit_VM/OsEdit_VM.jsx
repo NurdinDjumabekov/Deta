@@ -46,11 +46,13 @@ const OsEdit_VM = ({ item }) => {
     if (res?.length > 0) setSendData(item);
   };
 
+  // console.log(item?.icon_url, "item?.icon_url");
+
   return (
     <div className="os_vm">
       <button className="OS" onClick={openModal}>
         {item?.icon_url ? (
-          <img src={`${REACT_APP_API_URL}${item?.icon_url}`} alt="os" />
+          <img src={`https://dd-api.ibm.kg/${item?.icon_url}`} alt="os" />
         ) : (
           <img src={round} alt="os" />
         )}

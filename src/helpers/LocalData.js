@@ -300,3 +300,5 @@ export const listActionTime = [
   { label: "Каждый месяц", value: "month", type: 1 },
   { label: "Каждые 2 месяца", value: "2months", type: 1 },
 ];
+
+export const url_socket = "https://dd-api.ibm.kg";

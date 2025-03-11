@@ -66,16 +66,16 @@ const Migration = ({ item }) => {
 
     const send = {
       guid_vm: migrationData.guid,
-      target_storage_vm: migrationData?.target_storage_vm?.value,
-      target_node_guid: migrationData?.target_node_guid?.value,
+      storage_for_vm: migrationData?.target_storage_vm?.value,
+      host: migrationData?.target_node_guid?.value,
       migration_type: migrationData?.migration_type?.value,
     };
 
     const response = await dispatch(createMigrationContainer(send)).unwrap();
 
     if (response?.res == 1) {
-      myAlert("Миграция контейнера начато, следите в странице логов");
-      // setMigrationData({});
+      myAlert("Началась миграция контейнера");
+      setMigrationData({});
     } else {
       myAlert("Не удалось отправить в очередь на миграцию");
     }

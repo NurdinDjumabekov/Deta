@@ -32,38 +32,3 @@ const VncPage = () => {
 };
 
 export default VncPage;
-
-// import RFB from "novnc-core";
-// import React, { useEffect, useRef } from "react";
-// import { useParams } from "react-router-dom";
-
-// const VncPage = () => {
-//   const { vns_key } = useParams();
-//   const url = `https://dd-api.ibm.kg/vnc/?key=${vns_key}`;
-//   const vncContainer = useRef(null);
-
-//   useEffect(() => {
-//     if (vncContainer.current) {
-//       const rfb = new RFB(vncContainer.current, url, {
-//         credentials: { username: "", password: "" },
-//       });
-
-//       rfb.addEventListener("connect", () => {
-//         console.log("Connected to VNC");
-//       });
-
-//       rfb.addEventListener("disconnect", (e) => {
-//         console.error("Disconnected from VNC:", e.detail.clean);
-//       });
-
-//       return () => {
-//         rfb.disconnect();
-//       };
-//     }
-//   }, [url]);
-
-//   return <div ref={vncContainer} style={{ width: "100vw", height: "100vh" }} />;
-// };
-
-// export default VncPage;
-// npm install novnc-core

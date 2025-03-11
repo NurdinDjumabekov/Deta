@@ -6,7 +6,8 @@ import Modals from "../Modals/Modals";
 //// styles
 import "./style.scss";
 
-const url_socket = "https://dd-api.ibm.kg/ws";
+///// helpers
+import { url_socket } from "../../helpers/LocalData";
 
 const LogsModal = ({ guid, setViewLog, viewLog }) => {
   const dispatch = useDispatch();

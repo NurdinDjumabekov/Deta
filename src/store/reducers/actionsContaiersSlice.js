@@ -18,8 +18,6 @@ const initialState = {
   // dataActionVm: {},
 };
 
-const url_socket = "https://dd-api.ibm.kg/ws";
-
 ///// getDataForBackUp - для получения данных для бэкапа
 export const getDataForBackUp = createAsyncThunk(
   "getDataForBackUp",

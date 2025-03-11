@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
-import axios from "axios";
 
 import axiosInstance from "../../axiosInstance";
-import { myAlert } from "../../helpers/MyAlert";
+
+/////// helpers
+import { url_socket } from "../../helpers/LocalData";
 const { REACT_APP_API_URL } = process.env;
 ///// virtualMachineSlice
 
@@ -18,8 +19,6 @@ const initialState = {
   listCallStack: [],
   /// список логирования результатов бэкапа контейнера
 };
-
-const url_socket = "https://dd-api.ibm.kg/ws";
 
 //// перезагрузить ВМ
 export const restartVmSC = () => (dispatch) => {
@@ -157,7 +156,7 @@ export const createContainerClone = createAsyncThunk(
 export const createMigrationContainer = createAsyncThunk(
   "createMigrationContainer",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/migrateContainer`;
+    const url = `${REACT_APP_API_URL}node/startMigrateVM`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
@@ -281,8 +280,8 @@ const virtualMachineSlice = createSlice({
         }
       );
       state.listTypeBackUpContainers.container = action.payload?.container?.map(
-        (item) => {
-          return { ...item, value: item?.guid, label: item?.storage_name };
+        (i) => {
+          return { ...i, value: i?.storage_name, label: i?.storage_name };
         }
       );
       state.listTypeBackUpContainers.vm = action.payload?.vm?.map((item) => {

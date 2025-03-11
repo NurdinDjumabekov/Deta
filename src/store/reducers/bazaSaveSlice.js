@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import axiosInstance from "../../axiosInstance";
 import { myAlert } from "../../helpers/MyAlert";
+import { url_socket } from "../../helpers/LocalData";
 const { REACT_APP_API_URL } = process.env;
 ///// bazaSaveSlice
 
@@ -9,8 +10,6 @@ const initialState = {
   preloadeкBaza: false,
   listDataSaved: [], /// список баз и хранилищ
 };
-
-const url_socket = "https://dd-api.ibm.kg/ws";
 
 ///// getSaveDataReq - get базы и хранилища
 export const getSaveDataReq = createAsyncThunk(
