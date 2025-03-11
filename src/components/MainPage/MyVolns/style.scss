@@ -1,0 +1,57 @@
+.statusContainers {
+  width: 318px;
+  min-width: 318px;
+  max-width: 318px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 100%;
+
+  > div {
+    width: 33%;
+    border-left: 2px solid rgb(30, 31, 35);
+    position: relative;
+    padding-bottom: 10px;
+    height: 100%;
+
+    p {
+      padding: 5px 2px 6px;
+      font-size: 10px;
+      text-align: center;
+      border-radius: 5px;
+      font-weight: 600;
+      margin: 3px 0px;
+      cursor: pointer;
+    }
+  }
+
+  .clear {
+    h6 {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0px 0 0;
+      color: red;
+    }
+  }
+
+  .active {
+    background: transparent !important;
+    h6 {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0px 0 0;
+      color: green;
+    }
+  }
+  .diactive {
+    h6 {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 8px 0px 0 0;
+      color: #dd8537;
+    }
+  }
+}

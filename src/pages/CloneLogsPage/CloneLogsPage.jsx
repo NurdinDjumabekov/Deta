@@ -1,277 +1,118 @@
-import { useSelector } from "react-redux";
-import "./style.scss";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { updatedCloneLogs } from "../../store/reducers/requestSlice";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { getCloneLogs } from "../../store/reducers/virtualMachineSlice";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
+
+import { TableVirtuoso } from "react-virtuoso";
+import { getLogVmsReq, getLogVmsReqFn } from "../../store/reducers/logsVmSlice";
+
+///// style
+import "./style.scss";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
+
+import CheckIcon from "@mui/icons-material/Check";
+import MiniLoader from "../../common/MiniLoader/MiniLoader";
+
 const CloneLogsPage = () => {
   const dispatch = useDispatch();
-  const { listCloneLogs, listCallStack } = useSelector(
-    (state) => state.virtualMachineSlice
-  );
   const { pathname } = useLocation();
 
-  console.log(listCloneLogs, "listCloneLogs");
+  const { listActionsVm } = useSelector((state) => state.logsVmSlice);
 
   useEffect(() => {
-    dispatch(getCloneLogs());
+    dispatch(getLogVmsReq()); // Первый запрос сразу
 
-    const disconnectProv = dispatch(updatedCloneLogs());
+    const interval = setInterval(() => {
+      dispatch(getLogVmsReq());
+    }, 1000 * 5);
+
     return () => {
-      disconnectProv();
+      clearInterval(interval);
+      dispatch(getLogVmsReqFn([])); // Очистка данных при размонтировании
     };
-  }, [pathname]);
+  }, [dispatch, pathname]); // Перезапуск при изменении `pathname`
+
+  console.log(listActionsVm, "listActionsVm");
+
+  const st = { width: 19, height: 19, fill: "rgba(23, 224, 23, 0.397)" };
+  const objMigration = {
+    0: <CheckIcon sx={st} />,
+    1: <MiniLoader />,
+    "-1": <p>Ошибка</p>,
+  };
+
+  const objStatusAll = {
+    0: "...",
+    1: <MiniLoader />,
+    2: <MiniLoader />,
+    3: <CheckIcon sx={st} />,
+    "-1": <p>Ошибка</p>,
+  };
 
   return (
-    <div className="containerClone">
-      <div className="hoverScroll">
-        <h3>Стек очереди</h3>
-        <TableContainer className="logsTable hoverScroll">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  style={{
-                    width: "3%",
-                    color: "#c0c0c0",
-                    textAlign: "left",
-                    padding: 0,
-                  }}
-                >
-                  #
-                </TableCell>
-                <TableCell
-                  style={{
-                    width: "15%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                  }}
-                >
-                  Время создания
-                </TableCell>
+    <div className="mainLogs">
+      <TableVirtuoso
+        style={{ height: "100%", width: "100%" }}
+        data={listActionsVm}
+        overscan={200} //  Подгружаем элементы заранее
+        fixedHeaderContent={(index, user) => (
+          <tr className="header">
+            <th style={{}}>№</th>
+            <th style={{}}>Время начала</th>
+            <th style={{}}>Время завершения</th>
+            <th style={{}}>Номер Vm</th>
+            <th style={{}}>Статус</th>
+            <th style={{}}>Выбранное хранилище</th>
 
-                <TableCell
-                  style={{
-                    width: "60%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                  }}
-                >
-                  Задача
-                </TableCell>
-
-                <TableCell
-                  style={{
-                    width: "15%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                    textAlign: "center",
-                  }}
-                >
-                  Статус
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {listCallStack?.map((item, index) => (
-                <TableRow
-                  className="tableRow"
-                  key={index}
-                  sx={{ background: statusTask(item?.status) }}
-                >
-                  <TableCell style={{ width: "3%", padding: 0 }}>
-                    <p>{listCallStack.length - index}</p>
-                  </TableCell>
-                  <TableCell style={{ width: "20%", padding: 0 }}>
-                    <p>{item?.date_system}</p>
-                  </TableCell>
-                  <TableCell style={{ width: "70%", padding: 0 }}>
-                    <p>{item?.task_name}</p>
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      width: "15%",
-                      padding: 0,
-                      textAlign: item?.status == 1 ? "center" : "center",
-                    }}
-                  >
-                    {item.status == 1 ? (
-                      <CircularProgress style={{ width: 20, height: 20 }} />
-                    ) : (
-                      <p style={{ color: statusTaskStatus(item?.status) }}>
-                        {item.status == 2 ? "Успешно" : "Ожидание"}
-                      </p>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-
-      <div className="hoverScroll">
-        <h3>Логи выполнения задач</h3>
-        <TableContainer className="logsTable hoverScroll">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell
-                  style={{
-                    width: "3%",
-                    color: "#c0c0c0",
-                    textAlign: "left",
-                    padding: 0,
-                  }}
-                >
-                  №
-                </TableCell>
-                <TableCell
-                  style={{
-                    width: "5%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                  }}
-                >
-                  Время начало
-                </TableCell>
-                <TableCell
-                  style={{
-                    width: "5%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                    textAlign: "center",
-                  }}
-                >
-                  Время завершения
-                </TableCell>
-                <TableCell
-                  style={{
-                    width: "20%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                  }}
-                >
-                  Задача
-                </TableCell>
-                <TableCell
-                  style={{
-                    width: "30%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                  }}
-                >
-                  Описание задачи
-                </TableCell>
-                <TableCell
-                  style={{
-                    width: "7%",
-                    color: "#c0c0c0",
-                    paddingVertical: 0,
-                    paddingHorizontal: 3,
-                  }}
-                >
-                  Статус выполнения
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {listCloneLogs?.map((item, index) => (
-                <TableRow
-                  className="tableRow"
-                  key={index}
-                  sx={{ background: statusTask(item?.status) }}
-                >
-                  <TableCell style={{ width: "3%", padding: 0 }}>
-                    <p>{listCallStack.length - index}</p>
-                  </TableCell>
-                  <TableCell style={{ width: "7%", padding: 0 }}>
-                    <p>{item?.start_date}</p>
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      width: "6%",
-                      padding: 0,
-                      textAlign: item?.status == 1 ? "center" : "center",
-                    }}
-                  >
-                    {item.status == 1 ? (
-                      <CircularProgress style={{ width: 20, height: 20 }} />
-                    ) : (
-                      <p>{item?.end_date}</p>
-                    )}
-                  </TableCell>
-                  <TableCell style={{ width: "20%", padding: 0 }}>
-                    <p>{item?.status_task}</p>
-                  </TableCell>
-                  <TableCell style={{ width: "30%", padding: 0 }}>
-                    <p>{item?.task_description}</p>
-                  </TableCell>
-                  <TableCell
-                    style={{
-                      width: "6%",
-                      padding: 0,
-                      textAlign: "center",
-                    }}
-                  >
-                    {item.status == 1 ? (
-                      <CircularProgress style={{ width: 13, height: 13 }} />
-                    ) : (
-                      <CheckOutlinedIcon
-                        sx={{ width: 25, height: 25, fill: "#73c991" }}
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+            <th style={{}}>Бэкап</th>
+            <th style={{}}>Восстановление</th>
+            <th style={{}}>Отключение</th>
+            <th style={{}}>Включение</th>
+          </tr>
+        )}
+        itemContent={(index, item) => (
+          <React.Fragment
+            key={index}
+            className={item?.status_migration == -1 ? "errorTrStatus" : ""}
+          >
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {listActionsVm?.length - index}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {format(item.date, "yyyy-MM-dd HH:mm", { locale: ru })}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {format(item.date, "yyyy-MM-dd HH:mm", { locale: ru })}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {item.vm_id}
+            </td>
+            <td
+              className={item?.status_migration == -1 ? "errorTrStatus" : ""}
+              style={{ color: item?.status_migration == "-1" && "#fff" }}
+            >
+              {objMigration?.[item?.status_migration]}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {item.type_storage}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {objStatusAll?.[item.backup_status]}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {objStatusAll?.[item.restore_status]}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {objStatusAll?.[item.stop_status]}
+            </td>
+            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
+              {objStatusAll?.[item.start_status]}
+            </td>
+          </React.Fragment>
+        )}
+      />
     </div>
   );
 };
 
 export default CloneLogsPage;
-
-const statusTask = (status) => {
-  if (status == 1) {
-    return "#292d32";
-  } else if (status == 2) {
-    return "#292d32";
-  } else if (status == 3) {
-    return "#292d32";
-  } else {
-    return "#292d32";
-  }
-};
-
-const statusTaskStatus = (status) => {
-  if (status == 1) {
-    return "#c0c0c0";
-  } else if (status == 2) {
-    return "#6bdd89";
-  } else if (status == 3) {
-    return "#ff00008c";
-  } else {
-    return "#c0c0c0";
-  }
-};

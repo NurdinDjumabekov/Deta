@@ -33,6 +33,7 @@ import CountsVM from "../../components/MainPage/CountsVM/CountsVM";
 ///////style
 import "./style.scss";
 import { Tooltip } from "@mui/material";
+import MyVolns from "../../components/MainPage/MyVolns/MyVolns";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -130,7 +131,8 @@ const MainPage = () => {
             </div>
           </div>
 
-          <Volns />
+          {/* <Volns /> */}
+          <MyVolns />
         </div>
       </div>
 

@@ -1,5 +1,7 @@
 //////// hooks
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //////// components
 import { Draggable } from "react-beautiful-dnd";
@@ -14,161 +16,56 @@ import migrateLogo from "../../../assets/icons/migrateLogo.png";
 ////// style
 import "./style.scss";
 
-/////// helpers
-import { checkChangeTTL } from "../../../helpers/checkFNS";
-import { myAlert } from "../../../helpers/MyAlert";
-import { useSelector } from "react-redux";
+////// fns
 import { setListVolns } from "../../../store/reducers/requestSlice";
-import { useDispatch } from "react-redux";
-import {
-  setMigrateHostContainersData,
-  setMigrateHostModal,
-} from "../../../store/reducers/stateSlice";
-import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
-import {
-  startContainersAction,
-  stopContainersAction,
-} from "../../../store/reducers/virtualMachineSlice";
 
-const EveryVolns = ({ list, title, onAddItem, guid, num, selectedColumn }) => {
-  // console.log(selectedColumn, "guid");
+/////// helpers
+import { myAlert } from "../../../helpers/MyAlert";
+import { listTypeMigrations } from "../../../helpers/LocalData";
 
-  const [action_type, setActionType] = useState(0);
-  const [titleModal, setTitleModal] = useState("");
+const EveryVolns = ({ list, title, onAddItem, num, myKey, setActionType }) => {
   const dispatch = useDispatch();
+
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const { listVolns } = useSelector((state) => state.requestSlice);
-  const { migrateHostContainersData } = useSelector(
-    (state) => state.stateSlice
-  );
 
-  const [inputValue, setInputValue] = useState("");
-  const [activeVolns, setActiveVolns] = useState("");
-  const [selectedItems, setSelectedItems] = useState([]);
-
-  const handleInputChange = (e) => {
-    if (checkChangeTTL(e?.target?.value)) {
-      setInputValue(e?.target?.value);
-    }
+  const onChangeAll = (e) => {
+    const checkBox = e.target?.checked;
+    setSelectAllChecked(checkBox);
+    const new_list = list?.map((i) => ({ ...i, bool: checkBox ? 1 : 0 }));
+    dispatch(setListVolns({ ...listVolns, [myKey]: new_list }));
   };
 
-  const handleSelectAllChange = () => {
-    if (selectAllChecked) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(list.map((item) => item.guid));
-    }
-    setSelectAllChecked(!selectAllChecked);
+  const onChange = (item) => {
+    const new_list = list?.map((i) => {
+      if (item.guid == i?.guid) {
+        return { ...i, bool: !!i?.bool ? 0 : 1 };
+      } else return i;
+    });
+    dispatch(setListVolns({ ...listVolns, [myKey]: new_list }));
   };
 
-  useEffect(() => {
-    setSelectedItems([]);
-    setSelectAllChecked(false);
-  }, [list]);
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && inputValue?.trim()) {
-      onAddItem(inputValue?.trim());
-      setInputValue("");
-    }
+  const actionVm = (type) => {
+    const new_list = list?.filter((item) => !!item?.bool);
+    const error = "Выделите галочками нужные контейнера";
+    if (new_list?.length == 0) return myAlert(error, "error");
+    const migration_type = listTypeMigrations?.[0];
+    setActionType({ type, list: new_list, migration_type });
   };
-
-  const handleCheckboxChange = (itemGuid) => {
-    setSelectedItems((prevSelected) =>
-      prevSelected.includes(itemGuid)
-        ? prevSelected.filter((guid) => guid !== itemGuid)
-        : [...prevSelected, itemGuid]
-    );
-  };
-
-  // console.log(selectedItems, "selectedItems");
-
-  const startVoln = async (type) => {
-    if (type == 3) {
-      const guid_vm_list = selectedItems.map((item) => ({
-        guid_vm: item,
-      }));
-
-      dispatch(
-        setMigrateHostContainersData({
-          ...migrateHostContainersData,
-          guid_vm_list,
-        })
-      );
-
-      dispatch(setMigrateHostModal(true));
-    } else {
-      setActionType(type);
-      setTitleModal(
-        `${
-          type == 2
-            ? "Вы действительно хотите остановить список контейнеров"
-            : "Вы действительно хотите запустить список контейнеров"
-        }`
-      );
-    }
-  };
-
-  const startContainers = async () => {
-    const responseData = {
-      vm_guid_list: list
-        .filter((item) => selectedItems.includes(item.guid)) // Фильтруем только выбранные элементы
-        .map((item) => ({ guid_vm: item.guid })),
-      action: "start",
-    };
-
-    const response = await dispatch(
-      startContainersAction(responseData)
-    ).unwrap();
-
-    if (response?.res == 1) {
-      myAlert("Контейнеры успешно запущены, следите в логах");
-      setActionType();
-    } else {
-      myAlert("Не удалось запустить контейнеры");
-    }
-  };
-
-  const stopContainers = async () => {
-    const responseData = {
-      vm_guid_list: list
-        .filter((item) => selectedItems.includes(item.guid)) // Фильтруем только выбранные элементы
-        .map((item) => ({ guid_vm: item.guid })),
-      action: "stop",
-    };
-
-    const response = await dispatch(
-      stopContainersAction(responseData)
-    ).unwrap();
-
-    if (response?.res == 1) {
-      myAlert("Контейнеры успешно остановлены, следите в логах");
-      setActionType();
-    } else {
-      myAlert("Не удалось остановить контейнеры");
-    }
-  };
-
-  const activateVolns = async () => {};
-
-  const deleteVolns = (type) => {
-    dispatch(setListVolns({ ...listVolns, clear: [] }));
-    myAlert(`Началось удаление ВПС (Волна ${num})`);
-  };
-
-  const check = activeVolns === guid;
 
   return (
     <div className="everyVolns">
       <div className="header">
         <h6>{title}</h6>
         <div className="title">
-          <img src={water} alt="..." />
-          <span>{list?.length}</span>
+          <div>
+            <span>{list?.length}</span>
+            <img src={water} alt="..." />
+          </div>
           <input
             type="checkbox"
             checked={selectAllChecked}
-            onChange={handleSelectAllChange}
+            onChange={onChangeAll}
             className="select-all-checkbox"
           />
         </div>
@@ -178,22 +75,20 @@ const EveryVolns = ({ list, title, onAddItem, guid, num, selectedColumn }) => {
         {list?.map((item, index) => (
           <Draggable key={item?.guid} draggableId={item?.guid} index={index}>
             {(provided) => (
-              <div className="everyInner">
-                <span
-                  ref={provided?.innerRef}
-                  {...provided?.draggableProps}
-                  {...provided?.dragHandleProps}
-                >
-                  {item?.vm_id}
-                </span>
+              <div
+                className="everyInner"
+                ref={provided?.innerRef}
+                {...provided?.draggableProps}
+                {...provided?.dragHandleProps}
+              >
+                <span>{item?.vm_id}</span>
 
                 <input
                   className="checkbox"
                   type="checkbox"
-                  checked={selectedItems.includes(item.guid)}
-                  onChange={() => handleCheckboxChange(item.guid)}
+                  checked={!!item?.bool}
+                  onChange={() => onChange(item)}
                 />
-                {/* <div className={check ? "load" : ""}></div> */}
               </div>
             )}
           </Draggable>
@@ -202,43 +97,29 @@ const EveryVolns = ({ list, title, onAddItem, guid, num, selectedColumn }) => {
 
       <div className="actions">
         {num == 1 ? (
-          <button onClick={() => deleteVolns(3)}>
+          <button onClick={() => actionVm(4)}>
             <img src={deleteIcon} alt="save" />
-            <span className="moreInfoLeft">Очистить</span>
+            <span className="moreInfoLeft">Удалить Vm</span>
           </button>
         ) : (
           <>
-            <button onClick={() => startVoln(2)}>
+            <button onClick={() => actionVm(1)}>
               <img src={stop} alt="stop" />
               <span className="moreInfoLeft">Остановить</span>
             </button>
 
-            <button onClick={() => startVoln(1)}>
+            <button onClick={() => actionVm(2)}>
               <img src={play} alt="play" />
               <span className="moreInfoLeft">Запустить</span>
             </button>
 
-            <button onClick={() => startVoln(3)}>
+            <button onClick={() => actionVm(3)}>
               <img src={migrateLogo} alt="migrate" />
               <span className="moreInfoLeft">Мигрировать</span>
             </button>
           </>
         )}
       </div>
-
-      <ConfirmModal
-        state={action_type > 0}
-        title={titleModal}
-        yes={() => {
-          if (action_type === 1) {
-            startContainers();
-          } else if (action_type == 2) {
-            stopContainers();
-          }
-          setActionType(0);
-        }}
-        no={() => setActionType(0)}
-      />
     </div>
   );
 };

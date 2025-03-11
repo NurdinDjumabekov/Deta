@@ -6,6 +6,9 @@
   height: 100%;
   padding: 5px 0px 10px 0px;
   position: relative;
+  width: 240px;
+  min-width: 240px;
+  max-width: 240px;
 
   &__inner {
     display: flex;

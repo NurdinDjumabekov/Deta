@@ -26,6 +26,7 @@ import bazaSaveSlice from "./reducers/bazaSaveSlice";
 import todosSlice from "./reducers/todosSlice";
 import usersSlice from "./reducers/usersSlice";
 import actionsContaiersSlice from "./reducers/actionsContaiersSlice";
+import logsVmSlice from "./reducers/logsVmSlice";
 
 const reducer = combineReducers({
   requestSlice,
@@ -42,6 +43,7 @@ const reducer = combineReducers({
   todosSlice,
   usersSlice,
   actionsContaiersSlice,
+  logsVmSlice,
 });
 
 const persistConfig = {

@@ -217,7 +217,7 @@ export const addGroupVmReq = createAsyncThunk(
   }
 );
 
-//// getListOsReq - поучить cписок оп. систем
+//// getListOsReq - подучить cписок оп. систем
 export const getListOsReq = createAsyncThunk(
   "getListOsReq",
   async function (data, { dispatch, rejectWithValue }) {
@@ -244,6 +244,24 @@ export const delVmReq = createAsyncThunk(
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// actionsVolns - действия волн
+export const actionsVolns = createAsyncThunk(
+  "actionsVolns",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/startVolnMigrateVM`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
       } else {
         throw Error(`Error: ${response.status}`);
       }

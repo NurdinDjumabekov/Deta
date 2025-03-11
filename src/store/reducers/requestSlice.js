@@ -669,8 +669,8 @@ const requestSlice = createSlice({
       state.preloader = false;
       state.listVolns = {
         clear: [],
-        active: action.payload?.active,
-        diactive: action.payload?.diactive,
+        active: action.payload?.active?.map((i) => ({ ...i, bool: 0 })),
+        diactive: action.payload?.diactive?.map((i) => ({ ...i, bool: 0 })),
       };
       state.listContainers = action.payload?.result;
     });
