@@ -8,6 +8,7 @@ const { REACT_APP_API_URL } = process.env;
 const initialState = {
   preloaderLog: false,
   listActionsVm: [],
+  viewModalLog: {},
 };
 
 //// getLogVmsReq - get логи действий кгонтейнеров
@@ -35,25 +36,28 @@ const logsVmSlice = createSlice({
     getLogVmsReqFn: (state, action) => {
       state.getLogVmsReq = action.payload;
     },
+    viewModalLogFn: (state, action) => {
+      state.viewModalLog = action.payload;
+    },
   },
 
   extraReducers: (builder) => {
     ///////////////////////////// getLogVmsReq
     builder.addCase(getLogVmsReq.fulfilled, (state, action) => {
-      state.preloaderLog = false;
+      // state.preloaderLog = false;
       state.listActionsVm = action.payload;
     });
     builder.addCase(getLogVmsReq.rejected, (state, action) => {
       state.error = action.payload;
       state.listActionsVm = [];
-      state.preloaderLog = false;
+      // state.preloaderLog = false;
     });
     builder.addCase(getLogVmsReq.pending, (state, action) => {
-      state.preloaderLog = true;
+      // state.preloaderLog = true;
     });
   },
 });
 
-export const { getLogVmsReqFn } = logsVmSlice.actions;
+export const { getLogVmsReqFn, viewModalLogFn } = logsVmSlice.actions;
 
 export default logsVmSlice.reducer;

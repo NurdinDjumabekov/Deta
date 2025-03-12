@@ -1,0 +1,43 @@
+.mainLogs {
+  .logsVms {
+    width: 100%;
+    height: 100%;
+
+    .types {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 45px;
+      margin: 5px 0 0 0;
+      width: 100%;
+      border-top: 1px solid #404040;
+      padding: 0 20px;
+
+      button {
+        padding: 5px 12px;
+        border-radius: 3px;
+        font-size: 14px;
+        border: 1px solid transparent;
+
+        &:hover {
+          border: 1px solid #404040;
+        }
+      }
+
+      .activeBtn {
+        background: #0078cf;
+      }
+    }
+
+    .infoLog {
+      height: calc(100% - 45px);
+      width: 100%;
+      border-top: 1px solid #404040;
+      padding: 10px;
+
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+}

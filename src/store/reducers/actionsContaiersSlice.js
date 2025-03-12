@@ -257,7 +257,7 @@ export const delVmReq = createAsyncThunk(
 export const actionsVolns = createAsyncThunk(
   "actionsVolns",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/startVolnMigrateVM`;
+    const url = `${REACT_APP_API_URL}stack/startVolnVm`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {

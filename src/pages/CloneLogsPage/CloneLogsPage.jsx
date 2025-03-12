@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import { TableVirtuoso } from "react-virtuoso";
-import { getLogVmsReq, getLogVmsReqFn } from "../../store/reducers/logsVmSlice";
+import {
+  getLogVmsReq,
+  getLogVmsReqFn,
+  viewModalLogFn,
+} from "../../store/reducers/logsVmSlice";
 
 ///// style
 import "./style.scss";
@@ -12,6 +16,13 @@ import { ru } from "date-fns/locale";
 
 import CheckIcon from "@mui/icons-material/Check";
 import MiniLoader from "../../common/MiniLoader/MiniLoader";
+import ModalsListLogs from "../../components/CloneLogsPage/ModalsListLogs";
+
+////// icons
+import download from "../../assets/icons/download.svg";
+import repeat from "../../assets/icons/repeat.svg";
+import playCircle from "../../assets/icons/play-circle.svg";
+import warning from "../../assets/icons/warning.svg";
 
 const CloneLogsPage = () => {
   const dispatch = useDispatch();
@@ -35,82 +46,95 @@ const CloneLogsPage = () => {
   console.log(listActionsVm, "listActionsVm");
 
   const st = { width: 19, height: 19, fill: "rgba(23, 224, 23, 0.397)" };
-  const objMigration = {
-    0: <CheckIcon sx={st} />,
-    1: <MiniLoader />,
-    "-1": <p>Ошибка</p>,
-  };
 
   const objStatusAll = {
-    0: "...",
+    0: <MiniLoader />,
     1: <MiniLoader />,
     2: <MiniLoader />,
     3: <CheckIcon sx={st} />,
     "-1": <p>Ошибка</p>,
   };
 
+  const clickTable = (item) => {
+    dispatch(viewModalLogFn({ ...item, action_type: 1 })); /// обычный просмотр
+  };
+  const objIcon = { 1: download, 2: repeat, 3: warning, 4: playCircle };
+
   return (
     <div className="mainLogs">
-      <TableVirtuoso
-        style={{ height: "100%", width: "100%" }}
-        data={listActionsVm}
-        overscan={200} //  Подгружаем элементы заранее
-        fixedHeaderContent={(index, user) => (
-          <tr className="header">
-            <th style={{}}>№</th>
-            <th style={{}}>Время начала</th>
-            <th style={{}}>Время завершения</th>
-            <th style={{}}>Номер Vm</th>
-            <th style={{}}>Статус</th>
-            <th style={{}}>Выбранное хранилище</th>
-
-            <th style={{}}>Бэкап</th>
-            <th style={{}}>Восстановление</th>
-            <th style={{}}>Отключение</th>
-            <th style={{}}>Включение</th>
-          </tr>
-        )}
-        itemContent={(index, item) => (
-          <React.Fragment
-            key={index}
-            className={item?.status_migration == -1 ? "errorTrStatus" : ""}
-          >
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {listActionsVm?.length - index}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {format(item.date, "yyyy-MM-dd HH:mm", { locale: ru })}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {format(item.date, "yyyy-MM-dd HH:mm", { locale: ru })}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {item.vm_id}
-            </td>
-            <td
-              className={item?.status_migration == -1 ? "errorTrStatus" : ""}
-              style={{ color: item?.status_migration == "-1" && "#fff" }}
-            >
-              {objMigration?.[item?.status_migration]}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {item.type_storage}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {objStatusAll?.[item.backup_status]}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {objStatusAll?.[item.restore_status]}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {objStatusAll?.[item.stop_status]}
-            </td>
-            <td className={item?.status_migration == -1 ? "errorTrStatus" : ""}>
-              {objStatusAll?.[item.start_status]}
-            </td>
-          </React.Fragment>
-        )}
-      />
+      <div className="leftTable">
+        <TableVirtuoso
+          style={{ height: "100%", width: "100%" }}
+          data={listActionsVm}
+          overscan={200} //  Подгружаем элементы заранее
+          fixedHeaderContent={(index, user) => (
+            <tr className="header">
+              <th style={{}}>№</th>
+              <th style={{}}>Время начала</th>
+              <th style={{}}>Время завершения</th>
+              <th style={{}}>Хост</th>
+              <th style={{}}>Описание</th>
+              <th style={{}}>Статус</th>
+              <th style={{}}>Хранилище</th>
+            </tr>
+          )}
+          itemContent={(index, item) => (
+            <React.Fragment key={index}>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+              >
+                {listActionsVm?.length - index}
+              </td>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+              >
+                {format(item?.start_date, "yyyy-MM-dd HH:mm", { locale: ru })}
+              </td>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+              >
+                {format(item?.start_date, "yyyy-MM-dd HH:mm", { locale: ru })}
+              </td>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+              >
+                {item?.host_name}
+              </td>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+              >
+                <div>
+                  <img src={objIcon?.[item?.action_codeid]} alt="" />
+                  <p>
+                    vm {item.vm_id} - {item?.action_name}
+                  </p>
+                </div>
+              </td>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+                style={{ color: item?.action_status == "-1" && "#fff" }}
+              >
+                {objStatusAll?.[item?.action_status]}
+              </td>
+              <td
+                onClick={() => clickTable(item)}
+                className={item?.action_status == -1 ? "errorTrStatus" : ""}
+              >
+                {item?.storage}
+              </td>
+            </React.Fragment>
+          )}
+        />
+      </div>
+      <div className="rightTable">
+        <ModalsListLogs />
+      </div>
     </div>
   );
 };

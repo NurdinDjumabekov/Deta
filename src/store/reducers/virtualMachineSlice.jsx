@@ -156,7 +156,7 @@ export const createContainerClone = createAsyncThunk(
 export const createMigrationContainer = createAsyncThunk(
   "createMigrationContainer",
   async function (data, { dispatch, rejectWithValue }) {
-    const url = `${REACT_APP_API_URL}node/startMigrateVM`;
+    const url = `${REACT_APP_API_URL}stack/actionsVm`;
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {

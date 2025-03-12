@@ -25,6 +25,11 @@ import StartVM from "../ActionsContainer/StartVM/StartVM";
 import AddDelGroup from "../ActionsContainer/AddDelGroup/AddDelGroup";
 import MemoryComp from "../MemoryComp/MemoryComp";
 import { Tooltip } from "@mui/material";
+import EditVM from "../ActionsContainer/EditVM/EditVM";
+import OsEdit_VM from "../ActionsContainer/OsEdit_VM/OsEdit_VM";
+import Migration from "../ActionsContainer/Migration/Migration";
+import StopVm from "../ActionsContainer/StopVm/StopVm";
+import DeleteVm from "../ActionsContainer/DeleteVm/DeleteVm";
 
 ////// styles
 import "./style.scss";
@@ -43,11 +48,6 @@ import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 
 /////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
-import EditVM from "../ActionsContainer/EditVM/EditVM";
-import OsEdit_VM from "../ActionsContainer/OsEdit_VM/OsEdit_VM";
-import Migration from "../ActionsContainer/Migration/Migration";
-import StopVm from "../ActionsContainer/StopVm/StopVm";
-import DeleteVm from "../ActionsContainer/DeleteVm/DeleteVm";
 
 const Containers = ({ item }) => {
   const { vm_id, vm_name, vm_comment, vm_uptime, host_name, del, files } = item;

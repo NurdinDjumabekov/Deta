@@ -71,6 +71,7 @@ const ModalsVolns = ({ setActionType, actionType }) => {
       storage_for_vm: actionType?.target_storage_vm?.value,
       host: actionType?.target_node_guid?.value,
       migration_type: actionType?.migration_type?.value,
+      main_type: 5, //// миграция
     };
 
     const res = await dispatch(actionsVolns(send)).unwrap();

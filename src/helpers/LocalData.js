@@ -291,6 +291,12 @@ export const listTypeMigrations = [
     value: 2,
     discription: "Мы выключаем на исходном, переносим и включаем на целевом",
   },
+  {
+    type: 3,
+    label: "Тип 3",
+    value: 2,
+    discription: "Копируем на целевой хост",
+  },
 ];
 
 export const listActionTime = [
