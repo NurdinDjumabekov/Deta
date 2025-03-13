@@ -271,6 +271,24 @@ export const actionsVolns = createAsyncThunk(
   }
 );
 
+//// restartSkipStackReq - перезагрузка и пропуск стека контейнера
+export const restartSkipStackReq = createAsyncThunk(
+  "restartSkipStackReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}stack/restartSkipOneStack`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const actionsContaiersSlice = createSlice({
   name: "actionsContaiersSlice",
   initialState,
@@ -321,7 +339,9 @@ const actionsContaiersSlice = createSlice({
     /////////////////////////////////// getLogBackUpReq
     builder.addCase(getLogBackUpReq.fulfilled, (state, action) => {
       // state.preloader = false;
-      state.logsActionsVM = action.payload;
+      state.logsActionsVM = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
     });
     builder.addCase(getLogBackUpReq.rejected, (state, action) => {
       state.error = action.payload;
@@ -381,6 +401,18 @@ const actionsContaiersSlice = createSlice({
       myAlert("Не удалось удалить", "error");
     });
     builder.addCase(delVmReq.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    ////////////////////////////////////////// restartSkipStackReq
+    builder.addCase(restartSkipStackReq.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(restartSkipStackReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(restartSkipStackReq.pending, (state, action) => {
       state.preloader = true;
     });
   },

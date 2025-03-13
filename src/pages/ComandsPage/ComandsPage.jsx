@@ -22,8 +22,6 @@ import {
 ////// icons
 import krestIcon from "../../assets/icons/krest.svg";
 import editIcon from "../../assets/icons/edit.svg";
-import displayIcon from "../../assets/icons/tv.svg";
-import checkCircle from "../../assets/icons/check-circle.svg";
 import delIcons from "../../assets/icons/delete.svg";
 import services from "../../assets/icons/menu/database.svg";
 import container from "../../assets/icons/menu/box2.svg";
@@ -144,16 +142,29 @@ const ComandsPage = () => {
                   <div className="main">
                     <div className="bottom">
                       {item.vm_id ? (
-                        <div
-                          className={`numIndex`}
-                          style={{ background: objStatusType?.[statusid] }}
-                        >
-                          {!!service_check ? (
-                            <img src={services} alt="[]" className="services" />
-                          ) : (
-                            <img src={objTypeImgs?.[typeid]} alt="[]" />
+                        <div className="numIndex">
+                          <div
+                            className={`numIndex__inner`}
+                            style={{ background: objStatusType?.[statusid] }}
+                          >
+                            {!!service_check ? (
+                              <img
+                                src={services}
+                                alt="[]"
+                                className="services"
+                              />
+                            ) : (
+                              <img src={objTypeImgs?.[typeid]} alt="[]" />
+                            )}
+                            <p>{item?.vm_id}</p>
+                          </div>
+                          {item?.color && (
+                            <div
+                              onClick={() => editComandModal(item, 2)}
+                              className="colorUniq"
+                              style={{ background: item?.color }}
+                            ></div>
                           )}
-                          <p>{item?.vm_id}</p>
                         </div>
                       ) : (
                         <div

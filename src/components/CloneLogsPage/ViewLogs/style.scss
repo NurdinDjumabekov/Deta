@@ -11,7 +11,7 @@
       margin: 5px 0 0 0;
       width: 100%;
       border-top: 1px solid #404040;
-      padding: 0 20px;
+      padding: 0 10px;
 
       button {
         padding: 5px 12px;
@@ -30,13 +30,18 @@
     }
 
     .infoLog {
-      height: calc(100% - 45px);
+      height: calc(100% - 55px);
       width: 100%;
       border-top: 1px solid #404040;
       padding: 10px;
+      overflow-y: scroll;
 
       p {
         font-size: 13px;
+      }
+
+      .miniLoader {
+        height: 200px;
       }
     }
   }

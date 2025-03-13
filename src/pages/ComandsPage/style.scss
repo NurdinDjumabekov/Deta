@@ -59,25 +59,35 @@
             .bottom {
               .numIndex {
                 margin-right: 5px !important;
-                min-width: 70px;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                padding: 5px;
-                border-radius: 3px;
 
-                img {
-                  width: 14px;
-                  height: 14px;
-                }
+                &__inner {
+                  min-width: 70px;
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  padding: 5px;
+                  border-radius: 3px;
 
-                .services {
-                  height: 16px !important;
-                }
+                  img {
+                    width: 14px;
+                    height: 14px;
+                  }
 
-                p {
-                  font-size: 12px;
+                  .services {
+                    height: 16px !important;
+                  }
+
+                  p {
+                    font-size: 12px;
+                  }
                 }
+              }
+
+              .colorUniq {
+                height: 5px;
+                width: 100%;
+                margin: 3px 0px 0 0;
+                border-radius: 5px;
               }
             }
 

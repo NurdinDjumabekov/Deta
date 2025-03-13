@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 ////// components
+import { Tooltip } from "@mui/material";
 
 ////// helpers
 import { listActionTime } from "../../../helpers/LocalData";
@@ -15,6 +16,12 @@ import {
 } from "../../../store/reducers/todosSlice";
 
 ////// icons
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
+import CheckIcon from "@mui/icons-material/Check";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 /////// style
 import "./style.scss";
@@ -22,7 +29,28 @@ import "./style.scss";
 const ViewEveryTasks = ({ content }) => {
   const dispatch = useDispatch();
 
-  const objClass = { 0: "pending", 1: "accessTodos", 2: "rejectTodos" };
+  const objClass = {
+    0: {
+      tag: <PendingActionsIcon sx={{ width: 19, height: 19, margin: "2px" }} />,
+      text: "Ожидание",
+    },
+    1: {
+      tag: (
+        <TaskAltIcon
+          sx={{ width: 21, height: 21, fill: "rgba(29, 174, 29, 0.912)" }}
+        />
+      ),
+      text: "Успешно выполнен",
+    },
+    2: {
+      tag: (
+        <div className="errIcon">
+          <ErrorOutlineIcon sx={{ width: 17, height: 17, fill: "red" }} />
+        </div>
+      ),
+      text: "Ожидание",
+    },
+  };
 
   const editFN = async () => {
     const res = await dispatch(getListAllComandsReq()).unwrap();
@@ -48,20 +76,25 @@ const ViewEveryTasks = ({ content }) => {
     }
   };
 
+  console.log(content, "content");
+
   return (
     <div
-      className={`viewEveryTasks ${
-        objClass?.[content?.status] || "rejectTodos"
-      }`}
+      className={`viewEveryTasks`}
       onClick={editFN}
+      style={{ background: content?.colorss }}
     >
       <p>
         {content?.command}, {content?.vm_name}, {content?.description}
+        <div className={`icons ${content?.status == 0 ? "" : "shadow"}`}>
+          <Tooltip title={objClass?.[content?.status]?.text} placement="top">
+            {objClass?.[content?.status]?.tag}
+          </Tooltip>
+        </div>
       </p>
       {/* <span>{content?.command}</span>
       <b>{content?.description}</b> */}
     </div>
   );
 };
-// ?.event?._def?.extendedProps
 export default ViewEveryTasks;

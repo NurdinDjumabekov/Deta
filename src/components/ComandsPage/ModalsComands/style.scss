@@ -1,7 +1,28 @@
-.addEditCommand {
-  .mySelect {
-    margin: 15px 0 0 0 !important;
-    min-width: 400px;
-    max-width: 400px;
+.crudCommands {
+  .modal {
+    &__inner {
+      width: 450px;
+      min-width: 450px;
+
+      .addEditCommand {
+        .mySelect {
+          margin: 15px 0 0 0 !important;
+          min-width: 400px;
+          max-width: 400px;
+        }
+
+        .listColors {
+          width: 100%;
+
+          li {
+            border: 2px solid transparent;
+          }
+
+          .active {
+            border: 2px solid #fff;
+          }
+        }
+      }
+    }
   }
 }

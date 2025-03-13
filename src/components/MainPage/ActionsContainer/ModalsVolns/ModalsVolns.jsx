@@ -13,11 +13,11 @@ import "./style.scss";
 
 ////// fns
 import { getTypesBackUpReq } from "../../../../store/reducers/virtualMachineSlice";
+import { actionsVolns } from "../../../../store/reducers/actionsContaiersSlice";
 
 /////// helpers
 import { transformListsForHost } from "../../../../helpers/transformLists";
 import { listTypeMigrations } from "../../../../helpers/LocalData";
-import { actionsVolns } from "../../../../store/reducers/actionsContaiersSlice";
 import { myAlert } from "../../../../helpers/MyAlert";
 
 const ModalsVolns = ({ setActionType, actionType }) => {
@@ -43,16 +43,41 @@ const ModalsVolns = ({ setActionType, actionType }) => {
     }
   }
 
-  const stopVms = () => {
-    console.log(actionType, "actionType");
+  const stopVms = async () => {
+    const send = {
+      list: actionType.list,
+      main_type: 3, //// СТОП vm
+    };
+    const res = await dispatch(actionsVolns(send)).unwrap();
+    if (res == 1) {
+      setActionType({});
+      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+    }
   };
 
-  const startVms = () => {
-    console.log(actionType, "actionType");
+  const startVms = async () => {
+    const send = {
+      list: actionType.list,
+      main_type: 4, //// запуск vm
+    };
+    const res = await dispatch(actionsVolns(send)).unwrap();
+    if (res == 1) {
+      setActionType({});
+      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+    }
   };
 
-  const delVms = () => {
-    console.log(actionType, "actionType");
+  const delVms = async () => {
+    const send = {
+      list: actionType.list,
+      main_type: 7, //// УДАЛЕНИЕ vm
+    };
+
+    const res = await dispatch(actionsVolns(send)).unwrap();
+    if (res == 1) {
+      setActionType({});
+      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+    }
   };
 
   const mirgateContainer = async (e) => {
@@ -97,7 +122,7 @@ const ModalsVolns = ({ setActionType, actionType }) => {
       <ConfirmModal
         state={true}
         title={`Запустить выделенный список контейнеров?`}
-        yes={stopVms}
+        yes={startVms}
         no={() => setActionType({})}
       />
     );
@@ -108,7 +133,7 @@ const ModalsVolns = ({ setActionType, actionType }) => {
       <ConfirmModal
         state={true}
         title={`Удалить выделенный список контейнеров?`}
-        yes={stopVms}
+        yes={delVms}
         no={() => setActionType({})}
       />
     );

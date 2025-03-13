@@ -148,7 +148,7 @@ const Shupdown = React.memo(({ item }) => {
       </div>
       <div className="shupdownActions__logs">
         <Modals
-          openModal={!!dataShupdown.guid && viewLogs}
+          openModal={!!dataShupdown?.guid && viewLogs}
           setOpenModal={closeModal}
           title={`Логи '${vm_name}'`}
         >

@@ -1,0 +1,17 @@
+.crudStack {
+  .action {
+    width: 25px !important;
+    height: 25px !important;
+    background: #262626;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    svg,
+    img {
+      width: 20px !important;
+      height: 20px !important;
+    }
+  }
+}

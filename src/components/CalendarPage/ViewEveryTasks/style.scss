@@ -7,6 +7,7 @@
   border-left: 3px solid #fff !important;
   margin-left: 2px;
   cursor: pointer;
+  padding-right: 30px;
 
   p,
   b,
@@ -15,22 +16,41 @@
     line-height: 13px;
     width: 100%;
     display: block;
+    color: #ffffffc1;
+  }
+
+  .icons {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    // background: #292d32;
+    // padding: 1px;
+    border-radius: 0 5px 5px 0;
+    // height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shadow {
+    background: #ffffff88;
   }
 }
 
 .accessTodos {
-  border: 1px solid green;
-  background: green;
+  // border: 1px solid green;
+  // background: green;
 }
 
 .rejectTodos {
-  border: 1px solid rgba(255, 0, 0, 0.393);
-  background: rgba(255, 0, 0, 0.393);
+  // border: 1px solid rgba(255, 0, 0, 0.393);
+  // background: rgba(255, 0, 0, 0.393);
 }
 
 .pending {
-  border: 1px solid #4c95c6;
-  background: #4c95c6;
+  // border: 1px solid #4c95c6;
+  // background: #4c95c6;
 }
 
 .fc-timegrid-event-harness-inset .fc-timegrid-event,

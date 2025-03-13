@@ -8,12 +8,30 @@ const { REACT_APP_API_URL } = process.env;
 const initialState = {
   preloaderLog: false,
   listActionsVm: [],
-  viewModalLog: {},
+  viewActiveStack: {},
 };
 
 //// getLogVmsReq - get логи действий кгонтейнеров
 export const getLogVmsReq = createAsyncThunk(
   "getLogVmsReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}node/getAllLogs`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// getEveryLogVmsReq - get каждый лог действий контейнеров
+export const getEveryLogVmsReq = createAsyncThunk(
+  "getEveryLogVmsReq",
   async function (data, { dispatch, rejectWithValue }) {
     const url = `${REACT_APP_API_URL}node/getAllLogs`;
     try {
@@ -36,8 +54,8 @@ const logsVmSlice = createSlice({
     getLogVmsReqFn: (state, action) => {
       state.getLogVmsReq = action.payload;
     },
-    viewModalLogFn: (state, action) => {
-      state.viewModalLog = action.payload;
+    viewActiveStackFn: (state, action) => {
+      state.viewActiveStack = action.payload;
     },
   },
 
@@ -58,6 +76,6 @@ const logsVmSlice = createSlice({
   },
 });
 
-export const { getLogVmsReqFn, viewModalLogFn } = logsVmSlice.actions;
+export const { getLogVmsReqFn, viewActiveStackFn } = logsVmSlice.actions;
 
 export default logsVmSlice.reducer;
