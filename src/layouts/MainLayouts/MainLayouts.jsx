@@ -23,6 +23,10 @@ const MainLayouts = () => {
     dispatch(getUsersServiceReq({}));
   }, []);
 
+  document.addEventListener("gesturestart", function (event) {
+    event.preventDefault();
+  });
+
   return (
     <div className="mainLayouts">
       <MenuBar />

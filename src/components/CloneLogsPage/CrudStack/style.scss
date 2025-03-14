@@ -1,4 +1,5 @@
 .crudStack {
+  min-width: 130px;
   .action {
     width: 25px !important;
     height: 25px !important;
@@ -13,5 +14,10 @@
       width: 20px !important;
       height: 20px !important;
     }
+  }
+
+  .push {
+    // width: 25px !important;
+    // height: 25px !important;
   }
 }

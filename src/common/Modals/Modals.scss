@@ -8,6 +8,7 @@
 
   &__shadow {
     position: absolute;
+
     z-index: 98;
     top: 0px;
     left: 0px;
@@ -19,6 +20,7 @@
 
   &__inner {
     position: absolute;
+
     z-index: 99;
     top: 50%;
     left: 50%;

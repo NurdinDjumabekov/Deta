@@ -10,6 +10,13 @@
     justify-content: space-between;
     height: 100%;
     padding: 25px 0px 25px;
+    overflow: scroll;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      width: 0px;
+      height: 0px;
+      display: none;
+    }
 
     &__inner {
       display: flex;

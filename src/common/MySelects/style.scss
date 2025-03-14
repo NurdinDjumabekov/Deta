@@ -12,6 +12,22 @@
     font-weight: 500;
     color: #c0c0c0;
     margin: 0 0 5px 0;
+    // border-bottom: 2px solid red;
+  }
+
+  > div {
+    border-radius: 5px;
+    cursor: pointer;
+
+    > div {
+      > div:nth-child(2) {
+        > div:nth-child(2) {
+          svg {
+            fill: #00000097 !important;
+          }
+        }
+      }
+    }
   }
 
   .selectBlock {

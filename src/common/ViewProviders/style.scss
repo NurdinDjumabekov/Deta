@@ -2,6 +2,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow: scroll;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    display: none;
+  }
 
   > div {
     display: flex;

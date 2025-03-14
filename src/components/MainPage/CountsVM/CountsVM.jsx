@@ -50,7 +50,7 @@ const CountsVM = ({ setModalCreate }) => {
           <img src={addContainer} alt="add" />
         </Tooltip>
       </div>
-      <div className="every">
+      <div className="every" style={{ minWidth: "60px" }}>
         <p>Всего: </p>
         <p>{allSumsProvidersFN(countsContainers) || 0}</p>
       </div>
@@ -70,7 +70,7 @@ const CountsVM = ({ setModalCreate }) => {
         <img src={boxGreen} alt="" />
         <p>{countsContainers?.countContainerOn || 0}</p>
       </div>
-      <div className="every">
+      <div className="every lastEvery">
         <p>{activeHost ? `GUID:  ${activeHost}` : ""}</p>
       </div>
     </div>

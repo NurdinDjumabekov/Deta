@@ -22,6 +22,7 @@ import { setListVolns } from "../../../store/reducers/requestSlice";
 /////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
 import { listTypeMigrations } from "../../../helpers/LocalData";
+import { Tooltip } from "@mui/material";
 
 const EveryVolns = ({ list, title, onAddItem, num, myKey, setActionType }) => {
   const dispatch = useDispatch();
@@ -103,20 +104,29 @@ const EveryVolns = ({ list, title, onAddItem, num, myKey, setActionType }) => {
           </button>
         ) : (
           <>
-            <button onClick={() => actionVm(1)}>
-              <img src={stop} alt="stop" />
-              <span className="moreInfoLeft">Остановить</span>
-            </button>
+            {/* <Tooltip title="Остановить" placement="top"> */}
+            <div onClick={() => actionVm(1)}>
+              <button>
+                <img src={stop} alt="stop" />
+              </button>
+            </div>
+            {/* </Tooltip> */}
 
-            <button onClick={() => actionVm(2)}>
-              <img src={play} alt="play" />
-              <span className="moreInfoLeft">Запустить</span>
-            </button>
+            {/* <Tooltip title="Запустить" placement="top"> */}
+            <div onClick={() => actionVm(2)}>
+              <button>
+                <img src={play} alt="play" />
+              </button>
+            </div>
+            {/* </Tooltip> */}
 
-            <button onClick={() => actionVm(3)}>
-              <img src={migrateLogo} alt="migrate" />
-              <span className="moreInfoLeft">Мигрировать</span>
-            </button>
+            {/* <Tooltip title="Мигрировать" placement="top"> */}
+            <div onClick={() => actionVm(3)}>
+              <button>
+                <img src={migrateLogo} alt="migrate" />
+              </button>
+            </div>
+            {/* </Tooltip> */}
           </>
         )}
       </div>

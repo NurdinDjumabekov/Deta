@@ -22,6 +22,7 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 /////// style
 import "./style.scss";
@@ -31,24 +32,23 @@ const ViewEveryTasks = ({ content }) => {
 
   const objClass = {
     0: {
-      tag: <PendingActionsIcon sx={{ width: 19, height: 19, margin: "2px" }} />,
+      tag: <AccessTimeIcon sx={{ width: 18, height: 18, fill: "#fff" }} />,
       text: "Ожидание",
+      background: "#1976d2",
     },
     1: {
-      tag: (
-        <TaskAltIcon
-          sx={{ width: 21, height: 21, fill: "rgba(29, 174, 29, 0.912)" }}
-        />
-      ),
+      tag: <TaskAltIcon sx={{ width: 18, height: 18, fill: "#fff" }} />,
       text: "Успешно выполнен",
+      background: "rgba(29, 174, 29, 0.912)",
     },
     2: {
       tag: (
         <div className="errIcon">
-          <ErrorOutlineIcon sx={{ width: 17, height: 17, fill: "red" }} />
+          <ErrorOutlineIcon sx={{ width: 17, height: 17, fill: "#fff" }} />
         </div>
       ),
-      text: "Ожидание",
+      text: "Ошибка",
+      background: "rgba(255, 0, 0, 0.393)",
     },
   };
 
@@ -76,7 +76,9 @@ const ViewEveryTasks = ({ content }) => {
     }
   };
 
-  console.log(content, "content");
+  let str = "  Пример   строки с  разными  отступами  \n и табами\t ";
+  str = str.replace(/\s/g, "");
+  console.log(str); // "Примерстрокисразнымиотступамиитабами"
 
   return (
     <div
@@ -86,7 +88,10 @@ const ViewEveryTasks = ({ content }) => {
     >
       <p>
         {content?.command}, {content?.vm_name}, {content?.description}
-        <div className={`icons ${content?.status == 0 ? "" : "shadow"}`}>
+        <div
+          className={`icons `}
+          style={{ background: objClass?.[content?.status]?.background }}
+        >
           <Tooltip title={objClass?.[content?.status]?.text} placement="top">
             {objClass?.[content?.status]?.tag}
           </Tooltip>

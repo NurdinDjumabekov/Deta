@@ -282,22 +282,43 @@ export const listTypeMigrations = [
     type: 1,
     label: "Тип 1",
     value: 1,
-    discription:
-      "Мы не выключаем делаем перенос, включаем на целевом хосте, выключаем на исходном хосте",
+    discription: "Отключаем, перененосим и включаем",
   },
   {
     type: 2,
     label: "Тип 2",
     value: 2,
-    discription: "Мы выключаем на исходном, переносим и включаем на целевом",
+    discription: "Переносим, отключаем и включаем на целевом",
   },
   {
     type: 3,
     label: "Тип 3",
-    value: 2,
-    discription: "Копируем на целевой хост",
+    value: 3,
+    discription: "Скопировать и перенести",
   },
 ];
+
+// export const listTypeMigrations = [
+//   {
+//     type: 1,
+//     label: "Тип 1",
+//     value: 1,
+//     discription:
+//       "Мы не выключаем делаем перенос, включаем на целевом хосте, выключаем на исходном хосте",
+//   },
+//   {
+//     type: 2,
+//     label: "Тип 2",
+//     value: 2,
+//     discription: "Мы выключаем на исходном, переносим и включаем на целевом",
+//   },
+//   {
+//     type: 3,
+//     label: "Тип 3",
+//     value: ,
+//     discription: "Копируем на целевой хост",
+//   },
+// ];
 
 export const listActionTime = [
   { label: "Каждый день", value: "day", type: 1 },

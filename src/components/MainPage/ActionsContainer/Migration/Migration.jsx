@@ -1,6 +1,6 @@
 ///////// hooks
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 /////// fns
@@ -102,7 +102,7 @@ const Migration = ({ item }) => {
         setOpenModal={clsoeModal}
         title={"Миграция контейнера"}
       >
-        <form action="cloneContainer" onSubmit={mirgateContainer}>
+        <div action="cloneContainer">
           <MySelects
             list={listTypes}
             initText={"Выбрать"}
@@ -134,10 +134,10 @@ const Migration = ({ item }) => {
             {migrationData?.migration_type?.discription}
           </p>
 
-          <button className="btnAction" type="submit">
+          <button className="btnAction" onClick={mirgateContainer}>
             Мигрировать
           </button>
-        </form>
+        </div>
       </Modals>
     </div>
   );

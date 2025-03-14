@@ -106,9 +106,14 @@
 
     button {
       position: relative;
-      width: 18px;
-      min-width: 18px;
-      height: 18px;
+      width: 22px;
+      min-width: 22px;
+      height: 22px;
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      // background: red;
 
       span {
         right: 0px;

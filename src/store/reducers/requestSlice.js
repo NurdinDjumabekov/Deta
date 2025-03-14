@@ -542,7 +542,7 @@ export const getNetworks = createAsyncThunk(
 export const updatedNetwork = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("pingStatusUpdate", (data) => {
-    // console.log("Получены данные pingStatusUpdate:", data);
+    console.log("Получены данные pingStatusUpdate:", data);
     dispatch(setUpdatedNetwork(data));
   });
 

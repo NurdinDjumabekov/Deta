@@ -21,7 +21,7 @@
 
   .icons {
     position: absolute;
-    right: 0px;
+    right: -2px;
     top: 0px;
     // background: #292d32;
     // padding: 1px;
@@ -31,10 +31,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    // background: rgba(29, 174, 29, 0.912);
+    width: 21px;
+    height: 21px;
   }
 
-  .shadow {
-    background: #ffffff88;
+  .errIcon {
+    svg {
+      fill: #fff !important;
+    }
   }
 }
 

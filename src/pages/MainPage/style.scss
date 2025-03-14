@@ -3,7 +3,7 @@
   height: 100vh;
 
   .providers {
-    padding: 5px 10px;
+    padding: 5px 60px 5px 10px;
     display: flex;
     align-items: center;
     gap: 25px;
@@ -72,10 +72,17 @@
             display: flex;
             align-items: center;
             gap: 7px;
+            min-width: 30px;
 
             p {
               font-size: 13px;
             }
+          }
+
+          .lastEvery {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
           .addContainer {
