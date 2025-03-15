@@ -54,6 +54,67 @@ const EveryVolns = ({ list, title, onAddItem, num, myKey, setActionType }) => {
     setActionType({ type, list: new_list, migration_type });
   };
 
+  const actinoIbj = {
+    1: (
+      <>
+        {/* <Tooltip title="Удалить Vm" placement="top"> */}
+        <button onClick={() => actionVm(4)}>
+          <img src={deleteIcon} alt="save" />
+        </button>
+        {/* </Tooltip> */}
+      </>
+    ),
+    2: (
+      <>
+        {/* <Tooltip title="Остановить" placement="top"> */}
+        <div onClick={() => actionVm(1)}>
+          <button>
+            <img src={stop} alt="stop" />
+          </button>
+        </div>
+        {/* </Tooltip> */}
+
+        {/* <Tooltip title="Мигрировать" placement="top"> */}
+        <div onClick={() => actionVm(3)}>
+          <button>
+            <img src={migrateLogo} alt="migrate" />
+          </button>
+        </div>
+        {/* </Tooltip> */}
+
+        {/* <Tooltip title="Удалить Vm" placement="top"> */}
+        <button onClick={() => actionVm(4)}>
+          <img src={deleteIcon} alt="save" />
+        </button>
+        {/* </Tooltip> */}
+      </>
+    ),
+    3: (
+      <>
+        {/* <Tooltip title="Запустить" placement="top"> */}
+        <div onClick={() => actionVm(2)}>
+          <button>
+            <img src={play} alt="play" />
+          </button>
+        </div>
+        {/* </Tooltip> */}
+
+        {/* <Tooltip title="Мигрировать" placement="top"> */}
+        <div onClick={() => actionVm(3)}>
+          <button>
+            <img src={migrateLogo} alt="migrate" />
+          </button>
+        </div>
+
+        {/* <Tooltip title="Удалить Vm" placement="top"> */}
+        <button onClick={() => actionVm(4)}>
+          <img src={deleteIcon} alt="save" />
+        </button>
+        {/* </Tooltip> */}
+      </>
+    ),
+  };
+
   return (
     <div className="everyVolns">
       <div className="header">
@@ -96,40 +157,7 @@ const EveryVolns = ({ list, title, onAddItem, num, myKey, setActionType }) => {
         ))}
       </div>
 
-      <div className="actions">
-        {num == 1 ? (
-          <button onClick={() => actionVm(4)}>
-            <img src={deleteIcon} alt="save" />
-            <span className="moreInfoLeft">Удалить Vm</span>
-          </button>
-        ) : (
-          <>
-            {/* <Tooltip title="Остановить" placement="top"> */}
-            <div onClick={() => actionVm(1)}>
-              <button>
-                <img src={stop} alt="stop" />
-              </button>
-            </div>
-            {/* </Tooltip> */}
-
-            {/* <Tooltip title="Запустить" placement="top"> */}
-            <div onClick={() => actionVm(2)}>
-              <button>
-                <img src={play} alt="play" />
-              </button>
-            </div>
-            {/* </Tooltip> */}
-
-            {/* <Tooltip title="Мигрировать" placement="top"> */}
-            <div onClick={() => actionVm(3)}>
-              <button>
-                <img src={migrateLogo} alt="migrate" />
-              </button>
-            </div>
-            {/* </Tooltip> */}
-          </>
-        )}
-      </div>
+      <div className="actions">{actinoIbj?.[num]}</div>
     </div>
   );
 };
