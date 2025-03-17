@@ -1,0 +1,17 @@
+.editDC {
+  .actionProxy {
+    width: 35px;
+    height: 26px;
+    background: #66b4ff;
+    padding: 4px;
+    border-radius: 5px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__inner {
+  }
+}

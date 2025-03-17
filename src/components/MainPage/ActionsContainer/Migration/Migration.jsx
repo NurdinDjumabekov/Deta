@@ -37,8 +37,6 @@ const Migration = ({ item }) => {
     (state) => state.virtualMachineSlice
   );
 
-  // console.log(migrationData, "migrationData");
-
   const listActiveHosts = listHosts?.filter((host) => host?.host_status == 1);
   const listTypes = transformListsForHost(listActiveHosts, "guid", "node_name");
 

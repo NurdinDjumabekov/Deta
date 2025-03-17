@@ -3,8 +3,11 @@ import { TableVirtuoso } from "react-virtuoso";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
+/////// components
 import EveryHaProxy from "../../components/HaProxyPage/EveryHaProxy/EveryHaProxy";
 import ModalsHaProxy from "../../components/HaProxyPage/ModalsHaProxy/ModalsHaProxy";
+import EditInfoDC from "../../common/EditInfoDC/EditInfoDC";
+
 import {
   clearListHaProxy,
   getHaProxyList,
@@ -77,6 +80,9 @@ const HaProxyPage = () => {
           <button className="addBtn" onClick={addProxyFN}>
             +
           </button>
+
+          <EditInfoDC />
+
           <div>
             <p>Всего:</p>
             <span>{counts?.all}</span>

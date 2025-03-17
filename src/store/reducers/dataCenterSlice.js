@@ -102,6 +102,24 @@ export const getListVMsInIp = createAsyncThunk(
   }
 );
 
+///// editAccess - редактирование доступов дата центров в хапрокси
+export const editAccess = createAsyncThunk(
+  "editAccess",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}data/editDataCenters`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data?.res;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const dataCenterSlice = createSlice({
   name: "dataCenterSlice",
   initialState,
