@@ -141,7 +141,10 @@ const CloneLogsPage = () => {
                     item
                   )}`}
                 >
-                  {format(item?.start_date, "yyyy-MM-dd HH:mm", { locale: ru })}
+                  {!!item?.start_date &&
+                    format(item?.start_date, "yyyy-MM-dd HH:mm", {
+                      locale: ru,
+                    })}
                 </td>
                 <td
                   onClick={() => clickTable(item)}
@@ -149,7 +152,8 @@ const CloneLogsPage = () => {
                     item
                   )}`}
                 >
-                  {format(item?.start_date, "yyyy-MM-dd HH:mm", { locale: ru })}
+                  {!!item?.end_date &&
+                    format(item?.end_date, "yyyy-MM-dd HH:mm", { locale: ru })}
                 </td>
                 <td
                   onClick={() => clickTable(item)}
@@ -158,13 +162,11 @@ const CloneLogsPage = () => {
                   )}`}
                 >
                   <div>
-                    <p>{item?.start_host_name}</p>
-                    {!!item?.end_host_name && (
-                      <>
-                        <ArrowRight sx={{ width: 17, height: 17 }} />
-                        <p>{item?.end_host_name}</p>
-                      </>
-                    )}
+                    <p>
+                      {!!item?.end_host_name
+                        ? item?.end_host_name
+                        : item?.start_host_name}
+                    </p>
                   </div>
                 </td>
                 <td

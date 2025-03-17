@@ -25,6 +25,7 @@ import MemoryComp from "../MemoryComp/MemoryComp";
 
 ////// helpers
 import { secondsToDhms } from "../../../helpers/secondsToDhms";
+import { updateVmsReq } from "../../../store/reducers/actionsContaiersSlice";
 
 const Hosts = ({ item }) => {
   const { host_ip, node_comment, host_status, vmbr, ping_avg } = item;
@@ -44,7 +45,6 @@ const Hosts = ({ item }) => {
     dispatch(setListDiagrams({ list: chart, node_ram_mb }));
     //// выбор хоста для получения контейнеров связанных с этим хостом
   };
-  //// aab9db43-21b9-4224-addb-3a031a242dad
 
   const editOpenModal = () => {
     const obj = {
@@ -58,6 +58,12 @@ const Hosts = ({ item }) => {
     /// временно хранение данных для редактирования
     dispatch(setGuidHostEdit(guid_node));
     //// для открытия модалки
+  };
+
+  const updateVms = async () => {
+    //// опрашиваю данные с proxmox и обновляю данные в базе, потом только запрашиваю
+    const result = await dispatch(updateVmsReq({ guid })).unwrap();
+    if (result?.res == 1) dispatch(getContainers(guid));
   };
 
   const err = host_status == -1 ? "lineError" : "";
@@ -80,7 +86,7 @@ const Hosts = ({ item }) => {
           </div>
         </a>
         <div className="actions">
-          <button>
+          <button onClick={updateVms}>
             <img src={repeat} alt="x" />
             <span className="moreInfo">Обновить данные хоста</span>
           </button>

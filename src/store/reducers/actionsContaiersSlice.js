@@ -289,6 +289,24 @@ export const restartSkipStackReq = createAsyncThunk(
   }
 );
 
+//// updateVmsReq - перезагрузка и пропуск стека контейнера
+export const updateVmsReq = createAsyncThunk(
+  "updateVmsReq",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}host/updateVms`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const actionsContaiersSlice = createSlice({
   name: "actionsContaiersSlice",
   initialState,
@@ -413,6 +431,18 @@ const actionsContaiersSlice = createSlice({
       state.preloader = false;
     });
     builder.addCase(restartSkipStackReq.pending, (state, action) => {
+      state.preloader = true;
+    });
+
+    ///////////////////////////////////////// updateVmsReq
+    builder.addCase(updateVmsReq.fulfilled, (state, action) => {
+      state.preloader = false;
+    });
+    builder.addCase(updateVmsReq.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloader = false;
+    });
+    builder.addCase(updateVmsReq.pending, (state, action) => {
       state.preloader = true;
     });
   },

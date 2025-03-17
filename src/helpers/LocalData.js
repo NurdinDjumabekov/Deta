@@ -282,13 +282,13 @@ export const listTypeMigrations = [
     type: 1,
     label: "Тип 1",
     value: 1,
-    discription: "Отключаем, перененосим и включаем",
+    discription: "Переносим, отключаем и включаем на целевом",
   },
   {
     type: 2,
     label: "Тип 2",
     value: 2,
-    discription: "Переносим, отключаем и включаем на целевом",
+    discription: "Отключаем, перененосим и включаем",
   },
   {
     type: 3,

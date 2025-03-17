@@ -74,7 +74,7 @@ const ViewLogs = () => {
         <Tooltip title={objText?.[5]} placement="bottom">
           <button
             style={{ background: "rgba(255, 0, 0, 0.467)" }}
-            onClick={() => clickBtn()}
+            onClick={() => clickBtn(5)}
           >
             <NotInterestedIcon />
           </button>
@@ -100,7 +100,7 @@ const ViewLogs = () => {
 
       <ConfirmModal
         state={[4, 5].includes(obj?.type)}
-        title={"Перезапустить ?"}
+        title={objText?.[obj?.type]}
         yes={actionVmStack}
         no={() => setObj({})}
       />
@@ -109,3 +109,5 @@ const ViewLogs = () => {
 };
 
 export default ViewLogs;
+
+//// get_node_data

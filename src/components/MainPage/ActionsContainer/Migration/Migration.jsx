@@ -37,6 +37,8 @@ const Migration = ({ item }) => {
     (state) => state.virtualMachineSlice
   );
 
+  // console.log(migrationData, "migrationData");
+
   const listActiveHosts = listHosts?.filter((host) => host?.host_status == 1);
   const listTypes = transformListsForHost(listActiveHosts, "guid", "node_name");
 
@@ -51,6 +53,10 @@ const Migration = ({ item }) => {
     } else {
       setMigrationData({ ...migrationData, [name]: { label, value } });
     }
+  }
+
+  async function onChangeBox({ type_backup }) {
+    setMigrationData({ ...migrationData, type_backup: !!!type_backup });
   }
 
   const mirgateContainer = async (e) => {
@@ -69,6 +75,8 @@ const Migration = ({ item }) => {
       storage_for_vm: migrationData?.target_storage_vm?.value,
       host: migrationData?.target_node_guid?.value,
       migration_type: migrationData?.migration_type?.value,
+      type_backup: !!migrationData?.type_backup ? 1 : 0,
+      main_type: 5, /// это миграция
     };
 
     const response = await dispatch(createMigrationContainer(send)).unwrap();
@@ -111,7 +119,6 @@ const Migration = ({ item }) => {
             value={migrationData?.target_node_guid}
             title={"Выберите целевой хост для востановления"}
           />
-
           <MySelects
             list={listTypeBackUpContainers?.container}
             initText={"Выбрать"}
@@ -120,7 +127,6 @@ const Migration = ({ item }) => {
             value={migrationData?.target_storage_vm}
             title={"Целевое хранилище для востановления"}
           />
-
           <MySelects
             list={listTypeMigrations}
             initText={"Выбрать"}
@@ -129,11 +135,21 @@ const Migration = ({ item }) => {
             value={migrationData?.migration_type}
             title={"Тип миграции"}
           />
-
           <p className="description">
             {migrationData?.migration_type?.discription}
           </p>
-
+          <div
+            className="checkboxBlock"
+            onClick={() => onChangeBox(migrationData)}
+          >
+            <input
+              type="checkbox"
+              checked={!!migrationData?.type_backup}
+              name="type_backup"
+              className="select-all-checkbox"
+            />
+            <p className="description">Миграция с бэкапом</p>
+          </div>
           <button className="btnAction" onClick={mirgateContainer}>
             Мигрировать
           </button>

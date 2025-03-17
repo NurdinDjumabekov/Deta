@@ -43,6 +43,10 @@ const ModalsVolns = ({ setActionType, actionType }) => {
     }
   }
 
+  async function onChangeBox({ type_backup }) {
+    setActionType({ ...actionType, type_backup: !!!type_backup });
+  }
+
   const stopVms = async () => {
     const send = {
       list: actionType.list,
@@ -51,7 +55,7 @@ const ModalsVolns = ({ setActionType, actionType }) => {
     const res = await dispatch(actionsVolns(send)).unwrap();
     if (res == 1) {
       setActionType({});
-      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+      myAlert("Данные внесены в стэк, перейдите на страницу логов...");
     }
   };
 
@@ -63,7 +67,7 @@ const ModalsVolns = ({ setActionType, actionType }) => {
     const res = await dispatch(actionsVolns(send)).unwrap();
     if (res == 1) {
       setActionType({});
-      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+      myAlert("Данные внесены в стэк, перейдите на страницу логов...");
     }
   };
 
@@ -76,7 +80,7 @@ const ModalsVolns = ({ setActionType, actionType }) => {
     const res = await dispatch(actionsVolns(send)).unwrap();
     if (res == 1) {
       setActionType({});
-      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+      myAlert("Данные внесены в стэк, перейдите на страницу логов...");
     }
   };
 
@@ -96,13 +100,14 @@ const ModalsVolns = ({ setActionType, actionType }) => {
       storage_for_vm: actionType?.target_storage_vm?.value,
       host: actionType?.target_node_guid?.value,
       migration_type: actionType?.migration_type?.value,
+      type_backup: !!actionType?.type_backup ? 1 : 0,
       main_type: 5, //// миграция
     };
 
     const res = await dispatch(actionsVolns(send)).unwrap();
     if (res == 1) {
       setActionType({});
-      myAlert("Данные внесены в цикл, перейдите на страницу логов...");
+      myAlert("Данные внесены в стэк, перейдите на страницу логов...");
     }
   };
 
@@ -178,6 +183,19 @@ const ModalsVolns = ({ setActionType, actionType }) => {
             <p className="description">
               {actionType?.migration_type?.discription}
             </p>
+
+            <div
+              className="checkboxBlock"
+              onClick={() => onChangeBox(actionType)}
+            >
+              <input
+                type="checkbox"
+                checked={!!actionType?.type_backup}
+                name="type_backup"
+                className="select-all-checkbox"
+              />
+              <p className="description">Миграция с бэкапом</p>
+            </div>
 
             <button className="btnAction" type="submit">
               Мигрировать

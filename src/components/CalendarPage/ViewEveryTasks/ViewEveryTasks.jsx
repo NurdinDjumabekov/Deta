@@ -76,10 +76,6 @@ const ViewEveryTasks = ({ content }) => {
     }
   };
 
-  let str = "  Пример   строки с  разными  отступами  \n и табами\t ";
-  str = str.replace(/\s/g, "");
-  console.log(str); // "Примерстрокисразнымиотступамиитабами"
-
   return (
     <div
       className={`viewEveryTasks`}
@@ -97,8 +93,6 @@ const ViewEveryTasks = ({ content }) => {
           </Tooltip>
         </div>
       </p>
-      {/* <span>{content?.command}</span>
-      <b>{content?.description}</b> */}
     </div>
   );
 };

@@ -106,7 +106,7 @@ const MainPage = () => {
         <div className="hostAndContainer">
           <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
             <div className="hosts__inner hoverScroll">
-              {listHosts?.map((item) => (
+              {fliter?.map((item) => (
                 <Hosts key={item?.guid} item={item} />
               ))}
             </div>
