@@ -22,16 +22,23 @@
         gap: 10px;
         flex-wrap: wrap;
 
+        .mySelect {
+          min-width: 180px !important;
+        }
+
         .return {
           color: #fff;
-          padding: 5px;
-          height: 30px;
+          padding: 8px;
+          height: 38px;
           border-radius: 3px;
           background: #66b4ff;
           font-size: 11px;
           line-height: 10px;
-          width: 35px;
+          width: 40px;
           position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
           &:hover {
             .moreInfoLeft {
@@ -52,20 +59,23 @@
           background: orange;
         }
 
-        .role {
-          padding: 0 !important;
+        .access {
+          background: #a3894f !important;
+          svg {
+            width: 27px;
+            height: 25px;
+          }
         }
 
         .changeBtn {
           color: #fff;
           padding: 1px 10px 0px;
-          height: 30px;
+          height: 38px;
           width: 100px !important;
           min-width: 75px !important;
           border-radius: 3px;
-          margin: 5px 0 0 0;
           background: rgb(123, 104, 238);
-          font-size: 12px;
+          font-size: 13px;
           line-height: 10px;
         }
         .everyInput {
@@ -100,9 +110,9 @@
 
     .addDomen {
       background: #08920a;
-      height: 30px;
+      height: 38px;
       border-radius: 3px;
-      font-size: 12px;
+      font-size: 13px;
       padding: 0 15px 0px;
       margin: 32px 0 0 0;
 

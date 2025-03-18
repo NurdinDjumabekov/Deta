@@ -16,7 +16,6 @@ import {
 
 ////// icons
 import LockClockIcon from "@mui/icons-material/LockClock";
-import ShareIcon from "@mui/icons-material/Share";
 import QueuePlayNextIcon from "@mui/icons-material/QueuePlayNext";
 
 ///// style
@@ -95,6 +94,7 @@ const EditInfoDC = () => {
             value={action?.username}
             required={true}
           />
+
           <MyInputs
             title={`Пароль`}
             onChange={onChange}

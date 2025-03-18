@@ -57,10 +57,10 @@ const DnsPage = () => {
     setSearchText(e.target?.value);
   }
 
-  function searchActionFN() {
-    if (!!!searchText) {
-      getData();
-    } else {
+  function searchActionFN(e) {
+    e.preventDefault();
+    if (!!!searchText) getData();
+    else {
       const filtered = listDnsDomen?.filter((item) =>
         item?.domen_name?.toLowerCase()?.includes(searchText?.toLowerCase())
       );
@@ -76,7 +76,7 @@ const DnsPage = () => {
         <div className="dnsMain__add">
           <div className={`dnsMain__add__inner ${active}`}>
             <AddDns />
-            <div className="searchBigData">
+            <form className="searchBigData" onSubmit={searchActionFN}>
               <div>
                 <input
                   type="text"
@@ -85,16 +85,16 @@ const DnsPage = () => {
                   onChange={onChangeSearch}
                 />
                 {!!searchText && (
-                  <button onClick={() => setSearchText("")} className="clear">
+                  <div onClick={() => setSearchText("")} className="clear">
                     <img src={krestIcon} alt="x" />
-                  </button>
+                  </div>
                 )}
               </div>
-              <button className="search" onClick={searchActionFN}>
+              <button className="search" type="submit">
                 <SearchIcon />
                 <p>Поиск</p>
               </button>
-            </div>
+            </form>
             <TableContainer className="dnsMain__table hoverScroll">
               <Table>
                 <TableHead>

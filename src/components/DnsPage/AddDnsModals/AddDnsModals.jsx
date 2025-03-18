@@ -1,5 +1,4 @@
 //////// hooks
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //////// components
@@ -16,8 +15,6 @@ import { addDomens, choiceReadySripts } from "../../../store/reducers/dnsSlice";
 import { myAlert } from "../../../helpers/MyAlert";
 import { checkDomainName } from "../../../helpers/checkFNS";
 import { checkIP } from "../../../helpers/checkFNS";
-
-/////// imgs
 
 /////// style
 import "./style.scss";
@@ -69,7 +66,7 @@ const AddDnsModals = (props) => {
     setModalScript({ ...modalScript, useAll: e.target.checked });
   };
 
-  const сhoiceReadySripts = async () => {
+  const choiceReadySriptsFN = async () => {
     if (!!!modalScript?.rules_guid) {
       return myAlert("Выберите сценарий", "error");
     }
@@ -118,12 +115,12 @@ const AddDnsModals = (props) => {
                 <div className="bool">
                   <input
                     type="checkbox"
-                    id="check"
+                    id="checkk"
                     onChange={onChange}
                     name="is_check_my_ip"
                     checked={temporaryDNS?.is_check_my_ip}
                   />
-                  <label htmlFor="check">Default IP</label>
+                  <label htmlFor="checkk">Default IP</label>
                 </div>
               </div>
             </div>
@@ -158,16 +155,18 @@ const AddDnsModals = (props) => {
           <div className="checkBoxDns">
             <input
               type="checkbox"
-              id="check"
+              id="checkModal"
               onChange={onChangeCheck}
               name="useAll"
               checked={modalScript?.useAll}
             />
-            <label htmlFor="check">Применить изменения для всех доменов</label>
+            <label htmlFor="checkModal">
+              Применить изменения для всех доменов
+            </label>
           </div>
 
           <div className="addAction">
-            <button onClick={сhoiceReadySripts}>Применить</button>
+            <button onClick={choiceReadySriptsFN}>Применить</button>
           </div>
         </div>
       </Modals>

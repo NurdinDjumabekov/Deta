@@ -281,14 +281,14 @@ export const confirmStatusSubDomenFN = createAsyncThunk(
 export const changeIpProviders = createAsyncThunk(
   "changeIpProviders",
   async function (props, { dispatch, rejectWithValue }) {
-    const { objIP, setObjIP, activeDns } = props;
-    const data = { ...objIP, domen_guid: activeDns?.guid };
+    const { send, setObjIP, activeDns } = props;
+    const data = { ...send, domen_guid: activeDns?.guid };
     const url = `${REACT_APP_API_URL}dns/undateIpInsurance`;
 
     try {
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
-        setObjIP({ from: "", to: "" }); //// очишаю state
+        setObjIP({ useAll: false }); //// очишаю state
         dispatch(getDnsSubDomen({ ...activeDns, domen_name: activeDns?.name }));
         myAlert("Изменения внесены!");
         return response?.data;
@@ -372,6 +372,42 @@ export const choiceReadySripts = createAsyncThunk(
       const response = await axiosInstance.post(url, data);
       if (response.status >= 200 && response.status < 300) {
         return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getAccessDnsReq - get список доступов в днс
+export const getAccessDnsReq = createAsyncThunk(
+  "getAccessDnsReq",
+  async function (i, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}dns/getAccessDns`;
+    try {
+      const response = await axiosInstance(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// crudAccessDns - crud список доступов в днс
+export const crudAccessDns = createAsyncThunk(
+  "crudAccessDns",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}dns/crudAccessDns`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data.res;
       } else {
         throw Error(`Error: ${response.status}`);
       }

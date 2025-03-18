@@ -70,7 +70,8 @@ const InnerSubDns = () => {
     setSearchText(e.target.value);
   }
 
-  function searchActionFN() {
+  function searchActionFN(e) {
+    e.preventDefault();
     const send = { guid: activeDns?.guid, domen_name: activeDns?.name };
     if (!!searchText) {
       dispatch(
@@ -80,9 +81,7 @@ const InnerSubDns = () => {
           searchText: searchText,
         })
       ); //// get суб домены этого dns
-    } else {
-      dispatch(getDnsSubDomen(send));
-    }
+    } else dispatch(getDnsSubDomen(send));
   }
 
   useEffect(() => {
@@ -144,7 +143,7 @@ const InnerSubDns = () => {
 
   return (
     <div className="blockSubDomen">
-      <div className="searchBigData">
+      <form className="searchBigData" onSubmit={searchActionFN}>
         <div>
           <input
             type="text"
@@ -153,16 +152,16 @@ const InnerSubDns = () => {
             onChange={onChange}
           />
           {!!searchText && (
-            <button onClick={() => setSearchText("")} className="clear">
+            <div onClick={() => setSearchText("")} className="clear">
               <img src={krestIcon} alt="x" />
-            </button>
+            </div>
           )}
         </div>
-        <button className="search" onClick={searchActionFN}>
+        <button className="search" type="submit">
           <SearchIcon />
           <p>Поиск</p>
         </button>
-      </div>
+      </form>
       <div className="tableEditDns hoverScroll">
         <div className="tableHeader">
           <div

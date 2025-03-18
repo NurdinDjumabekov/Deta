@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 //////// components
 import AddDnsModals from "../AddDnsModals/AddDnsModals";
-import Selects from "../../../common/Selects/Selects";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
+import MySelects from "../../../common/MySelects/MySelects";
+import { Tooltip } from "@mui/material";
 
 /////// fns
 import { setDistributeIpModal } from "../../../store/reducers/stateSlice";
@@ -16,15 +18,16 @@ import {
 
 /////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
-import { tranformDataProviders } from "../../../helpers/transformListNetwork";
 
 /////// imgs
 import resturn from "../../../assets/icons/repeat.svg";
 import distribution from "../../../assets/icons/distribution.svg";
 import ChecklistIcon from "@mui/icons-material/Checklist";
+import LockClockIcon from "@mui/icons-material/LockClock";
 
 /////// style
 import "./style.scss";
+import EditAccess from "../EditAccess/EditAccess";
 
 const AddDns = () => {
   const dispatch = useDispatch();
@@ -32,42 +35,39 @@ const AddDns = () => {
   const { activeDns } = useSelector((state) => state.stateSlice);
   const { listProviders } = useSelector((state) => state.requestSlice);
 
-  const [objIP, setObjIP] = useState({ from: "", to: "", useAll: false });
+  const [objIP, setObjIP] = useState({ useAll: false });
   const [objDomen, setObjDomen] = useState("");
   const [modalScript, setModalScript] = useState({});
+  const [returnProv, setReturnProv] = useState(false);
+  const [nagruzka, setNagruzka] = useState(false);
+  const [access, setAccess] = useState(false);
 
-  const onChangeSelect = (nameKey, name, id) => {
-    setObjIP({ ...objIP, [nameKey]: id });
-  };
+  const onChangeSelect = (item) => setObjIP({ ...objIP, [item?.name]: item });
 
   const changeIPs = () => {
-    if (objIP.from === "") {
-      myAlert("Заполните поле 'From'!", "error");
-      return;
-    }
-    if (objIP.to === "") {
-      myAlert("Заполните поле 'To'!", "error");
-      return;
+    if (!!!objIP?.from?.value) {
+      return myAlert("Заполните поле 'From'!", "error");
     }
 
-    if (objIP.to === objIP.from) {
-      myAlert("У вас похожие провайдеры!", "error");
-      return;
+    if (!!!objIP?.to?.value) {
+      return myAlert("Заполните поле 'To'!", "error");
     }
 
-    dispatch(changeIpProviders({ objIP, setObjIP, activeDns }));
+    if (objIP?.to?.value === objIP?.from?.value) {
+      return myAlert("У вас похожие провайдеры!", "error");
+    }
+
+    const send = { ...objIP, from: objIP?.from?.value, to: objIP?.to?.value };
+
+    dispatch(changeIpProviders({ send, setObjIP, activeDns }));
     ///// запрос для смены провайдер0в
   };
 
-  const onChangeCheck = (e) => {
-    setObjIP({ ...objIP, useAll: e.target.checked });
-  };
+  const onChangeCheck = (e) => setObjIP({ ...objIP, useAll: e.target.checked });
 
   const openModalScriptDns = async () => {
     const data = await dispatch(getScriptDns()).unwrap();
-    if (data?.res == 1) {
-      setModalScript({ guid: "open" });
-    }
+    if (data?.res == 1) setModalScript({ guid: "open" });
   };
 
   const returnIpAddres = () => dispatch(returnIpProviders(activeDns));
@@ -76,49 +76,60 @@ const AddDns = () => {
   const distributeIpAddres = () => dispatch(setDistributeIpModal(true));
   //// для подтверждения распределения нагрузки субднс
 
+  const openModalAccess = async () => {
+    setAccess(true);
+  };
+
   return (
     <>
       <div className="actionDns">
         <div className="changeIpAddres">
           <div>
             <div>
-              <div className="everyInput">
-                <h5>From</h5>
-                <Selects
-                  list={tranformDataProviders(listProviders)}
-                  initText={"Выбрать"}
-                  onChnage={onChangeSelect}
-                  nameKey={"from"}
-                />
-              </div>
-              <div className="everyInput">
-                <h5>To</h5>
-                <Selects
-                  list={tranformDataProviders(listProviders)}
-                  initText={"Выбрать"}
-                  onChnage={onChangeSelect}
-                  nameKey={"to"}
-                />
-              </div>
+              <MySelects
+                list={listProviders}
+                initText={"Выбрать"}
+                onChange={onChangeSelect}
+                nameKey={"from"}
+                value={objIP?.from}
+                title={"From"}
+              />
+
+              <MySelects
+                list={listProviders}
+                initText={"Выбрать"}
+                onChange={onChangeSelect}
+                nameKey={"to"}
+                value={objIP?.to}
+                title={"To"}
+              />
+
               <button className="changeBtn" onClick={changeIPs}>
                 Изменить
               </button>
-              <button className="return" onClick={returnIpAddres}>
-                {/* Перебить возврат */}
-                <img src={resturn} alt="[]" />
-                <span className="moreInfoLeft">
-                  Возврат предыдущего провайдера
-                </span>
-              </button>
-              <button className="return raspr" onClick={distributeIpAddres}>
-                {/* Распределить нагрузку */}
-                <img src={distribution} alt="[]" />
-                <span className="moreInfoLeft">Распределить нагрузку</span>
-              </button>
-              <button className="return role" onClick={openModalScriptDns}>
-                <ChecklistIcon sx={{ width: 21, height: 21 }} />
-                <span className="moreInfoLeft">Выбрать сценарий</span>
-              </button>
+
+              <Tooltip title={"Возврат предыдущего провайдера"} placement="top">
+                <button className="return" onClick={() => setReturnProv(true)}>
+                  <img src={resturn} alt="[]" />
+                </button>
+              </Tooltip>
+
+              <Tooltip title={"Распределить нагрузку"} placement="top">
+                <button
+                  className="return raspr"
+                  onClick={() => setNagruzka(true)}
+                >
+                  <img src={distribution} alt="[]" />
+                </button>
+              </Tooltip>
+
+              <Tooltip title={"Выбрать сценарий"} placement="top">
+                <button className="return" onClick={openModalScriptDns}>
+                  <ChecklistIcon sx={{ width: 21, height: 21 }} />
+                </button>
+              </Tooltip>
+
+              <EditAccess />
             </div>
             <div className="checkBoxDns">
               <input
@@ -144,6 +155,20 @@ const AddDns = () => {
         objDomen={objDomen}
         modalScript={modalScript}
         setModalScript={setModalScript}
+      />
+
+      <ConfirmModal
+        state={returnProv}
+        title={"Вернуть предыдущего провайдера?"}
+        yes={returnIpAddres}
+        no={() => setReturnProv(false)}
+      />
+
+      <ConfirmModal
+        state={nagruzka}
+        title={"Распределить нагрузку?"}
+        yes={distributeIpAddres}
+        no={() => setNagruzka(false)}
       />
     </>
   );

@@ -54,9 +54,9 @@ const MainRoutes = () => {
           <Route path="/" element={<Navigate to={`/dns`} replace />} />
           {listDataCenter?.map(({ guid }) => (
             <Route element={<MainLayouts />} key={guid}>
+              <Route path={`/dns`} element={<DnsPage />} />
               <Route path={`/networks`} element={<NetworksPage />} />
               <Route path={`/ip-addres`} element={<IpAddresPage />} />
-              <Route path={`/dns`} element={<DnsPage />} />
               <Route path={`/todos`} element={<TodosPage />} />
               <Route path={`/history`} element={<HistoryPage />} />
               <Route path={`/calendar`} element={<CalendarPage />} />

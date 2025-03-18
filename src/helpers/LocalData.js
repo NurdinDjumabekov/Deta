@@ -24,7 +24,7 @@ export const pages = [
   { id: 4, name: "HaProxy", path: "/ha-proxy", img: HaProxy },
   { id: 5, name: "Базы и хранилища", path: "/baza", img: block },
   { id: 11, name: "Команды", path: "/comands", img: comands },
-  { id: 12, name: "Логи", path: "/logs", img: logs },
+  { id: 12, name: "Стэк", path: "/logs", img: logs },
 ];
 
 export const pagesAllDC = [

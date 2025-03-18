@@ -1,0 +1,63 @@
+.accessDnsModal {
+  .btnAction {
+    float: left !important;
+  }
+
+  .modal {
+    &__inner {
+      .krest {
+        top: -7px !important;
+      }
+    }
+  }
+
+  .editDC__inner {
+    .btnAction {
+      float: right !important;
+    }
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0px;
+
+    > div {
+      box-sizing: border-box;
+      width: 220px;
+      min-width: 220px;
+      cursor: pointer;
+      //   background: #777777;
+      border: 1px solid #777;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0 0 0;
+      position: relative;
+
+      p {
+        color: rgba(255, 255, 255, 0.7607843137);
+        font-family: Arial;
+        font-size: 15px;
+        display: block;
+        font-weight: 400;
+        width: 70px;
+        font-weight: 500;
+        padding: 5px 0px;
+        width: 100%;
+      }
+
+      .edit {
+        position: absolute;
+        right: 5px;
+        top: 12px;
+      }
+
+      .del {
+        position: absolute;
+        right: 4px;
+        top: 38px;
+      }
+    }
+  }
+}

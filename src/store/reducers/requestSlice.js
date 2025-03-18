@@ -542,7 +542,6 @@ export const getNetworks = createAsyncThunk(
 export const updatedNetwork = () => (dispatch) => {
   const socket = socketIOClient(url_socket);
   socket.on("pingStatusUpdate", (data) => {
-    console.log("Получены данные pingStatusUpdate:", data);
     dispatch(setUpdatedNetwork(data));
   });
 
@@ -611,7 +610,13 @@ const requestSlice = createSlice({
     ///////////////////////////// getProviders
     builder.addCase(getProviders.fulfilled, (state, action) => {
       state.preloader = false;
-      state.listProviders = action.payload;
+      state.listProviders = action.payload?.map((item) => {
+        return {
+          ...item,
+          value: item?.provider_gateway,
+          label: item?.provider_gateway,
+        };
+      });
     });
     builder.addCase(getProviders.rejected, (state, action) => {
       state.error = action.payload;
