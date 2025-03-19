@@ -1,0 +1,43 @@
+.addVms {
+  > button {
+    width: 25px;
+    height: 25px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .modal {
+    &__inner {
+      .krest {
+        top: -4px !important;
+      }
+
+      .addVms__modal {
+        min-width: 450px;
+        margin: 10px 0px;
+
+        .flexBox {
+          display: flex;
+          align-items: flex-end;
+          gap: 10px;
+
+          .myInput:nth-child(1) {
+            width: 55%;
+          }
+
+          .myInput:nth-child(2),
+          .mySelect {
+            width: 45%;
+            min-width: 45%;
+            max-width: 45%;
+          }
+        }
+      }
+    }
+  }
+}

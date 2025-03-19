@@ -1,41 +1,34 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 
 /////// components
 import { Tooltip } from "@mui/material";
+import Modals from "../../../common/Modals/Modals";
+import MyInputs from "../../../common/MyInput/MyInputs";
+import MyIPInput from "../../../common/MyIPInput/MyIPInput";
+import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 ////// fns
 import {
-  editAccess,
-  getDataCenterReq,
-} from "../../../store/reducers/dataCenterSlice";
+  crudAccessDns,
+  getAccessDnsReq,
+} from "../../../store/reducers/dnsSlice";
 
 ////// icons
 import LockClockIcon from "@mui/icons-material/LockClock";
+import EditIcon from "../../../assets/MyIcons/EditIcon";
+import DeleteIcon from "../../../assets/MyIcons/DeleteIcon";
 
 ///// style
 import "./style.scss";
 
 ///// helpers
-import { extractGuid } from "../../../helpers/transformLists";
 import { checkIP } from "../../../helpers/checkFNS";
 import { myAlert } from "../../../helpers/MyAlert";
-import Modals from "../../../common/Modals/Modals";
-import MyInputs from "../../../common/MyInput/MyInputs";
-import MyIPInput from "../../../common/MyIPInput/MyIPInput";
-import {
-  crudAccessDns,
-  getAccessDnsReq,
-} from "../../../store/reducers/dnsSlice";
-import EditIcon from "../../../assets/MyIcons/EditIcon";
-import DeleteIcon from "../../../assets/MyIcons/DeleteIcon";
-import ConfirmModal from "../../../common/ConfirmModal/ConfirmModal";
 
 const EditAccess = () => {
   /// редактирвание данных дата центра
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
 
   const [action, setAction] = useState({});
   const [listAccess, setListAccess] = useState([]);
@@ -45,8 +38,6 @@ const EditAccess = () => {
     const res = await dispatch(getAccessDnsReq()).unwrap();
     setListAccess(res);
     setActionAccess(true);
-    // const obj = res?.find((i) => i.guid == extractGuid(pathname));
-    // setAction(obj);
   };
 
   function onChange(e) {
@@ -61,8 +52,6 @@ const EditAccess = () => {
     if (checkIP(action?.host) && action.action_type != 3)
       return myAlert(er, "error");
 
-    console.log(action, "action");
-
     const res = await dispatch(crudAccessDns(action)).unwrap();
     if (res == 1) {
       const res = await dispatch(getAccessDnsReq()).unwrap();
@@ -71,8 +60,6 @@ const EditAccess = () => {
       setAction({});
     }
   };
-
-  console.log(listAccess, "listAccess");
 
   const openEveryModal = (item, action_type) => {
     setAction({ ...item, action_type });
@@ -92,8 +79,8 @@ const EditAccess = () => {
         title="Доступы"
       >
         <div className="accessDnsModal__list">
-          {listAccess?.map((item) => (
-            <div>
+          {listAccess?.map((item, index) => (
+            <div key={index}>
               <p>Ip адрес: {item?.host}</p>
               <p>Логин: {item?.username}</p>
               <p>Пароль: {item?.password}</p>

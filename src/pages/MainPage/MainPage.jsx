@@ -30,10 +30,10 @@ import CloneModal from "../../components/CloneModal/CloneModal";
 import MigrateHostModal from "../../components/MigrateHostModal/MigrateHostModal";
 import CountsVM from "../../components/MainPage/CountsVM/CountsVM";
 import MyVolns from "../../components/MainPage/MyVolns/MyVolns";
+import { Tooltip } from "@mui/material";
 
 ///////style
 import "./style.scss";
-import { Tooltip } from "@mui/material";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -106,7 +106,7 @@ const MainPage = () => {
         <div className="hostAndContainer">
           <div className={`hosts ${activeHost == 0 ? "activeHosts" : ""}`}>
             <div className="hosts__inner hoverScroll">
-              {listHosts?.map((item) => (
+              {fliter?.map((item) => (
                 <Hosts key={item?.guid} item={item} />
               ))}
             </div>
@@ -119,7 +119,7 @@ const MainPage = () => {
 
           <div className={`containers ${checkContainer}`}>
             <div className="containers__inner">
-              <CountsVM />
+              <CountsVM setModalCreate={setModalCreate} />
               <div className="list hoverScroll">
                 {listContainers?.map((item, index) => (
                   <Containers key={index} item={item} />

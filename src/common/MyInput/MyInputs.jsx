@@ -3,7 +3,7 @@ import "./style.scss";
 
 const MyInputs = (props) => {
   const { title, placeholder, name } = props;
-  const { onChange, required, value, type } = props;
+  const { onChange, required, value, type, disabled } = props;
 
   return (
     <div className="myInput">
@@ -15,6 +15,7 @@ const MyInputs = (props) => {
         onChange={onChange}
         required={required}
         value={value}
+        disabled={!!disabled || false}
       />
     </div>
   );

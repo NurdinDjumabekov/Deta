@@ -307,6 +307,60 @@ export const updateVmsReq = createAsyncThunk(
   }
 );
 
+//// pastVmsAccess - для создание контейнера получаю необходимые данные с базы
+export const pastVmsAccess = createAsyncThunk(
+  "pastVmsAccess",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}stack/past_vm_info`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//// createVmsAccess - полное создание контейнера с доступами, днс и хапрокси
+export const createVmsAccess = createAsyncThunk(
+  "createVmsAccess",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}stack/create_vm`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+///// getDnsDomen - для получения доменов
+export const getDnsDomenCreateVm = createAsyncThunk(
+  "getDnsDomen",
+  async function (props, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}dns/getDomens`;
+    try {
+      const response = await axiosInstance(url);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const actionsContaiersSlice = createSlice({
   name: "actionsContaiersSlice",
   initialState,

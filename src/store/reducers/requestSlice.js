@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import socketIOClient from "socket.io-client";
 import {
   clearAddHost,
-  clearTemporaryContainer,
   clearTemporaryHosts,
   setActiveContainer,
   setActiveHost,
@@ -629,7 +628,9 @@ const requestSlice = createSlice({
     ///////////////////////////// getHosts
     builder.addCase(getHosts.fulfilled, (state, action) => {
       state.preloader = false;
-      state.listHosts = action.payload;
+      state.listHosts = action.payload?.map((i) => {
+        return { ...i, value: i?.guid, label: i?.node_name };
+      });
     });
     builder.addCase(getHosts.rejected, (state, action) => {
       state.error = action.payload;

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 ////// components
 import { Tooltip } from "@mui/material";
+import AddVms from "../AddVms/AddVms";
 
 /////// imgs
 import displayIcon from "../../../assets/icons/display.svg";
@@ -12,6 +13,7 @@ import addContainer from "../../../assets/icons/addContainer.svg";
 import displayRedIcon from "../../../assets/icons/displayRed.svg";
 import boxRed from "../../../assets/icons/boxRed.svg";
 import boxGreen from "../../../assets/icons/boxGreen.svg";
+import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 
 ////// helpers
 import { allSumsProvidersFN } from "../../../helpers/LocalData";
@@ -21,6 +23,9 @@ import { myAlert } from "../../../helpers/MyAlert";
 import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 import { getListBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 
+///////style
+import "./style.scss";
+
 const CountsVM = ({ setModalCreate }) => {
   const dispatch = useDispatch();
 
@@ -28,11 +33,10 @@ const CountsVM = ({ setModalCreate }) => {
   const { listHosts } = useSelector((state) => state.requestSlice);
   const { activeHost } = useSelector((state) => state.stateSlice);
 
-  async function openModalCreateContainer() {
+  const openModalCreateContainer = async () => {
     //// открываю модалки создания контейнера
-    if (!!!activeHost) {
-      return myAlert("Выберите хост", "error");
-    }
+    if (!!!activeHost) return myAlert("Выберите хост", "error");
+
     const { guid_node } = listHosts?.find((item) => activeHost == item?.guid);
     const res = await dispatch(getTypesBackUpReq(guid_node)).unwrap();
     if (res?.res == 1) {
@@ -41,14 +45,18 @@ const CountsVM = ({ setModalCreate }) => {
       await dispatch(getListBackUpReq(send)).unwrap();
       setModalCreate({ actionType: 1 });
     }
-  }
+  };
 
   return (
     <div className="header__counts">
-      <div className="every addContainer" onClick={openModalCreateContainer}>
+      <div
+        className="every addContainer addAllVm"
+        // onClick={openModalCreateContainer}
+      >
         <Tooltip title="Создать контейнер" placement="top">
           <img src={addContainer} alt="add" />
         </Tooltip>
+        <AddVms />
       </div>
       <div className="every" style={{ minWidth: "60px" }}>
         <p>Всего: </p>

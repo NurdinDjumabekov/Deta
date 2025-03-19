@@ -38,11 +38,9 @@ const CreateContainers = (props) => {
     list: [],
   });
 
-  const {
-    listBackUpContainers,
-    listTypeBackUpContainers,
-    viewListResultBackUp,
-  } = useSelector((state) => state.virtualMachineSlice);
+  const { listBackUpContainers, listTypeBackUpContainers } = useSelector(
+    (state) => state.virtualMachineSlice
+  );
   const { listHosts } = useSelector((state) => state.requestSlice);
   const { activeHost } = useSelector((state) => state.stateSlice);
 
@@ -87,7 +85,7 @@ const CreateContainers = (props) => {
       name: modalCreateConf?.name,
       description: modalCreateConf?.description,
       source: modalCreateConf?.source,
-      storage: modalCreateConf?.storage?.value,
+      storage: modalCreateConf?.storage?.guid,
       guid_host: objHost?.guid_node,
       type: modalCreateConf?.subtype,
     };

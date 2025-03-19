@@ -18,7 +18,10 @@ import { setTemporaryHosts } from "../../../store/reducers/stateSlice";
 import { setListDiagrams } from "../../../store/reducers/stateSlice";
 import { setGuidHostDel } from "../../../store/reducers/stateSlice";
 import { setGuidHostEdit } from "../../../store/reducers/stateSlice";
-import { getContainers } from "../../../store/reducers/requestSlice";
+import {
+  getContainers,
+  setListVolns,
+} from "../../../store/reducers/requestSlice";
 
 /////// components
 import MemoryComp from "../MemoryComp/MemoryComp";
@@ -41,6 +44,7 @@ const Hosts = ({ item }) => {
   const listVmbr = vmbr?.split(",");
 
   const clickHost = () => {
+    dispatch(setListVolns([]));
     dispatch(getContainers(guid));
     dispatch(setListDiagrams({ list: chart, node_ram_mb }));
     //// выбор хоста для получения контейнеров связанных с этим хостом
