@@ -361,6 +361,24 @@ export const getDnsDomenCreateVm = createAsyncThunk(
   }
 );
 
+///// test_nurdin
+export const test_nurdin = createAsyncThunk(
+  "test_nurdin",
+  async function (data, { dispatch, rejectWithValue }) {
+    const url = `${REACT_APP_API_URL}stack/test_nurdin`;
+    try {
+      const response = await axiosInstance.post(url, data);
+      if (response.status >= 200 && response.status < 300) {
+        return response?.data;
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const actionsContaiersSlice = createSlice({
   name: "actionsContaiersSlice",
   initialState,
@@ -382,7 +400,7 @@ const actionsContaiersSlice = createSlice({
   extraReducers: (builder) => {
     ///////////////////////////// getDataForBackUp
     builder.addCase(getDataForBackUp.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
       state.dataForBackUp = action.payload?.map((i) => {
         return { label: i?.storage_name, value: i?.guid };
       });
@@ -390,27 +408,27 @@ const actionsContaiersSlice = createSlice({
     builder.addCase(getDataForBackUp.rejected, (state, action) => {
       state.error = action.payload;
       state.dataForBackUp = [];
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(getDataForBackUp.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     ///////////////////////////////// backUpContainerFN
     builder.addCase(backUpContainerFN.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(backUpContainerFN.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(backUpContainerFN.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     /////////////////////////////////// getLogBackUpReq
     builder.addCase(getLogBackUpReq.fulfilled, (state, action) => {
-      // state.preloader = false;
+      // state.preloaderContainer =  false;
       state.logsActionsVM = Array.isArray(action.payload)
         ? action.payload
         : [action.payload];
@@ -418,86 +436,98 @@ const actionsContaiersSlice = createSlice({
     builder.addCase(getLogBackUpReq.rejected, (state, action) => {
       state.error = action.payload;
       state.logsActionsVM = [];
-      // state.preloader = false;
+      // state.preloaderContainer =  false;
     });
     builder.addCase(getLogBackUpReq.pending, (state, action) => {
-      // state.preloader = true;
+      // state.preloaderContainer =  true;
     });
 
     ///////////////////////////////// updateStatusVmReq
     builder.addCase(updateStatusVmReq.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(updateStatusVmReq.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(updateStatusVmReq.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     ///////////////////////////////////// delGroupContainerReq
     builder.addCase(delGroupContainerReq.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(delGroupContainerReq.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(delGroupContainerReq.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     /////////////////////////////////////// getListOsReq
     builder.addCase(getListOsReq.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
       state.listOs = action.payload;
     });
     builder.addCase(getListOsReq.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
       state.listOs = [];
       myAlert("Не удалось загрузить список операционных систем", "error");
     });
     builder.addCase(getListOsReq.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     ///////////////////////////////////////// delVmReq
     builder.addCase(delVmReq.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(delVmReq.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
       myAlert("Не удалось удалить", "error");
     });
     builder.addCase(delVmReq.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     ////////////////////////////////////////// restartSkipStackReq
     builder.addCase(restartSkipStackReq.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(restartSkipStackReq.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(restartSkipStackReq.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
     });
 
     ///////////////////////////////////////// updateVmsReq
     builder.addCase(updateVmsReq.fulfilled, (state, action) => {
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(updateVmsReq.rejected, (state, action) => {
       state.error = action.payload;
-      state.preloader = false;
+      state.preloaderContainer = false;
     });
     builder.addCase(updateVmsReq.pending, (state, action) => {
-      state.preloader = true;
+      state.preloaderContainer = true;
+    });
+
+    /////////////////////////////////////////// createVmsAccess
+    builder.addCase(createVmsAccess.fulfilled, (state, action) => {
+      state.preloaderContainer = false;
+    });
+    builder.addCase(createVmsAccess.rejected, (state, action) => {
+      state.error = action.payload;
+      state.preloaderContainer = false;
+    });
+    builder.addCase(createVmsAccess.pending, (state, action) => {
+      state.preloaderContainer = true;
     });
   },
 });

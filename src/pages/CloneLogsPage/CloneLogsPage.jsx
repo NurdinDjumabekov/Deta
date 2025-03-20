@@ -26,6 +26,7 @@ import download from "../../assets/icons/download.svg";
 import repeat from "../../assets/icons/repeat.svg";
 import playCircle from "../../assets/icons/play-circle.svg";
 import stopCircle from "../../assets/icons/stop-circle.svg";
+import boxWhite from "../../assets/icons/boxWhite.svg";
 import warningWhite from "../../assets/icons/warningWhite.svg";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import ArrowRight from "@mui/icons-material/ArrowForward";
@@ -97,6 +98,7 @@ const CloneLogsPage = () => {
     3: stopCircle,
     4: playCircle,
     7: warningWhite,
+    8: boxWhite,
   };
 
   const objClass = { "-1": "errorTrStatus", "-2": "skipStack" };
@@ -122,6 +124,7 @@ const CloneLogsPage = () => {
                 <th style={{ width: "16%" }}>Описание</th>
                 <th style={{ width: "8%" }}>Статус</th>
                 <th style={{ width: "15%" }}>Хранилище</th>
+                <th style={{ width: "15%" }}>Описание</th>
                 <th>...</th>
               </tr>
             )}
@@ -187,7 +190,8 @@ const CloneLogsPage = () => {
                     )}
 
                     <p>
-                      vm {item.vm_id} - {item?.action_name}
+                      vm {!!item?.new_id ? item?.new_id : item.vm_id} -{" "}
+                      {item?.action_name}
                     </p>
                   </div>
                 </td>
@@ -207,6 +211,13 @@ const CloneLogsPage = () => {
                   )}`}
                 >
                   {item?.storage}
+                </td>
+                <td
+                  className={`${objClass?.[item?.action_status]} ${activeStack(
+                    item
+                  )}`}
+                >
+                  <p className="comment">{item?.comment}</p>
                 </td>
                 <td
                   onClick={() => clickTable(item)}

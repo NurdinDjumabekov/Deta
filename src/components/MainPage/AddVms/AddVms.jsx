@@ -15,7 +15,11 @@ import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 
 ////// helpers
 import { myAlert } from "../../../helpers/MyAlert";
-import { checkChangeRecordName } from "../../../helpers/checkFNS";
+import {
+  checkChangeNameVm,
+  checkChangeRecordName,
+  checkIP,
+} from "../../../helpers/checkFNS";
 
 /////// fns
 import {
@@ -30,6 +34,7 @@ import { extractGuid } from "../../../helpers/transformLists";
 import { useLocation } from "react-router-dom";
 import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 import MyIPInput from "../../../common/MyIPInput/MyIPInput";
+import MyTextArea from "../../../common/MyTextArea/MyTextArea";
 
 const AddVms = () => {
   const dispatch = useDispatch();
@@ -57,10 +62,10 @@ const AddVms = () => {
       setActionObj({
         vmid: result?.vmid,
         ip_address: result?.network_ip?.ip_address,
-        host: { value: result?.host?.guid, label: result?.host?.node_name },
         domen: { value: new_list?.[0]?.value, label: new_list?.[0]?.label },
+        ip_provider: "212.112.105.196",
+        migration_type: 0,
       });
-      await dispatch(getTypesBackUpReq(result?.host?.guid_node)).unwrap();
     }
   };
 
@@ -71,13 +76,21 @@ const AddVms = () => {
       if (checkChangeRecordName(value)) {
         setActionObj({ ...actionObj, [name]: value });
       }
+    } else if (name == "name") {
+      if (checkChangeNameVm(value)) {
+        setActionObj({ ...actionObj, [name]: value });
+      }
     } else {
       setActionObj({ ...actionObj, [name]: value });
     }
   };
 
+  const onChangeCheck = (e) => {
+    const { name, checked } = e.target;
+    setActionObj({ ...actionObj, [name]: checked ? 1 : 0 });
+  };
+
   async function onChangeSelect(item) {
-    console.log(item, "item");
     const { name } = item;
     if (name == "host") {
       setActionObj({ ...actionObj, [name]: item, storage_for_vm: {} });
@@ -90,21 +103,22 @@ const AddVms = () => {
   const sendCreateVm = async (e) => {
     e.preventDefault();
 
-    if (!!!actionObj?.host?.value) myAlert("Выберите хост", "error");
-    if (!!!actionObj?.storage_for_vm?.value) myAlert("Выберите диск", "error");
+    if (!!!actionObj?.host?.value) return myAlert("Выберите хост", "error");
+    if (!!!actionObj?.storage_for_vm?.value)
+      return myAlert("Выберите диск", "error");
 
-    console.log(actionObj, "actionObj");
-
-    // console.log(extractGuid(pathname), "extractGuid(pathname);");
+    const er = "Введите ip провайдера";
+    if (checkIP(actionObj?.ip_provider)) return myAlert(er, "error");
 
     const send = {
       ...actionObj,
       storage_for_vm: actionObj?.storage_for_vm?.storage_name,
     };
+    console.log(send, "send");
 
     const result = await dispatch(createVmsAccess(send)).unwrap();
-    console.log(result, "result");
     if (result?.res == 1) {
+      setActionObj({});
       myAlert("Контейнер скоро создастся, перейдите на страницу логов");
     } else myAlert(result?.mes, "error");
   };
@@ -132,23 +146,25 @@ const AddVms = () => {
             type={"number"}
           />
 
-          <MySelects
-            list={listHosts}
-            initText={"Выбрать"}
-            onChange={onChangeSelect}
-            nameKey={"host"}
-            value={actionObj?.host}
-            title={"Хост на котором будет создан контейнер"}
-          />
+          <div className="flexBox">
+            <MySelects
+              list={listHosts}
+              initText={"Выбрать"}
+              onChange={onChangeSelect}
+              nameKey={"host"}
+              value={actionObj?.host}
+              title={"Хост на котором будет создан контейнер"}
+            />
 
-          <MySelects
-            list={listTypeBackUpContainers?.container}
-            initText={"Выбрать"}
-            onChange={onChangeSelect}
-            nameKey={"storage_for_vm"}
-            value={actionObj?.storage_for_vm}
-            title={"Целевое хранилище для востановления"}
-          />
+            <MySelects
+              list={listTypeBackUpContainers?.container}
+              initText={"Выбрать"}
+              onChange={onChangeSelect}
+              nameKey={"storage_for_vm"}
+              value={actionObj?.storage_for_vm}
+              title={"Хранилище"}
+            />
+          </div>
 
           <div className="flexBox">
             <MyInputs
@@ -186,14 +202,58 @@ const AddVms = () => {
             />
           </div>
 
-          <MyInputs
-            title={"Исходный контейнер"}
+          <div className="flexBox">
+            <MyIPInput
+              title={"Ip провайдера (default акнет)"}
+              onChange={onChange}
+              name={"ip_provider"}
+              value={actionObj?.ip_provider}
+              required={true}
+            />
+
+            <MyInputs
+              title={"Исходный контейнер"}
+              onChange={onChange}
+              name={"codeid_vm"}
+              value={actionObj?.codeid_vm}
+              required={true}
+              type={"number"}
+            />
+          </div>
+
+          <MyTextArea
+            title={`Описание`}
             onChange={onChange}
-            name={"codeid_vm"}
-            value={actionObj?.codeid_vm}
+            name={"comment"}
+            value={actionObj?.comment}
             required={true}
-            type={"number"}
           />
+
+          <div className="checkBoxDns">
+            <input
+              type="checkbox"
+              id="testingBackUp"
+              onChange={onChangeCheck}
+              name="migration_type"
+              checked={!!actionObj?.migration_type}
+            />
+            <label htmlFor="testingBackUp">
+              {!!actionObj?.migration_type
+                ? "Создать новый бэкап"
+                : "При создании возмёт самый последний бэкап"}
+            </label>
+          </div>
+
+          <div className="checkBoxDns">
+            <input
+              type="checkbox"
+              id="testing"
+              // onChange={onChange}
+              name="useAll"
+              // checked={modalScript?.useAll}
+            />
+            <label htmlFor="testing">Это тестовый контейнер?</label>
+          </div>
 
           <button className="btnAction" type="submit">
             Создать

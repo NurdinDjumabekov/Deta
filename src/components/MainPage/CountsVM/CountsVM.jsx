@@ -25,6 +25,7 @@ import { getListBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 
 ///////style
 import "./style.scss";
+import { test_nurdin } from "../../../store/reducers/actionsContaiersSlice";
 
 const CountsVM = ({ setModalCreate }) => {
   const dispatch = useDispatch();
@@ -47,16 +48,24 @@ const CountsVM = ({ setModalCreate }) => {
     }
   };
 
+  const textFn = () => {
+    const host = listHosts?.find((item) => activeHost == item?.guid);
+
+    console.log(host, "host");
+    dispatch(test_nurdin({ ...host, vm_id: "333610" }));
+  };
+
   return (
     <div className="header__counts">
       <div
         className="every addContainer addAllVm"
         // onClick={openModalCreateContainer}
       >
-        <Tooltip title="Создать контейнер" placement="top">
+        {/* <Tooltip title="Создать контейнер" placement="top">
           <img src={addContainer} alt="add" />
-        </Tooltip>
+        </Tooltip> */}
         <AddVms />
+        {/* <button onClick={textFn}>asdasd</button> */}
       </div>
       <div className="every" style={{ minWidth: "60px" }}>
         <p>Всего: </p>

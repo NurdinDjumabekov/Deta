@@ -78,6 +78,11 @@ export const checkChangeRecordName = (value) => {
   return validText;
 };
 
+export const checkChangeNameVm = (value) => {
+  const validText = /^[a-z0-9.-]*$/.test(value);
+  return validText;
+};
+
 export const checkChangeTTL = (value) => {
   ///// проверка при введении текста
   const validTtl = /^\d*$/.test(value);

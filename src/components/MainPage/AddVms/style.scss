@@ -26,12 +26,13 @@
           align-items: flex-end;
           gap: 10px;
 
-          .myInput:nth-child(1) {
+          .myInput:nth-child(1),
+          .mySelect:nth-child(2) {
             width: 55%;
           }
 
           .myInput:nth-child(2),
-          .mySelect {
+          .mySelect:nth-child(2) {
             width: 45%;
             min-width: 45%;
             max-width: 45%;
