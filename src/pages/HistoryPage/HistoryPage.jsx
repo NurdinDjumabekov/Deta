@@ -53,16 +53,16 @@ const HistoryPage = () => {
               value={searchText}
               onChange={onChangeSearch}
             />
-            {!!searchText && (
+            {/* {!!searchText && (
               <button onClick={clearInput}>
                 <img src={krestIcon} alt="x" />
               </button>
-            )}
+            )} */}
           </div>
         </div>
         <div className="body hoverScroll">
           {listHistoryAction?.map((item, index) => (
-            <div className="everyHistory">
+            <div className="everyHistory" key={index}>
               <p className="time">{item?.date_system_t}</p>
               <Containers key={index} item={item} />
             </div>

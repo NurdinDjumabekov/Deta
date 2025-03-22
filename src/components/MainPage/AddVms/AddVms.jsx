@@ -35,6 +35,7 @@ import { useLocation } from "react-router-dom";
 import { getTypesBackUpReq } from "../../../store/reducers/virtualMachineSlice";
 import MyIPInput from "../../../common/MyIPInput/MyIPInput";
 import MyTextArea from "../../../common/MyTextArea/MyTextArea";
+import { listActionCreateVm } from "../../../helpers/LocalData";
 
 const AddVms = () => {
   const dispatch = useDispatch();
@@ -64,7 +65,8 @@ const AddVms = () => {
         ip_address: result?.network_ip?.ip_address,
         domen: { value: new_list?.[0]?.value, label: new_list?.[0]?.label },
         ip_provider: "212.112.105.196",
-        migration_type: 0,
+        migration_type: { label: "Взять последний бэкап", value: 0 },
+        testing: 1,
       });
     }
   };
@@ -113,6 +115,7 @@ const AddVms = () => {
     const send = {
       ...actionObj,
       storage_for_vm: actionObj?.storage_for_vm?.storage_name,
+      migration_type: actionObj?.migration_type?.value,
     };
     console.log(send, "send");
 
@@ -137,14 +140,23 @@ const AddVms = () => {
         title={"Создание контейнера"}
       >
         <form className="addVms__modal" onSubmit={sendCreateVm}>
-          <MyInputs
-            title={"Новый уникальный номер контейнера"}
-            onChange={onChange}
-            name={"vmid"}
-            value={actionObj?.vmid}
-            required={true}
-            type={"number"}
-          />
+          <div className="flexBox">
+            <MyInputs
+              title={"Новый уникальный номер контейнера"}
+              onChange={onChange}
+              name={"vmid"}
+              value={actionObj?.vmid}
+              required={true}
+              type={"number"}
+            />
+            <MyIPInput
+              title={"Ip провайдера (default акнет)"}
+              onChange={onChange}
+              name={"ip_provider"}
+              value={actionObj?.ip_provider}
+              required={true}
+            />
+          </div>
 
           <div className="flexBox">
             <MySelects
@@ -203,14 +215,6 @@ const AddVms = () => {
           </div>
 
           <div className="flexBox">
-            <MyIPInput
-              title={"Ip провайдера (default акнет)"}
-              onChange={onChange}
-              name={"ip_provider"}
-              value={actionObj?.ip_provider}
-              required={true}
-            />
-
             <MyInputs
               title={"Исходный контейнер"}
               onChange={onChange}
@@ -219,6 +223,17 @@ const AddVms = () => {
               required={true}
               type={"number"}
             />
+
+            <div className="mainSel">
+              <MySelects
+                list={listActionCreateVm}
+                initText={"Выбрать"}
+                onChange={onChangeSelect}
+                nameKey={"migration_type"}
+                value={actionObj?.migration_type}
+                title={"Тип"}
+              />
+            </div>
           </div>
 
           <MyTextArea
@@ -232,31 +247,21 @@ const AddVms = () => {
           <div className="checkBoxDns">
             <input
               type="checkbox"
-              id="testingBackUp"
-              onChange={onChangeCheck}
-              name="migration_type"
-              checked={!!actionObj?.migration_type}
-            />
-            <label htmlFor="testingBackUp">
-              {!!actionObj?.migration_type
-                ? "Создать новый бэкап"
-                : "При создании возмёт самый последний бэкап"}
-            </label>
-          </div>
-
-          <div className="checkBoxDns">
-            <input
-              type="checkbox"
               id="testing"
-              // onChange={onChange}
-              name="useAll"
-              // checked={modalScript?.useAll}
+              onChange={onChangeCheck}
+              name="testing"
+              checked={!!actionObj?.testing}
             />
             <label htmlFor="testing">Это тестовый контейнер?</label>
           </div>
+          <div className="checkBoxDns">
+            <label>
+              Если это виртуалка, то ip адрес надо прописать вручную в proxmox
+            </label>
+          </div>
 
           <button className="btnAction" type="submit">
-            Создать
+            Запустить процесс создания
           </button>
         </form>
       </Modals>

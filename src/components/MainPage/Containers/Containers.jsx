@@ -200,7 +200,7 @@ const Containers = ({ item }) => {
                 </button>
               </Tooltip> */}
 
-              <AddDelGroup item={item} />
+              {/* <AddDelGroup item={item} /> */}
 
               {checkActive && (
                 <>

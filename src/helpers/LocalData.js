@@ -328,4 +328,9 @@ export const listActionTime = [
   { label: "Каждые 2 месяца", value: "2months", type: 1 },
 ];
 
+export const listActionCreateVm = [
+  { label: "Взять последний бэкап", value: 0 },
+  { label: "Создать новый бэкап", value: 1 },
+];
+
 export const url_socket = "https://dd-api.ibm.kg";
